@@ -157,14 +157,11 @@ class _HomePageState extends State<HomePage>
           body: (context, controller) => TabBarView(
             controller: tabController,
             dragStartBehavior: DragStartBehavior.down,
-            physics: const BouncingScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             children: [
-              InfiniteListPage(controller: controller, color: colors[0]),
-              SearchPage(
-                  controller: controller, color: colors[1]), // Add SearchPage
-              FavouritePage(
-                  controller: controller,
-                  color: colors[2]), // Add FavouritePage
+              AuraHomePage(controller: controller, color: colors[0]),
+              SearchPage(controller: controller, color: colors[1]),
+              FavouritePage(controller: controller, color: colors[2]),
               SettingsPage(controller: controller, color: colors[3]),
             ],
           ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class InfiniteListPage extends StatelessWidget {
+class AuraHomePage extends StatelessWidget {
   final Color color;
   final ScrollController controller;
-  const InfiniteListPage(
+  const AuraHomePage(
       {required this.color, required this.controller, Key? key})
       : super(key: key);
 
