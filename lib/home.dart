@@ -59,12 +59,13 @@ class _HomePageState extends State<HomePage>
         : Colors.white;
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          centerTitle: true,
-          title: Text(widget.title),
-          backgroundColor: Colors.black,
-        ),
+        // appBar: AppBar(
+        //   elevation: 0,
+        //   centerTitle: true,
+        //   title: Text(widget.title),
+        //   backgroundColor: Colors.black,
+        // ),
+        appBar: null,
         body: BottomBar(
           child: TabBar(
             indicatorPadding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
@@ -136,7 +137,7 @@ class _HomePageState extends State<HomePage>
             ),
           ),
           borderRadius: BorderRadius.circular(500),
-          duration: Duration(seconds: 1),
+          duration: Duration(milliseconds: 500),
           curve: Curves.decelerate,
           showIcon: true,
           width: MediaQuery.of(context).size.width * 0.8,
