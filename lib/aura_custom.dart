@@ -28,6 +28,16 @@ class _AuraCustomTestState extends State<AuraCustomTest> {
     }
   }
 
+  Future<void> playAssetAudio1() async {
+    try {
+      await player.setSource(AssetSource('nature/fallingleaves.mp3'));
+      await player.resume();
+      await player.setVolume(1);
+    } catch (e) {
+      print('Error playing audio: $e');
+    }
+  }
+
   Future<void> stopAssetAudio() async {
     try {
       // await player.setSource(AssetSource('nature/heavyrain.mp3'));
@@ -61,6 +71,12 @@ class _AuraCustomTestState extends State<AuraCustomTest> {
                 stopAssetAudio();
               },
               child: Text('Stop Audio'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                playAssetAudio1();
+              },
+              child: Text('Play Falling Leaves'),
             ),
           ],
         ),
