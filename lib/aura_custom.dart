@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 class AuraCustomTest extends StatefulWidget {
-  const AuraCustomTest({Key? key});
+  const AuraCustomTest(
+      {Key? key, required ScrollController controller, required Color color});
 
   @override
   State<AuraCustomTest> createState() => _AuraCustomTestState();
@@ -19,8 +20,18 @@ class _AuraCustomTestState extends State<AuraCustomTest> {
 
   Future<void> playAssetAudio() async {
     try {
-      await player.setSource(AssetSource('audio.mp3'));
+      await player.setSource(AssetSource('nature/heavyrain.mp3'));
       await player.resume();
+      await player.setVolume(1);
+    } catch (e) {
+      print('Error playing audio: $e');
+    }
+  }
+
+  Future<void> stopAssetAudio() async {
+    try {
+      // await player.setSource(AssetSource('nature/heavyrain.mp3'));
+      await player.stop();
       await player.setVolume(1);
     } catch (e) {
       print('Error playing audio: $e');
@@ -44,6 +55,12 @@ class _AuraCustomTestState extends State<AuraCustomTest> {
                 playAssetAudio();
               },
               child: Text('Play Audio'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                stopAssetAudio();
+              },
+              child: Text('Stop Audio'),
             ),
           ],
         ),
