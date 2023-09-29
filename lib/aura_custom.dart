@@ -1,54 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 
+class AudioManager {
+  final AudioPlayer _player = AudioPlayer();
+
+  Future<void> playAudio(String assetPath) async {
+    try {
+      await _player.setSource(AssetSource(assetPath));
+      await _player.setVolume(1);
+      await _player.resume();
+    } catch (e) {
+      print('Error playing audio: $e');
+    }
+  }
+
+  Future<void> stopAudio() async {
+    try {
+      await _player.stop();
+    } catch (e) {
+      print('Error stopping audio: $e');
+    }
+  }
+}
+
 class AuraCustomTest extends StatefulWidget {
   const AuraCustomTest(
-      {Key? key, required ScrollController controller, required Color color});
+      {Key? key, required ScrollController controller, required Color color})
+      : super(key: key);
 
   @override
   State<AuraCustomTest> createState() => _AuraCustomTestState();
 }
 
 class _AuraCustomTestState extends State<AuraCustomTest> {
-  AudioPlayer player = AudioPlayer();
-  AudioPlayer player1 = AudioPlayer();
+  final AudioManager audioManager = AudioManager();
 
   @override
   void initState() {
     super.initState();
-    // playAssetAudio();
-    // playAssetAudio1();
-  }
-
-  Future<void> playAssetAudio() async {
-    try {
-      await player.setSource(AssetSource('nature/heavyrain.mp3'));
-      await player.resume();
-      await player.setVolume(1);
-    } catch (e) {
-      print('Error playing audio: $e');
-    }
-  }
-
-  Future<void> playAssetAudio1() async {
-    try {
-      await player1.setSource(AssetSource('nature/fireplace.mp3'));
-      await player1.resume();
-      await player1.setVolume(1);
-    } catch (e) {
-      print('Error playing audio: $e');
-    }
-  }
-
-  Future<void> stopAssetAudio() async {
-    try {
-      // await player.setSource(AssetSource('nature/heavyrain.mp3'));
-      await player.stop();
-      await player1.stop();
-      await player.setVolume(1);
-    } catch (e) {
-      print('Error playing audio: $e');
-    }
   }
 
   @override
@@ -57,7 +46,7 @@ class _AuraCustomTestState extends State<AuraCustomTest> {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        backgroundColor: Colors.green.shade300,
+        backgroundColor: Colors.green.shade400,
         title: Text("Aura Test"),
       ),
       body: SafeArea(
@@ -65,21 +54,21 @@ class _AuraCustomTestState extends State<AuraCustomTest> {
           children: [
             ElevatedButton(
               onPressed: () {
-                playAssetAudio();
+                audioManager.playAudio('nature/heavyrain.mp3');
               },
-              child: Text('Play Audio'),
+              child: Text('Play Heavy Rain'),
             ),
             ElevatedButton(
               onPressed: () {
-                stopAssetAudio();
+                audioManager.playAudio('nature/fireplace.mp3');
+              },
+              child: Text('Play Fireplace'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                audioManager.stopAudio();
               },
               child: Text('Stop Audio'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                playAssetAudio1();
-              },
-              child: Text('Play Falling Leaves'),
             ),
           ],
         ),
