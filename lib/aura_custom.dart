@@ -11,11 +11,13 @@ class AuraCustomTest extends StatefulWidget {
 
 class _AuraCustomTestState extends State<AuraCustomTest> {
   AudioPlayer player = AudioPlayer();
+  AudioPlayer player1 = AudioPlayer();
 
   @override
   void initState() {
     super.initState();
     // playAssetAudio();
+    // playAssetAudio1();
   }
 
   Future<void> playAssetAudio() async {
@@ -30,9 +32,9 @@ class _AuraCustomTestState extends State<AuraCustomTest> {
 
   Future<void> playAssetAudio1() async {
     try {
-      await player.setSource(AssetSource('nature/fallingleaves.mp3'));
-      await player.resume();
-      await player.setVolume(1);
+      await player1.setSource(AssetSource('nature/fireplace.mp3'));
+      await player1.resume();
+      await player1.setVolume(1);
     } catch (e) {
       print('Error playing audio: $e');
     }
@@ -42,6 +44,7 @@ class _AuraCustomTestState extends State<AuraCustomTest> {
     try {
       // await player.setSource(AssetSource('nature/heavyrain.mp3'));
       await player.stop();
+      await player1.stop();
       await player.setVolume(1);
     } catch (e) {
       print('Error playing audio: $e');
