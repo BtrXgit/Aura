@@ -13,8 +13,8 @@ class AuraCustomTest extends StatefulWidget {
 class _AuraCustomTestState extends State<AuraCustomTest> {
   final AudioManager audioManager1 = AudioManager();
   final AudioManager audioManager2 = AudioManager();
-  double volume1 = 1.0; // Initial volume for audio 1
-  double volume2 = 1.0; // Initial volume for audio 2
+  double volume1 = 1.0; 
+  double volume2 = 1.0; 
 
   @override
   void initState() {
