@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 class AuraCustomTest extends StatefulWidget {
-  const AuraCustomTest({Key? key, required ScrollController controller, required Color color}) : super(key: key);
+  const AuraCustomTest(
+      {Key? key, required ScrollController controller, required Color color})
+      : super(key: key);
 
   @override
   State<AuraCustomTest> createState() => _AuraCustomTestState();
@@ -26,13 +28,13 @@ class _AuraCustomTestState extends State<AuraCustomTest> {
         elevation: 0,
         centerTitle: true,
         backgroundColor: Colors.green.shade400,
-        title: Text("Aura Test"),
+        title: const Text("Aura Test"),
       ),
       body: SafeArea(
         child: Column(
           children: [
             _buildAudioControl(
-              label: 'Heavy Rain',
+              label: 'heavyrain',
               audioManager: audioManager1,
               volume: volume1,
               onVolumeChanged: (value) {
@@ -43,7 +45,7 @@ class _AuraCustomTestState extends State<AuraCustomTest> {
               },
             ),
             _buildAudioControl(
-              label: 'Fireplace',
+              label: 'fireplace',
               audioManager: audioManager2,
               volume: volume2,
               onVolumeChanged: (value) {
