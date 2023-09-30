@@ -16,12 +16,12 @@ class _CustomMixinState extends State<CustomMixin> {
   final AudioPlayer audioPlayer1 = AudioPlayer();
   final AudioPlayer audioPlayer2 = AudioPlayer();
   final AudioPlayer audioPlayer3 = AudioPlayer();
-  double volume1 = 1.0;
-  double volume2 = 1.0;
-  double volume3 = 1.0;
-  final sliderValue1 = ValueNotifier<double>(1.0);
-  final sliderValue2 = ValueNotifier<double>(1.0);
-  final sliderValue3 = ValueNotifier<double>(1.0);
+  double volume1 = 0.5;
+  double volume2 = 0.5;
+  double volume3 = 0.5;
+  final sliderValue1 = ValueNotifier<double>(0.5);
+  final sliderValue2 = ValueNotifier<double>(0.5);
+  final sliderValue3 = ValueNotifier<double>(0.5);
 
   @override
   void initState() {
@@ -87,6 +87,23 @@ class _CustomMixinState extends State<CustomMixin> {
                   ),
                 ),
               ],
+            ),
+            SizedBox(
+              height: 100,
+            ),
+            Container(
+              width: 300,
+              height: 60,
+              color: Colors.green.shade400,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconButton(onPressed: () {}, icon: Icon(Icons.timer)),
+                  IconButton(onPressed: () {}, icon: Icon(Icons.play_arrow)),
+                  IconButton(
+                      onPressed: () {}, icon: Icon(Icons.volume_up_outlined)),
+                ],
+              ),
             ),
           ],
         ),
