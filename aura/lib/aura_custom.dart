@@ -13,8 +13,8 @@ class AuraCustomTest extends StatefulWidget {
 class _AuraCustomTestState extends State<AuraCustomTest> {
   final AudioManager audioManager1 = AudioManager();
   final AudioManager audioManager2 = AudioManager();
-  double volume1 = 1.0; 
-  double volume2 = 1.0; 
+  double volume1 = 1.0;
+  double volume2 = 1.0;
 
   @override
   void initState() {
@@ -92,11 +92,14 @@ class _AuraCustomTestState extends State<AuraCustomTest> {
 }
 
 class AudioManager {
+  final AudioCache player = AudioCache();
   final AudioPlayer _player = AudioPlayer();
 
   Future<void> playAudio(String assetPath) async {
     try {
+      // await player.load(assetPath);
       await _player.setSource(AssetSource(assetPath));
+
       await _player.setVolume(1);
       await _player.resume();
     } catch (e) {
