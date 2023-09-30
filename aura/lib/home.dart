@@ -1,5 +1,5 @@
-import 'package:aura/aura_custom.dart';
 import 'package:aura/routes/aura.dart';
+import 'package:aura/routes/custom.dart';
 import 'package:aura/routes/favourites.dart';
 import 'package:aura/routes/find.dart';
 import 'package:aura/routes/tweaks.dart';
@@ -162,7 +162,7 @@ class _HomePageState extends State<HomePage>
             physics: const NeverScrollableScrollPhysics(),
             children: [
               AuraHomePage(controller: controller, color: colors[0]),
-              AuraCustomTest(controller: controller, color: colors[1]),
+              CustomMixin(controller: controller, color: colors[1]),
               FavouritePage(controller: controller, color: colors[2]),
               SettingsPage(controller: controller, color: colors[3]),
             ],
