@@ -15,10 +15,13 @@ class CustomMixin extends StatefulWidget {
 class _CustomMixinState extends State<CustomMixin> {
   final AudioPlayer audioPlayer1 = AudioPlayer();
   final AudioPlayer audioPlayer2 = AudioPlayer();
+  final AudioPlayer audioPlayer3 = AudioPlayer();
   double volume1 = 1.0;
   double volume2 = 1.0;
+  double volume3 = 1.0;
   final sliderValue1 = ValueNotifier<double>(1.0);
   final sliderValue2 = ValueNotifier<double>(1.0);
+  final sliderValue3 = ValueNotifier<double>(1.0);
 
   @override
   void initState() {
@@ -30,8 +33,10 @@ class _CustomMixinState extends State<CustomMixin> {
     try {
       await audioPlayer1.setAsset('assets/nature/heavyrain.mp3');
       await audioPlayer2.setAsset('assets/nature/fireplace.mp3');
+      await audioPlayer3.setAsset('assets/nature/fallingleaves.mp3');
       audioPlayer1.setLoopMode(LoopMode.all);
       audioPlayer2.setLoopMode(LoopMode.all);
+      audioPlayer3.setLoopMode(LoopMode.all);
     } catch (e) {
       print('Error loading audio: $e');
     }
@@ -48,18 +53,40 @@ class _CustomMixinState extends State<CustomMixin> {
       ),
       body: SafeArea(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _buildAudioControl(
-              label: 'heavyrain',
-              audioPlayer: audioPlayer1,
-              volume: volume1,
-              sliderValue: sliderValue1,
-            ),
-            _buildAudioControl(
-              label: 'fireplace',
-              audioPlayer: audioPlayer2,
-              volume: volume2,
-              sliderValue: sliderValue2,
+            Row(
+              children: [
+                _buildAudioControl(
+                    label: 'Heavy Rain',
+                    audioPlayer: audioPlayer1,
+                    volume: volume1,
+                    sliderValue: sliderValue1,
+                    icon: Icon(
+                      Icons.water_drop_outlined,
+                      size: 40,
+                    )),
+                _buildAudioControl(
+                  label: 'Fireplace',
+                  audioPlayer: audioPlayer2,
+                  volume: volume2,
+                  sliderValue: sliderValue2,
+                  icon: Icon(
+                    Icons.fire_extinguisher_outlined,
+                    size: 40,
+                  ),
+                ),
+                _buildAudioControl(
+                  label: 'Falling Leaves',
+                  audioPlayer: audioPlayer3,
+                  volume: volume3,
+                  sliderValue: sliderValue3,
+                  icon: Icon(
+                    Icons.nature_outlined,
+                    size: 40,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -72,13 +99,15 @@ class _CustomMixinState extends State<CustomMixin> {
     required AudioPlayer audioPlayer,
     required double volume,
     required ValueNotifier<double> sliderValue,
+    required Icon icon,
   }) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(label),
         Container(
-          width: 100,
-          height: 100,
+          width: 74,
+          height: 74,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: audioPlayer.playing ? Colors.green : Colors.red,
@@ -88,21 +117,24 @@ class _CustomMixinState extends State<CustomMixin> {
               _toggleAudioPlayback(audioPlayer);
             },
             customBorder: CircleBorder(),
-            child: Icon(
-              audioPlayer.playing ? Icons.pause : Icons.play_arrow,
-              size: 48,
-              color: Colors.white,
-            ),
+            child: icon,
           ),
         ),
-        Slider(
-          value: sliderValue.value,
-          onChanged: (value) {
-            setState(() {
-              sliderValue.value = value;
-            });
-            audioPlayer.setVolume(value);
-          },
+        Text(label),
+        Visibility(
+          visible: audioPlayer.playing,
+          child: SizedBox(
+            width: 100,
+            child: Slider(
+              value: sliderValue.value,
+              onChanged: (value) {
+                setState(() {
+                  sliderValue.value = value;
+                });
+                audioPlayer.setVolume(value);
+              },
+            ),
+          ),
         ),
       ],
     );
@@ -114,7 +146,7 @@ class _CustomMixinState extends State<CustomMixin> {
     } else {
       audioPlayer.play();
     }
-    setState(() {}); // Update the UI to reflect the change
+    setState(() {});
   }
 
   @override
