@@ -233,7 +233,9 @@ class _CustomMixinState extends State<CustomMixin> {
                         _showBottomSheet(context);
                       },
                       icon: Icon(Icons.timer)),
-                  IconButton(onPressed: () {}, icon: Icon(Icons.play_arrow)),
+                  IconButton(
+                      onPressed: () => _stopPlayingSounds(),
+                      icon: Icon(Icons.stop_circle_outlined)),
                   IconButton(
                       onPressed: () {}, icon: Icon(Icons.volume_up_outlined)),
                 ],
@@ -303,8 +305,24 @@ class _CustomMixinState extends State<CustomMixin> {
     setState(() {});
   }
 
+  void _stopPlayingSounds() {
+    if (audioPlayer1.playing) {
+      audioPlayer1.pause();
+    }
+    if (audioPlayer2.playing) {
+      audioPlayer2.pause();
+    }
+    if (audioPlayer3.playing) {
+      audioPlayer3.pause();
+    }
+    if (audioTimer != null) {
+      audioTimer!.cancel();
+    }
+    setState(() {});
+    print('Sounds Stopped');
+  }
+
   void startTimer(int duration) {
-    // Create a timer to pause audio playback when the timer expires.
     audioTimer = Timer(Duration(seconds: duration), () {
       if (audioPlayer1.playing) {
         audioPlayer1.pause();
