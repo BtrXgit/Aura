@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
@@ -22,6 +24,9 @@ class _CustomMixinState extends State<CustomMixin> {
   final sliderValue1 = ValueNotifier<double>(0.5);
   final sliderValue2 = ValueNotifier<double>(0.5);
   final sliderValue3 = ValueNotifier<double>(0.5);
+  int selectedTimerDuration = 0;
+
+  Timer? audioTimer;
 
   @override
   void initState() {
@@ -40,6 +45,131 @@ class _CustomMixinState extends State<CustomMixin> {
     } catch (e) {
       print('Error loading audio: $e');
     }
+  }
+
+  void _showBottomSheet(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
+                'Select Timer Duration',
+                style: TextStyle(fontSize: 18),
+              ),
+              SizedBox(height: 10.0),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedTimerDuration = 0;
+                  });
+                  Navigator.pop(context);
+                  if (selectedTimerDuration > 0) {
+                    startTimer(selectedTimerDuration);
+                  }
+                },
+                child: Text(
+                  'No Timer',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color:
+                        selectedTimerDuration == 0 ? Colors.blue : Colors.black,
+                  ),
+                ),
+              ),
+              SizedBox(height: 10.0),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedTimerDuration = 300;
+                  });
+                  Navigator.pop(context);
+                  if (selectedTimerDuration > 0) {
+                    startTimer(selectedTimerDuration);
+                  }
+                },
+                child: Text(
+                  '5 Minutes',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: selectedTimerDuration == 300
+                        ? Colors.blue
+                        : Colors.black,
+                  ),
+                ),
+              ),
+              SizedBox(height: 10.0),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedTimerDuration = 600;
+                  });
+                  Navigator.pop(context);
+                  if (selectedTimerDuration > 0) {
+                    startTimer(selectedTimerDuration);
+                  }
+                },
+                child: Text(
+                  '10 Minutes',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: selectedTimerDuration == 600
+                        ? Colors.blue
+                        : Colors.black,
+                  ),
+                ),
+              ),
+              SizedBox(height: 10.0),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedTimerDuration = 1800;
+                  });
+                  Navigator.pop(context);
+                  if (selectedTimerDuration > 0) {
+                    startTimer(selectedTimerDuration);
+                  }
+                },
+                child: Text(
+                  '30 Minutes',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: selectedTimerDuration == 1800
+                        ? Colors.blue
+                        : Colors.black,
+                  ),
+                ),
+              ),
+              SizedBox(height: 10.0),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedTimerDuration = 3600;
+                  });
+                  Navigator.pop(context);
+                  if (selectedTimerDuration > 0) {
+                    startTimer(selectedTimerDuration);
+                  }
+                },
+                child: Text(
+                  '1 Hour',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: selectedTimerDuration == 3600
+                        ? Colors.blue
+                        : Colors.black,
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.0),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -98,7 +228,11 @@ class _CustomMixinState extends State<CustomMixin> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  IconButton(onPressed: () {}, icon: Icon(Icons.timer)),
+                  IconButton(
+                      onPressed: () {
+                        _showBottomSheet(context);
+                      },
+                      icon: Icon(Icons.timer)),
                   IconButton(onPressed: () {}, icon: Icon(Icons.play_arrow)),
                   IconButton(
                       onPressed: () {}, icon: Icon(Icons.volume_up_outlined)),
@@ -160,16 +294,35 @@ class _CustomMixinState extends State<CustomMixin> {
   void _toggleAudioPlayback(AudioPlayer audioPlayer) {
     if (audioPlayer.playing) {
       audioPlayer.pause();
+      if (audioTimer != null) {
+        audioTimer!.cancel();
+      }
     } else {
       audioPlayer.play();
     }
     setState(() {});
   }
 
+  void startTimer(int duration) {
+    // Create a timer to pause audio playback when the timer expires.
+    audioTimer = Timer(Duration(seconds: duration), () {
+      if (audioPlayer1.playing) {
+        audioPlayer1.pause();
+      }
+      if (audioPlayer2.playing) {
+        audioPlayer2.pause();
+      }
+      if (audioPlayer3.playing) {
+        audioPlayer3.pause();
+      }
+    });
+  }
+
   @override
   void dispose() {
     audioPlayer1.dispose();
     audioPlayer2.dispose();
+    audioPlayer3.dispose();
     super.dispose();
   }
 }
