@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:flutter_sound/flutter_sound.dart';
 
 class CustomMixin extends StatefulWidget {
   const CustomMixin({
@@ -16,8 +15,6 @@ class CustomMixin extends StatefulWidget {
 }
 
 class _CustomMixinState extends State<CustomMixin> {
-  FlutterSoundRecorder? _recorder;
-
   final AudioPlayer audioPlayer1 = AudioPlayer();
   final AudioPlayer audioPlayer2 = AudioPlayer();
   final AudioPlayer audioPlayer3 = AudioPlayer();
@@ -35,36 +32,7 @@ class _CustomMixinState extends State<CustomMixin> {
   void initState() {
     super.initState();
     _loadAudioFiles();
-    _recorder = FlutterSoundRecorder();
   }
-
-  bool _isRecording = false;
-
-  void _toggleRecording() async {
-  if (_isRecording) {
-    try {
-      await _recorder!.stopRecorder();
-      setState(() {
-        _isRecording = false;
-      });
-    } catch (e) {
-      print('Error stopping recording: $e');
-    }
-  } else {
-    try {
-      await _recorder!.openAudioSession();
-      await _recorder!.startRecorder(
-        toFile: '/path/to/save/recorded_audio.wav',
-      );
-      setState(() {
-        _isRecording = true;
-      });
-    } catch (e) {
-      print('Error starting recording: $e');
-    }
-  }
-}
-
 
   Future<void> _loadAudioFiles() async {
     try {
@@ -268,12 +236,12 @@ class _CustomMixinState extends State<CustomMixin> {
                   IconButton(
                       onPressed: () => _stopPlayingSounds(),
                       icon: Icon(Icons.stop_circle_outlined)),
-                  IconButton(
-                    onPressed: _toggleRecording,
-                    icon: _isRecording
-                        ? Icon(Icons.stop_circle_outlined)
-                        : Icon(Icons.record_voice_over),
-                  ),
+                  // IconButton(
+                  //   onPressed: _toggleRecording,
+                  //   icon: _isRecording
+                  //       ? Icon(Icons.stop_circle_outlined)
+                  //       : Icon(Icons.record_voice_over),
+                  // ),
                 ],
               ),
             ),
@@ -377,8 +345,6 @@ class _CustomMixinState extends State<CustomMixin> {
     audioPlayer1.dispose();
     audioPlayer2.dispose();
     audioPlayer3.dispose();
-    _recorder?.stopRecorder();
-    _recorder = null;
     super.dispose();
   }
 }
