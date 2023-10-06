@@ -288,67 +288,63 @@ class _CustomMixinState extends State<CustomMixin>
           SizedBox(
             height: 10,
           ),
-          Expanded(
-            child: _buildTabViews(),
-          ),
-
           SizedBox(
-            height: 100,
+              height: MediaQuery.of(context).size.height * 0.35,
+              child: _buildTabViews()),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              // height: 60,
+              color: Colors.green.shade400,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        _showBottomSheet(context);
+                      },
+                      icon: Icon(Icons.timer)),
+                  IconButton(
+                      onPressed: () => _stopPlayingSounds(),
+                      icon: Icon(Icons.stop_circle_outlined)),
+                  IconButton(
+                    onPressed: () => _volumeAll(context),
+                    icon: Stack(
+                      children: [
+                        Icon(Icons.volume_up_outlined),
+                        if (_countPlayingAudios() > 0)
+                          Positioned(
+                            right: 0,
+                            top: 0,
+                            child: Container(
+                              padding: EdgeInsets.all(2),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                shape: BoxShape.circle,
+                              ),
+                              constraints: BoxConstraints(
+                                minWidth: 16,
+                                minHeight: 16,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  _countPlayingAudios().toString(),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
-          // Align(
-          //   alignment: Alignment.bottomCenter,
-          //   child: Container(
-          //     width: MediaQuery.of(context).size.width * 0.8,
-          //     // height: 60,
-          //     color: Colors.green.shade400,
-          //     child: Row(
-          //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          //       children: [
-          //         IconButton(
-          //             onPressed: () {
-          //               _showBottomSheet(context);
-          //             },
-          //             icon: Icon(Icons.timer)),
-          //         IconButton(
-          //             onPressed: () => _stopPlayingSounds(),
-          //             icon: Icon(Icons.stop_circle_outlined)),
-          //         IconButton(
-          //           onPressed: () => _volumeAll(context),
-          //           icon: Stack(
-          //             children: [
-          //               Icon(Icons.volume_up_outlined),
-          //               if (_countPlayingAudios() > 0)
-          //                 Positioned(
-          //                   right: 0,
-          //                   top: 0,
-          //                   child: Container(
-          //                     padding: EdgeInsets.all(2),
-          //                     decoration: BoxDecoration(
-          //                       color: Colors.red,
-          //                       shape: BoxShape.circle,
-          //                     ),
-          //                     constraints: BoxConstraints(
-          //                       minWidth: 16,
-          //                       minHeight: 16,
-          //                     ),
-          //                     child: Center(
-          //                       child: Text(
-          //                         _countPlayingAudios().toString(),
-          //                         style: TextStyle(
-          //                           color: Colors.white,
-          //                           fontSize: 12,
-          //                         ),
-          //                       ),
-          //                     ),
-          //                   ),
-          //                 ),
-          //             ],
-          //           ),
-          //         )
-          //       ],
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );
@@ -389,99 +385,54 @@ class _CustomMixinState extends State<CustomMixin>
       child: TabBarView(
         controller: _tabController,
         children: [
-          SizedBox(
-            height: 200,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildAudioControl(
-                    label: 'Heavy Rain',
-                    audioPlayer: audioPlayer1,
-                    volume: volume1,
-                    sliderValue: sliderValue1,
-                    icon: Icon(
-                      Icons.water_drop_outlined,
-                      size: 40,
-                    )),
-                _buildAudioControl(
-                  label: 'Fireplace',
-                  audioPlayer: audioPlayer2,
-                  volume: volume2,
-                  sliderValue: sliderValue2,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildAudioControl(
+                  label: 'Heavy Rain',
+                  audioPlayer: audioPlayer1,
+                  volume: volume1,
+                  sliderValue: sliderValue1,
                   icon: Icon(
-                    Icons.fire_extinguisher_outlined,
+                    Icons.water_drop_outlined,
                     size: 40,
-                  ),
+                  )),
+              _buildAudioControl(
+                label: 'Fireplace',
+                audioPlayer: audioPlayer2,
+                volume: volume2,
+                sliderValue: sliderValue2,
+                icon: Icon(
+                  Icons.fire_extinguisher_outlined,
+                  size: 40,
                 ),
-                _buildAudioControl(
-                  label: 'Tokyo  ',
-                  audioPlayer: audioPlayer3,
-                  volume: volume3,
-                  sliderValue: sliderValue3,
-                  icon: Icon(
-                    Icons.nature_outlined,
-                    size: 40,
-                  ),
-                ),
-                _buildAudioControl(
-                  label: 'Creek',
-                  audioPlayer: audioPlayer4,
-                  volume: volume3,
-                  sliderValue: sliderValue4,
-                  icon: Icon(
-                    Icons.nature_outlined,
-                    size: 40,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-          SizedBox(
-            height: 200,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildAudioControl(
-                    label: 'Heavy Rain',
-                    audioPlayer: audioPlayer1,
-                    volume: volume1,
-                    sliderValue: sliderValue1,
-                    icon: Icon(
-                      Icons.water_drop_outlined,
-                      size: 40,
-                    )),
-                _buildAudioControl(
-                  label: 'Fireplace',
-                  audioPlayer: audioPlayer2,
-                  volume: volume2,
-                  sliderValue: sliderValue2,
-                  icon: Icon(
-                    Icons.fire_extinguisher_outlined,
-                    size: 40,
-                  ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildAudioControl(
+                label: 'Tokyo  ',
+                audioPlayer: audioPlayer3,
+                volume: volume3,
+                sliderValue: sliderValue3,
+                icon: Icon(
+                  Icons.nature_outlined,
+                  size: 40,
                 ),
-                _buildAudioControl(
-                  label: 'Tokyo  ',
-                  audioPlayer: audioPlayer3,
-                  volume: volume3,
-                  sliderValue: sliderValue3,
-                  icon: Icon(
-                    Icons.nature_outlined,
-                    size: 40,
-                  ),
+              ),
+              _buildAudioControl(
+                label: 'Creek',
+                audioPlayer: audioPlayer4,
+                volume: volume4,
+                sliderValue: sliderValue4,
+                icon: Icon(
+                  Icons.nature_outlined,
+                  size: 40,
                 ),
-                _buildAudioControl(
-                  label: 'Creek',
-                  audioPlayer: audioPlayer4,
-                  volume: volume3,
-                  sliderValue: sliderValue4,
-                  icon: Icon(
-                    Icons.nature_outlined,
-                    size: 40,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
