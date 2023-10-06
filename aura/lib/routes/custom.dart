@@ -47,6 +47,20 @@ class _CustomMixinState extends State<CustomMixin> {
     }
   }
 
+  int _countPlayingAudios() {
+    int count = 0;
+    if (audioPlayer1.playing) {
+      count++;
+    }
+    if (audioPlayer2.playing) {
+      count++;
+    }
+    if (audioPlayer3.playing) {
+      count++;
+    }
+    return count;
+  }
+
   void _showBottomSheet(BuildContext context) {
     showModalBottomSheet<void>(
       context: context,
@@ -268,8 +282,39 @@ class _CustomMixinState extends State<CustomMixin> {
                       onPressed: () => _stopPlayingSounds(),
                       icon: Icon(Icons.stop_circle_outlined)),
                   IconButton(
-                      onPressed: () => _volumeAll(context),
-                      icon: Icon(Icons.volume_up_outlined))
+                    onPressed: () => _volumeAll(context),
+                    icon: Stack(
+                      children: [
+                        Icon(Icons.volume_up_outlined),
+                        if (_countPlayingAudios() > 0)
+                          Positioned(
+                            right: 0,
+                            top: 0,
+                            child: Container(
+                              padding: EdgeInsets.all(2),
+                              decoration: BoxDecoration(
+                                color: Colors
+                                    .red, // You can choose a different color
+                                shape: BoxShape.circle,
+                              ),
+                              constraints: BoxConstraints(
+                                minWidth: 16,
+                                minHeight: 16,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  _countPlayingAudios().toString(),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
