@@ -18,12 +18,17 @@ class _CustomMixinState extends State<CustomMixin> {
   final AudioPlayer audioPlayer1 = AudioPlayer();
   final AudioPlayer audioPlayer2 = AudioPlayer();
   final AudioPlayer audioPlayer3 = AudioPlayer();
+  final AudioPlayer audioPlayer4 = AudioPlayer();
   double volume1 = 0.5;
   double volume2 = 0.5;
   double volume3 = 0.5;
+  double volume4 = 0.5;
+
   final sliderValue1 = ValueNotifier<double>(0.5);
   final sliderValue2 = ValueNotifier<double>(0.5);
   final sliderValue3 = ValueNotifier<double>(0.5);
+  final sliderValue4 = ValueNotifier<double>(0.5);
+
   int selectedTimerDuration = 0;
 
   Timer? audioTimer;
@@ -39,9 +44,11 @@ class _CustomMixinState extends State<CustomMixin> {
       await audioPlayer1.setAsset('assets/nature/heavyrain.mp3');
       await audioPlayer2.setAsset('assets/nature/fireplace.mp3');
       await audioPlayer3.setAsset('assets/nature/fallingleaves.mp3');
+      await audioPlayer4.setAsset('assets/nature/creek.mp3');
       audioPlayer1.setLoopMode(LoopMode.all);
       audioPlayer2.setLoopMode(LoopMode.all);
       audioPlayer3.setLoopMode(LoopMode.all);
+      audioPlayer4.setLoopMode(LoopMode.all);
     } catch (e) {
       print('Error loading audio: $e');
     }
@@ -56,6 +63,9 @@ class _CustomMixinState extends State<CustomMixin> {
       count++;
     }
     if (audioPlayer3.playing) {
+      count++;
+    }
+    if (audioPlayer4.playing) {
       count++;
     }
     return count;
@@ -197,7 +207,7 @@ class _CustomMixinState extends State<CustomMixin> {
                   ),
                 ),
               ),
-              SizedBox(height: 20.0),
+              SizedBox(height: 10.0),
             ],
           ),
         );
@@ -229,6 +239,11 @@ class _CustomMixinState extends State<CustomMixin> {
                 audioPlayer: audioPlayer3,
                 sliderValue: sliderValue3,
               ),
+              _buildVolumeControl(
+                label: 'Creek',
+                audioPlayer: audioPlayer4,
+                sliderValue: sliderValue4,
+              ),
             ],
           ),
         );
@@ -254,8 +269,8 @@ class _CustomMixinState extends State<CustomMixin> {
                 fit: BoxFit.cover,
               ),
               borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20)),
+                  bottomLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10)),
             ),
           ),
           SizedBox(
@@ -288,6 +303,16 @@ class _CustomMixinState extends State<CustomMixin> {
                 audioPlayer: audioPlayer3,
                 volume: volume3,
                 sliderValue: sliderValue3,
+                icon: Icon(
+                  Icons.nature_outlined,
+                  size: 40,
+                ),
+              ),
+              _buildAudioControl(
+                label: 'Creek',
+                audioPlayer: audioPlayer4,
+                volume: volume3,
+                sliderValue: sliderValue4,
                 icon: Icon(
                   Icons.nature_outlined,
                   size: 40,
@@ -401,7 +426,7 @@ class _CustomMixinState extends State<CustomMixin> {
           width: 74,
           height: 74,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(10),
             color: audioPlayer.playing ? Colors.green : Colors.red,
           ),
           child: InkWell(
@@ -439,6 +464,9 @@ class _CustomMixinState extends State<CustomMixin> {
     if (audioPlayer3.playing) {
       audioPlayer3.pause();
     }
+    if (audioPlayer4.playing) {
+      audioPlayer4.pause();
+    }
     if (audioTimer != null) {
       audioTimer!.cancel();
     }
@@ -457,6 +485,9 @@ class _CustomMixinState extends State<CustomMixin> {
       if (audioPlayer3.playing) {
         audioPlayer3.pause();
       }
+      if (audioPlayer4.playing) {
+        audioPlayer4.pause();
+      }
     });
   }
 
@@ -465,6 +496,7 @@ class _CustomMixinState extends State<CustomMixin> {
     audioPlayer1.dispose();
     audioPlayer2.dispose();
     audioPlayer3.dispose();
+    audioPlayer4.dispose();
     super.dispose();
   }
 }
