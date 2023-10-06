@@ -98,6 +98,25 @@ class _CustomMixinState extends State<CustomMixin> {
               GestureDetector(
                 onTap: () {
                   setState(() {
+                    selectedTimerDuration = 5;
+                  });
+                  Navigator.pop(context);
+                  if (selectedTimerDuration > 0) {
+                    startTimer(selectedTimerDuration);
+                  }
+                },
+                child: Text(
+                  '5 Seconds',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color:
+                        selectedTimerDuration == 5 ? Colors.blue : Colors.black,
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
                     selectedTimerDuration = 300;
                   });
                   Navigator.pop(context);
@@ -186,35 +205,67 @@ class _CustomMixinState extends State<CustomMixin> {
     );
   }
 
-  void _volumeAll(BuildContext context) {
-    showModalBottomSheet<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              _buildVolumeControl(
-                label: 'Heavy Rain',
-                audioPlayer: audioPlayer1,
-                sliderValue: sliderValue1,
+  // void _volumeAll(BuildContext context) {
+  //   showModalBottomSheet<void>(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return Container(
+  //         padding: EdgeInsets.all(16.0),
+  //         child: Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           children: <Widget>[
+  //             _buildVolumeControl(
+  //               label: 'Heavy Rain',
+  //               audioPlayer: audioPlayer1,
+  //               sliderValue: sliderValue1,
+  //             ),
+  //             _buildVolumeControl(
+  //               label: 'Fireplace',
+  //               audioPlayer: audioPlayer2,
+  //               sliderValue: sliderValue2,
+  //             ),
+  //             _buildVolumeControl(
+  //               label: 'Tokyo',
+  //               audioPlayer: audioPlayer3,
+  //               sliderValue: sliderValue3,
+  //             ),
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
+
+  void _volumeAll() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Volume Controls'),
+            content: Container(
+              height: 200,
+              child: Column(
+                children: [
+                  _buildVolumeControl(
+                    label: 'Heavy Rain',
+                    audioPlayer: audioPlayer1,
+                    sliderValue: sliderValue1,
+                  ),
+                  _buildVolumeControl(
+                    label: 'Fireplace',
+                    audioPlayer: audioPlayer2,
+                    sliderValue: sliderValue2,
+                  ),
+                  _buildVolumeControl(
+                    label: 'Tokyo',
+                    audioPlayer: audioPlayer3,
+                    sliderValue: sliderValue3,
+                  ),
+                ],
               ),
-              _buildVolumeControl(
-                label: 'Fireplace',
-                audioPlayer: audioPlayer2,
-                sliderValue: sliderValue2,
-              ),
-              _buildVolumeControl(
-                label: 'Falling Leaves',
-                audioPlayer: audioPlayer3,
-                sliderValue: sliderValue3,
-              ),
-            ],
-          ),
-        );
-      },
-    );
+            ),
+          );
+        });
   }
 
   @override
@@ -226,11 +277,13 @@ class _CustomMixinState extends State<CustomMixin> {
         backgroundColor: Colors.green.shade400,
         title: const Text("Aura Test"),
       ),
+      backgroundColor: Colors.orangeAccent.shade100,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _buildAudioControl(
                     label: 'Heavy Rain',
@@ -252,7 +305,7 @@ class _CustomMixinState extends State<CustomMixin> {
                   ),
                 ),
                 _buildAudioControl(
-                  label: 'Falling Leaves',
+                  label: 'Tokyo  ',
                   audioPlayer: audioPlayer3,
                   volume: volume3,
                   sliderValue: sliderValue3,
@@ -282,7 +335,7 @@ class _CustomMixinState extends State<CustomMixin> {
                       onPressed: () => _stopPlayingSounds(),
                       icon: Icon(Icons.stop_circle_outlined)),
                   IconButton(
-                    onPressed: () => _volumeAll(context),
+                    onPressed: () => _volumeAll(),
                     icon: Stack(
                       children: [
                         Icon(Icons.volume_up_outlined),
@@ -293,8 +346,7 @@ class _CustomMixinState extends State<CustomMixin> {
                             child: Container(
                               padding: EdgeInsets.all(2),
                               decoration: BoxDecoration(
-                                color: Colors
-                                    .red, // You can choose a different color
+                                color: Colors.red,
                                 shape: BoxShape.circle,
                               ),
                               constraints: BoxConstraints(
@@ -363,7 +415,7 @@ class _CustomMixinState extends State<CustomMixin> {
           width: 74,
           height: 74,
           decoration: BoxDecoration(
-            shape: BoxShape.circle,
+            borderRadius: BorderRadius.circular(20),
             color: audioPlayer.playing ? Colors.green : Colors.red,
           ),
           child: InkWell(
@@ -377,19 +429,21 @@ class _CustomMixinState extends State<CustomMixin> {
         Text(label),
         Visibility(
           visible: audioPlayer.playing,
-          child: SizedBox(
-            width: 100,
-            child: Slider(
-              value: sliderValue.value,
-              onChanged: (value) {
-                setState(() {
-                  sliderValue.value = value;
-                });
-                audioPlayer.setVolume(value);
-              },
-            ),
+          child: Column(
+            children: [
+              Text(label),
+              Slider(
+                value: sliderValue.value,
+                onChanged: (value) {
+                  setState(() {
+                    sliderValue.value = value;
+                  });
+                  audioPlayer.setVolume(value);
+                },
+              ),
+            ],
           ),
-        ),
+        )
       ],
     );
   }
