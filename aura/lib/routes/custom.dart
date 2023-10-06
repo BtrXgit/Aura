@@ -205,123 +205,104 @@ class _CustomMixinState extends State<CustomMixin> {
     );
   }
 
-  // void _volumeAll(BuildContext context) {
-  //   showModalBottomSheet<void>(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return Container(
-  //         padding: EdgeInsets.all(16.0),
-  //         child: Column(
-  //           mainAxisSize: MainAxisSize.min,
-  //           children: <Widget>[
-  //             _buildVolumeControl(
-  //               label: 'Heavy Rain',
-  //               audioPlayer: audioPlayer1,
-  //               sliderValue: sliderValue1,
-  //             ),
-  //             _buildVolumeControl(
-  //               label: 'Fireplace',
-  //               audioPlayer: audioPlayer2,
-  //               sliderValue: sliderValue2,
-  //             ),
-  //             _buildVolumeControl(
-  //               label: 'Tokyo',
-  //               audioPlayer: audioPlayer3,
-  //               sliderValue: sliderValue3,
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-
-  void _volumeAll() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Volume Controls'),
-            content: Container(
-              height: 200,
-              child: Column(
-                children: [
-                  _buildVolumeControl(
-                    label: 'Heavy Rain',
-                    audioPlayer: audioPlayer1,
-                    sliderValue: sliderValue1,
-                  ),
-                  _buildVolumeControl(
-                    label: 'Fireplace',
-                    audioPlayer: audioPlayer2,
-                    sliderValue: sliderValue2,
-                  ),
-                  _buildVolumeControl(
-                    label: 'Tokyo',
-                    audioPlayer: audioPlayer3,
-                    sliderValue: sliderValue3,
-                  ),
-                ],
+  void _volumeAll(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              _buildVolumeControl(
+                label: 'Heavy Rain',
+                audioPlayer: audioPlayer1,
+                sliderValue: sliderValue1,
               ),
-            ),
-          );
-        });
+              _buildVolumeControl(
+                label: 'Fireplace',
+                audioPlayer: audioPlayer2,
+                sliderValue: sliderValue2,
+              ),
+              _buildVolumeControl(
+                label: 'Tokyo',
+                audioPlayer: audioPlayer3,
+                sliderValue: sliderValue3,
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        backgroundColor: Colors.green.shade400,
-        title: const Text("Aura Test"),
-      ),
+      appBar: null,
       backgroundColor: Colors.orangeAccent.shade100,
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildAudioControl(
-                    label: 'Heavy Rain',
-                    audioPlayer: audioPlayer1,
-                    volume: volume1,
-                    sliderValue: sliderValue1,
-                    icon: Icon(
-                      Icons.water_drop_outlined,
-                      size: 40,
-                    )),
-                _buildAudioControl(
-                  label: 'Fireplace',
-                  audioPlayer: audioPlayer2,
-                  volume: volume2,
-                  sliderValue: sliderValue2,
-                  icon: Icon(
-                    Icons.fire_extinguisher_outlined,
-                    size: 40,
-                  ),
-                ),
-                _buildAudioControl(
-                  label: 'Tokyo  ',
-                  audioPlayer: audioPlayer3,
-                  volume: volume3,
-                  sliderValue: sliderValue3,
-                  icon: Icon(
-                    Icons.nature_outlined,
-                    size: 40,
-                  ),
-                ),
-              ],
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width * 1.0,
+            height: MediaQuery.of(context).size.height * 0.35,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(
+                    'https://i.pinimg.com/564x/2c/7a/bc/2c7abc11e0b17414d26b1bb79ea614d8.jpg'),
+                fit: BoxFit.cover,
+              ),
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20)),
             ),
-            SizedBox(
-              height: 100,
-            ),
-            Container(
-              width: 300,
-              height: 60,
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildAudioControl(
+                  label: 'Heavy Rain',
+                  audioPlayer: audioPlayer1,
+                  volume: volume1,
+                  sliderValue: sliderValue1,
+                  icon: Icon(
+                    Icons.water_drop_outlined,
+                    size: 40,
+                  )),
+              _buildAudioControl(
+                label: 'Fireplace',
+                audioPlayer: audioPlayer2,
+                volume: volume2,
+                sliderValue: sliderValue2,
+                icon: Icon(
+                  Icons.fire_extinguisher_outlined,
+                  size: 40,
+                ),
+              ),
+              _buildAudioControl(
+                label: 'Tokyo  ',
+                audioPlayer: audioPlayer3,
+                volume: volume3,
+                sliderValue: sliderValue3,
+                icon: Icon(
+                  Icons.nature_outlined,
+                  size: 40,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 100,
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              // height: 60,
               color: Colors.green.shade400,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -335,7 +316,7 @@ class _CustomMixinState extends State<CustomMixin> {
                       onPressed: () => _stopPlayingSounds(),
                       icon: Icon(Icons.stop_circle_outlined)),
                   IconButton(
-                    onPressed: () => _volumeAll(),
+                    onPressed: () => _volumeAll(context),
                     icon: Stack(
                       children: [
                         Icon(Icons.volume_up_outlined),
@@ -370,8 +351,8 @@ class _CustomMixinState extends State<CustomMixin> {
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -386,13 +367,18 @@ class _CustomMixinState extends State<CustomMixin> {
       child: Column(
         children: [
           Text(label),
-          Slider(
-            value: sliderValue.value,
-            onChanged: (value) {
-              setState(() {
-                sliderValue.value = value;
-              });
-              audioPlayer.setVolume(value);
+          ValueListenableBuilder<double>(
+            valueListenable: sliderValue,
+            builder: (context, value, child) {
+              return Slider(
+                value: value,
+                onChanged: (newValue) {
+                  setState(() {
+                    sliderValue.value = newValue;
+                  });
+                  audioPlayer.setVolume(newValue);
+                },
+              );
             },
           ),
         ],
@@ -427,23 +413,6 @@ class _CustomMixinState extends State<CustomMixin> {
           ),
         ),
         Text(label),
-        Visibility(
-          visible: audioPlayer.playing,
-          child: Column(
-            children: [
-              Text(label),
-              Slider(
-                value: sliderValue.value,
-                onChanged: (value) {
-                  setState(() {
-                    sliderValue.value = value;
-                  });
-                  audioPlayer.setVolume(value);
-                },
-              ),
-            ],
-          ),
-        )
       ],
     );
   }
