@@ -172,6 +172,37 @@ class _CustomMixinState extends State<CustomMixin> {
     );
   }
 
+  void _volumeAll(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              _buildVolumeControl(
+                label: 'Heavy Rain',
+                audioPlayer: audioPlayer1,
+                sliderValue: sliderValue1,
+              ),
+              _buildVolumeControl(
+                label: 'Fireplace',
+                audioPlayer: audioPlayer2,
+                sliderValue: sliderValue2,
+              ),
+              _buildVolumeControl(
+                label: 'Falling Leaves',
+                audioPlayer: audioPlayer3,
+                sliderValue: sliderValue3,
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -236,17 +267,38 @@ class _CustomMixinState extends State<CustomMixin> {
                   IconButton(
                       onPressed: () => _stopPlayingSounds(),
                       icon: Icon(Icons.stop_circle_outlined)),
-                  // IconButton(
-                  //   onPressed: _toggleRecording,
-                  //   icon: _isRecording
-                  //       ? Icon(Icons.stop_circle_outlined)
-                  //       : Icon(Icons.record_voice_over),
-                  // ),
+                  IconButton(
+                      onPressed: () => _volumeAll(context),
+                      icon: Icon(Icons.volume_up_outlined))
                 ],
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildVolumeControl({
+    required String label,
+    required AudioPlayer audioPlayer,
+    required ValueNotifier<double> sliderValue,
+  }) {
+    return Visibility(
+      visible: audioPlayer.playing,
+      child: Column(
+        children: [
+          Text(label),
+          Slider(
+            value: sliderValue.value,
+            onChanged: (value) {
+              setState(() {
+                sliderValue.value = value;
+              });
+              audioPlayer.setVolume(value);
+            },
+          ),
+        ],
       ),
     );
   }
