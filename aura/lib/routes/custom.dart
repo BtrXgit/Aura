@@ -14,7 +14,14 @@ class CustomMixin extends StatefulWidget {
   State<CustomMixin> createState() => _CustomMixinState();
 }
 
-class _CustomMixinState extends State<CustomMixin> {
+class _CustomMixinState extends State<CustomMixin>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  final List<String> data = [
+    "1",
+    "2",
+  ];
+
   final AudioPlayer audioPlayer1 = AudioPlayer();
   final AudioPlayer audioPlayer2 = AudioPlayer();
   final AudioPlayer audioPlayer3 = AudioPlayer();
@@ -36,6 +43,7 @@ class _CustomMixinState extends State<CustomMixin> {
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 2, vsync: this);
     _loadAudioFiles();
   }
 
@@ -276,105 +284,203 @@ class _CustomMixinState extends State<CustomMixin> {
           SizedBox(
             height: 10,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildAudioControl(
-                  label: 'Heavy Rain',
-                  audioPlayer: audioPlayer1,
-                  volume: volume1,
-                  sliderValue: sliderValue1,
-                  icon: Icon(
-                    Icons.water_drop_outlined,
-                    size: 40,
-                  )),
-              _buildAudioControl(
-                label: 'Fireplace',
-                audioPlayer: audioPlayer2,
-                volume: volume2,
-                sliderValue: sliderValue2,
-                icon: Icon(
-                  Icons.fire_extinguisher_outlined,
-                  size: 40,
-                ),
-              ),
-              _buildAudioControl(
-                label: 'Tokyo  ',
-                audioPlayer: audioPlayer3,
-                volume: volume3,
-                sliderValue: sliderValue3,
-                icon: Icon(
-                  Icons.nature_outlined,
-                  size: 40,
-                ),
-              ),
-              _buildAudioControl(
-                label: 'Creek',
-                audioPlayer: audioPlayer4,
-                volume: volume3,
-                sliderValue: sliderValue4,
-                icon: Icon(
-                  Icons.nature_outlined,
-                  size: 40,
-                ),
-              ),
-            ],
+          _buildTabBar(),
+          SizedBox(
+            height: 10,
           ),
+          Expanded(
+            child: _buildTabViews(),
+          ),
+
           SizedBox(
             height: 100,
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.8,
-              // height: 60,
-              color: Colors.green.shade400,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        _showBottomSheet(context);
-                      },
-                      icon: Icon(Icons.timer)),
-                  IconButton(
-                      onPressed: () => _stopPlayingSounds(),
-                      icon: Icon(Icons.stop_circle_outlined)),
-                  IconButton(
-                    onPressed: () => _volumeAll(context),
-                    icon: Stack(
-                      children: [
-                        Icon(Icons.volume_up_outlined),
-                        if (_countPlayingAudios() > 0)
-                          Positioned(
-                            right: 0,
-                            top: 0,
-                            child: Container(
-                              padding: EdgeInsets.all(2),
-                              decoration: BoxDecoration(
-                                color: Colors.red,
-                                shape: BoxShape.circle,
-                              ),
-                              constraints: BoxConstraints(
-                                minWidth: 16,
-                                minHeight: 16,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  _countPlayingAudios().toString(),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                  )
-                ],
+          // Align(
+          //   alignment: Alignment.bottomCenter,
+          //   child: Container(
+          //     width: MediaQuery.of(context).size.width * 0.8,
+          //     // height: 60,
+          //     color: Colors.green.shade400,
+          //     child: Row(
+          //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //       children: [
+          //         IconButton(
+          //             onPressed: () {
+          //               _showBottomSheet(context);
+          //             },
+          //             icon: Icon(Icons.timer)),
+          //         IconButton(
+          //             onPressed: () => _stopPlayingSounds(),
+          //             icon: Icon(Icons.stop_circle_outlined)),
+          //         IconButton(
+          //           onPressed: () => _volumeAll(context),
+          //           icon: Stack(
+          //             children: [
+          //               Icon(Icons.volume_up_outlined),
+          //               if (_countPlayingAudios() > 0)
+          //                 Positioned(
+          //                   right: 0,
+          //                   top: 0,
+          //                   child: Container(
+          //                     padding: EdgeInsets.all(2),
+          //                     decoration: BoxDecoration(
+          //                       color: Colors.red,
+          //                       shape: BoxShape.circle,
+          //                     ),
+          //                     constraints: BoxConstraints(
+          //                       minWidth: 16,
+          //                       minHeight: 16,
+          //                     ),
+          //                     child: Center(
+          //                       child: Text(
+          //                         _countPlayingAudios().toString(),
+          //                         style: TextStyle(
+          //                           color: Colors.white,
+          //                           fontSize: 12,
+          //                         ),
+          //                       ),
+          //                     ),
+          //                   ),
+          //                 ),
+          //             ],
+          //           ),
+          //         )
+          //       ],
+          //     ),
+          //   ),
+          // ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTabBar() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10.0, 0, 0, 0),
+      child: TabBar(
+        physics: const BouncingScrollPhysics(),
+        controller: _tabController,
+        indicator: const BoxDecoration(
+          color: Colors.transparent,
+          border:
+              Border(bottom: BorderSide(color: Colors.transparent, width: 0)),
+        ),
+        labelColor: Theme.of(context).colorScheme.primary,
+        unselectedLabelColor: Theme.of(context).colorScheme.secondary,
+        isScrollable: true,
+        labelPadding: const EdgeInsets.symmetric(horizontal: 10),
+        tabs: data.map((tab) {
+          return Tab(
+            child: Text(
+              tab,
+              style: TextStyle(
+                fontSize: 14,
               ),
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  Widget _buildTabViews() {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: TabBarView(
+        controller: _tabController,
+        children: [
+          SizedBox(
+            height: 200,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildAudioControl(
+                    label: 'Heavy Rain',
+                    audioPlayer: audioPlayer1,
+                    volume: volume1,
+                    sliderValue: sliderValue1,
+                    icon: Icon(
+                      Icons.water_drop_outlined,
+                      size: 40,
+                    )),
+                _buildAudioControl(
+                  label: 'Fireplace',
+                  audioPlayer: audioPlayer2,
+                  volume: volume2,
+                  sliderValue: sliderValue2,
+                  icon: Icon(
+                    Icons.fire_extinguisher_outlined,
+                    size: 40,
+                  ),
+                ),
+                _buildAudioControl(
+                  label: 'Tokyo  ',
+                  audioPlayer: audioPlayer3,
+                  volume: volume3,
+                  sliderValue: sliderValue3,
+                  icon: Icon(
+                    Icons.nature_outlined,
+                    size: 40,
+                  ),
+                ),
+                _buildAudioControl(
+                  label: 'Creek',
+                  audioPlayer: audioPlayer4,
+                  volume: volume3,
+                  sliderValue: sliderValue4,
+                  icon: Icon(
+                    Icons.nature_outlined,
+                    size: 40,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 200,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildAudioControl(
+                    label: 'Heavy Rain',
+                    audioPlayer: audioPlayer1,
+                    volume: volume1,
+                    sliderValue: sliderValue1,
+                    icon: Icon(
+                      Icons.water_drop_outlined,
+                      size: 40,
+                    )),
+                _buildAudioControl(
+                  label: 'Fireplace',
+                  audioPlayer: audioPlayer2,
+                  volume: volume2,
+                  sliderValue: sliderValue2,
+                  icon: Icon(
+                    Icons.fire_extinguisher_outlined,
+                    size: 40,
+                  ),
+                ),
+                _buildAudioControl(
+                  label: 'Tokyo  ',
+                  audioPlayer: audioPlayer3,
+                  volume: volume3,
+                  sliderValue: sliderValue3,
+                  icon: Icon(
+                    Icons.nature_outlined,
+                    size: 40,
+                  ),
+                ),
+                _buildAudioControl(
+                  label: 'Creek',
+                  audioPlayer: audioPlayer4,
+                  volume: volume3,
+                  sliderValue: sliderValue4,
+                  icon: Icon(
+                    Icons.nature_outlined,
+                    size: 40,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
