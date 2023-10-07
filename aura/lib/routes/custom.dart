@@ -278,7 +278,24 @@ class _CustomMixinState extends State<CustomMixin>
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              for (int i = 0; i < audioPlayers.length; i++)
+              for (int i = 0; i < 2; i++)
+                _buildAudioControl(
+                  label: 'Audio $i',
+                  audioPlayer: audioPlayers[i],
+                  volume: i == 0
+                      ? volume1
+                      : i == 1
+                          ? volume2
+                          : i == 2
+                              ? volume3
+                              : volume4,
+                ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              for (int i = 2; i < audioPlayers.length; i++)
                 _buildAudioControl(
                   label: 'Audio $i',
                   audioPlayer: audioPlayers[i],
