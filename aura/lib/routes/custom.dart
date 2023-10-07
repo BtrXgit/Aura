@@ -17,15 +17,10 @@ class CustomMixin extends StatefulWidget {
 class _CustomMixinState extends State<CustomMixin>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  final List<String> data = [
-    "1",
-    "2",
-  ];
+  final List<String> data = ["1", "2"];
+  final List<AudioPlayer> audioPlayers =
+      List.generate(4, (index) => AudioPlayer());
 
-  final AudioPlayer audioPlayer1 = AudioPlayer();
-  final AudioPlayer audioPlayer2 = AudioPlayer();
-  final AudioPlayer audioPlayer3 = AudioPlayer();
-  final AudioPlayer audioPlayer4 = AudioPlayer();
   double volume1 = 0.5;
   double volume2 = 0.5;
   double volume3 = 0.5;
@@ -47,34 +42,32 @@ class _CustomMixinState extends State<CustomMixin>
     _loadAudioFiles();
   }
 
+  final List<String> assetPaths = [
+    'assets/nature/heavyrain.mp3',
+    'assets/nature/fireplace.mp3',
+    'assets/nature/fallingleaves.mp3',
+    'assets/nature/creek.mp3',
+  ];
+
   Future<void> _loadAudioFiles() async {
     try {
-      await audioPlayer1.setAsset('assets/nature/heavyrain.mp3');
-      await audioPlayer2.setAsset('assets/nature/fireplace.mp3');
-      await audioPlayer3.setAsset('assets/nature/fallingleaves.mp3');
-      await audioPlayer4.setAsset('assets/nature/creek.mp3');
-      audioPlayer1.setLoopMode(LoopMode.all);
-      audioPlayer2.setLoopMode(LoopMode.all);
-      audioPlayer3.setLoopMode(LoopMode.all);
-      audioPlayer4.setLoopMode(LoopMode.all);
+      for (int i = 0; i < audioPlayers.length && i < assetPaths.length; i++) {
+        await audioPlayers[i].setAsset(assetPaths[i]);
+      }
+      for (final audioPlayer in audioPlayers) {
+        audioPlayer.setLoopMode(LoopMode.all);
+      }
     } catch (e) {
       print('Error loading audio: $e');
     }
   }
 
-  int _countPlayingAudios() {
+  int _countPlayingAudios(List<AudioPlayer> audioPlayers) {
     int count = 0;
-    if (audioPlayer1.playing) {
-      count++;
-    }
-    if (audioPlayer2.playing) {
-      count++;
-    }
-    if (audioPlayer3.playing) {
-      count++;
-    }
-    if (audioPlayer4.playing) {
-      count++;
+    for (final audioPlayer in audioPlayers) {
+      if (audioPlayer.playing) {
+        count++;
+      }
     }
     return count;
   }
@@ -93,133 +86,38 @@ class _CustomMixinState extends State<CustomMixin>
                 style: TextStyle(fontSize: 18),
               ),
               SizedBox(height: 10.0),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedTimerDuration = 0;
-                  });
-                  Navigator.pop(context);
-                  if (selectedTimerDuration > 0) {
-                    startTimer(selectedTimerDuration);
-                  }
-                },
-                child: Text(
-                  'No Timer',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color:
-                        selectedTimerDuration == 0 ? Colors.blue : Colors.black,
-                  ),
-                ),
-              ),
-              SizedBox(height: 10.0),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedTimerDuration = 5;
-                  });
-                  Navigator.pop(context);
-                  if (selectedTimerDuration > 0) {
-                    startTimer(selectedTimerDuration);
-                  }
-                },
-                child: Text(
-                  '5 Seconds',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color:
-                        selectedTimerDuration == 5 ? Colors.blue : Colors.black,
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedTimerDuration = 300;
-                  });
-                  Navigator.pop(context);
-                  if (selectedTimerDuration > 0) {
-                    startTimer(selectedTimerDuration);
-                  }
-                },
-                child: Text(
-                  '5 Minutes',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: selectedTimerDuration == 300
-                        ? Colors.blue
-                        : Colors.black,
-                  ),
-                ),
-              ),
-              SizedBox(height: 10.0),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedTimerDuration = 600;
-                  });
-                  Navigator.pop(context);
-                  if (selectedTimerDuration > 0) {
-                    startTimer(selectedTimerDuration);
-                  }
-                },
-                child: Text(
-                  '10 Minutes',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: selectedTimerDuration == 600
-                        ? Colors.blue
-                        : Colors.black,
-                  ),
-                ),
-              ),
-              SizedBox(height: 10.0),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedTimerDuration = 1800;
-                  });
-                  Navigator.pop(context);
-                  if (selectedTimerDuration > 0) {
-                    startTimer(selectedTimerDuration);
-                  }
-                },
-                child: Text(
-                  '30 Minutes',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: selectedTimerDuration == 1800
-                        ? Colors.blue
-                        : Colors.black,
-                  ),
-                ),
-              ),
-              SizedBox(height: 10.0),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedTimerDuration = 3600;
-                  });
-                  Navigator.pop(context);
-                  if (selectedTimerDuration > 0) {
-                    startTimer(selectedTimerDuration);
-                  }
-                },
-                child: Text(
-                  '1 Hour',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: selectedTimerDuration == 3600
-                        ? Colors.blue
-                        : Colors.black,
-                  ),
-                ),
-              ),
+              _buildTimerOption(0, 'No Timer'),
+              _buildTimerOption(5, '5 Seconds'),
+              _buildTimerOption(300, '5 Minutes'),
+              _buildTimerOption(600, '10 Minutes'),
+              _buildTimerOption(1800, '30 Minutes'),
+              _buildTimerOption(3600, '1 Hour'),
               SizedBox(height: 10.0),
             ],
           ),
         );
       },
+    );
+  }
+
+  Widget _buildTimerOption(int duration, String label) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedTimerDuration = duration;
+        });
+        Navigator.pop(context);
+        if (selectedTimerDuration > 0) {
+          startTimer(selectedTimerDuration, audioPlayers);
+        }
+      },
+      child: Text(
+        label,
+        style: TextStyle(
+          fontSize: 16,
+          color: selectedTimerDuration == duration ? Colors.blue : Colors.black,
+        ),
+      ),
     );
   }
 
@@ -232,26 +130,18 @@ class _CustomMixinState extends State<CustomMixin>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              _buildVolumeControl(
-                label: 'Heavy Rain',
-                audioPlayer: audioPlayer1,
-                sliderValue: sliderValue1,
-              ),
-              _buildVolumeControl(
-                label: 'Fireplace',
-                audioPlayer: audioPlayer2,
-                sliderValue: sliderValue2,
-              ),
-              _buildVolumeControl(
-                label: 'Tokyo',
-                audioPlayer: audioPlayer3,
-                sliderValue: sliderValue3,
-              ),
-              _buildVolumeControl(
-                label: 'Creek',
-                audioPlayer: audioPlayer4,
-                sliderValue: sliderValue4,
-              ),
+              for (int i = 0; i < audioPlayers.length; i++)
+                _buildVolumeControl(
+                  label: 'Audio $i',
+                  audioPlayer: audioPlayers[i],
+                  sliderValue: i == 0
+                      ? sliderValue1
+                      : i == 1
+                          ? sliderValue2
+                          : i == 2
+                              ? sliderValue3
+                              : sliderValue4,
+                ),
             ],
           ),
         );
@@ -289,13 +179,13 @@ class _CustomMixinState extends State<CustomMixin>
             height: 10,
           ),
           SizedBox(
-              height: MediaQuery.of(context).size.height * 0.35,
-              child: _buildTabViews()),
+            height: MediaQuery.of(context).size.height * 0.35,
+            child: _buildTabViews(),
+          ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
               width: MediaQuery.of(context).size.width * 0.8,
-              // height: 60,
               color: Colors.green.shade400,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -306,14 +196,14 @@ class _CustomMixinState extends State<CustomMixin>
                       },
                       icon: Icon(Icons.timer)),
                   IconButton(
-                      onPressed: () => _stopPlayingSounds(),
+                      onPressed: () => _stopPlayingSounds(audioPlayers),
                       icon: Icon(Icons.stop_circle_outlined)),
                   IconButton(
                     onPressed: () => _volumeAll(context),
                     icon: Stack(
                       children: [
                         Icon(Icons.volume_up_outlined),
-                        if (_countPlayingAudios() > 0)
+                        if (_countPlayingAudios(audioPlayers) > 0)
                           Positioned(
                             right: 0,
                             top: 0,
@@ -329,7 +219,7 @@ class _CustomMixinState extends State<CustomMixin>
                               ),
                               child: Center(
                                 child: Text(
-                                  _countPlayingAudios().toString(),
+                                  _countPlayingAudios(audioPlayers).toString(),
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 12,
@@ -388,50 +278,18 @@ class _CustomMixinState extends State<CustomMixin>
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildAudioControl(
-                  label: 'Heavy Rain',
-                  audioPlayer: audioPlayer1,
-                  volume: volume1,
-                  sliderValue: sliderValue1,
-                  icon: Icon(
-                    Icons.water_drop_outlined,
-                    size: 40,
-                  )),
-              _buildAudioControl(
-                label: 'Fireplace',
-                audioPlayer: audioPlayer2,
-                volume: volume2,
-                sliderValue: sliderValue2,
-                icon: Icon(
-                  Icons.fire_extinguisher_outlined,
-                  size: 40,
+              for (int i = 0; i < audioPlayers.length; i++)
+                _buildAudioControl(
+                  label: 'Audio $i',
+                  audioPlayer: audioPlayers[i],
+                  volume: i == 0
+                      ? volume1
+                      : i == 1
+                          ? volume2
+                          : i == 2
+                              ? volume3
+                              : volume4,
                 ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildAudioControl(
-                label: 'Tokyo  ',
-                audioPlayer: audioPlayer3,
-                volume: volume3,
-                sliderValue: sliderValue3,
-                icon: Icon(
-                  Icons.nature_outlined,
-                  size: 40,
-                ),
-              ),
-              _buildAudioControl(
-                label: 'Creek',
-                audioPlayer: audioPlayer4,
-                volume: volume4,
-                sliderValue: sliderValue4,
-                icon: Icon(
-                  Icons.nature_outlined,
-                  size: 40,
-                ),
-              ),
             ],
           ),
         ],
@@ -472,8 +330,6 @@ class _CustomMixinState extends State<CustomMixin>
     required String label,
     required AudioPlayer audioPlayer,
     required double volume,
-    required ValueNotifier<double> sliderValue,
-    required Icon icon,
   }) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -491,7 +347,10 @@ class _CustomMixinState extends State<CustomMixin>
               _toggleAudioPlayback(audioPlayer);
             },
             customBorder: CircleBorder(),
-            child: icon,
+            child: Icon(
+              Icons.play_arrow,
+              size: 40,
+            ),
           ),
         ),
         Text(label),
@@ -511,49 +370,36 @@ class _CustomMixinState extends State<CustomMixin>
     setState(() {});
   }
 
-  void _stopPlayingSounds() {
-    if (audioPlayer1.playing) {
-      audioPlayer1.pause();
+  void _stopPlayingSounds(List<AudioPlayer> audioPlayers) {
+    for (final audioPlayer in audioPlayers) {
+      if (audioPlayer.playing) {
+        audioPlayer.pause();
+      }
     }
-    if (audioPlayer2.playing) {
-      audioPlayer2.pause();
-    }
-    if (audioPlayer3.playing) {
-      audioPlayer3.pause();
-    }
-    if (audioPlayer4.playing) {
-      audioPlayer4.pause();
-    }
+
     if (audioTimer != null) {
       audioTimer!.cancel();
     }
+
     setState(() {});
     print('Sounds Stopped');
   }
 
-  void startTimer(int duration) {
+  void startTimer(int duration, List<AudioPlayer> audioPlayers) {
     audioTimer = Timer(Duration(seconds: duration), () {
-      if (audioPlayer1.playing) {
-        audioPlayer1.pause();
-      }
-      if (audioPlayer2.playing) {
-        audioPlayer2.pause();
-      }
-      if (audioPlayer3.playing) {
-        audioPlayer3.pause();
-      }
-      if (audioPlayer4.playing) {
-        audioPlayer4.pause();
+      for (final audioPlayer in audioPlayers) {
+        if (audioPlayer.playing) {
+          audioPlayer.pause();
+        }
       }
     });
   }
 
   @override
   void dispose() {
-    audioPlayer1.dispose();
-    audioPlayer2.dispose();
-    audioPlayer3.dispose();
-    audioPlayer4.dispose();
+    for (final audioPlayer in audioPlayers) {
+      audioPlayer.dispose();
+    }
     super.dispose();
   }
 }
