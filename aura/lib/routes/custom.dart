@@ -157,88 +157,99 @@ class _CustomMixinState extends State<CustomMixin>
     return Scaffold(
       appBar: null,
       backgroundColor: Colors.orangeAccent.shade100,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+      body: Stack(
         children: [
-          Container(
-            width: MediaQuery.of(context).size.width * 1.0,
-            height: MediaQuery.of(context).size.height * 0.35,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(
-                    'https://i.pinimg.com/564x/2c/7a/bc/2c7abc11e0b17414d26b1bb79ea614d8.jpg'),
-                fit: BoxFit.cover,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width * 1.0,
+                height: MediaQuery.of(context).size.height * 0.35,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(
+                        'https://i.pinimg.com/564x/2c/7a/bc/2c7abc11e0b17414d26b1bb79ea614d8.jpg'),
+                    fit: BoxFit.cover,
+                  ),
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10)),
+                ),
               ),
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10)),
-            ),
+              SizedBox(
+                height: 10,
+              ),
+              _buildTabBar(),
+              SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.4,
+                child: _buildTabViews(),
+              ),
+              _buildPlayerController(),
+            ],
           ),
-          SizedBox(
-            height: 10,
-          ),
-          _buildTabBar(),
-          SizedBox(
-            height: 10,
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.35,
-            child: _buildTabViews(),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.8,
-              color: Colors.green.shade400,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        _showBottomSheet(context);
-                      },
-                      icon: Icon(Icons.timer)),
-                  IconButton(
-                      onPressed: () => _stopPlayingSounds(audioPlayers),
-                      icon: Icon(Icons.stop_circle_outlined)),
-                  IconButton(
-                    onPressed: () => _volumeAll(context),
-                    icon: Stack(
-                      children: [
-                        Icon(Icons.volume_up_outlined),
-                        if (_countPlayingAudios(audioPlayers) > 0)
-                          Positioned(
-                            right: 0,
-                            top: 0,
-                            child: Container(
-                              padding: EdgeInsets.all(2),
-                              decoration: BoxDecoration(
-                                color: Colors.red,
-                                shape: BoxShape.circle,
-                              ),
-                              constraints: BoxConstraints(
-                                minWidth: 16,
-                                minHeight: 16,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  _countPlayingAudios(audioPlayers).toString(),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                  ),
-                                ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPlayerController() {
+    return Positioned(
+      bottom: 10,
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          width: MediaQuery.of(context).size.width * 0.8,
+          color: Colors.green.shade400,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              IconButton(
+                  onPressed: () {
+                    _showBottomSheet(context);
+                  },
+                  icon: Icon(Icons.timer)),
+              IconButton(
+                  onPressed: () => _stopPlayingSounds(audioPlayers),
+                  icon: Icon(Icons.stop_circle_outlined)),
+              IconButton(
+                onPressed: () => _volumeAll(context),
+                icon: Stack(
+                  children: [
+                    Icon(Icons.volume_up_outlined),
+                    if (_countPlayingAudios(audioPlayers) > 0)
+                      Positioned(
+                        right: 0,
+                        top: 0,
+                        child: Container(
+                          padding: EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                          ),
+                          constraints: BoxConstraints(
+                            minWidth: 16,
+                            minHeight: 16,
+                          ),
+                          child: Center(
+                            child: Text(
+                              _countPlayingAudios(audioPlayers).toString(),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
                               ),
                             ),
                           ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
+                        ),
+                      ),
+                  ],
+                ),
+              )
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -273,35 +284,71 @@ class _CustomMixinState extends State<CustomMixin>
   }
 
   Widget _buildTabViews() {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      child: TabBarView(
-        controller: _tabController,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return TabBarView(
+      controller: _tabController,
+      children: [
+        SingleChildScrollView(
+          child: Column(
             children: [
-              for (int i = 0; i < audioPlayers.length; i++)
-                _buildAudioControl(
-                  label: 'Audio $i',
-                  audioPlayer: audioPlayers[i],
-                  volume: volumes[i],
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  for (int i = 0; i < audioPlayers.length; i++)
+                    _buildAudioControl(
+                      label: 'Audio $i',
+                      audioPlayer: audioPlayers[i],
+                      volume: volumes[i],
+                    ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  for (int i = 0; i < audioPlayers.length; i++)
+                    _buildAudioControl(
+                      label: 'Audio $i',
+                      audioPlayer: audioPlayers[i],
+                      volume: volumes[i],
+                    ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  for (int i = 0; i < audioPlayers.length; i++)
+                    _buildAudioControl(
+                      label: 'Audio $i',
+                      audioPlayer: audioPlayers[i],
+                      volume: volumes[i],
+                    ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  for (int i = 0; i < audioPlayers.length; i++)
+                    _buildAudioControl(
+                      label: 'Audio $i',
+                      audioPlayer: audioPlayers[i],
+                      volume: volumes[i],
+                    ),
+                ],
+              ),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              for (int i = 0; i < audioPlayers.length; i++)
-                _buildAudioControl(
-                  label: 'Audio $i',
-                  audioPlayer: audioPlayers[i],
-                  volume: volumes[i],
-                ),
-            ],
-          ),
-        ],
-      ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            for (int i = 0; i < audioPlayers.length; i++)
+              _buildAudioControl(
+                label: 'Audio $i',
+                audioPlayer: audioPlayers[i],
+                volume: volumes[i],
+              ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -344,8 +391,9 @@ class _CustomMixinState extends State<CustomMixin>
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
-          width: 74,
-          height: 74,
+          // width: 74,
+          // height: 74,
+          padding: EdgeInsets.all(18.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: audioPlayer.playing ? Colors.green : Colors.red,
