@@ -16,6 +16,9 @@ class CustomMixin extends StatefulWidget {
 
 class _CustomMixinState extends State<CustomMixin>
     with SingleTickerProviderStateMixin {
+  List<ValueNotifier<double>> volumes =
+      List.generate(10, (_) => ValueNotifier<double>(0.5));
+
   late TabController _tabController;
   final List<String> data = ["1", "2"];
   final List<AudioPlayer> audioPlayers =
@@ -278,34 +281,22 @@ class _CustomMixinState extends State<CustomMixin>
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              for (int i = 0; i < 2; i++)
+              for (int i = 0; i < audioPlayers.length; i++)
                 _buildAudioControl(
                   label: 'Audio $i',
                   audioPlayer: audioPlayers[i],
-                  volume: i == 0
-                      ? volume1
-                      : i == 1
-                          ? volume2
-                          : i == 2
-                              ? volume3
-                              : volume4,
+                  volume: volumes[i],
                 ),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              for (int i = 2; i < audioPlayers.length; i++)
+              for (int i = 0; i < audioPlayers.length; i++)
                 _buildAudioControl(
                   label: 'Audio $i',
                   audioPlayer: audioPlayers[i],
-                  volume: i == 0
-                      ? volume1
-                      : i == 1
-                          ? volume2
-                          : i == 2
-                              ? volume3
-                              : volume4,
+                  volume: volumes[i],
                 ),
             ],
           ),
@@ -346,7 +337,7 @@ class _CustomMixinState extends State<CustomMixin>
   Widget _buildAudioControl({
     required String label,
     required AudioPlayer audioPlayer,
-    required double volume,
+    required ValueNotifier<double> volume,
   }) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -371,6 +362,20 @@ class _CustomMixinState extends State<CustomMixin>
           ),
         ),
         Text(label),
+        // ValueListenableBuilder<double>(
+        //   valueListenable: volume,
+        //   builder: (context, value, child) {
+        //     return Slider(
+        //       value: value,
+        //       onChanged: (newValue) {
+        //         setState(() {
+        //           volume.value = newValue;
+        //         });
+        //         audioPlayer.setVolume(newValue);
+        //       },
+        //     );
+        //   },
+        // ),
       ],
     );
   }
