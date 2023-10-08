@@ -164,7 +164,7 @@ class _CustomMixinState extends State<CustomMixin>
             children: [
               Container(
                 width: MediaQuery.of(context).size.width * 1.0,
-                height: MediaQuery.of(context).size.height * 0.35,
+                height: MediaQuery.of(context).size.height * 0.3,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: NetworkImage(
@@ -180,16 +180,12 @@ class _CustomMixinState extends State<CustomMixin>
                 height: 10,
               ),
               _buildTabBar(),
-              SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.4,
+              Expanded(
                 child: _buildTabViews(),
               ),
-              _buildPlayerController(),
             ],
           ),
+          _buildPlayerController(),
         ],
       ),
     );
@@ -197,58 +193,60 @@ class _CustomMixinState extends State<CustomMixin>
 
   Widget _buildPlayerController() {
     return Positioned(
-      bottom: 10,
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        child: Container(
-          width: MediaQuery.of(context).size.width * 0.8,
-          color: Colors.green.shade400,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              IconButton(
-                  onPressed: () {
-                    _showBottomSheet(context);
-                  },
-                  icon: Icon(Icons.timer)),
-              IconButton(
-                  onPressed: () => _stopPlayingSounds(audioPlayers),
-                  icon: Icon(Icons.stop_circle_outlined)),
-              IconButton(
-                onPressed: () => _volumeAll(context),
-                icon: Stack(
-                  children: [
-                    Icon(Icons.volume_up_outlined),
-                    if (_countPlayingAudios(audioPlayers) > 0)
-                      Positioned(
-                        right: 0,
-                        top: 0,
-                        child: Container(
-                          padding: EdgeInsets.all(2),
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            shape: BoxShape.circle,
-                          ),
-                          constraints: BoxConstraints(
-                            minWidth: 16,
-                            minHeight: 16,
-                          ),
-                          child: Center(
-                            child: Text(
-                              _countPlayingAudios(audioPlayers).toString(),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                              ),
+      // bottom: 70,
+      bottom: MediaQuery.of(context).size.height * 0.09,
+      left: 0,
+      right: 0,
+      child: Container(
+        height: 64,
+        decoration: BoxDecoration(
+            color: Colors.green.shade400,
+            borderRadius: BorderRadius.circular(10)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            IconButton(
+                onPressed: () {
+                  _showBottomSheet(context);
+                },
+                icon: Icon(Icons.timer)),
+            IconButton(
+                onPressed: () => _stopPlayingSounds(audioPlayers),
+                icon: Icon(Icons.stop_circle_outlined)),
+            IconButton(
+              onPressed: () => _volumeAll(context),
+              icon: Stack(
+                children: [
+                  Icon(Icons.volume_up_outlined),
+                  if (_countPlayingAudios(audioPlayers) > 0)
+                    Positioned(
+                      right: 0,
+                      top: 0,
+                      child: Container(
+                        padding: EdgeInsets.all(2),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
+                        constraints: BoxConstraints(
+                          minWidth: 16,
+                          minHeight: 16,
+                        ),
+                        child: Center(
+                          child: Text(
+                            _countPlayingAudios(audioPlayers).toString(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
                             ),
                           ),
                         ),
                       ),
-                  ],
-                ),
-              )
-            ],
-          ),
+                    ),
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );
@@ -288,6 +286,7 @@ class _CustomMixinState extends State<CustomMixin>
       controller: _tabController,
       children: [
         SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Column(
             children: [
               Row(
@@ -333,6 +332,9 @@ class _CustomMixinState extends State<CustomMixin>
                       volume: volumes[i],
                     ),
                 ],
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.2,
               ),
             ],
           ),
