@@ -279,9 +279,11 @@ class _CustomMixinState extends State<CustomMixin>
         SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   for (int i = 0; i < audioPlayers.length; i++)
                     _buildAudioControl(
@@ -292,7 +294,7 @@ class _CustomMixinState extends State<CustomMixin>
                 ],
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   for (int i = 0; i < audioPlayers.length; i++)
                     _buildAudioControl(
@@ -303,7 +305,7 @@ class _CustomMixinState extends State<CustomMixin>
                 ],
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   for (int i = 0; i < audioPlayers.length; i++)
                     _buildAudioControl(
@@ -314,7 +316,18 @@ class _CustomMixinState extends State<CustomMixin>
                 ],
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  for (int i = 0; i < audioPlayers.length; i++)
+                    _buildAudioControl(
+                      label: 'Audio $i',
+                      audioPlayer: audioPlayers[i],
+                      volume: volumes[i],
+                    ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   for (int i = 0; i < audioPlayers.length; i++)
                     _buildAudioControl(
@@ -382,16 +395,16 @@ class _CustomMixinState extends State<CustomMixin>
     required AudioPlayer audioPlayer,
     required ValueNotifier<double> volume,
   }) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+    return Stack(
+      alignment: Alignment.center,
       children: [
         Container(
           // width: 74,
           // height: 74,
-          padding: EdgeInsets.all(18.0),
+          padding: EdgeInsets.all(20.0),
+          margin: EdgeInsets.all(6.0),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(6),
             color: audioPlayer.playing ? Colors.green : Colors.red,
           ),
           child: InkWell(
@@ -405,10 +418,13 @@ class _CustomMixinState extends State<CustomMixin>
             ),
           ),
         ),
-        Text(
-          label,
-          style: TextStyle(color: Colors.white),
-        ),
+        Positioned(
+          bottom: 14,
+          child: Text(
+            label,
+            style: TextStyle(color: Colors.white),
+          ),
+        )
       ],
     );
   }
