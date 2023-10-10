@@ -22,18 +22,29 @@ class _CustomMixinState extends State<CustomMixin>
 
   late TabController _tabController;
   final List<String> data = ["1", "2"];
+
   final List<AudioPlayer> audioPlayers =
-      List.generate(4, (index) => AudioPlayer());
+      List.generate(9, (index) => AudioPlayer());
 
   double volume1 = 0.5;
   double volume2 = 0.5;
   double volume3 = 0.5;
   double volume4 = 0.5;
+  double volume5 = 0.5;
+  double volume6 = 0.5;
+  double volume7 = 0.5;
+  double volume8 = 0.5;
+  double volume9 = 0.5;
 
   final sliderValue1 = ValueNotifier<double>(0.5);
   final sliderValue2 = ValueNotifier<double>(0.5);
   final sliderValue3 = ValueNotifier<double>(0.5);
   final sliderValue4 = ValueNotifier<double>(0.5);
+  final sliderValue5 = ValueNotifier<double>(0.5);
+  final sliderValue6 = ValueNotifier<double>(0.5);
+  final sliderValue7 = ValueNotifier<double>(0.5);
+  final sliderValue8 = ValueNotifier<double>(0.5);
+  final sliderValue9 = ValueNotifier<double>(0.5);
 
   int selectedTimerDuration = 0;
 
@@ -43,20 +54,37 @@ class _CustomMixinState extends State<CustomMixin>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    _loadAudioFiles();
+    _loadNatureAudios();
   }
 
-  final List<String> assetPaths = [
-    'assets/nature/heavyrain.mp3',
-    'assets/nature/fireplace.mp3',
-    'assets/nature/fallingleaves.mp3',
-    'assets/nature/creek.mp3',
+  final List<String> naturePaths = [
+    'assets/nature/cave.ogg',
+    'assets/nature/creek.ogg',
+    'assets/nature/desert.ogg',
+    'assets/nature/fire.ogg',
+    'assets/nature/lake.ogg',
+    'assets/nature/night.ogg',
+    'assets/nature/ocean.ogg',
+    'assets/nature/rainforest.ogg',
+    'assets/nature/wind.ogg',
   ];
 
-  Future<void> _loadAudioFiles() async {
+  final List<String> natureNames = [
+    'Cave',
+    'Creek',
+    'Desert',
+    'Fire',
+    'Lake',
+    'Night',
+    'Ocean',
+    'Forest',
+    'Wind',
+  ];
+
+  Future<void> _loadNatureAudios() async {
     try {
-      for (int i = 0; i < audioPlayers.length && i < assetPaths.length; i++) {
-        await audioPlayers[i].setAsset(assetPaths[i]);
+      for (int i = 0; i < audioPlayers.length && i < naturePaths.length; i++) {
+        await audioPlayers[i].setAsset(naturePaths[i]);
       }
       for (final audioPlayer in audioPlayers) {
         audioPlayer.setLoopMode(LoopMode.all);
@@ -136,7 +164,7 @@ class _CustomMixinState extends State<CustomMixin>
             children: <Widget>[
               for (int i = 0; i < audioPlayers.length; i++)
                 _buildVolumeControl(
-                    label: 'Audio $i',
+                    label: natureNames[i],
                     audioPlayer: audioPlayers[i],
                     sliderValue: volumes[i]),
             ],
@@ -155,7 +183,6 @@ class _CustomMixinState extends State<CustomMixin>
         child: Stack(
           children: [
             Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
                   width: MediaQuery.of(context).size.width * 1.0,
@@ -171,9 +198,16 @@ class _CustomMixinState extends State<CustomMixin>
                         bottomRight: Radius.circular(10)),
                   ),
                   child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                    filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
                     child: Container(
-                      color: Colors.black.withOpacity(0.4),
+                      width: MediaQuery.of(context).size.width * 1.0,
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.2),
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(10),
+                            bottomRight: Radius.circular(10)),
+                      ),
                     ),
                   ),
                 ),
@@ -233,9 +267,9 @@ class _CustomMixinState extends State<CustomMixin>
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  for (int i = 0; i < audioPlayers.length; i++)
+                  for (int i = 0; i < 4; i++)
                     _buildAudioControl(
-                      label: 'Audio $i',
+                      label: natureNames[i],
                       audioPlayer: audioPlayers[i],
                       volume: volumes[i],
                     ),
@@ -244,9 +278,9 @@ class _CustomMixinState extends State<CustomMixin>
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  for (int i = 0; i < audioPlayers.length; i++)
+                  for (int i = 4; i < 8; i++)
                     _buildAudioControl(
-                      label: 'Audio $i',
+                      label: natureNames[i],
                       audioPlayer: audioPlayers[i],
                       volume: volumes[i],
                     ),
@@ -255,9 +289,9 @@ class _CustomMixinState extends State<CustomMixin>
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  for (int i = 0; i < 2; i++)
+                  for (int i = 8; i < 9; i++)
                     _buildAudioControl(
-                      label: 'Audio $i',
+                      label: natureNames[i],
                       audioPlayer: audioPlayers[i],
                       volume: volumes[i],
                     ),
@@ -270,43 +304,16 @@ class _CustomMixinState extends State<CustomMixin>
           ),
         ),
         SingleChildScrollView(
-          child: Column(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(),
-                  for (int i = 0; i < audioPlayers.length; i++)
-                    _buildAudioControl(
-                      label: 'Audio $i',
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  for (int i = 0; i < 2; i++)
-                    _buildAudioControl(
-                      label: 'Audio $i',
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(),
-                  for (int i = 0; i < audioPlayers.length; i++)
-                    _buildAudioControl(
-                      label: 'Audio $i',
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
+              Container(),
+              for (int i = 0; i < audioPlayers.length; i++)
+                _buildAudioControl(
+                  label: 'Audio $i',
+                  audioPlayer: audioPlayers[i],
+                  volume: volumes[i],
+                ),
             ],
           ),
         ),
