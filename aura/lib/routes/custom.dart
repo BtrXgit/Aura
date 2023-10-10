@@ -76,7 +76,11 @@ class _CustomMixinState extends State<CustomMixin>
   Future<void> _loadAudios() async {
     try {
       for (int i = 0; i < audioPlayers.length && i < audioPaths.length; i++) {
-        await audioPlayers[i].setAsset(audioPaths[i]);
+        try {
+          await audioPlayers[i].setAsset(audioPaths[i]);
+        } catch (e) {
+          print('Error loading audio: $e');
+        }
       }
       for (final audioPlayer in audioPlayers) {
         audioPlayer.setLoopMode(LoopMode.all);
