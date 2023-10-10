@@ -17,11 +17,13 @@ class CustomMixin extends StatefulWidget {
 
 class _CustomMixinState extends State<CustomMixin>
     with SingleTickerProviderStateMixin {
+  int playingAudioCount = 0;
+
   List<ValueNotifier<double>> volumes =
       List.generate(10, (_) => ValueNotifier<double>(0.5));
 
   late TabController _tabController;
-  final List<String> data = ["1", "2"];
+  final List<String> data = ["Nature", "2"];
 
   final List<AudioPlayer> audioPlayers =
       List.generate(9, (index) => AudioPlayer());
@@ -366,11 +368,19 @@ class _CustomMixinState extends State<CustomMixin>
   void _toggleAudioPlayback(AudioPlayer audioPlayer) {
     if (audioPlayer.playing) {
       audioPlayer.pause();
-      if (audioTimer != null) {
-        audioTimer!.cancel();
-      }
+      playingAudioCount--;
     } else {
+      if (playingAudioCount >= 8) {
+        // Show a Snackbar indicating that only 8 audios can play at a time.
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Only 8 audios can play simultaneously.'),
+          ),
+        );
+        return; // Don't start playing if the limit is reached.
+      }
       audioPlayer.play();
+      playingAudioCount++;
     }
     setState(() {});
   }
@@ -379,6 +389,7 @@ class _CustomMixinState extends State<CustomMixin>
     for (final audioPlayer in audioPlayers) {
       if (audioPlayer.playing) {
         audioPlayer.pause();
+        playingAudioCount--;
       }
     }
 
