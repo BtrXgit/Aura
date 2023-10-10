@@ -190,7 +190,7 @@ class _CustomMixinState extends State<CustomMixin>
                         bottomRight: Radius.circular(10)),
                   ),
                   child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                    filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
                     child: Container(
                       width: MediaQuery.of(context).size.width * 1.0,
                       height: MediaQuery.of(context).size.height * 0.3,
@@ -230,8 +230,8 @@ class _CustomMixinState extends State<CustomMixin>
           border:
               Border(bottom: BorderSide(color: Colors.transparent, width: 0)),
         ),
-        labelColor: Theme.of(context).colorScheme.primary,
-        unselectedLabelColor: Theme.of(context).colorScheme.secondary,
+        labelColor: Colors.red,
+        unselectedLabelColor: Colors.black,
         isScrollable: true,
         labelPadding: const EdgeInsets.symmetric(horizontal: 10),
         tabs: data.map((tab) {
@@ -411,7 +411,7 @@ class _CustomMixinState extends State<CustomMixin>
         children: [
           Text(
             label,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.black),
           ),
           ValueListenableBuilder<double>(
             valueListenable: sliderValue,
