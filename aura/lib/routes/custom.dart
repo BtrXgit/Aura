@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
@@ -150,95 +151,42 @@ class _CustomMixinState extends State<CustomMixin>
     return Scaffold(
       appBar: null,
       backgroundColor: Colors.black,
-      body: Stack(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width * 1.0,
-                height: MediaQuery.of(context).size.height * 0.3,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(
-                        'https://i.pinimg.com/564x/2c/7a/bc/2c7abc11e0b17414d26b1bb79ea614d8.jpg'),
-                    fit: BoxFit.cover,
-                  ),
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(10),
-                      bottomRight: Radius.circular(10)),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              _buildTabBar(),
-              Expanded(
-                child: _buildTabViews(),
-              ),
-            ],
-          ),
-          _buildPlayerController(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPlayerController() {
-    return Positioned(
-      // bottom: 70,
-      bottom: MediaQuery.of(context).size.height * 0.09,
-      left: 0,
-      right: 0,
-      child: Container(
-        height: 64,
-        decoration: BoxDecoration(
-            color: Colors.green.shade400,
-            borderRadius: BorderRadius.circular(10)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      body: SafeArea(
+        child: Stack(
           children: [
-            IconButton(
-                onPressed: () {
-                  _showBottomSheet(context);
-                },
-                icon: Icon(Icons.timer)),
-            IconButton(
-                onPressed: () => _stopPlayingSounds(audioPlayers),
-                icon: Icon(Icons.stop_circle_outlined)),
-            IconButton(
-              onPressed: () => _volumeAll(context),
-              icon: Stack(
-                children: [
-                  Icon(Icons.volume_up_outlined),
-                  if (_countPlayingAudios(audioPlayers) > 0)
-                    Positioned(
-                      right: 0,
-                      top: 0,
-                      child: Container(
-                        padding: EdgeInsets.all(2),
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          shape: BoxShape.circle,
-                        ),
-                        constraints: BoxConstraints(
-                          minWidth: 16,
-                          minHeight: 16,
-                        ),
-                        child: Center(
-                          child: Text(
-                            _countPlayingAudios(audioPlayers).toString(),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
-                      ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 1.0,
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          'https://i.pinimg.com/564x/2c/7a/bc/2c7abc11e0b17414d26b1bb79ea614d8.jpg'),
+                      fit: BoxFit.cover,
                     ),
-                ],
-              ),
-            )
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10)),
+                  ),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                    child: Container(
+                      color: Colors.black.withOpacity(0.4),
+                    ),
+                  ),
+                ),
+                // SizedBox(
+                //   height: 10,
+                // ),
+                _buildTabBar(),
+                Expanded(
+                  child: _buildTabViews(),
+                ),
+              ],
+            ),
+            _buildPlayerController(),
           ],
         ),
       ),
@@ -305,31 +253,9 @@ class _CustomMixinState extends State<CustomMixin>
                 ],
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  for (int i = 0; i < audioPlayers.length; i++)
-                    _buildAudioControl(
-                      label: 'Audio $i',
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  for (int i = 0; i < audioPlayers.length; i++)
-                    _buildAudioControl(
-                      label: 'Audio $i',
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  for (int i = 0; i < audioPlayers.length; i++)
+                  for (int i = 0; i < 2; i++)
                     _buildAudioControl(
                       label: 'Audio $i',
                       audioPlayer: audioPlayers[i],
@@ -343,50 +269,48 @@ class _CustomMixinState extends State<CustomMixin>
             ],
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            for (int i = 0; i < audioPlayers.length; i++)
-              _buildAudioControl(
-                label: 'Audio $i',
-                audioPlayer: audioPlayers[i],
-                volume: volumes[i],
+        SingleChildScrollView(
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(),
+                  for (int i = 0; i < audioPlayers.length; i++)
+                    _buildAudioControl(
+                      label: 'Audio $i',
+                      audioPlayer: audioPlayers[i],
+                      volume: volumes[i],
+                    ),
+                ],
               ),
-          ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  for (int i = 0; i < 2; i++)
+                    _buildAudioControl(
+                      label: 'Audio $i',
+                      audioPlayer: audioPlayers[i],
+                      volume: volumes[i],
+                    ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(),
+                  for (int i = 0; i < audioPlayers.length; i++)
+                    _buildAudioControl(
+                      label: 'Audio $i',
+                      audioPlayer: audioPlayers[i],
+                      volume: volumes[i],
+                    ),
+                ],
+              ),
+            ],
+          ),
         ),
       ],
-    );
-  }
-
-  Widget _buildVolumeControl({
-    required String label,
-    required AudioPlayer audioPlayer,
-    required ValueNotifier<double> sliderValue,
-  }) {
-    return Visibility(
-      visible: audioPlayer.playing,
-      child: Column(
-        children: [
-          Text(
-            label,
-            style: TextStyle(color: Colors.white),
-          ),
-          ValueListenableBuilder<double>(
-            valueListenable: sliderValue,
-            builder: (context, value, child) {
-              return Slider(
-                value: value,
-                onChanged: (newValue) {
-                  setState(() {
-                    sliderValue.value = newValue;
-                  });
-                  audioPlayer.setVolume(newValue);
-                },
-              );
-            },
-          ),
-        ],
-      ),
     );
   }
 
@@ -395,37 +319,40 @@ class _CustomMixinState extends State<CustomMixin>
     required AudioPlayer audioPlayer,
     required ValueNotifier<double> volume,
   }) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Container(
-          // width: 74,
-          // height: 74,
-          padding: EdgeInsets.all(20.0),
-          margin: EdgeInsets.all(6.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(6),
-            color: audioPlayer.playing ? Colors.green : Colors.red,
-          ),
-          child: InkWell(
-            onTap: () {
-              _toggleAudioPlayback(audioPlayer);
-            },
-            customBorder: CircleBorder(),
-            child: Icon(
-              Icons.play_arrow,
-              size: 40,
-            ),
+    return Expanded(
+      child: Container(
+        // width: 74,
+        // height: 74,
+        padding: EdgeInsets.all(15.0),
+        margin: EdgeInsets.all(4.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(6),
+          color: audioPlayer.playing
+              ? Colors.green
+              : Color.fromARGB(255, 125, 0, 0),
+        ),
+        child: InkWell(
+          onTap: () {
+            _toggleAudioPlayback(audioPlayer);
+          },
+          customBorder: CircleBorder(),
+          child: Column(
+            children: [
+              Icon(
+                Icons.play_arrow,
+                size: 40,
+                color: Color.fromARGB(255, 255, 98, 98),
+              ),
+              Text(
+                label,
+                style: TextStyle(
+                    color: Color.fromARGB(255, 255, 93, 93),
+                    fontWeight: FontWeight.bold),
+              ),
+            ],
           ),
         ),
-        Positioned(
-          bottom: 14,
-          child: Text(
-            label,
-            style: TextStyle(color: Colors.white),
-          ),
-        )
-      ],
+      ),
     );
   }
 
@@ -464,6 +391,99 @@ class _CustomMixinState extends State<CustomMixin>
         }
       }
     });
+  }
+
+  Widget _buildVolumeControl({
+    required String label,
+    required AudioPlayer audioPlayer,
+    required ValueNotifier<double> sliderValue,
+  }) {
+    return Visibility(
+      visible: audioPlayer.playing,
+      child: Column(
+        children: [
+          Text(
+            label,
+            style: TextStyle(color: Colors.white),
+          ),
+          ValueListenableBuilder<double>(
+            valueListenable: sliderValue,
+            builder: (context, value, child) {
+              return Slider(
+                value: value,
+                onChanged: (newValue) {
+                  setState(() {
+                    sliderValue.value = newValue;
+                  });
+                  audioPlayer.setVolume(newValue);
+                },
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPlayerController() {
+    return Positioned(
+      // bottom: 70,
+      bottom: MediaQuery.of(context).size.height * 0.09,
+      left: 10,
+      right: 10,
+      child: Container(
+        height: 64,
+        decoration: BoxDecoration(
+            color: Colors.green.shade400,
+            borderRadius: BorderRadius.circular(10)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            IconButton(
+                onPressed: () {
+                  _showBottomSheet(context);
+                },
+                icon: Icon(Icons.timer)),
+            IconButton(
+                onPressed: () => _stopPlayingSounds(audioPlayers),
+                icon: Icon(Icons.stop_circle_outlined)),
+            IconButton(
+              onPressed: () => _volumeAll(context),
+              icon: Stack(
+                children: [
+                  Icon(Icons.volume_up_outlined),
+                  if (_countPlayingAudios(audioPlayers) > 0)
+                    Positioned(
+                      right: 0,
+                      top: 0,
+                      child: Container(
+                        padding: EdgeInsets.all(2),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
+                        constraints: BoxConstraints(
+                          minWidth: 16,
+                          minHeight: 16,
+                        ),
+                        child: Center(
+                          child: Text(
+                            _countPlayingAudios(audioPlayers).toString(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   @override
