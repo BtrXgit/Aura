@@ -86,7 +86,7 @@ class _CustomMixinState extends State<CustomMixin>
             children: <Widget>[
               Text(
                 'Select Timer Duration',
-                style: TextStyle(fontSize: 18),
+                style: TextStyle(fontSize: 18, color: Colors.white),
               ),
               SizedBox(height: 10.0),
               _buildTimerOption(0, 'No Timer'),
@@ -135,16 +135,9 @@ class _CustomMixinState extends State<CustomMixin>
             children: <Widget>[
               for (int i = 0; i < audioPlayers.length; i++)
                 _buildVolumeControl(
-                  label: 'Audio $i',
-                  audioPlayer: audioPlayers[i],
-                  sliderValue: i == 0
-                      ? sliderValue1
-                      : i == 1
-                          ? sliderValue2
-                          : i == 2
-                              ? sliderValue3
-                              : sliderValue4,
-                ),
+                    label: 'Audio $i',
+                    audioPlayer: audioPlayers[i],
+                    sliderValue: volumes[i]),
             ],
           ),
         );
@@ -156,7 +149,7 @@ class _CustomMixinState extends State<CustomMixin>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: null,
-      backgroundColor: Colors.orangeAccent.shade100,
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
           Column(
@@ -271,9 +264,7 @@ class _CustomMixinState extends State<CustomMixin>
           return Tab(
             child: Text(
               tab,
-              style: TextStyle(
-                fontSize: 14,
-              ),
+              style: TextStyle(fontSize: 14, color: Colors.white),
             ),
           );
         }).toList(),
@@ -363,7 +354,10 @@ class _CustomMixinState extends State<CustomMixin>
       visible: audioPlayer.playing,
       child: Column(
         children: [
-          Text(label),
+          Text(
+            label,
+            style: TextStyle(color: Colors.white),
+          ),
           ValueListenableBuilder<double>(
             valueListenable: sliderValue,
             builder: (context, value, child) {
@@ -411,21 +405,10 @@ class _CustomMixinState extends State<CustomMixin>
             ),
           ),
         ),
-        Text(label),
-        // ValueListenableBuilder<double>(
-        //   valueListenable: volume,
-        //   builder: (context, value, child) {
-        //     return Slider(
-        //       value: value,
-        //       onChanged: (newValue) {
-        //         setState(() {
-        //           volume.value = newValue;
-        //         });
-        //         audioPlayer.setVolume(newValue);
-        //       },
-        //     );
-        //   },
-        // ),
+        Text(
+          label,
+          style: TextStyle(color: Colors.white),
+        ),
       ],
     );
   }
