@@ -23,7 +23,7 @@ class _CustomMixinState extends State<CustomMixin>
       List.generate(14, (_) => ValueNotifier<double>(0.5));
 
   late TabController _tabController;
-  final List<String> data = ["Nature", "Music"];
+  final List<String> data = ["Nature", "Animals", "Music"];
 
   final List<AudioPlayer> audioPlayers =
       List.generate(14, (index) => AudioPlayer());
