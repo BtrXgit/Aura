@@ -20,13 +20,13 @@ class _CustomMixinState extends State<CustomMixin>
   int playingAudioCount = 0;
 
   List<ValueNotifier<double>> volumes =
-      List.generate(12, (_) => ValueNotifier<double>(0.5));
+      List.generate(13, (_) => ValueNotifier<double>(0.2));
 
   late TabController _tabController;
   final List<String> data = ["Nature", "Music"];
 
   final List<AudioPlayer> audioPlayers =
-      List.generate(12, (index) => AudioPlayer());
+      List.generate(13, (index) => AudioPlayer());
 
   int selectedTimerDuration = 0;
 
@@ -51,9 +51,10 @@ class _CustomMixinState extends State<CustomMixin>
     'assets/nature/rainforest.ogg',
     'assets/nature/wind.ogg',
     //music
-    'assets/music/harp.ogg',
+    'assets/music/harp.mp3',
     'assets/music/piano.ogg',
     'assets/music/piano_2.ogg',
+    'assets/music/guitar.mp3',
   ];
 
   final List<String> audioNames = [
@@ -71,6 +72,7 @@ class _CustomMixinState extends State<CustomMixin>
     'Harp',
     'Piano',
     'Piano 2',
+    'Guitar'
   ];
 
   Future<void> _loadAudios() async {
@@ -235,11 +237,10 @@ class _CustomMixinState extends State<CustomMixin>
         controller: _tabController,
         indicator: const BoxDecoration(
           color: Colors.transparent,
-          border:
-              Border(bottom: BorderSide(color: Colors.transparent, width: 0)),
+          border: Border(bottom: BorderSide(color: Colors.green, width: 4)),
         ),
         labelColor: Colors.red,
-        unselectedLabelColor: Colors.black,
+        unselectedLabelColor: Colors.green,
         isScrollable: true,
         labelPadding: const EdgeInsets.symmetric(horizontal: 10),
         tabs: data.map((tab) {
@@ -308,7 +309,7 @@ class _CustomMixinState extends State<CustomMixin>
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(),
-              for (int i = 9; i < 12; i++)
+              for (int i = 9; i < 13; i++)
                 _buildAudioControl(
                   label: audioNames[i],
                   audioPlayer: audioPlayers[i],
@@ -336,7 +337,7 @@ class _CustomMixinState extends State<CustomMixin>
           borderRadius: BorderRadius.circular(6),
           color: audioPlayer.playing
               ? Colors.green
-              : Color.fromARGB(255, 125, 0, 0),
+              : Color.fromARGB(255, 0, 104, 125),
         ),
         child: InkWell(
           onTap: () {
@@ -348,13 +349,14 @@ class _CustomMixinState extends State<CustomMixin>
               Icon(
                 Icons.play_arrow,
                 size: 40,
-                color: Color.fromARGB(255, 255, 98, 98),
+                color: Color.fromARGB(255, 106, 255, 98),
               ),
               Text(
                 label,
                 style: TextStyle(
-                    color: Color.fromARGB(255, 255, 93, 93),
-                    fontWeight: FontWeight.bold),
+                  color: Color.fromARGB(255, 103, 247, 110),
+                  // fontWeight: FontWeight.bold
+                ),
               ),
             ],
           ),
@@ -449,8 +451,7 @@ class _CustomMixinState extends State<CustomMixin>
       child: Container(
         height: 64,
         decoration: BoxDecoration(
-            color: Colors.green.shade400,
-            borderRadius: BorderRadius.circular(10)),
+            color: Colors.white, borderRadius: BorderRadius.circular(10)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
