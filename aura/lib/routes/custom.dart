@@ -20,13 +20,13 @@ class _CustomMixinState extends State<CustomMixin>
   int playingAudioCount = 0;
 
   List<ValueNotifier<double>> volumes =
-      List.generate(13, (_) => ValueNotifier<double>(0.2));
+      List.generate(14, (_) => ValueNotifier<double>(0.5));
 
   late TabController _tabController;
   final List<String> data = ["Nature", "Music"];
 
   final List<AudioPlayer> audioPlayers =
-      List.generate(13, (index) => AudioPlayer());
+      List.generate(14, (index) => AudioPlayer());
 
   int selectedTimerDuration = 0;
 
@@ -55,6 +55,7 @@ class _CustomMixinState extends State<CustomMixin>
     'assets/music/piano.ogg',
     'assets/music/piano_2.ogg',
     'assets/music/guitar.mp3',
+    'assets/music/violin.mp3',
   ];
 
   final List<String> audioNames = [
@@ -72,7 +73,26 @@ class _CustomMixinState extends State<CustomMixin>
     'Harp',
     'Piano',
     'Piano 2',
-    'Guitar'
+    'Guitar',
+    'Violin',
+  ];
+
+  final List<Widget> audioIcons = [
+    Image.asset('assets/icons/cave.png'),
+    Image.asset('assets/icons/creek.png'),
+    Image.asset('assets/icons/desert.png'),
+    Image.asset('assets/icons/fire.png'),
+    Image.asset('assets/icons/lake.png'),
+    Image.asset('assets/icons/night.png'),
+    Image.asset('assets/icons/ocean.png'),
+    Image.asset('assets/icons/forest.png'),
+    Image.asset('assets/icons/wind.png'),
+    //music
+    Image.asset('assets/icons/harp.png'),
+    Image.asset('assets/icons/piano.png'),
+    Image.asset('assets/icons/piano2.png'),
+    Image.asset('assets/icons/piano2.png'),
+    Image.asset('assets/icons/piano2.png'),
   ];
 
   Future<void> _loadAudios() async {
@@ -191,26 +211,12 @@ class _CustomMixinState extends State<CustomMixin>
                   height: MediaQuery.of(context).size.height * 0.3,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(
-                          'https://i.pinimg.com/564x/2c/7a/bc/2c7abc11e0b17414d26b1bb79ea614d8.jpg'),
+                      image: AssetImage('assets/images/1.jpeg'),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(10),
                         bottomRight: Radius.circular(10)),
-                  ),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 1.0,
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.2),
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(10),
-                            bottomRight: Radius.circular(10)),
-                      ),
-                    ),
                   ),
                 ),
                 // SizedBox(
@@ -270,6 +276,7 @@ class _CustomMixinState extends State<CustomMixin>
                 children: [
                   for (int i = 0; i < 4; i++)
                     _buildAudioControl(
+                      icon: audioIcons[i],
                       label: audioNames[i],
                       audioPlayer: audioPlayers[i],
                       volume: volumes[i],
@@ -281,6 +288,7 @@ class _CustomMixinState extends State<CustomMixin>
                 children: [
                   for (int i = 4; i < 8; i++)
                     _buildAudioControl(
+                      icon: audioIcons[i],
                       label: audioNames[i],
                       audioPlayer: audioPlayers[i],
                       volume: volumes[i],
@@ -292,6 +300,7 @@ class _CustomMixinState extends State<CustomMixin>
                 children: [
                   for (int i = 8; i < 9; i++)
                     _buildAudioControl(
+                      icon: audioIcons[i],
                       label: audioNames[i],
                       audioPlayer: audioPlayers[i],
                       volume: volumes[i],
@@ -305,16 +314,34 @@ class _CustomMixinState extends State<CustomMixin>
           ),
         ),
         SingleChildScrollView(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          child: Column(
             children: [
-              Container(),
-              for (int i = 9; i < 13; i++)
-                _buildAudioControl(
-                  label: audioNames[i],
-                  audioPlayer: audioPlayers[i],
-                  volume: volumes[i],
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(),
+                  for (int i = 9; i < 13; i++)
+                    _buildAudioControl(
+                      icon: audioIcons[i],
+                      label: audioNames[i],
+                      audioPlayer: audioPlayers[i],
+                      volume: volumes[i],
+                    ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(),
+                  for (int i = 13; i < 14; i++)
+                    _buildAudioControl(
+                      icon: audioIcons[i],
+                      label: audioNames[i],
+                      audioPlayer: audioPlayers[i],
+                      volume: volumes[i],
+                    ),
+                ],
+              ),
             ],
           ),
         ),
@@ -326,13 +353,14 @@ class _CustomMixinState extends State<CustomMixin>
     required String label,
     required AudioPlayer audioPlayer,
     required ValueNotifier<double> volume,
+    required Widget icon,
   }) {
     return Expanded(
       child: Container(
         // width: 74,
         // height: 74,
-        padding: EdgeInsets.all(15.0),
-        margin: EdgeInsets.all(4.0),
+        padding: EdgeInsets.all(12.0),
+        margin: EdgeInsets.all(3.5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6),
           color: audioPlayer.playing
@@ -346,11 +374,7 @@ class _CustomMixinState extends State<CustomMixin>
           customBorder: CircleBorder(),
           child: Column(
             children: [
-              Icon(
-                Icons.play_arrow,
-                size: 40,
-                color: Color.fromARGB(255, 106, 255, 98),
-              ),
+              SizedBox(height: 54, child: icon),
               Text(
                 label,
                 style: TextStyle(
