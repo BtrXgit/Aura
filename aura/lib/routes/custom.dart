@@ -79,7 +79,7 @@ class _CustomMixinState extends State<CustomMixin>
     'Wind',
     //animals
     "Birds",
-    "Tropical Birds",
+    "Birds 2",
     "Crickets",
     "Frogs",
     "Owls",
@@ -107,9 +107,9 @@ class _CustomMixinState extends State<CustomMixin>
     Image.asset('assets/icons/birds.png'),
     Image.asset('assets/icons/birds2.png'),
     Image.asset('assets/icons/crickets.png'),
-    Image.asset('assets/icons/frogs.png'),
+    Image.asset('assets/icons/frog.png'),
     Image.asset('assets/icons/owls.png'),
-    Image.asset('assets/icons/whales.png'),
+    Image.asset('assets/icons/whale.png'),
     Image.asset('assets/icons/wolves.png'),
     //music
     Image.asset('assets/icons/harp.png'),
@@ -357,7 +357,39 @@ class _CustomMixinState extends State<CustomMixin>
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(),
-                  for (int i = 13; i < 14; i++)
+                  for (int i = 13; i < 16; i++)
+                    _buildAudioControl(
+                      icon: audioIcons[i],
+                      label: audioNames[i],
+                      audioPlayer: audioPlayers[i],
+                      volume: volumes[i],
+                    ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        SingleChildScrollView(
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(),
+                  for (int i = 16; i < 19; i++)
+                    _buildAudioControl(
+                      icon: audioIcons[i],
+                      label: audioNames[i],
+                      audioPlayer: audioPlayers[i],
+                      volume: volumes[i],
+                    ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(),
+                  for (int i = 19; i < 21; i++)
                     _buildAudioControl(
                       icon: audioIcons[i],
                       label: audioNames[i],
