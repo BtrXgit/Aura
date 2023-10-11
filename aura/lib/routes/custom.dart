@@ -448,20 +448,26 @@ class _CustomMixinState extends State<CustomMixin>
   void _toggleAudioPlayback(AudioPlayer audioPlayer) {
     if (audioPlayer.playing) {
       audioPlayer.pause();
-      playingAudioCount--;
+      setState(() {
+        playingAudioCount--;
+      });
     } else {
       if (playingAudioCount >= 8) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Only 8 audios can played at a time.'),
+            content: Text('Only 8 audios can be played at a time.'),
           ),
         );
         return;
       }
-      audioPlayer.play();
-      playingAudioCount++;
+
+      Future.delayed(Duration(seconds: 1), () {
+        audioPlayer.play();
+        setState(() {
+          playingAudioCount++;
+        });
+      });
     }
-    setState(() {});
   }
 
   void _stopPlayingSounds(List<AudioPlayer> audioPlayers) {
