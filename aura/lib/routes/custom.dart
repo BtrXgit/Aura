@@ -540,8 +540,15 @@ class _CustomMixinState extends State<CustomMixin>
   }
 
   Widget _buildPlayerController() {
+    bool _isAudioPlaying = false;
+    for (final audioPlayer in audioPlayers) {
+      if (audioPlayer.playing) {
+        _isAudioPlaying = true;
+        break;
+      }
+    }
     return Visibility(
-      visible: audioPlayers[0].playing,
+      visible: _isAudioPlaying,
       child: Positioned(
         // bottom: 70,
         bottom: MediaQuery.of(context).size.height * 0.09,
