@@ -20,13 +20,13 @@ class _CustomMixinState extends State<CustomMixin>
   int playingAudioCount = 0;
 
   List<ValueNotifier<double>> volumes =
-      List.generate(14, (_) => ValueNotifier<double>(0.5));
+      List.generate(21, (_) => ValueNotifier<double>(0.5));
 
   late TabController _tabController;
   final List<String> data = ["Nature", "Animals", "Music"];
 
   final List<AudioPlayer> audioPlayers =
-      List.generate(14, (index) => AudioPlayer());
+      List.generate(21, (index) => AudioPlayer());
 
   int selectedTimerDuration = 0;
 
@@ -35,7 +35,7 @@ class _CustomMixinState extends State<CustomMixin>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     _loadAudios();
   }
 
@@ -50,6 +50,14 @@ class _CustomMixinState extends State<CustomMixin>
     'assets/nature/ocean.ogg',
     'assets/nature/rainforest.ogg',
     'assets/nature/wind.ogg',
+    //Animals
+    'assets/animals/birds.ogg',
+    'assets/animals/rainforest_birds.ogg',
+    'assets/animals/crickets.ogg',
+    'assets/animals/frogs.ogg',
+    'assets/animals/owls.ogg',
+    'assets/animals/whales.ogg',
+    'assets/animals/wolves.ogg',
     //music
     'assets/music/harp.mp3',
     'assets/music/piano.ogg',
@@ -69,6 +77,14 @@ class _CustomMixinState extends State<CustomMixin>
     'Ocean',
     'Forest',
     'Wind',
+    //animals
+    "Birds",
+    "Tropical Birds",
+    "Crickets",
+    "Frogs",
+    "Owls",
+    "Whales",
+    "Wolves",
     //music
     'Harp',
     'Piano',
@@ -87,6 +103,14 @@ class _CustomMixinState extends State<CustomMixin>
     Image.asset('assets/icons/ocean.png'),
     Image.asset('assets/icons/forest.png'),
     Image.asset('assets/icons/wind.png'),
+    //animals
+    Image.asset('assets/icons/birds.png'),
+    Image.asset('assets/icons/birds2.png'),
+    Image.asset('assets/icons/crickets.png'),
+    Image.asset('assets/icons/frogs.png'),
+    Image.asset('assets/icons/owls.png'),
+    Image.asset('assets/icons/whales.png'),
+    Image.asset('assets/icons/wolves.png'),
     //music
     Image.asset('assets/icons/harp.png'),
     Image.asset('assets/icons/piano.png'),
