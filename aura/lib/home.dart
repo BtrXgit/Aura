@@ -18,12 +18,12 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late int currentPage;
   late TabController tabController;
-  final List<Color> colors = [
-    Colors.yellow,
-    Colors.red,
-    Colors.green,
-    Colors.blue,
-  ];
+  // final List<Color> colors = [
+  //   Colors.yellow,
+  //   Colors.red,
+  //   Colors.green,
+  //   Colors.blue,
+  // ];
 
   @override
   void initState() {
@@ -54,9 +54,9 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    final Color unselectedColor = colors[currentPage].computeLuminance() < 0.5
-        ? Colors.black
-        : Colors.white;
+    // final Color unselectedColor = colors[currentPage].computeLuminance() < 0.5
+    //     ? Colors.black
+    //     : Colors.white;
     return SafeArea(
       child: Scaffold(
         // appBar: AppBar(
@@ -72,17 +72,18 @@ class _HomePageState extends State<HomePage>
             controller: tabController,
             indicator: UnderlineTabIndicator(
                 borderSide: BorderSide(
-                    color: currentPage == 0
-                        ? colors[0]
-                        : currentPage == 1
-                            ? colors[1]
-                            : currentPage == 2
-                                ? colors[2]
-                                : currentPage == 3
-                                    ? colors[3]
-                                    : currentPage == 4
-                                        ? colors[4]
-                                        : unselectedColor,
+                    // color: currentPage == 0
+                    //     ? colors[0]
+                    //     : currentPage == 1
+                    //         ? colors[1]
+                    //         : currentPage == 2
+                    //             ? colors[2]
+                    //             : currentPage == 3
+                    //                 ? colors[3]
+                    //                 : currentPage == 4
+                    //                     ? colors[4]
+                    //                     : unselectedColor,
+                    color: Colors.grey,
                     width: 4),
                 insets: EdgeInsets.fromLTRB(16, 0, 16, 8)),
             tabs: [
@@ -92,7 +93,8 @@ class _HomePageState extends State<HomePage>
                 child: Center(
                     child: Icon(
                   Icons.home,
-                  color: currentPage == 0 ? colors[0] : unselectedColor,
+                  // color: currentPage == 0 ? colors[0] : unselectedColor,
+                  color: Colors.black,
                 )),
               ),
               SizedBox(
@@ -101,7 +103,8 @@ class _HomePageState extends State<HomePage>
                 child: Center(
                     child: Icon(
                   Icons.search,
-                  color: currentPage == 1 ? colors[1] : unselectedColor,
+                  // color: currentPage == 1 ? colors[1] : unselectedColor,
+                  color: Colors.black,
                 )),
               ),
               SizedBox(
@@ -110,7 +113,8 @@ class _HomePageState extends State<HomePage>
                 child: Center(
                     child: Icon(
                   Icons.favorite,
-                  color: currentPage == 3 ? colors[3] : unselectedColor,
+                  // color: currentPage == 3 ? colors[3] : unselectedColor,
+                  color: Colors.black,
                 )),
               ),
               SizedBox(
@@ -119,7 +123,8 @@ class _HomePageState extends State<HomePage>
                 child: Center(
                     child: Icon(
                   Icons.settings,
-                  color: currentPage == 4 ? colors[4] : unselectedColor,
+                  // color: currentPage == 4 ? colors[4] : unselectedColor,
+                  color: Colors.black,
                 )),
               ),
             ],
@@ -131,7 +136,7 @@ class _HomePageState extends State<HomePage>
               onPressed: null,
               icon: Icon(
                 Icons.arrow_upward_rounded,
-                color: unselectedColor,
+                color: Colors.grey,
                 size: width,
               ),
             ),
@@ -141,7 +146,7 @@ class _HomePageState extends State<HomePage>
           curve: Curves.decelerate,
           showIcon: true,
           width: MediaQuery.of(context).size.width * 0.8,
-          barColor: colors[currentPage].computeLuminance() > 0.5
+          barColor: Colors.black.computeLuminance() > 0.5
               ? Colors.black
               : Colors.white,
           start: 2,
@@ -160,10 +165,18 @@ class _HomePageState extends State<HomePage>
             dragStartBehavior: DragStartBehavior.down,
             physics: const NeverScrollableScrollPhysics(),
             children: [
-              AuraHomePage(controller: controller, color: colors[0]),
-              CustomMixin(controller: controller, color: colors[1]),
-              FavouritePage(controller: controller, color: colors[2]),
-              SettingsPage(controller: controller, color: colors[3]),
+              AuraHomePage(
+                controller: controller,
+              ),
+              CustomMixin(
+                controller: controller,
+              ),
+              FavouritePage(
+                controller: controller,
+              ),
+              SettingsPage(
+                controller: controller,
+              ),
             ],
           ),
         ),

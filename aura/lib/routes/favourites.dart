@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 class FavouritePage extends StatelessWidget {
-  final Color color;
+  // final Color color;
   final ScrollController controller;
-  const FavouritePage({required this.color, required this.controller, Key? key})
+  const FavouritePage({
+    // required this.color,
+     required this.controller, Key? key})
       : super(key: key);
 
   @override

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 class AuraHomePage extends StatelessWidget {
-  final Color color;
+  // final Color color;
   final ScrollController controller;
 
-  const AuraHomePage({required this.color, required this.controller, Key? key})
+  const AuraHomePage({
+    // required this.color,
+   required this.controller, Key? key})
       : super(key: key);
 
   String _getGreeting() {

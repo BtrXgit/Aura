@@ -8,7 +8,7 @@ class CustomMixin extends StatefulWidget {
   const CustomMixin({
     Key? key,
     required ScrollController controller,
-    required Color color,
+    // required Color color,
   }) : super(key: key);
 
   @override
@@ -116,10 +116,14 @@ class _CustomMixinState extends State<CustomMixin>
               SizedBox(height: 10.0),
               _buildTimerOption(0, 'No Timer'),
               _buildTimerOption(5, '5 Seconds'),
+              _buildTimerOption(60, '1 Minute'),
               _buildTimerOption(300, '5 Minutes'),
               _buildTimerOption(600, '10 Minutes'),
               _buildTimerOption(1800, '30 Minutes'),
               _buildTimerOption(3600, '1 Hour'),
+              _buildTimerOption(7200, '2 Hours'),
+              _buildTimerOption(10800, '3 Hours '),
+              _buildTimerOption(18000, '5 Hours'),
               SizedBox(height: 10.0),
             ],
           ),

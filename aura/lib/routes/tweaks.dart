@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatelessWidget {
-  final Color color;
+  // final Color color;
   final ScrollController controller;
-  const SettingsPage({required this.color, required this.controller, Key? key})
+  const SettingsPage(
+      {
+      // required this.color,
+      required this.controller,
+      Key? key})
       : super(key: key);
 
   @override
