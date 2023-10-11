@@ -461,7 +461,7 @@ class _CustomMixinState extends State<CustomMixin>
         return;
       }
 
-      Future.delayed(Duration(seconds: 1), () {
+      Future.delayed(Duration(milliseconds: 500), () {
         audioPlayer.play();
         setState(() {
           playingAudioCount++;
@@ -471,15 +471,26 @@ class _CustomMixinState extends State<CustomMixin>
   }
 
   void _stopPlayingSounds(List<AudioPlayer> audioPlayers) {
+    bool anySoundsPlaying = false;
+
     for (final audioPlayer in audioPlayers) {
       if (audioPlayer.playing) {
         audioPlayer.pause();
         playingAudioCount--;
+        anySoundsPlaying = true;
       }
     }
 
-    if (audioTimer != null) {
-      audioTimer!.cancel();
+    if (anySoundsPlaying) {
+      if (audioTimer != null) {
+        audioTimer!.cancel();
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('No sounds are playing.'),
+        ),
+      );
     }
 
     setState(() {});
@@ -529,60 +540,63 @@ class _CustomMixinState extends State<CustomMixin>
   }
 
   Widget _buildPlayerController() {
-    return Positioned(
-      // bottom: 70,
-      bottom: MediaQuery.of(context).size.height * 0.09,
-      left: 10,
-      right: 10,
-      child: Container(
-        height: 64,
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(10)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            IconButton(
-                onPressed: () {
-                  _showBottomSheet(context);
-                },
-                icon: Icon(Icons.timer)),
-            IconButton(
-                onPressed: () => _stopPlayingSounds(audioPlayers),
-                icon: Icon(Icons.stop_circle_outlined)),
-            IconButton(
-              onPressed: () => _volumeAll(context),
-              icon: Stack(
-                children: [
-                  Icon(Icons.volume_up_outlined),
-                  if (_countPlayingAudios(audioPlayers) > 0)
-                    Positioned(
-                      right: 0,
-                      top: 0,
-                      child: Container(
-                        padding: EdgeInsets.all(2),
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          shape: BoxShape.circle,
-                        ),
-                        constraints: BoxConstraints(
-                          minWidth: 16,
-                          minHeight: 16,
-                        ),
-                        child: Center(
-                          child: Text(
-                            _countPlayingAudios(audioPlayers).toString(),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
+    return Visibility(
+      visible: audioPlayers[0].playing,
+      child: Positioned(
+        // bottom: 70,
+        bottom: MediaQuery.of(context).size.height * 0.09,
+        left: 10,
+        right: 10,
+        child: Container(
+          height: 64,
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(10)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              IconButton(
+                  onPressed: () {
+                    _showBottomSheet(context);
+                  },
+                  icon: Icon(Icons.timer)),
+              IconButton(
+                  onPressed: () => _stopPlayingSounds(audioPlayers),
+                  icon: Icon(Icons.stop_circle_outlined)),
+              IconButton(
+                onPressed: () => _volumeAll(context),
+                icon: Stack(
+                  children: [
+                    Icon(Icons.volume_up_outlined),
+                    if (_countPlayingAudios(audioPlayers) > 0)
+                      Positioned(
+                        right: 0,
+                        top: 0,
+                        child: Container(
+                          padding: EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                          ),
+                          constraints: BoxConstraints(
+                            minWidth: 16,
+                            minHeight: 16,
+                          ),
+                          child: Center(
+                            child: Text(
+                              _countPlayingAudios(audioPlayers).toString(),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                ],
-              ),
-            )
-          ],
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
