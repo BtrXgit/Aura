@@ -2,6 +2,9 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:gradient_borders/box_borders/gradient_box_border.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
 
 class CustomMixin extends StatefulWidget {
@@ -261,23 +264,47 @@ class _CustomMixinState extends State<CustomMixin>
 
   Widget _buildTabBar() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(10.0, 0, 0, 0),
+      padding: const EdgeInsets.fromLTRB(10, 10, 0, 4),
       child: TabBar(
         physics: const BouncingScrollPhysics(),
+        indicatorPadding: const EdgeInsets.fromLTRB(6, 2, 6, 2),
         controller: _tabController,
-        indicator: const BoxDecoration(
-          color: Colors.transparent,
-          border: Border(bottom: BorderSide(color: Colors.green, width: 4)),
+        indicatorColor: Colors.green,
+        indicator: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.green,
+              Color.fromARGB(255, 0, 104, 125),
+            ],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          ),
+          borderRadius: BorderRadius.circular(20),
         ),
-        labelColor: Colors.red,
-        unselectedLabelColor: Colors.green,
+        labelColor: Colors.white,
+        unselectedLabelColor: Colors.white,
         isScrollable: true,
-        labelPadding: const EdgeInsets.symmetric(horizontal: 10),
+        labelPadding: const EdgeInsets.symmetric(horizontal: 5),
         tabs: data.map((tab) {
-          return Tab(
-            child: Text(
-              tab,
-              style: TextStyle(fontSize: 14, color: Colors.white),
+          return Container(
+            height: MediaQuery.of(context).size.height * 0.046,
+            width: MediaQuery.of(context).size.width * 0.25,
+            decoration: BoxDecoration(
+              border: GradientBoxBorder(
+                  width: 4,
+                  gradient: LinearGradient(colors: [
+                    Colors.green,
+                    Color.fromARGB(255, 0, 104, 125),
+                  ])),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Tab(
+              child: Text(
+                tab,
+                style: GoogleFonts.kanit(
+                  fontSize: 14,
+                ),
+              ),
             ),
           );
         }).toList(),
@@ -429,6 +456,7 @@ class _CustomMixinState extends State<CustomMixin>
           },
           customBorder: CircleBorder(),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(height: 54, child: icon),
               Text(
@@ -552,12 +580,21 @@ class _CustomMixinState extends State<CustomMixin>
       child: Positioned(
         // bottom: 70,
         bottom: MediaQuery.of(context).size.height * 0.09,
-        left: 10,
-        right: 10,
+        left: MediaQuery.of(context).size.width * 0.1,
+        right: MediaQuery.of(context).size.width * 0.1,
         child: Container(
+          width: MediaQuery.of(context).size.width * 0.8,
           height: 64,
           decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(10)),
+              color: Colors.transparent,
+              border: GradientBoxBorder(
+                  width: 4,
+                  gradient: LinearGradient(colors: [
+                    Colors.green,
+                    Color.fromARGB(255, 0, 104, 125),
+                  ])),
+              // border: Border.all(width: 2, color: Colors.white),
+              borderRadius: BorderRadius.circular(30)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -565,15 +602,27 @@ class _CustomMixinState extends State<CustomMixin>
                   onPressed: () {
                     _showBottomSheet(context);
                   },
-                  icon: Icon(Icons.timer)),
+                  icon: Icon(
+                    Iconsax.timer,
+                    color: Colors.white,
+                    size: 30,
+                  )),
               IconButton(
                   onPressed: () => _stopPlayingSounds(audioPlayers),
-                  icon: Icon(Icons.stop_circle_outlined)),
+                  icon: Icon(
+                    Iconsax.stop,
+                    color: Colors.white,
+                    size: 30,
+                  )),
               IconButton(
                 onPressed: () => _volumeAll(context),
                 icon: Stack(
                   children: [
-                    Icon(Icons.volume_up_outlined),
+                    Icon(
+                      Iconsax.volume_up,
+                      color: Colors.white,
+                      size: 30,
+                    ),
                     if (_countPlayingAudios(audioPlayers) > 0)
                       Positioned(
                         right: 0,
