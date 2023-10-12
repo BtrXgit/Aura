@@ -5,6 +5,7 @@ import 'package:aura/routes/tweaks.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
+import 'package:iconsax/iconsax.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);
@@ -92,7 +93,7 @@ class _HomePageState extends State<HomePage>
                 width: 40,
                 child: Center(
                     child: Icon(
-                  Icons.home,
+                  Iconsax.home,
                   // color: currentPage == 0 ? colors[0] : unselectedColor,
                   color: Colors.black,
                 )),
@@ -102,7 +103,7 @@ class _HomePageState extends State<HomePage>
                 width: 40,
                 child: Center(
                     child: Icon(
-                  Icons.search,
+                  Iconsax.music,
                   // color: currentPage == 1 ? colors[1] : unselectedColor,
                   color: Colors.black,
                 )),
@@ -112,7 +113,7 @@ class _HomePageState extends State<HomePage>
                 width: 40,
                 child: Center(
                     child: Icon(
-                  Icons.favorite,
+                  Iconsax.location,
                   // color: currentPage == 3 ? colors[3] : unselectedColor,
                   color: Colors.black,
                 )),
@@ -122,7 +123,7 @@ class _HomePageState extends State<HomePage>
                 width: 40,
                 child: Center(
                     child: Icon(
-                  Icons.settings,
+                  Iconsax.setting_4,
                   // color: currentPage == 4 ? colors[4] : unselectedColor,
                   color: Colors.black,
                 )),
