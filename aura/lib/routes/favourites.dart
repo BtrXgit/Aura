@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 class FavouritePage extends StatelessWidget {
   // final Color color;
   final ScrollController controller;
-  const FavouritePage({
-    // required this.color,
-     required this.controller, Key? key})
+  const FavouritePage(
+      {
+      // required this.color,
+      required this.controller,
+      Key? key})
       : super(key: key);
 
   @override
@@ -15,7 +17,7 @@ class FavouritePage extends StatelessWidget {
         Container(
           width: 100,
           height: 100,
-          color: Colors.green,
+          color: Colors.red,
         )
       ]),
     );
