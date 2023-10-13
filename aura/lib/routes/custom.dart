@@ -489,7 +489,7 @@ class _CustomMixinState extends State<CustomMixin>
         return;
       }
 
-      Future.delayed(Duration(milliseconds: 500), () {
+      Future.delayed(Duration(milliseconds: 100), () {
         audioPlayer.play();
         setState(() {
           playingAudioCount++;
