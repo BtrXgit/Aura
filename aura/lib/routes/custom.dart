@@ -23,13 +23,13 @@ class _CustomMixinState extends State<CustomMixin>
   int playingAudioCount = 0;
 
   List<ValueNotifier<double>> volumes =
-      List.generate(30, (_) => ValueNotifier<double>(0.5));
+      List.generate(40, (_) => ValueNotifier<double>(0.5));
 
   late TabController _tabController;
-  final List<String> data = ["Nature", "Animals", "Music"];
+  final List<String> data = ["Nature", "Animals", "Rain", "Music", "ASMR"];
 
   final List<AudioPlayer> audioPlayers =
-      List.generate(30, (index) => AudioPlayer());
+      List.generate(40, (index) => AudioPlayer());
 
   int selectedTimerDuration = 0;
 
@@ -38,7 +38,7 @@ class _CustomMixinState extends State<CustomMixin>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 5, vsync: this);
     _loadAudios();
   }
 
@@ -63,14 +63,14 @@ class _CustomMixinState extends State<CustomMixin>
     'assets/animals/wolves.ogg',
     //rain
     'assets/rain/rain.ogg',
+    'assets/rain/thunders.ogg',
+    'assets/rain/thunderstorm.ogg',
     'assets/rain/rain_in_forest.ogg',
     'assets/rain/rain_on_leaves.ogg',
     'assets/rain/rain_on_roof.ogg',
     'assets/rain/rain_on_tent.ogg',
     'assets/rain/rain_on_window.ogg',
     'assets/rain/rain_under_umbrella',
-    'assets/rain/thunders.ogg',
-    'assets/rain/thunderstorm.ogg',
 
     //music
     'assets/music/harp.mp3',
@@ -78,6 +78,18 @@ class _CustomMixinState extends State<CustomMixin>
     'assets/music/piano_2.ogg',
     'assets/music/guitar.mp3',
     'assets/music/violin.mp3',
+
+    //ASMR
+    'assets/asmr/breathing.ogg',
+    'assets/asmr/car_engine',
+    'assets/asmr/',
+    'assets/asmr/',
+    'assets/asmr/',
+    'assets/asmr/',
+    'assets/asmr/',
+    'assets/asmr/',
+    'assets/asmr/',
+    'assets/asmr/',
   ];
 
   final List<String> audioNames = [
@@ -101,14 +113,15 @@ class _CustomMixinState extends State<CustomMixin>
     "Wolves",
     //rain
     "Rain",
+    "Thunder",
+    "Thunder 2",
     "Rain in Forest",
     "Rain on Leaves",
     "Rain on Roof",
     "Rain on Tent",
     "Rain on Window",
     "Rain under Umbrella",
-    "Thunder",
-    "Heavy Thunder",
+
     //music
     'Harp',
     'Piano',
@@ -137,14 +150,15 @@ class _CustomMixinState extends State<CustomMixin>
     Image.asset('assets/icons/wolves.png'),
     //rain
     Image.asset('assets/icons/rain/rain.png'),
+    Image.asset('assets/icons/rain/storm.png'),
+    Image.asset('assets/icons/rain/thunderstorm.png'),
     Image.asset('assets/icons/rain/rain_in_forest.png'),
     Image.asset('assets/icons/rain/rain_on_leaves.png'),
     Image.asset('assets/icons/rain/rain_on_roof.png'),
     Image.asset('assets/icons/rain/rain_on_leaves.png'),
     Image.asset('assets/icons/rain/rain_on_window.png'),
     Image.asset('assets/icons/rain/rain_under_umbrella.png'),
-    Image.asset('assets/icons/rain/storm.png'),
-    Image.asset('assets/icons/rain/thunderstorm.png'),
+
     //music
     Image.asset('assets/icons/harp.png'),
     Image.asset('assets/icons/piano.png'),
@@ -396,6 +410,7 @@ class _CustomMixinState extends State<CustomMixin>
           ),
         ),
         SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Column(
             children: [
               Row(
@@ -428,6 +443,7 @@ class _CustomMixinState extends State<CustomMixin>
           ),
         ),
         SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Column(
             children: [
               Row(
@@ -456,17 +472,47 @@ class _CustomMixinState extends State<CustomMixin>
                     ),
                 ],
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(),
+                  for (int i = 21; i < 23; i++)
+                    _buildAudioControl(
+                      icon: audioIcons[i],
+                      label: audioNames[i],
+                      audioPlayer: audioPlayers[i],
+                      volume: volumes[i],
+                    ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(),
+                  for (int i = 23; i < 25; i++)
+                    _buildAudioControl(
+                      icon: audioIcons[i],
+                      label: audioNames[i],
+                      audioPlayer: audioPlayers[i],
+                      volume: volumes[i],
+                    ),
+                ],
+              ),
+              SizedBox(
+                height: 150,
+              )
             ],
           ),
         ),
         SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(),
-                  for (int i = 21; i < 25; i++)
+                  for (int i = 25; i < 29; i++)
                     _buildAudioControl(
                       icon: audioIcons[i],
                       label: audioNames[i],
@@ -479,20 +525,7 @@ class _CustomMixinState extends State<CustomMixin>
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(),
-                  for (int i = 25; i < 28; i++)
-                    _buildAudioControl(
-                      icon: audioIcons[i],
-                      label: audioNames[i],
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(),
-                  for (int i = 28; i < 30; i++)
+                  for (int i = 29; i < 30; i++)
                     _buildAudioControl(
                       icon: audioIcons[i],
                       label: audioNames[i],
