@@ -81,15 +81,15 @@ class _CustomMixinState extends State<CustomMixin>
 
     //ASMR
     'assets/asmr/breathing.ogg',
-    'assets/asmr/car_engine',
-    'assets/asmr/',
-    'assets/asmr/',
-    'assets/asmr/',
-    'assets/asmr/',
-    'assets/asmr/',
-    'assets/asmr/',
-    'assets/asmr/',
-    'assets/asmr/',
+    'assets/asmr/car_engine.ogg',
+    'assets/asmr/cat_purring.ogg',
+    'assets/asmr/chewing.ogg',
+    'assets/asmr/crackling.ogg',
+    'assets/asmr/hair_clippers.ogg',
+    'assets/asmr/page_turning.ogg',
+    'assets/asmr/scratching.ogg',
+    'assets/asmr/tapping.ogg',
+    'assets/asmr/whispering.ogg',
   ];
 
   final List<String> audioNames = [
@@ -128,6 +128,17 @@ class _CustomMixinState extends State<CustomMixin>
     'Piano 2',
     'Guitar',
     'Violin',
+    //ASMR
+    'Breathing',
+    'Car Engine',
+    'Cat Purring',
+    'Chewing',
+    'Crackling',
+    'Hair Clippers',
+    'Page Turning',
+    'Scratching',
+    'Tapping',
+    'Whispering',
   ];
 
   final List<Widget> audioIcons = [
@@ -165,6 +176,18 @@ class _CustomMixinState extends State<CustomMixin>
     Image.asset('assets/icons/piano2.png'),
     Image.asset('assets/icons/piano2.png'),
     Image.asset('assets/icons/piano2.png'),
+
+    //ASMR
+    Image.asset('assets/icons/asmr/breathing.png'),
+    Image.asset('assets/icons/asmr/car_engine.png'),
+    Image.asset('assets/icons/asmr/cat_purring.png'),
+    Image.asset('assets/icons/asmr/chewing.png'),
+    Image.asset('assets/icons/asmr/crackling.png'),
+    Image.asset('assets/icons/asmr/hair_clippers.png'),
+    Image.asset('assets/icons/asmr/page_turning.png'),
+    Image.asset('assets/icons/asmr/scratching.png'),
+    Image.asset('assets/icons/asmr/tapping.png'),
+    Image.asset('assets/icons/asmr/whispering.png'),
   ];
 
   Future<void> _loadAudios() async {
@@ -534,6 +557,68 @@ class _CustomMixinState extends State<CustomMixin>
                     ),
                 ],
               ),
+            ],
+          ),
+        ),
+        SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(),
+                  for (int i = 30; i < 34; i++)
+                    _buildAudioControl(
+                      icon: audioIcons[i],
+                      label: audioNames[i],
+                      audioPlayer: audioPlayers[i],
+                      volume: volumes[i],
+                    ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(),
+                  for (int i = 34; i < 37; i++)
+                    _buildAudioControl(
+                      icon: audioIcons[i],
+                      label: audioNames[i],
+                      audioPlayer: audioPlayers[i],
+                      volume: volumes[i],
+                    ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(),
+                  for (int i = 37; i < 39; i++)
+                    _buildAudioControl(
+                      icon: audioIcons[i],
+                      label: audioNames[i],
+                      audioPlayer: audioPlayers[i],
+                      volume: volumes[i],
+                    ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(),
+                  for (int i = 39; i < 40; i++)
+                    _buildAudioControl(
+                      icon: audioIcons[i],
+                      label: audioNames[i],
+                      audioPlayer: audioPlayers[i],
+                      volume: volumes[i],
+                    ),
+                ],
+              ),
+              SizedBox(
+                height: 150,
+              )
             ],
           ),
         ),
