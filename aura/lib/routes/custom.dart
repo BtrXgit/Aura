@@ -23,13 +23,20 @@ class _CustomMixinState extends State<CustomMixin>
   int playingAudioCount = 0;
 
   List<ValueNotifier<double>> volumes =
-      List.generate(40, (_) => ValueNotifier<double>(0.5));
+      List.generate(45, (_) => ValueNotifier<double>(0.5));
 
   late TabController _tabController;
-  final List<String> data = ["Nature", "Animals", "Rain", "Music", "ASMR"];
+  final List<String> data = [
+    "Nature",
+    "Animals",
+    "Rain",
+    "Music",
+    "ASMR",
+    "Transport",
+  ];
 
   final List<AudioPlayer> audioPlayers =
-      List.generate(40, (index) => AudioPlayer());
+      List.generate(45, (index) => AudioPlayer());
 
   int selectedTimerDuration = 0;
 
@@ -38,7 +45,7 @@ class _CustomMixinState extends State<CustomMixin>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 5, vsync: this);
+    _tabController = TabController(length: 6, vsync: this);
     _loadAudios();
   }
 
@@ -54,23 +61,23 @@ class _CustomMixinState extends State<CustomMixin>
     'assets/nature/rainforest.ogg',
     'assets/nature/wind.ogg',
     //Animals
-    'assets/animals/birds.ogg',
-    'assets/animals/rainforest_birds.ogg',
-    'assets/animals/crickets.ogg',
-    'assets/animals/frogs.ogg',
-    'assets/animals/owls.ogg',
-    'assets/animals/whales.ogg',
-    'assets/animals/wolves.ogg',
+    'assets/animals/birds.ogg', //not working
+    'assets/animals/rainforest_birds.ogg', //not working
+    'assets/animals/crickets.ogg', //not working
+    'assets/animals/frogs.ogg', //not working
+    'assets/animals/owls.ogg', //not working
+    'assets/animals/whales.ogg', //not working
+    'assets/animals/wolves.ogg', //not working
     //rain
     'assets/rain/rain.ogg',
     'assets/rain/thunders.ogg',
     'assets/rain/thunderstorm.ogg',
     'assets/rain/rain_in_forest.ogg',
     'assets/rain/rain_on_leaves.ogg',
-    'assets/rain/rain_on_roof.ogg',
-    'assets/rain/rain_on_tent.ogg',
-    'assets/rain/rain_on_window.ogg',
-    'assets/rain/rain_under_umbrella',
+    'assets/rain/rain_on_roof.mp3',
+    'assets/rain/rain_on_tent.mp3',
+    'assets/rain/rain_on_window.mp3',
+    'assets/rain/rain_under_umbrella.ogg',
 
     //music
     'assets/music/harp.mp3',
@@ -90,6 +97,12 @@ class _CustomMixinState extends State<CustomMixin>
     'assets/asmr/scratching.ogg',
     'assets/asmr/tapping.ogg',
     'assets/asmr/whispering.ogg',
+    //transport
+    'assets/transport/car.ogg',
+    'assets/transport/train.ogg',
+    'assets/transport/airplane.ogg',
+    'assets/transport/boat.ogg',
+    'assets/transport/boat_ride.ogg',
   ];
 
   final List<String> audioNames = [
@@ -139,6 +152,12 @@ class _CustomMixinState extends State<CustomMixin>
     'Scratching',
     'Tapping',
     'Whispering',
+    //transport
+    'Car',
+    'Train',
+    'Airplane',
+    'Boat',
+    'Boat 2',
   ];
 
   final List<Widget> audioIcons = [
@@ -188,6 +207,12 @@ class _CustomMixinState extends State<CustomMixin>
     Image.asset('assets/icons/asmr/scratching.png'),
     Image.asset('assets/icons/asmr/tapping.png'),
     Image.asset('assets/icons/asmr/whispering.png'),
+    //transport
+    Image.asset('assets/icons/transport/car.png'),
+    Image.asset('assets/icons/transport/train.png'),
+    Image.asset('assets/icons/transport/plane.png'),
+    Image.asset('assets/icons/transport/boat.png'),
+    Image.asset('assets/icons/transport/boat.png'),
   ];
 
   Future<void> _loadAudios() async {
@@ -385,7 +410,7 @@ class _CustomMixinState extends State<CustomMixin>
       controller: _tabController,
       children: [
         SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: ClampingScrollPhysics(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
@@ -568,7 +593,7 @@ class _CustomMixinState extends State<CustomMixin>
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(),
-                  for (int i = 30; i < 34; i++)
+                  for (int i = 30; i < 33; i++)
                     _buildAudioControl(
                       icon: audioIcons[i],
                       label: audioNames[i],
@@ -581,7 +606,7 @@ class _CustomMixinState extends State<CustomMixin>
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(),
-                  for (int i = 34; i < 37; i++)
+                  for (int i = 33; i < 36; i++)
                     _buildAudioControl(
                       icon: audioIcons[i],
                       label: audioNames[i],
@@ -608,6 +633,42 @@ class _CustomMixinState extends State<CustomMixin>
                 children: [
                   Container(),
                   for (int i = 39; i < 40; i++)
+                    _buildAudioControl(
+                      icon: audioIcons[i],
+                      label: audioNames[i],
+                      audioPlayer: audioPlayers[i],
+                      volume: volumes[i],
+                    ),
+                ],
+              ),
+              SizedBox(
+                height: 150,
+              )
+            ],
+          ),
+        ),
+        SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(),
+                  for (int i = 40; i < 44; i++)
+                    _buildAudioControl(
+                      icon: audioIcons[i],
+                      label: audioNames[i],
+                      audioPlayer: audioPlayers[i],
+                      volume: volumes[i],
+                    ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(),
+                  for (int i = 44; i < 45; i++)
                     _buildAudioControl(
                       icon: audioIcons[i],
                       label: audioNames[i],
@@ -780,7 +841,11 @@ class _CustomMixinState extends State<CustomMixin>
           width: MediaQuery.of(context).size.width * 0.8,
           height: 64,
           decoration: BoxDecoration(
-              color: Colors.transparent,
+              // color: Colors.transparent,
+              gradient: LinearGradient(colors: [
+                Colors.green,
+                Color.fromARGB(255, 0, 104, 125),
+              ]),
               border: GradientBoxBorder(
                   width: 4,
                   gradient: LinearGradient(colors: [

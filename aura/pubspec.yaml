@@ -76,10 +76,12 @@ flutter:
     - assets/rain/
     - assets/animals/
     - assets/music/
+    - assets/transport/
     - assets/images/
     - assets/icons/
     - assets/icons/rain/
     - assets/icons/asmr/
+    - assets/icons/transport/
     
   #   - images/a_dot_ham.jpeg
 
