@@ -23,7 +23,7 @@ class _CustomMixinState extends State<CustomMixin>
   int playingAudioCount = 0;
 
   List<ValueNotifier<double>> volumes =
-      List.generate(45, (_) => ValueNotifier<double>(0.5));
+      List.generate(54, (_) => ValueNotifier<double>(1.0));
 
   late TabController _tabController;
   final List<String> data = [
@@ -36,7 +36,7 @@ class _CustomMixinState extends State<CustomMixin>
   ];
 
   final List<AudioPlayer> audioPlayers =
-      List.generate(45, (index) => AudioPlayer());
+      List.generate(54, (index) => AudioPlayer());
 
   int selectedTimerDuration = 0;
 
@@ -84,8 +84,16 @@ class _CustomMixinState extends State<CustomMixin>
     'assets/music/piano.ogg',
     'assets/music/piano_2.ogg',
     'assets/music/guitar.mp3',
+    'assets/music/lofi_guitar.mp3',
+    'assets/music/guitar_sentimental.mp3',
+    'assets/music/acoustic_guitar.mp3',
     'assets/music/violin.mp3',
-
+    'assets/music/peaceful.mp3',
+    'assets/music/rhodes.mp3',
+    'assets/music/ambience.mp3',
+    'assets/music/ambient.mp3',
+    'assets/music/chill.mp3',
+    'assets/music/cinematic.mp3',
     //ASMR
     'assets/asmr/breathing.ogg',
     'assets/asmr/car_engine.ogg',
@@ -140,7 +148,16 @@ class _CustomMixinState extends State<CustomMixin>
     'Piano',
     'Piano 2',
     'Guitar',
+    'Guitar 2',
+    'Guitar 3',
+    'Guitar 4',
     'Violin',
+    'Peaceful',
+    'Rhodes',
+    'Ambient',
+    'Ambient 2',
+    'Chill',
+    'Cinematic',
     //ASMR
     'Breathing',
     'Car Engine',
@@ -192,6 +209,15 @@ class _CustomMixinState extends State<CustomMixin>
     //music
     Image.asset('assets/icons/harp.png'),
     Image.asset('assets/icons/piano.png'),
+    Image.asset('assets/icons/piano2.png'),
+    Image.asset('assets/icons/piano2.png'),
+    Image.asset('assets/icons/piano2.png'),
+    Image.asset('assets/icons/piano2.png'),
+    Image.asset('assets/icons/piano2.png'),
+    Image.asset('assets/icons/piano2.png'),
+    Image.asset('assets/icons/piano2.png'),
+    Image.asset('assets/icons/piano2.png'),
+    Image.asset('assets/icons/piano2.png'),
     Image.asset('assets/icons/piano2.png'),
     Image.asset('assets/icons/piano2.png'),
     Image.asset('assets/icons/piano2.png'),
@@ -560,7 +586,7 @@ class _CustomMixinState extends State<CustomMixin>
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(),
-                  for (int i = 25; i < 29; i++)
+                  for (int i = 25; i < 28; i++)
                     _buildAudioControl(
                       icon: audioIcons[i],
                       label: audioNames[i],
@@ -573,27 +599,7 @@ class _CustomMixinState extends State<CustomMixin>
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(),
-                  for (int i = 29; i < 30; i++)
-                    _buildAudioControl(
-                      icon: audioIcons[i],
-                      label: audioNames[i],
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(),
-                  for (int i = 30; i < 33; i++)
+                  for (int i = 28; i < 31; i++)
                     _buildAudioControl(
                       icon: audioIcons[i],
                       label: audioNames[i],
@@ -606,7 +612,20 @@ class _CustomMixinState extends State<CustomMixin>
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(),
-                  for (int i = 33; i < 36; i++)
+                  for (int i = 31; i < 34; i++)
+                    _buildAudioControl(
+                      icon: audioIcons[i],
+                      label: audioNames[i],
+                      audioPlayer: audioPlayers[i],
+                      volume: volumes[i],
+                    ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(),
+                  for (int i = 34; i < 37; i++)
                     _buildAudioControl(
                       icon: audioIcons[i],
                       label: audioNames[i],
@@ -628,11 +647,60 @@ class _CustomMixinState extends State<CustomMixin>
                     ),
                 ],
               ),
+              const SizedBox(
+                height: 150,
+              )
+            ],
+          ),
+        ),
+        SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Column(
+            children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(),
-                  for (int i = 39; i < 40; i++)
+                  for (int i = 39; i < 42; i++)
+                    _buildAudioControl(
+                      icon: audioIcons[i],
+                      label: audioNames[i],
+                      audioPlayer: audioPlayers[i],
+                      volume: volumes[i],
+                    ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(),
+                  for (int i = 42; i < 45; i++)
+                    _buildAudioControl(
+                      icon: audioIcons[i],
+                      label: audioNames[i],
+                      audioPlayer: audioPlayers[i],
+                      volume: volumes[i],
+                    ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(),
+                  for (int i = 45; i < 48; i++)
+                    _buildAudioControl(
+                      icon: audioIcons[i],
+                      label: audioNames[i],
+                      audioPlayer: audioPlayers[i],
+                      volume: volumes[i],
+                    ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(),
+                  for (int i = 48; i < 49; i++)
                     _buildAudioControl(
                       icon: audioIcons[i],
                       label: audioNames[i],
@@ -655,7 +723,7 @@ class _CustomMixinState extends State<CustomMixin>
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(),
-                  for (int i = 40; i < 44; i++)
+                  for (int i = 49; i < 52; i++)
                     _buildAudioControl(
                       icon: audioIcons[i],
                       label: audioNames[i],
@@ -668,7 +736,7 @@ class _CustomMixinState extends State<CustomMixin>
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(),
-                  for (int i = 44; i < 45; i++)
+                  for (int i = 52; i < 54; i++)
                     _buildAudioControl(
                       icon: audioIcons[i],
                       label: audioNames[i],
