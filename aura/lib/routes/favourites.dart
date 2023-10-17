@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class FavouritePage extends StatelessWidget {
+class ExploreWorld extends StatelessWidget {
   // final Color color;
   final ScrollController controller;
-  const FavouritePage(
+  const ExploreWorld(
       {
       // required this.color,
       required this.controller,

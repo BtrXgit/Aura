@@ -172,7 +172,7 @@ class _HomePageState extends State<HomePage>
               CustomMixin(
                 controller: controller,
               ),
-              FavouritePage(
+              ExploreWorld(
                 controller: controller,
               ),
               SettingsPage(

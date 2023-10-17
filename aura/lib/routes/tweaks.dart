@@ -1,5 +1,4 @@
 import 'package:bootstrap_icons/bootstrap_icons.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -373,41 +372,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   Align(
                     alignment: Alignment.center,
                     child: Text(
-                      'Luca v 1.0.0',
+                      'Aura v 1.0.0',
                       style:
                           GoogleFonts.kanit(color: primaryColor, fontSize: 12),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                          
                     ),
                   ),
                   Align(
