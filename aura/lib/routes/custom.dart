@@ -392,6 +392,7 @@ class _CustomMixinState extends State<CustomMixin>
           gradient: LinearGradient(
             colors: [
               Colors.green,
+              Colors.red,
               Color.fromARGB(255, 0, 104, 125),
             ],
             begin: Alignment.centerLeft,
@@ -412,6 +413,7 @@ class _CustomMixinState extends State<CustomMixin>
                   width: 4,
                   gradient: LinearGradient(colors: [
                     Colors.green,
+                    Colors.red,
                     Color.fromARGB(255, 0, 104, 125),
                   ])),
               borderRadius: BorderRadius.circular(20),
@@ -911,14 +913,15 @@ class _CustomMixinState extends State<CustomMixin>
               // color: Colors.transparent,
               gradient: LinearGradient(colors: [
                 Colors.green,
+                Colors.red,
                 Color.fromARGB(255, 0, 104, 125),
               ]),
-              border: GradientBoxBorder(
-                  width: 4,
-                  gradient: LinearGradient(colors: [
-                    Colors.green,
-                    Color.fromARGB(255, 0, 104, 125),
-                  ])),
+              // border: GradientBoxBorder(
+              //     width: 4,
+              //     gradient: LinearGradient(colors: [
+              //       Colors.green,
+              //       Color.fromARGB(255, 0, 104, 125),
+              //     ])),
               // border: Border.all(width: 2, color: Colors.white),
               borderRadius: BorderRadius.circular(30)),
           child: Row(

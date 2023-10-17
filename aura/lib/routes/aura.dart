@@ -4,9 +4,11 @@ class AuraHomePage extends StatelessWidget {
   // final Color color;
   final ScrollController controller;
 
-  const AuraHomePage({
-    // required this.color,
-   required this.controller, Key? key})
+  const AuraHomePage(
+      {
+      // required this.color,
+      required this.controller,
+      Key? key})
       : super(key: key);
 
   String _getGreeting() {
@@ -46,160 +48,43 @@ class AuraHomePage extends StatelessWidget {
                 style: TextStyle(color: Colors.black, fontSize: 20),
               ),
             ),
-            ListTile(
-              leading: const Icon(Icons.list),
-              trailing: const Text(
-                "Aura",
-                style: TextStyle(color: Colors.green, fontSize: 15),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: RotatedBox(
+                quarterTurns: 3,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Live',
+                            style: TextStyle(color: Colors.white, fontSize: 24),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            'Relaxing',
+                            style: TextStyle(color: Colors.white, fontSize: 24),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            'Sleep',
+                            style: TextStyle(color: Colors.white, fontSize: 24),
+                          )
+                        ],
+                      ),
+                    ]),
               ),
-              title: Text("List item "),
             ),
-            SizedBox(
-              height: 10,
-            ),
-            ListTile(
-              leading: const Icon(Icons.list),
-              trailing: const Text(
-                "Aura",
-                style: TextStyle(color: Colors.green, fontSize: 15),
-              ),
-              title: Text("List item "),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            ListTile(
-              leading: const Icon(Icons.list),
-              trailing: const Text(
-                "Aura",
-                style: TextStyle(color: Colors.green, fontSize: 15),
-              ),
-              title: Text("List item "),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            ListTile(
-              leading: const Icon(Icons.list),
-              trailing: const Text(
-                "Aura",
-                style: TextStyle(color: Colors.green, fontSize: 15),
-              ),
-              title: Text("List item "),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            ListTile(
-              leading: const Icon(Icons.list),
-              trailing: const Text(
-                "Aura",
-                style: TextStyle(color: Colors.green, fontSize: 15),
-              ),
-              title: Text("List item "),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            ListTile(
-              leading: const Icon(Icons.list),
-              trailing: const Text(
-                "Aura",
-                style: TextStyle(color: Colors.green, fontSize: 15),
-              ),
-              title: Text("List item "),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            ListTile(
-              leading: const Icon(Icons.list),
-              trailing: const Text(
-                "Aura",
-                style: TextStyle(color: Colors.green, fontSize: 15),
-              ),
-              title: Text("List item "),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            ListTile(
-              leading: const Icon(Icons.list),
-              trailing: const Text(
-                "Aura",
-                style: TextStyle(color: Colors.green, fontSize: 15),
-              ),
-              title: Text("List item "),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            ListTile(
-              leading: const Icon(Icons.list),
-              trailing: const Text(
-                "Aura",
-                style: TextStyle(color: Colors.green, fontSize: 15),
-              ),
-              title: Text("List item "),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            ListTile(
-              leading: const Icon(Icons.list),
-              trailing: const Text(
-                "Aura",
-                style: TextStyle(color: Colors.green, fontSize: 15),
-              ),
-              title: Text("List item "),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            ListTile(
-              leading: const Icon(Icons.list),
-              trailing: const Text(
-                "Aura",
-                style: TextStyle(color: Colors.green, fontSize: 15),
-              ),
-              title: Text("List item "),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            ListTile(
-              leading: const Icon(Icons.list),
-              trailing: const Text(
-                "Aura",
-                style: TextStyle(color: Colors.green, fontSize: 15),
-              ),
-              title: Text("List item "),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            ListTile(
-              leading: const Icon(Icons.list),
-              trailing: const Text(
-                "Aura",
-                style: TextStyle(color: Colors.green, fontSize: 15),
-              ),
-              title: Text("List item "),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            ListTile(
-              leading: const Icon(Icons.list),
-              trailing: const Text(
-                "Aura",
-                style: TextStyle(color: Colors.green, fontSize: 15),
-              ),
-              title: Text("List item "),
-            ),
-            SizedBox(
-              height: 10,
-            ),
+            Container(
+              height: 1000,
+              color: Colors.black,
+            )
           ],
         ),
       ),
