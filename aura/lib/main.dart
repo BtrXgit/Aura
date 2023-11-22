@@ -16,8 +16,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      home: const HomePage(
+    return const GetMaterialApp(
+      home: HomePage(
         title: 'Aura',
       ),
     );

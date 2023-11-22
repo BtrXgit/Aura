@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
@@ -245,16 +246,14 @@ class _CustomMixinState extends State<CustomMixin>
       for (int i = 0; i < audioPlayers.length && i < audioPaths.length; i++) {
         try {
           await audioPlayers[i].setAsset(audioPaths[i]);
-        } catch (e) {
-          print('Error loading audio: $e');
-        }
+          // ignore: empty_catches
+        } catch (e) {}
       }
       for (final audioPlayer in audioPlayers) {
         audioPlayer.setLoopMode(LoopMode.all);
       }
-    } catch (e) {
-      print('Error loading audio: $e');
-    }
+      // ignore: empty_catches
+    } catch (e) {}
   }
 
   int _countPlayingAudios(List<AudioPlayer> audioPlayers) {
@@ -272,15 +271,15 @@ class _CustomMixinState extends State<CustomMixin>
       context: context,
       builder: (BuildContext context) {
         return Container(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Text(
+              const Text(
                 'Select Timer Duration',
                 style: TextStyle(fontSize: 18, color: Colors.white),
               ),
-              SizedBox(height: 10.0),
+              const SizedBox(height: 10.0),
               _buildTimerOption(0, 'No Timer'),
               _buildTimerOption(5, '5 Seconds'),
               _buildTimerOption(60, '1 Minute'),
@@ -291,7 +290,7 @@ class _CustomMixinState extends State<CustomMixin>
               _buildTimerOption(7200, '2 Hours'),
               _buildTimerOption(10800, '3 Hours '),
               _buildTimerOption(18000, '5 Hours'),
-              SizedBox(height: 10.0),
+              const SizedBox(height: 10.0),
             ],
           ),
         );
@@ -325,7 +324,7 @@ class _CustomMixinState extends State<CustomMixin>
       context: context,
       builder: (BuildContext context) {
         return Container(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -354,7 +353,7 @@ class _CustomMixinState extends State<CustomMixin>
                 Container(
                   width: MediaQuery.of(context).size.width * 1.0,
                   height: MediaQuery.of(context).size.height * 0.3,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage('assets/images/1.jpeg'),
                       fit: BoxFit.cover,
@@ -389,7 +388,7 @@ class _CustomMixinState extends State<CustomMixin>
         controller: _tabController,
         indicatorColor: Colors.green,
         indicator: BoxDecoration(
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
             colors: [
               Colors.green,
               Colors.red,
@@ -409,7 +408,7 @@ class _CustomMixinState extends State<CustomMixin>
             height: MediaQuery.of(context).size.height * 0.046,
             width: MediaQuery.of(context).size.width * 0.25,
             decoration: BoxDecoration(
-              border: GradientBoxBorder(
+              border: const GradientBoxBorder(
                   width: 4,
                   gradient: LinearGradient(colors: [
                     Colors.green,
@@ -437,7 +436,7 @@ class _CustomMixinState extends State<CustomMixin>
       controller: _tabController,
       children: [
         SingleChildScrollView(
-          physics: ClampingScrollPhysics(),
+          physics: const ClampingScrollPhysics(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
@@ -485,7 +484,7 @@ class _CustomMixinState extends State<CustomMixin>
           ),
         ),
         SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
               Row(
@@ -518,7 +517,7 @@ class _CustomMixinState extends State<CustomMixin>
           ),
         ),
         SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
               Row(
@@ -573,14 +572,14 @@ class _CustomMixinState extends State<CustomMixin>
                     ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 150,
               )
             ],
           ),
         ),
         SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
               Row(
@@ -655,7 +654,7 @@ class _CustomMixinState extends State<CustomMixin>
           ),
         ),
         SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
               Row(
@@ -710,14 +709,14 @@ class _CustomMixinState extends State<CustomMixin>
                     ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 150,
               )
             ],
           ),
         ),
         SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
               Row(
@@ -746,7 +745,7 @@ class _CustomMixinState extends State<CustomMixin>
                     ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 150,
               )
             ],
@@ -766,26 +765,26 @@ class _CustomMixinState extends State<CustomMixin>
       child: Container(
         // width: 74,
         // height: 74,
-        padding: EdgeInsets.all(12.0),
-        margin: EdgeInsets.all(3.5),
+        padding: const EdgeInsets.all(12.0),
+        margin: const EdgeInsets.all(3.5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6),
           color: audioPlayer.playing
               ? Colors.green
-              : Color.fromARGB(255, 0, 104, 125),
+              : const Color.fromARGB(255, 0, 104, 125),
         ),
         child: InkWell(
           onTap: () {
             _toggleAudioPlayback(audioPlayer);
           },
-          customBorder: CircleBorder(),
+          customBorder: const CircleBorder(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(height: 54, child: icon),
               Text(
                 label,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Color.fromARGB(255, 103, 247, 110),
                   // fontWeight: FontWeight.bold
                 ),
@@ -806,14 +805,14 @@ class _CustomMixinState extends State<CustomMixin>
     } else {
       if (playingAudioCount >= 8) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Only 8 audios can be played at a time.'),
           ),
         );
         return;
       }
 
-      Future.delayed(Duration(milliseconds: 100), () {
+      Future.delayed(const Duration(milliseconds: 100), () {
         audioPlayer.play();
         setState(() {
           playingAudioCount++;
@@ -839,14 +838,16 @@ class _CustomMixinState extends State<CustomMixin>
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('No sounds are playing.'),
         ),
       );
     }
 
     setState(() {});
-    print('Sounds Stopped');
+    if (kDebugMode) {
+      print('Sounds Stopped');
+    }
   }
 
   void startTimer(int duration, List<AudioPlayer> audioPlayers) {
@@ -870,7 +871,7 @@ class _CustomMixinState extends State<CustomMixin>
         children: [
           Text(
             label,
-            style: TextStyle(color: Colors.black),
+            style: const TextStyle(color: Colors.black),
           ),
           ValueListenableBuilder<double>(
             valueListenable: sliderValue,
@@ -892,15 +893,15 @@ class _CustomMixinState extends State<CustomMixin>
   }
 
   Widget _buildPlayerController() {
-    bool _isAudioPlaying = false;
+    bool isAudioPlaying = false;
     for (final audioPlayer in audioPlayers) {
       if (audioPlayer.playing) {
-        _isAudioPlaying = true;
+        isAudioPlaying = true;
         break;
       }
     }
     return Visibility(
-      visible: _isAudioPlaying,
+      visible: isAudioPlaying,
       child: Positioned(
         // bottom: 70,
         bottom: MediaQuery.of(context).size.height * 0.09,
@@ -911,7 +912,7 @@ class _CustomMixinState extends State<CustomMixin>
           height: 64,
           decoration: BoxDecoration(
               // color: Colors.transparent,
-              gradient: LinearGradient(colors: [
+              gradient: const LinearGradient(colors: [
                 Colors.green,
                 Colors.red,
                 Color.fromARGB(255, 0, 104, 125),
@@ -931,14 +932,14 @@ class _CustomMixinState extends State<CustomMixin>
                   onPressed: () {
                     _showBottomSheet(context);
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Iconsax.timer,
                     color: Colors.white,
                     size: 30,
                   )),
               IconButton(
                   onPressed: () => _stopPlayingSounds(audioPlayers),
-                  icon: Icon(
+                  icon: const Icon(
                     Iconsax.stop,
                     color: Colors.white,
                     size: 30,
@@ -947,7 +948,7 @@ class _CustomMixinState extends State<CustomMixin>
                 onPressed: () => _volumeAll(context),
                 icon: Stack(
                   children: [
-                    Icon(
+                    const Icon(
                       Iconsax.volume_up,
                       color: Colors.white,
                       size: 30,
@@ -957,19 +958,19 @@ class _CustomMixinState extends State<CustomMixin>
                         right: 0,
                         top: 0,
                         child: Container(
-                          padding: EdgeInsets.all(2),
-                          decoration: BoxDecoration(
+                          padding: const EdgeInsets.all(2),
+                          decoration: const BoxDecoration(
                             color: Colors.red,
                             shape: BoxShape.circle,
                           ),
-                          constraints: BoxConstraints(
+                          constraints: const BoxConstraints(
                             minWidth: 16,
                             minHeight: 16,
                           ),
                           child: Center(
                             child: Text(
                               _countPlayingAudios(audioPlayers).toString(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 12,
                               ),

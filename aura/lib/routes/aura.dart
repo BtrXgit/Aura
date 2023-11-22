@@ -38,18 +38,18 @@ class AuraHomePage extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 greeting,
-                style: TextStyle(color: Colors.black, fontSize: 30),
+                style: const TextStyle(color: Colors.black, fontSize: 30),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
               child: Text(
                 "XD",
                 style: TextStyle(color: Colors.black, fontSize: 20),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
+            const Padding(
+              padding: EdgeInsets.only(left: 8.0),
               child: RotatedBox(
                 quarterTurns: 3,
                 child: Column(
