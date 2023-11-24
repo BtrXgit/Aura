@@ -156,8 +156,8 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       backgroundColor: backgroundColor,
       body: SingleChildScrollView(
-        controller: widget.controller,
         physics: const BouncingScrollPhysics(),
+        controller: widget.controller,
         child: AnimationLimiter(
           child: Center(
             child: Column(

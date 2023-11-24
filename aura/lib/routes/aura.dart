@@ -1,15 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AuraHomePage extends StatelessWidget {
-  // final Color color;
   final ScrollController controller;
-
-  const AuraHomePage(
-      {
-      // required this.color,
-      required this.controller,
-      Key? key})
-      : super(key: key);
+  const AuraHomePage({required this.controller, Key? key}) : super(key: key);
 
   String _getGreeting() {
     final now = DateTime.now();
@@ -19,6 +12,8 @@ class AuraHomePage extends StatelessWidget {
       return 'Good Morning';
     } else if (hour >= 12 && hour < 17) {
       return 'Good Afternoon';
+    } else if (hour >= 17 && hour < 20) {
+      return 'Good Evening';
     } else {
       return 'Good Night';
     }
@@ -31,7 +26,6 @@ class AuraHomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey.shade500,
       body: SingleChildScrollView(
-        controller: controller,
         child: Column(
           children: [
             Padding(
@@ -83,7 +77,7 @@ class AuraHomePage extends StatelessWidget {
             ),
             Container(
               height: 1000,
-              color: Colors.black,
+              color: Color.fromARGB(255, 27, 27, 50),
             )
           ],
         ),

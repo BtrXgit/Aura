@@ -1,6 +1,6 @@
 import 'package:aura/routes/aura.dart';
 import 'package:aura/routes/custom.dart';
-import 'package:aura/routes/favourites.dart';
+import 'package:aura/routes/explore.dart';
 import 'package:aura/routes/tweaks.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -12,10 +12,10 @@ class HomePage extends StatefulWidget {
   final String title;
 
   @override
-  HomePageState createState() => HomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class HomePageState extends State<HomePage>
+class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late int currentPage;
   late TabController tabController;
@@ -68,60 +68,11 @@ class HomePageState extends State<HomePage>
         // ),
         appBar: null,
         body: BottomBar(
-          fit: StackFit.expand,
-          icon: (width, height) => Center(
-            child: IconButton(
-              padding: EdgeInsets.zero,
-              onPressed: null,
-              icon: Icon(
-                Icons.arrow_upward_rounded,
-                color: Colors.grey,
-                size: width,
-              ),
-            ),
-          ),
-          borderRadius: BorderRadius.circular(500),
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.decelerate,
-          showIcon: true,
-          width: MediaQuery.of(context).size.width * 0.8,
-          barColor: Colors.black.computeLuminance() > 0.5
-              ? Colors.black
-              : Colors.white,
-          start: 2,
-          end: 0,
-          offset: 10,
-          barAlignment: Alignment.bottomCenter,
-          iconHeight: 35,
-          iconWidth: 35,
-          reverse: false,
-          hideOnScroll: true,
-          scrollOpposite: false,
-          onBottomBarHidden: () {},
-          onBottomBarShown: () {},
-          body: (context, controller) => TabBarView(
-            controller: tabController,
-            dragStartBehavior: DragStartBehavior.down,
-            physics: const NeverScrollableScrollPhysics(),
-            children: [
-              AuraHomePage(
-                controller: controller,
-              ),
-              CustomMixin(
-                controller: controller,
-              ),
-              ExploreWorld(
-                controller: controller,
-              ),
-              SettingsPage(
-                controller: controller,
-              ),
-            ],
-          ),
           child: TabBar(
+            dividerColor: Colors.transparent,
             indicatorPadding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
             controller: tabController,
-            indicator: const UnderlineTabIndicator(
+            indicator: UnderlineTabIndicator(
                 borderSide: BorderSide(
                     // color: currentPage == 0
                     //     ? colors[0]
@@ -137,7 +88,7 @@ class HomePageState extends State<HomePage>
                     color: Colors.grey,
                     width: 4),
                 insets: EdgeInsets.fromLTRB(16, 0, 16, 8)),
-            tabs: const [
+            tabs: [
               SizedBox(
                 height: 55,
                 width: 40,
@@ -177,6 +128,56 @@ class HomePageState extends State<HomePage>
                   // color: currentPage == 4 ? colors[4] : unselectedColor,
                   color: Colors.black,
                 )),
+              ),
+            ],
+          ),
+          fit: StackFit.expand,
+          icon: (width, height) => Center(
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              onPressed: null,
+              icon: Icon(
+                Icons.arrow_upward_rounded,
+                color: Colors.grey,
+                size: width,
+              ),
+            ),
+          ),
+          borderRadius: BorderRadius.circular(500),
+          duration: Duration(milliseconds: 500),
+          curve: Curves.decelerate,
+          showIcon: true,
+          width: MediaQuery.of(context).size.width,
+          barColor: Colors.black.computeLuminance() > 0.5
+              ? Colors.black
+              : Colors.white,
+          start: 2,
+          end: 0,
+          offset: 10,
+          barAlignment: Alignment.bottomCenter,
+          iconHeight: 35,
+          iconWidth: 35,
+          reverse: false,
+          hideOnScroll: true,
+          scrollOpposite: false,
+          onBottomBarHidden: () {},
+          onBottomBarShown: () {},
+          body: (context, controller) => TabBarView(
+            controller: tabController,
+            dragStartBehavior: DragStartBehavior.down,
+            physics: const NeverScrollableScrollPhysics(),
+            children: [
+              AuraHomePage(
+                controller: controller,
+              ),
+              CustomMixin(
+                // controller: controller,
+              ),
+              ExploreWorld(
+                  // controller: controller,
+                  ),
+              SettingsPage(
+                controller: controller,
               ),
             ],
           ),

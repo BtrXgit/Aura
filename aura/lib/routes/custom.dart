@@ -8,10 +8,10 @@ import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
 
 class CustomMixin extends StatefulWidget {
+  // final ScrollController controller;
   const CustomMixin({
     Key? key,
-    required ScrollController controller,
-    // required Color color,
+    // required this.controller,
   }) : super(key: key);
 
   @override
@@ -246,14 +246,20 @@ class _CustomMixinState extends State<CustomMixin>
       for (int i = 0; i < audioPlayers.length && i < audioPaths.length; i++) {
         try {
           await audioPlayers[i].setAsset(audioPaths[i]);
-          // ignore: empty_catches
-        } catch (e) {}
+        } catch (e) {
+          if (kDebugMode) {
+            print('Error loading audio: $e');
+          }
+        }
       }
       for (final audioPlayer in audioPlayers) {
         audioPlayer.setLoopMode(LoopMode.all);
       }
-      // ignore: empty_catches
-    } catch (e) {}
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error loading audio: $e');
+      }
+    }
   }
 
   int _countPlayingAudios(List<AudioPlayer> audioPlayers) {
@@ -344,7 +350,7 @@ class _CustomMixinState extends State<CustomMixin>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: null,
-      backgroundColor: Colors.black,
+      backgroundColor: const Color(0xFF131321),
       body: SafeArea(
         child: Stack(
           children: [
@@ -355,7 +361,7 @@ class _CustomMixinState extends State<CustomMixin>
                   height: MediaQuery.of(context).size.height * 0.3,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/images/1.jpeg'),
+                      image: AssetImage('assets/images/1.jpg'),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.only(
@@ -366,10 +372,11 @@ class _CustomMixinState extends State<CustomMixin>
                 // SizedBox(
                 //   height: 10,
                 // ),
-                _buildTabBar(),
-                Expanded(
-                  child: _buildTabViews(),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 8, 0, 2),
+                  child: _buildTabBar(),
                 ),
+                Expanded(child: _buildTabViews()),
               ],
             ),
             _buildPlayerController(),
@@ -380,54 +387,50 @@ class _CustomMixinState extends State<CustomMixin>
   }
 
   Widget _buildTabBar() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(10, 10, 0, 4),
-      child: TabBar(
-        physics: const BouncingScrollPhysics(),
-        indicatorPadding: const EdgeInsets.fromLTRB(6, 2, 6, 2),
-        controller: _tabController,
-        indicatorColor: Colors.green,
-        indicator: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [
-              Colors.green,
-              Colors.red,
-              Color.fromARGB(255, 0, 104, 125),
-            ],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
+    return TabBar(
+      dividerColor: Colors.transparent,
+      physics: const BouncingScrollPhysics(),
+      indicatorPadding: const EdgeInsets.fromLTRB(0, 2, 0, 2),
+      controller: _tabController,
+      indicatorColor: Colors.transparent,
+      indicator: BoxDecoration(
+        gradient: const LinearGradient(colors: [
+          Color.fromARGB(255, 80, 218, 243),
+          Color.fromARGB(255, 12, 26, 176),
+          Colors.purple,
+          Color.fromARGB(255, 232, 52, 88),
+        ]),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      labelColor: Colors.white,
+      unselectedLabelColor: Colors.white,
+      isScrollable: true,
+      labelPadding: const EdgeInsets.symmetric(horizontal: 5),
+      tabs: data.map((tab) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.046,
+          width: MediaQuery.of(context).size.width * 0.25,
+          decoration: BoxDecoration(
+            border: const GradientBoxBorder(
+                width: 3,
+                gradient: LinearGradient(colors: [
+                  Color.fromARGB(255, 80, 218, 243),
+                  Color.fromARGB(255, 12, 26, 176),
+                  Colors.purple,
+                  Color.fromARGB(255, 232, 52, 88),
+                ])),
+            borderRadius: BorderRadius.circular(20),
           ),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        labelColor: Colors.white,
-        unselectedLabelColor: Colors.white,
-        isScrollable: true,
-        labelPadding: const EdgeInsets.symmetric(horizontal: 5),
-        tabs: data.map((tab) {
-          return Container(
-            height: MediaQuery.of(context).size.height * 0.046,
-            width: MediaQuery.of(context).size.width * 0.25,
-            decoration: BoxDecoration(
-              border: const GradientBoxBorder(
-                  width: 4,
-                  gradient: LinearGradient(colors: [
-                    Colors.green,
-                    Colors.red,
-                    Color.fromARGB(255, 0, 104, 125),
-                  ])),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Tab(
-              child: Text(
-                tab,
-                style: GoogleFonts.kanit(
-                  fontSize: 14,
-                ),
+          child: Tab(
+            child: Text(
+              tab,
+              style: GoogleFonts.kanit(
+                fontSize: 14,
               ),
             ),
-          );
-        }).toList(),
-      ),
+          ),
+        );
+      }).toList(),
     );
   }
 
@@ -905,26 +908,19 @@ class _CustomMixinState extends State<CustomMixin>
       child: Positioned(
         // bottom: 70,
         bottom: MediaQuery.of(context).size.height * 0.09,
-        left: MediaQuery.of(context).size.width * 0.1,
-        right: MediaQuery.of(context).size.width * 0.1,
+        left: 8,
+        right: 8,
         child: Container(
-          width: MediaQuery.of(context).size.width * 0.8,
           height: 64,
           decoration: BoxDecoration(
               // color: Colors.transparent,
               gradient: const LinearGradient(colors: [
-                Colors.green,
-                Colors.red,
-                Color.fromARGB(255, 0, 104, 125),
+                Color.fromARGB(255, 80, 218, 243),
+                Color.fromARGB(255, 12, 26, 176),
+                Colors.purple,
+                Color.fromARGB(255, 232, 52, 88),
               ]),
-              // border: GradientBoxBorder(
-              //     width: 4,
-              //     gradient: LinearGradient(colors: [
-              //       Colors.green,
-              //       Color.fromARGB(255, 0, 104, 125),
-              //     ])),
-              // border: Border.all(width: 2, color: Colors.white),
-              borderRadius: BorderRadius.circular(30)),
+              borderRadius: BorderRadius.circular(10)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
