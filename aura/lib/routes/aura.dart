@@ -61,32 +61,24 @@ class _AuraHomePageState extends State<AuraHomePage>
             ),
             Expanded(
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  RotatedBox(
-                    quarterTurns: 3,
-                    child: _buildTabBar(),
+                  Column(
+                    children: [
+                      RotatedBox(
+                        quarterTurns: 3,
+                        child: _buildTabBar(),
+                      ),
+                    ],
                   ),
                   Expanded(
                     child: TabBarView(
+                      physics: NeverScrollableScrollPhysics(),
                       controller: _tabController,
                       children: [
-                        Center(
-                          child:
-                              Text('1', style: TextStyle(color: Colors.white)),
-                        ),
-                        Center(
-                          child:
-                              Text('2', style: TextStyle(color: Colors.white)),
-                        ),
-                        Center(
-                          child:
-                              Text('3', style: TextStyle(color: Colors.white)),
-                        ),
-                        Center(
-                          child:
-                              Text('4', style: TextStyle(color: Colors.white)),
-                        ),
+                        _buildWidgets(),
+                        _buildWidgets2(),
+                        _buildWidgets(),
+                        _buildWidgets2(),
                       ],
                     ),
                   ),
@@ -100,16 +92,27 @@ class _AuraHomePageState extends State<AuraHomePage>
   }
 
   Widget _buildTabBar() {
-    Color primaryColour = Theme.of(context).colorScheme.primary;
     return TabBar(
+      dividerColor: Colors.transparent,
+      tabAlignment: TabAlignment.center,
+      physics: const BouncingScrollPhysics(),
+      indicatorPadding: const EdgeInsets.fromLTRB(0, 0, 0, 2),
       controller: _tabController,
+      indicatorColor: Colors.grey,
+      indicator: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      labelColor: const Color.fromARGB(255, 175, 202, 0),
+      unselectedLabelColor: Colors.grey,
+      isScrollable: true,
+      labelPadding: const EdgeInsets.symmetric(horizontal: 15),
       tabs: data.map((tab) {
         return Container(
           height: MediaQuery.of(context).size.height * 0.046,
           width: MediaQuery.of(context).size.width * 0.25,
           decoration: BoxDecoration(
-            border: Border.all(
-                width: 1.0, color: Theme.of(context).colorScheme.primary),
+            border: Border.all(width: 1.0, color: Colors.grey),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Tab(
@@ -122,6 +125,182 @@ class _AuraHomePageState extends State<AuraHomePage>
           ),
         );
       }).toList(),
+    );
+  }
+
+  Widget _buildWidgets() {
+    return Center(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              color: Colors.white,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              color: Colors.green,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              color: Colors.red,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              color: Colors.blue,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              color: Colors.green,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              color: Colors.red,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              color: Colors.blue,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              color: Colors.green,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              color: Colors.red,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              color: Colors.blue,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildWidgets2() {
+    return Center(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              color: Colors.red,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              color: Colors.pink,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              color: Colors.green,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              color: Colors.purple,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              color: Colors.white,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              color: Colors.orange,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              color: Colors.cyan,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              color: Colors.amber,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              color: Colors.greenAccent,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              color: Colors.blue,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
