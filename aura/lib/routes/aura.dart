@@ -1,15 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
-
-class AuraHomePage extends StatelessWidget {
+class AuraHomePage extends StatefulWidget {
   final ScrollController controller;
   const AuraHomePage({required this.controller, Key? key}) : super(key: key);
+
+  @override
+  State<AuraHomePage> createState() => _AuraHomePageState();
+}
+
+class _AuraHomePageState extends State<AuraHomePage>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  final List<String> data = [
+    'Sleep',
+    'Relaxing',
+    'Focus',
+    "Live",
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 4, vsync: this);
+  }
 
   String _getGreeting() {
     final now = DateTime.now();
     final hour = now.hour;
-
     if (hour >= 5 && hour < 12) {
       return 'Good Morning';
     } else if (hour >= 12 && hour < 17) {
@@ -21,75 +39,125 @@ class AuraHomePage extends StatelessWidget {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     final greeting = _getGreeting();
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade500,
+      backgroundColor: Colors.black,
       body: SafeArea(
-        child: SingleChildScrollView(
-          controller: controller,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  greeting,
-                  style: const TextStyle(color: Colors.black, fontSize: 30),
-                ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                greeting,
+                style: const TextStyle(color: Colors.white, fontSize: 30),
               ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  "XD",
-                  style: TextStyle(color: Colors.black, fontSize: 20),
-                ),
+            ),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                "XD",
+                style: TextStyle(color: Colors.white, fontSize: 20),
               ),
-              const Padding(
-                padding: EdgeInsets.only(left: 8.0),
-                child: RotatedBox(
+            ),
+            Row(
+              children: [
+                RotatedBox(
                   quarterTurns: 3,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Live',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 24),
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Text(
-                              'Relaxing',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 24),
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Text(
-                              'Sleep',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 24),
-                            )
-                          ],
-                        ),
-                      ]),
+                  child: _buildTabBar(),
                 ),
-              ),
-              Container(
-                height: 1000,
-                color: const Color.fromARGB(255, 27, 27, 50),
-              )
-            ],
-          ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    controller: widget.controller,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        _buildTabViews(),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildTabBar() {
+    Color primaryColour = Theme.of(context).colorScheme.primary;
+    return TabBar(
+      dividerColor: Colors.transparent,
+      tabAlignment: TabAlignment.start,
+      physics: const BouncingScrollPhysics(),
+      indicatorPadding: const EdgeInsets.fromLTRB(0, 0, 0, 2),
+      controller: _tabController,
+      indicatorColor: Theme.of(context).colorScheme.tertiary,
+      indicator: BoxDecoration(
+        color: Theme.of(context).colorScheme.tertiary,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      labelColor: const Color.fromARGB(255, 175, 202, 0),
+      unselectedLabelColor: primaryColour,
+      isScrollable: true,
+      labelPadding: const EdgeInsets.symmetric(horizontal: 5),
+      tabs: data.map((tab) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.046,
+          width: MediaQuery.of(context).size.width * 0.25,
+          decoration: BoxDecoration(
+            border: Border.all(
+                width: 1.0, color: Theme.of(context).colorScheme.primary),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Tab(
+            child: Text(
+              tab,
+              style: TextStyle(
+                fontSize: 16,
+              ),
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildTabViews() {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: TabBarView(
+        controller: _tabController,
+        children: [
+          Center(
+            child: Text(
+              '1',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          Center(
+            child: Text(
+              '2',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          Center(
+            child: Text(
+              '3',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          Center(
+            child: Text(
+              '4',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
       ),
     );
   }
