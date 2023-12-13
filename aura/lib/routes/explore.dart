@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ExploreWorld extends StatelessWidget {
+  const ExploreWorld({super.key});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -13,7 +15,7 @@ class ExploreWorld extends StatelessWidget {
               height: 100,
               color: Colors.red,
             ),
-            TabBar(
+            const TabBar(
               labelColor: Colors.black,
               unselectedLabelColor: Colors.black,
               tabs: [
@@ -25,7 +27,7 @@ class ExploreWorld extends StatelessWidget {
                 Tab(text: 'Tab 6'),
               ],
             ),
-            Expanded(
+            const Expanded(
               child: TabBarView(
                 children: [
                   Center(child: Text('Content for Tab 1')),
@@ -45,7 +47,7 @@ class ExploreWorld extends StatelessWidget {
 }
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: ExploreWorld(),
   ));
 }

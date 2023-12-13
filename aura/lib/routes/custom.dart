@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
+import 'package:iconly/iconly.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
 
@@ -388,6 +389,7 @@ class _CustomMixinState extends State<CustomMixin>
 
   Widget _buildTabBar() {
     return TabBar(
+      tabAlignment: TabAlignment.start,
       dividerColor: Colors.transparent,
       physics: const BouncingScrollPhysics(),
       indicatorPadding: const EdgeInsets.fromLTRB(0, 2, 0, 2),
@@ -766,8 +768,6 @@ class _CustomMixinState extends State<CustomMixin>
   }) {
     return Expanded(
       child: Container(
-        // width: 74,
-        // height: 74,
         padding: const EdgeInsets.all(12.0),
         margin: const EdgeInsets.all(3.5),
         decoration: BoxDecoration(
@@ -780,7 +780,6 @@ class _CustomMixinState extends State<CustomMixin>
           onTap: () {
             _toggleAudioPlayback(audioPlayer);
           },
-          customBorder: const CircleBorder(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -906,11 +905,11 @@ class _CustomMixinState extends State<CustomMixin>
     return Visibility(
       visible: isAudioPlaying,
       child: Positioned(
-        // bottom: 70,
-        bottom: MediaQuery.of(context).size.height * 0.09,
-        left: 8,
-        right: 8,
+        bottom: 75,
+        left: 45,
+        right: 45,
         child: Container(
+          width: MediaQuery.of(context).size.width * 0.75,
           height: 64,
           decoration: BoxDecoration(
               // color: Colors.transparent,
@@ -920,7 +919,7 @@ class _CustomMixinState extends State<CustomMixin>
                 Colors.purple,
                 Color.fromARGB(255, 232, 52, 88),
               ]),
-              borderRadius: BorderRadius.circular(10)),
+              borderRadius: BorderRadius.circular(30)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -929,7 +928,7 @@ class _CustomMixinState extends State<CustomMixin>
                     _showBottomSheet(context);
                   },
                   icon: const Icon(
-                    Iconsax.timer,
+                    IconlyLight.time_circle,
                     color: Colors.white,
                     size: 30,
                   )),
@@ -945,7 +944,7 @@ class _CustomMixinState extends State<CustomMixin>
                 icon: Stack(
                   children: [
                     const Icon(
-                      Iconsax.volume_up,
+                      IconlyLight.volume_down,
                       color: Colors.white,
                       size: 30,
                     ),

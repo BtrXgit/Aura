@@ -46,6 +46,11 @@ dependencies:
   firebase_auth: ^4.10.1
   gradient_borders: ^1.0.0
   flutter_floating_bottom_bar: ^1.2.0
+  firebase_core: ^2.16.0
+  firebase_storage: ^11.2.7
+  http: ^1.1.2
+  iconly: ^1.0.1
+  cloud_firestore: ^4.13.6
 
 dev_dependencies:
   flutter_test:

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "623229969480",
+    "project_id": "aura-xd",
+    "storage_bucket": "aura-xd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:623229969480:android:1c78b47509eab31481a47d",
+        "android_client_info": {
+          "package_name": "com.example.aura"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDItfYnyja3vbYorxq6xh78UaSEG9nWcgA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
