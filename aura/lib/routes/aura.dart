@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class AuraHomePage extends StatefulWidget {
   final ScrollController controller;
+
   const AuraHomePage({required this.controller, Key? key}) : super(key: key);
 
   @override
@@ -12,17 +13,12 @@ class _AuraHomePageState extends State<AuraHomePage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  final List<String> data = [
-    'Sleep',
-    'Relaxing',
-    'Focus',
-    "Live",
-  ];
+  final List<String> data = ['Sleep', 'Relaxing', 'Focus', 'Live'];
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: data.length, vsync: this);
   }
 
   String _getGreeting() {
@@ -63,24 +59,39 @@ class _AuraHomePageState extends State<AuraHomePage>
                 style: TextStyle(color: Colors.white, fontSize: 20),
               ),
             ),
-            Row(
-              children: [
-                RotatedBox(
-                  quarterTurns: 3,
-                  child: _buildTabBar(),
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    controller: widget.controller,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+            Expanded(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  RotatedBox(
+                    quarterTurns: 3,
+                    child: _buildTabBar(),
+                  ),
+                  Expanded(
+                    child: TabBarView(
+                      controller: _tabController,
                       children: [
-                        _buildTabViews(),
+                        Center(
+                          child:
+                              Text('1', style: TextStyle(color: Colors.white)),
+                        ),
+                        Center(
+                          child:
+                              Text('2', style: TextStyle(color: Colors.white)),
+                        ),
+                        Center(
+                          child:
+                              Text('3', style: TextStyle(color: Colors.white)),
+                        ),
+                        Center(
+                          child:
+                              Text('4', style: TextStyle(color: Colors.white)),
+                        ),
                       ],
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
@@ -91,20 +102,7 @@ class _AuraHomePageState extends State<AuraHomePage>
   Widget _buildTabBar() {
     Color primaryColour = Theme.of(context).colorScheme.primary;
     return TabBar(
-      dividerColor: Colors.transparent,
-      tabAlignment: TabAlignment.start,
-      physics: const BouncingScrollPhysics(),
-      indicatorPadding: const EdgeInsets.fromLTRB(0, 0, 0, 2),
       controller: _tabController,
-      indicatorColor: Theme.of(context).colorScheme.tertiary,
-      indicator: BoxDecoration(
-        color: Theme.of(context).colorScheme.tertiary,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      labelColor: const Color.fromARGB(255, 175, 202, 0),
-      unselectedLabelColor: primaryColour,
-      isScrollable: true,
-      labelPadding: const EdgeInsets.symmetric(horizontal: 5),
       tabs: data.map((tab) {
         return Container(
           height: MediaQuery.of(context).size.height * 0.046,
@@ -124,41 +122,6 @@ class _AuraHomePageState extends State<AuraHomePage>
           ),
         );
       }).toList(),
-    );
-  }
-
-  Widget _buildTabViews() {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      child: TabBarView(
-        controller: _tabController,
-        children: [
-          Center(
-            child: Text(
-              '1',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          Center(
-            child: Text(
-              '2',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          Center(
-            child: Text(
-              '3',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          Center(
-            child: Text(
-              '4',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
