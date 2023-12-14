@@ -12,13 +12,13 @@ class SongsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Firestore Songs'),
+        title: Text('Firestore Songs'),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: _firestore.collection('songs').snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return const Center(
+            return Center(
               child: CircularProgressIndicator(),
             );
           }

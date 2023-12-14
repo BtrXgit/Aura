@@ -51,6 +51,9 @@ dependencies:
   http: ^1.1.2
   iconly: ^1.0.1
   cloud_firestore: ^4.13.6
+  cached_network_image: ^3.3.0
+  carousel_slider: ^4.2.1
+  just_audio_cache: ^0.1.2
 
 dev_dependencies:
   flutter_test:
@@ -87,6 +90,8 @@ flutter:
     - assets/icons/rain/
     - assets/icons/asmr/
     - assets/icons/transport/
+    - assets/
+    - assets/slider/
     
   #   - images/a_dot_ham.jpeg
 
@@ -115,3 +120,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+
+      
