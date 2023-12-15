@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:just_audio/just_audio.dart';
@@ -12,13 +13,13 @@ class SongsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Firestore Songs'),
+        title: const Text('Firestore Songs'),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: _firestore.collection('songs').snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -52,7 +53,9 @@ class SongsScreen extends StatelessWidget {
       await _audioPlayer.setUrl(audioUrl);
       await _audioPlayer.play();
     } catch (e) {
-      print("Error playing audio: $e");
+      if (kDebugMode) {
+        print("Error playing audio: $e");
+      }
     }
   }
 }
