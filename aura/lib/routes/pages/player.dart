@@ -5,10 +5,14 @@ import 'package:just_audio/just_audio.dart';
 class AuraPlayer extends StatefulWidget {
   final int currentIndex;
   final List<Song> songs;
+  final Function(String songName, String artistName) updateOverlay;
+  final AudioPlayer audioPlayer;
 
   const AuraPlayer({
     required this.currentIndex,
     required this.songs,
+    required this.updateOverlay,
+    required this.audioPlayer,
     Key? key,
   }) : super(key: key);
 
@@ -17,7 +21,6 @@ class AuraPlayer extends StatefulWidget {
 }
 
 class _AuraPlayerState extends State<AuraPlayer> {
-  final AudioPlayer _audioPlayer = AudioPlayer();
   int _currentIndex = 0;
   bool _isPlaying = false;
 
@@ -26,23 +29,31 @@ class _AuraPlayerState extends State<AuraPlayer> {
     super.initState();
 
     if (widget.songs.isNotEmpty) {
+      _currentIndex = widget.currentIndex;
       _initializePlayer();
-      _audioPlayer.play(); // Play the audio automatically
+      widget.audioPlayer.play(); // Play the audio automatically
     }
   }
 
   void _initializePlayer() {
     if (_currentIndex >= 0 && _currentIndex < widget.songs.length) {
-      _audioPlayer.setUrl(widget.songs[_currentIndex].songUrl);
+      widget.audioPlayer.setUrl(widget.songs[_currentIndex].songUrl);
 
-      _audioPlayer.processingStateStream.listen((processingState) {
+      widget.audioPlayer.processingStateStream.listen((processingState) {
         setState(() {
-          _isPlaying = _audioPlayer.playing;
+          _isPlaying = widget.audioPlayer.playing;
         });
 
         if (processingState == ProcessingState.completed) {
-          // The current song has ended, play the next one
           _playNext();
+        }
+
+        if (processingState == ProcessingState.ready &&
+            widget.audioPlayer.playing) {
+          widget.updateOverlay(
+            widget.songs[_currentIndex].songName,
+            widget.songs[_currentIndex].artist,
+          );
         }
       });
     }
@@ -51,30 +62,45 @@ class _AuraPlayerState extends State<AuraPlayer> {
   void _playNext() {
     if (widget.songs.isNotEmpty && _currentIndex < widget.songs.length - 1) {
       _currentIndex++;
-      _audioPlayer.setUrl(widget.songs[_currentIndex].songUrl);
-      _audioPlayer.play();
+      widget.audioPlayer.setUrl(widget.songs[_currentIndex].songUrl);
+      widget.audioPlayer.play();
     }
   }
 
   void _playPrevious() {
     if (widget.songs.isNotEmpty && _currentIndex > 0) {
       _currentIndex--;
-      _audioPlayer.setUrl(widget.songs[_currentIndex].songUrl);
-      _audioPlayer.play();
+      widget.audioPlayer.setUrl(widget.songs[_currentIndex].songUrl);
+      widget.audioPlayer.play();
     }
   }
 
-  @override
-  void dispose() {
-    _audioPlayer.dispose();
-    super.dispose();
+  void skipNext() {
+    if (widget.audioPlayer.playing) {
+      widget.audioPlayer.stop();
+    }
+
+    if (_currentIndex < widget.songs.length - 1) {
+      setState(() {
+        _currentIndex++;
+      });
+      widget.audioPlayer.setUrl(widget.songs[_currentIndex].songUrl);
+      widget.audioPlayer.play();
+    }
   }
 
-  String _formatDuration(Duration duration) {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-    return '$twoDigitMinutes:$twoDigitSeconds';
+  void skipPrevious() {
+    if (widget.audioPlayer.playing) {
+      widget.audioPlayer.stop();
+    }
+
+    if (_currentIndex > 0) {
+      setState(() {
+        _currentIndex--;
+      });
+      widget.audioPlayer.setUrl(widget.songs[_currentIndex].songUrl);
+      widget.audioPlayer.play();
+    }
   }
 
   @override
@@ -111,30 +137,21 @@ class _AuraPlayerState extends State<AuraPlayer> {
                   SizedBox(height: 20),
                   // Slider will come here
                   StreamBuilder<Duration>(
-                    stream: _audioPlayer.positionStream,
+                    stream: widget.audioPlayer.positionStream,
                     builder: (context, snapshot) {
                       final position = snapshot.data ?? Duration.zero;
-                      final duration = _audioPlayer.duration ?? Duration.zero;
-
-                      return Column(
-                        children: [
-                          Text(
-                            '${_formatDuration(position)} / ${_formatDuration(duration)}',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          Slider(
-                            value: position.inSeconds.toDouble(),
-                            max: duration.inSeconds.toDouble(),
-                            onChanged: (value) {
-                              _audioPlayer
-                                  .seek(Duration(seconds: value.toInt()));
-                            },
-                          ),
-                        ],
+                      return Slider(
+                        value: position.inSeconds.toDouble(),
+                        max:
+                            widget.audioPlayer.duration?.inSeconds.toDouble() ??
+                                0,
+                        onChanged: (value) {
+                          widget.audioPlayer
+                              .seek(Duration(seconds: value.toInt()));
+                        },
                       );
                     },
                   ),
-
                   SizedBox(height: 20),
                   // Play/Pause button will come here
 
@@ -148,14 +165,14 @@ class _AuraPlayerState extends State<AuraPlayer> {
                         onPressed: _playPrevious,
                       ),
                       IconButton(
-                        icon: Icon(_audioPlayer.playing
+                        icon: Icon(widget.audioPlayer.playing
                             ? Icons.pause
                             : Icons.play_arrow),
                         onPressed: () {
-                          if (_audioPlayer.playing) {
-                            _audioPlayer.pause();
+                          if (widget.audioPlayer.playing) {
+                            widget.audioPlayer.pause();
                           } else {
-                            _audioPlayer.play();
+                            widget.audioPlayer.play();
                           }
                           setState(() {
                             // Updating the state to trigger a rebuild to change the icon
