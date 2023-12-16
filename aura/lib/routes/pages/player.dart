@@ -70,6 +70,13 @@ class _AuraPlayerState extends State<AuraPlayer> {
     super.dispose();
   }
 
+  String _formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return '$twoDigitMinutes:$twoDigitSeconds';
+  }
+
   @override
   Widget build(BuildContext context) {
     print(
@@ -107,15 +114,27 @@ class _AuraPlayerState extends State<AuraPlayer> {
                     stream: _audioPlayer.positionStream,
                     builder: (context, snapshot) {
                       final position = snapshot.data ?? Duration.zero;
-                      return Slider(
-                        value: position.inSeconds.toDouble(),
-                        max: _audioPlayer.duration?.inSeconds.toDouble() ?? 0,
-                        onChanged: (value) {
-                          _audioPlayer.seek(Duration(seconds: value.toInt()));
-                        },
+                      final duration = _audioPlayer.duration ?? Duration.zero;
+
+                      return Column(
+                        children: [
+                          Text(
+                            '${_formatDuration(position)} / ${_formatDuration(duration)}',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          Slider(
+                            value: position.inSeconds.toDouble(),
+                            max: duration.inSeconds.toDouble(),
+                            onChanged: (value) {
+                              _audioPlayer
+                                  .seek(Duration(seconds: value.toInt()));
+                            },
+                          ),
+                        ],
                       );
                     },
                   ),
+
                   SizedBox(height: 20),
                   // Play/Pause button will come here
 

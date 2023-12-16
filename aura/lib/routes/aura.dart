@@ -41,7 +41,6 @@ class _AuraHomePageState extends State<AuraHomePage>
   @override
   void initState() {
     super.initState();
-    // Initializing the song data stream when the widget is created
     _getFocusData().listen((snapshot) {
       setState(() {
         songs = snapshot.docs.map((doc) => Song.fromFirestore(doc)).toList();
