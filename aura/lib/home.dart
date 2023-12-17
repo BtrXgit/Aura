@@ -1,7 +1,6 @@
 import 'package:aura/routes/aura.dart';
 import 'package:aura/routes/custom.dart';
 import 'package:aura/routes/explore.dart';
-import 'package:aura/routes/pages/player.dart';
 import 'package:aura/test.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -71,110 +70,107 @@ class HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: null,
-        body: BottomBar(
-          fit: StackFit.expand,
-          icon: (width, height) => Center(
-            child: IconButton(
-              padding: EdgeInsets.zero,
-              onPressed: null,
-              icon: Icon(
-                Icons.arrow_upward_rounded,
-                color: Colors.grey,
-                size: width,
-              ),
+    return Scaffold(
+      appBar: null,
+      body: BottomBar(
+        fit: StackFit.expand,
+        icon: (width, height) => Center(
+          child: IconButton(
+            padding: EdgeInsets.zero,
+            onPressed: null,
+            icon: Icon(
+              Icons.arrow_upward_rounded,
+              color: Colors.grey,
+              size: width,
             ),
           ),
-          borderRadius: BorderRadius.circular(500),
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.decelerate,
-          showIcon: true,
-          width: MediaQuery.of(context).size.width * 0.75,
-          barColor: Colors.black.computeLuminance() > 0.5
-              ? Colors.black
-              : Colors.white,
-          start: 2,
-          end: 0,
-          offset: 10,
-          barAlignment: Alignment.bottomCenter,
-          iconHeight: 35,
-          iconWidth: 35,
-          reverse: false,
-          hideOnScroll: true,
-          scrollOpposite: false,
-          onBottomBarHidden: () {},
-          onBottomBarShown: () {},
-          body: (context, controller) => TabBarView(
-            controller: tabController,
-            dragStartBehavior: DragStartBehavior.down,
-            physics: const NeverScrollableScrollPhysics(),
-            children: [
-              AuraHomePage(
-                controller: controller,
-              ),
-              const CustomMixin(
-                  // controller: controller,
-                  ),
-              const ExploreWorld(
-                  // controller: controller,
-                  ),
-              // SettingsPage(
-              //   controller: controller,
-              // ),
-              SongsScreen(),
-              // AuraPlayer(),
-            ],
-          ),
-          child: TabBar(
-            dividerColor: Colors.transparent,
-            indicatorPadding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
-            controller: tabController,
-            indicator: UnderlineTabIndicator(
-                borderSide: BorderSide(
-                    color: _getIndicatorColor(currentPage), width: 4),
-                insets: const EdgeInsets.fromLTRB(16, 0, 16, 8)),
-            tabs: [
-              SizedBox(
-                height: 58,
-                width: 40,
-                child: Center(
-                    child: Icon(
-                  IconlyBold.home,
-                  color: currentPage == 0 ? homeColor : unselectedColor,
-                  // color: Colors.black,
-                )),
-              ),
-              SizedBox(
-                height: 58,
-                width: 40,
-                child: Center(
-                    child: Icon(
-                  IconlyBold.star,
-                  color: currentPage == 1 ? customColor : unselectedColor,
-                )),
-              ),
-              SizedBox(
-                height: 58,
-                width: 40,
-                child: Center(
-                    child: Icon(
-                  IconlyBold.location,
-                  color: currentPage == 2 ? locationColor : unselectedColor,
-                )),
-              ),
-              SizedBox(
-                height: 58,
-                width: 40,
-                child: Center(
-                    child: Icon(
-                  IconlyBold.profile,
-                  color: currentPage == 3 ? settingsColor : unselectedColor,
-                )),
-              ),
-            ],
-          ),
+        ),
+        borderRadius: BorderRadius.circular(500),
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.decelerate,
+        showIcon: true,
+        width: MediaQuery.of(context).size.width * 0.75,
+        barColor:
+            Colors.black.computeLuminance() > 0.5 ? Colors.black : Colors.white,
+        start: 2,
+        end: 0,
+        offset: 10,
+        barAlignment: Alignment.bottomCenter,
+        iconHeight: 35,
+        iconWidth: 35,
+        reverse: false,
+        hideOnScroll: true,
+        scrollOpposite: false,
+        onBottomBarHidden: () {},
+        onBottomBarShown: () {},
+        body: (context, controller) => TabBarView(
+          controller: tabController,
+          dragStartBehavior: DragStartBehavior.down,
+          physics: const NeverScrollableScrollPhysics(),
+          children: [
+            AuraHomePage(
+              controller: controller,
+            ),
+            const CustomMixin(
+                // controller: controller,
+                ),
+            const ExploreWorld(
+                // controller: controller,
+                ),
+            // SettingsPage(
+            //   controller: controller,
+            // ),
+            SongsScreen(),
+            // AuraPlayer(),
+          ],
+        ),
+        child: TabBar(
+          dividerColor: Colors.transparent,
+          indicatorPadding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
+          controller: tabController,
+          indicator: UnderlineTabIndicator(
+              borderSide:
+                  BorderSide(color: _getIndicatorColor(currentPage), width: 4),
+              insets: const EdgeInsets.fromLTRB(16, 0, 16, 8)),
+          tabs: [
+            SizedBox(
+              height: 58,
+              width: 40,
+              child: Center(
+                  child: Icon(
+                IconlyBold.home,
+                color: currentPage == 0 ? homeColor : unselectedColor,
+                // color: Colors.black,
+              )),
+            ),
+            SizedBox(
+              height: 58,
+              width: 40,
+              child: Center(
+                  child: Icon(
+                IconlyBold.star,
+                color: currentPage == 1 ? customColor : unselectedColor,
+              )),
+            ),
+            SizedBox(
+              height: 58,
+              width: 40,
+              child: Center(
+                  child: Icon(
+                IconlyBold.location,
+                color: currentPage == 2 ? locationColor : unselectedColor,
+              )),
+            ),
+            SizedBox(
+              height: 58,
+              width: 40,
+              child: Center(
+                  child: Icon(
+                IconlyBold.profile,
+                color: currentPage == 3 ? settingsColor : unselectedColor,
+              )),
+            ),
+          ],
         ),
       ),
     );

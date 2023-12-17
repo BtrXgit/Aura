@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:iconly/iconly.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
@@ -16,17 +15,14 @@ class CustomMixin extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<CustomMixin> createState() => _CustomMixinState();
+  State<CustomMixin> createState() => CustomMixinState();
 }
 
-class _CustomMixinState extends State<CustomMixin>
-    with SingleTickerProviderStateMixin {
+class CustomMixinState extends State<CustomMixin> {
   int playingAudioCount = 0;
 
   List<ValueNotifier<double>> volumes =
       List.generate(54, (_) => ValueNotifier<double>(1.0));
-
-  late TabController _tabController;
   final List<String> data = [
     "Nature",
     "Animals",
@@ -46,7 +42,6 @@ class _CustomMixinState extends State<CustomMixin>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 6, vsync: this);
     _loadAudios();
   }
 
@@ -355,408 +350,428 @@ class _CustomMixinState extends State<CustomMixin>
       body: SafeArea(
         child: Stack(
           children: [
-            Column(
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width * 1.0,
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/1.jpg'),
-                      fit: BoxFit.cover,
+            SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Customization Sound',
+                        style: GoogleFonts.inter(
+                            color: Colors.white, fontSize: 18),
+                      ),
                     ),
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10)),
                   ),
-                ),
-                // SizedBox(
-                //   height: 10,
-                // ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 8, 0, 2),
-                  child: _buildTabBar(),
-                ),
-                Expanded(child: _buildTabViews()),
-              ],
+                  Container(
+                    width: MediaQuery.of(context).size.width - 40,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 28, 28, 48),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Nature Category',
+                            style: GoogleFonts.inter(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              for (int i = 0; i < 4; i++)
+                                _buildAudioControl(
+                                  icon: audioIcons[i],
+                                  label: audioNames[i],
+                                  audioPlayer: audioPlayers[i],
+                                  volume: volumes[i],
+                                ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              for (int i = 4; i < 8; i++)
+                                _buildAudioControl(
+                                  icon: audioIcons[i],
+                                  label: audioNames[i],
+                                  audioPlayer: audioPlayers[i],
+                                  volume: volumes[i],
+                                ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              for (int i = 8; i < 9; i++)
+                                _buildAudioControl(
+                                  icon: audioIcons[i],
+                                  label: audioNames[i],
+                                  audioPlayer: audioPlayers[i],
+                                  volume: volumes[i],
+                                ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width - 40,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 28, 28, 48),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Animals Category',
+                            style: GoogleFonts.inter(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(),
+                              for (int i = 9; i < 13; i++)
+                                _buildAudioControl(
+                                  icon: audioIcons[i],
+                                  label: audioNames[i],
+                                  audioPlayer: audioPlayers[i],
+                                  volume: volumes[i],
+                                ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              for (int i = 13; i < 16; i++)
+                                _buildAudioControl(
+                                  icon: audioIcons[i],
+                                  label: audioNames[i],
+                                  audioPlayer: audioPlayers[i],
+                                  volume: volumes[i],
+                                ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width - 40,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 28, 28, 48),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Rain Category',
+                            style: GoogleFonts.inter(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(),
+                              for (int i = 16; i < 19; i++)
+                                _buildAudioControl(
+                                  icon: audioIcons[i],
+                                  label: audioNames[i],
+                                  audioPlayer: audioPlayers[i],
+                                  volume: volumes[i],
+                                ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(),
+                              for (int i = 19; i < 21; i++)
+                                _buildAudioControl(
+                                  icon: audioIcons[i],
+                                  label: audioNames[i],
+                                  audioPlayer: audioPlayers[i],
+                                  volume: volumes[i],
+                                ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(),
+                              for (int i = 21; i < 23; i++)
+                                _buildAudioControl(
+                                  icon: audioIcons[i],
+                                  label: audioNames[i],
+                                  audioPlayer: audioPlayers[i],
+                                  volume: volumes[i],
+                                ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(),
+                              for (int i = 23; i < 25; i++)
+                                _buildAudioControl(
+                                  icon: audioIcons[i],
+                                  label: audioNames[i],
+                                  audioPlayer: audioPlayers[i],
+                                  volume: volumes[i],
+                                ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width - 40,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 28, 28, 48),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Music Category',
+                            style: GoogleFonts.inter(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(),
+                              for (int i = 25; i < 28; i++)
+                                _buildAudioControl(
+                                  icon: audioIcons[i],
+                                  label: audioNames[i],
+                                  audioPlayer: audioPlayers[i],
+                                  volume: volumes[i],
+                                ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(),
+                              for (int i = 28; i < 31; i++)
+                                _buildAudioControl(
+                                  icon: audioIcons[i],
+                                  label: audioNames[i],
+                                  audioPlayer: audioPlayers[i],
+                                  volume: volumes[i],
+                                ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(),
+                              for (int i = 31; i < 34; i++)
+                                _buildAudioControl(
+                                  icon: audioIcons[i],
+                                  label: audioNames[i],
+                                  audioPlayer: audioPlayers[i],
+                                  volume: volumes[i],
+                                ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(),
+                              for (int i = 34; i < 37; i++)
+                                _buildAudioControl(
+                                  icon: audioIcons[i],
+                                  label: audioNames[i],
+                                  audioPlayer: audioPlayers[i],
+                                  volume: volumes[i],
+                                ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(),
+                              for (int i = 37; i < 39; i++)
+                                _buildAudioControl(
+                                  icon: audioIcons[i],
+                                  label: audioNames[i],
+                                  audioPlayer: audioPlayers[i],
+                                  volume: volumes[i],
+                                ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width - 40,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 28, 28, 48),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            'ASMR Category',
+                            style: GoogleFonts.inter(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(),
+                              for (int i = 39; i < 42; i++)
+                                _buildAudioControl(
+                                  icon: audioIcons[i],
+                                  label: audioNames[i],
+                                  audioPlayer: audioPlayers[i],
+                                  volume: volumes[i],
+                                ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(),
+                              for (int i = 42; i < 45; i++)
+                                _buildAudioControl(
+                                  icon: audioIcons[i],
+                                  label: audioNames[i],
+                                  audioPlayer: audioPlayers[i],
+                                  volume: volumes[i],
+                                ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(),
+                              for (int i = 45; i < 48; i++)
+                                _buildAudioControl(
+                                  icon: audioIcons[i],
+                                  label: audioNames[i],
+                                  audioPlayer: audioPlayers[i],
+                                  volume: volumes[i],
+                                ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(),
+                              for (int i = 48; i < 49; i++)
+                                _buildAudioControl(
+                                  icon: audioIcons[i],
+                                  label: audioNames[i],
+                                  audioPlayer: audioPlayers[i],
+                                  volume: volumes[i],
+                                ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width - 40,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 28, 28, 48),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Transport Category',
+                            style: GoogleFonts.inter(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(),
+                              for (int i = 49; i < 52; i++)
+                                _buildAudioControl(
+                                  icon: audioIcons[i],
+                                  label: audioNames[i],
+                                  audioPlayer: audioPlayers[i],
+                                  volume: volumes[i],
+                                ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(),
+                              for (int i = 52; i < 54; i++)
+                                _buildAudioControl(
+                                  icon: audioIcons[i],
+                                  label: audioNames[i],
+                                  audioPlayer: audioPlayers[i],
+                                  volume: volumes[i],
+                                ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                  ),
+                ],
+              ),
             ),
             _buildPlayerController(),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildTabBar() {
-    return TabBar(
-      tabAlignment: TabAlignment.start,
-      dividerColor: Colors.transparent,
-      physics: const BouncingScrollPhysics(),
-      indicatorPadding: const EdgeInsets.fromLTRB(0, 2, 0, 2),
-      controller: _tabController,
-      indicatorColor: Colors.transparent,
-      indicator: BoxDecoration(
-        gradient: const LinearGradient(colors: [
-          Color.fromARGB(255, 80, 218, 243),
-          Color.fromARGB(255, 12, 26, 176),
-          Colors.purple,
-          Color.fromARGB(255, 232, 52, 88),
-        ]),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      labelColor: Colors.white,
-      unselectedLabelColor: Colors.white,
-      isScrollable: true,
-      labelPadding: const EdgeInsets.symmetric(horizontal: 5),
-      tabs: data.map((tab) {
-        return Container(
-          height: MediaQuery.of(context).size.height * 0.046,
-          width: MediaQuery.of(context).size.width * 0.25,
-          decoration: BoxDecoration(
-            border: const GradientBoxBorder(
-                width: 3,
-                gradient: LinearGradient(colors: [
-                  Color.fromARGB(255, 80, 218, 243),
-                  Color.fromARGB(255, 12, 26, 176),
-                  Colors.purple,
-                  Color.fromARGB(255, 232, 52, 88),
-                ])),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Tab(
-            child: Text(
-              tab,
-              style: GoogleFonts.kanit(
-                fontSize: 14,
-              ),
-            ),
-          ),
-        );
-      }).toList(),
-    );
-  }
-
-  Widget _buildTabViews() {
-    return TabBarView(
-      controller: _tabController,
-      children: [
-        SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  for (int i = 0; i < 4; i++)
-                    _buildAudioControl(
-                      icon: audioIcons[i],
-                      label: audioNames[i],
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  for (int i = 4; i < 8; i++)
-                    _buildAudioControl(
-                      icon: audioIcons[i],
-                      label: audioNames[i],
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  for (int i = 8; i < 9; i++)
-                    _buildAudioControl(
-                      icon: audioIcons[i],
-                      label: audioNames[i],
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.2,
-              ),
-            ],
-          ),
-        ),
-        SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(),
-                  for (int i = 9; i < 13; i++)
-                    _buildAudioControl(
-                      icon: audioIcons[i],
-                      label: audioNames[i],
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(),
-                  for (int i = 13; i < 16; i++)
-                    _buildAudioControl(
-                      icon: audioIcons[i],
-                      label: audioNames[i],
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(),
-                  for (int i = 16; i < 19; i++)
-                    _buildAudioControl(
-                      icon: audioIcons[i],
-                      label: audioNames[i],
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(),
-                  for (int i = 19; i < 21; i++)
-                    _buildAudioControl(
-                      icon: audioIcons[i],
-                      label: audioNames[i],
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(),
-                  for (int i = 21; i < 23; i++)
-                    _buildAudioControl(
-                      icon: audioIcons[i],
-                      label: audioNames[i],
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(),
-                  for (int i = 23; i < 25; i++)
-                    _buildAudioControl(
-                      icon: audioIcons[i],
-                      label: audioNames[i],
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
-              const SizedBox(
-                height: 150,
-              )
-            ],
-          ),
-        ),
-        SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(),
-                  for (int i = 25; i < 28; i++)
-                    _buildAudioControl(
-                      icon: audioIcons[i],
-                      label: audioNames[i],
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(),
-                  for (int i = 28; i < 31; i++)
-                    _buildAudioControl(
-                      icon: audioIcons[i],
-                      label: audioNames[i],
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(),
-                  for (int i = 31; i < 34; i++)
-                    _buildAudioControl(
-                      icon: audioIcons[i],
-                      label: audioNames[i],
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(),
-                  for (int i = 34; i < 37; i++)
-                    _buildAudioControl(
-                      icon: audioIcons[i],
-                      label: audioNames[i],
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(),
-                  for (int i = 37; i < 39; i++)
-                    _buildAudioControl(
-                      icon: audioIcons[i],
-                      label: audioNames[i],
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
-              const SizedBox(
-                height: 150,
-              )
-            ],
-          ),
-        ),
-        SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(),
-                  for (int i = 39; i < 42; i++)
-                    _buildAudioControl(
-                      icon: audioIcons[i],
-                      label: audioNames[i],
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(),
-                  for (int i = 42; i < 45; i++)
-                    _buildAudioControl(
-                      icon: audioIcons[i],
-                      label: audioNames[i],
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(),
-                  for (int i = 45; i < 48; i++)
-                    _buildAudioControl(
-                      icon: audioIcons[i],
-                      label: audioNames[i],
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(),
-                  for (int i = 48; i < 49; i++)
-                    _buildAudioControl(
-                      icon: audioIcons[i],
-                      label: audioNames[i],
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
-              const SizedBox(
-                height: 150,
-              )
-            ],
-          ),
-        ),
-        SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(),
-                  for (int i = 49; i < 52; i++)
-                    _buildAudioControl(
-                      icon: audioIcons[i],
-                      label: audioNames[i],
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(),
-                  for (int i = 52; i < 54; i++)
-                    _buildAudioControl(
-                      icon: audioIcons[i],
-                      label: audioNames[i],
-                      audioPlayer: audioPlayers[i],
-                      volume: volumes[i],
-                    ),
-                ],
-              ),
-              const SizedBox(
-                height: 150,
-              )
-            ],
-          ),
-        ),
-      ],
     );
   }
 
@@ -767,33 +782,32 @@ class _CustomMixinState extends State<CustomMixin>
     required Widget icon,
   }) {
     return Expanded(
-      child: Container(
-        padding: const EdgeInsets.all(12.0),
-        margin: const EdgeInsets.all(3.5),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(6),
-          color: audioPlayer.playing
-              ? Colors.green
-              : const Color.fromARGB(255, 0, 104, 125),
-        ),
-        child: InkWell(
-          onTap: () {
-            _toggleAudioPlayback(audioPlayer);
-          },
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(height: 54, child: icon),
-              Text(
-                label,
-                style: const TextStyle(
-                  color: Color.fromARGB(255, 103, 247, 110),
-                  // fontWeight: FontWeight.bold
-                ),
-              ),
-            ],
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12.0),
+            margin: const EdgeInsets.all(3.5),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: audioPlayer.playing
+                  ? const Color.fromARGB(255, 37, 194, 42)
+                  : Color.fromARGB(255, 38, 43, 80),
+            ),
+            child: InkWell(
+              onTap: () {
+                _toggleAudioPlayback(audioPlayer);
+              },
+              child: SizedBox(height: 44, width: 44, child: icon),
+            ),
           ),
-        ),
+          Text(
+            label,
+            style: const TextStyle(
+              color: Color.fromARGB(255, 103, 247, 110),
+              // fontWeight: FontWeight.bold
+            ),
+          ),
+        ],
       ),
     );
   }
