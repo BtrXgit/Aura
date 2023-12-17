@@ -1,4 +1,3 @@
-import 'package:aura/component/overlay.dart';
 import 'package:aura/data/songs.dart';
 import 'package:aura/routes/pages/player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -11,9 +10,9 @@ import 'package:just_audio_cache/just_audio_cache.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class AuraHomePage extends StatefulWidget {
-  const AuraHomePage({required this.controller, Key? key}) : super(key: key);
-
   final ScrollController controller;
+
+  const AuraHomePage({required this.controller, Key? key}) : super(key: key);
 
   @override
   State<AuraHomePage> createState() => _AuraHomePageState();
@@ -27,8 +26,6 @@ class _AuraHomePageState extends State<AuraHomePage>
   int index = 0;
   List<Song> songs = [];
   List<Song> songstest = [];
-  String overlaySongName = '';
-  String overlayArtistName = '';
 
   List<String> kImages = [
     'assets/slider/1.jpg',
@@ -54,13 +51,6 @@ class _AuraHomePageState extends State<AuraHomePage>
         songstest =
             snapshot.docs.map((doc) => Song.fromFirestore(doc)).toList();
       });
-    });
-  }
-
-  void updateOverlay(String songName, String artistName) {
-    setState(() {
-      overlaySongName = songName;
-      overlayArtistName = artistName;
     });
   }
 
@@ -117,8 +107,6 @@ class _AuraHomePageState extends State<AuraHomePage>
               AuraPlayer(
                 currentIndex: index,
                 songs: songs,
-                updateOverlay: updateOverlay,
-                audioPlayer: _audioPlayer,
               ),
               transition: Transition.fadeIn,
             ),
@@ -148,57 +136,13 @@ class _AuraHomePageState extends State<AuraHomePage>
               placeholder: (context, url) => const CircularProgressIndicator(),
               errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
-            onTap: () {
-              _playAudio(song.songUrl);
-            },
+            // onTap: () {
+            //   _playAudio(song.songUrl);
+            // },
           );
         },
       ),
     );
-  }
-
-  void playPause() {
-    if (_audioPlayer.playing) {
-      _audioPlayer.pause();
-    } else {
-      _audioPlayer.play();
-    }
-  }
-
-  Future<void> _skipNext() async {
-    try {
-      if (_audioPlayer.playing) {
-        await _audioPlayer.stop();
-      }
-
-      if (index < songs.length - 1) {
-        setState(() {
-          index++;
-        });
-        await _audioPlayer.setUrl(songs[index].songUrl);
-        await _audioPlayer.play();
-      }
-    } catch (e) {
-      print("Error in _skipNext: $e");
-    }
-  }
-
-  Future<void> _skipPrevious() async {
-    try {
-      if (_audioPlayer.playing) {
-        await _audioPlayer.stop();
-      }
-
-      if (index > 0) {
-        setState(() {
-          index--;
-        });
-        await _audioPlayer.setUrl(songs[index].songUrl);
-        await _audioPlayer.play();
-      }
-    } catch (e) {
-      print("Error in _skipPrevious: $e");
-    }
   }
 
   @override
@@ -306,70 +250,24 @@ class _AuraHomePageState extends State<AuraHomePage>
                   ),
                 ),
               ),
-            Positioned(
-              bottom: 80,
-              left: 0,
-              right: 0,
-              child: Container(
-                padding: EdgeInsets.all(8.0),
-                color: Colors.black.withOpacity(0.8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          overlaySongName,
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        Text(
-                          overlayArtistName,
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.skip_previous),
-                          onPressed: _skipPrevious,
-                          color: Colors.white,
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.play_arrow),
-                          onPressed: playPause,
-                          color: Colors.white,
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.skip_next),
-                          onPressed: _skipNext,
-                          color: Colors.white,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
           ],
         ),
       ),
     );
   }
 
-  Future<void> _playAudio(String audioUrl) async {
-    try {
-      await _audioPlayer.dynamicSet(pushIfNotExisted: true, url: audioUrl);
-      await _audioPlayer.play();
+  // Future<void> _playAudio(String audioUrl) async {
+  //   try {
+  //     await _audioPlayer.dynamicSet(pushIfNotExisted: true, url: audioUrl);
+  //     await _audioPlayer.play();
 
-      setState(() {
-        isPlaying = true;
-      });
-    } catch (e) {
-      if (kDebugMode) {
-        print("Error playing audio: $e");
-      }
-    }
-  }
+  //     setState(() {
+  //       isPlaying = true;
+  //     });
+  //   } catch (e) {
+  //     if (kDebugMode) {
+  //       print("Error playing audio: $e");
+  //     }
+  //   }
+  // }
 }
