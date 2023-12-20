@@ -7,22 +7,28 @@ import 'package:iconly/iconly.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
 
-class CustomMixin extends StatefulWidget {
+class AuraComposer extends StatefulWidget {
   // final ScrollController controller;
-  const CustomMixin({
+  const AuraComposer({
     Key? key,
     // required this.controller,
   }) : super(key: key);
 
   @override
-  State<CustomMixin> createState() => CustomMixinState();
+  State<AuraComposer> createState() => AuraComposerState();
 }
 
-class CustomMixinState extends State<CustomMixin> {
+class AuraComposerState extends State<AuraComposer> {
   int playingAudioCount = 0;
+  int selectedTimerDuration = 0;
+  Timer? audioTimer;
+
+  final List<AudioPlayer> audioPlayers =
+      List.generate(54, (index) => AudioPlayer());
 
   List<ValueNotifier<double>> volumes =
       List.generate(54, (_) => ValueNotifier<double>(1.0));
+
   final List<String> data = [
     "Nature",
     "Animals",
@@ -31,19 +37,6 @@ class CustomMixinState extends State<CustomMixin> {
     "ASMR",
     "Transport",
   ];
-
-  final List<AudioPlayer> audioPlayers =
-      List.generate(54, (index) => AudioPlayer());
-
-  int selectedTimerDuration = 0;
-
-  Timer? audioTimer;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadAudios();
-  }
 
   final List<String> audioPaths = [
     //nature
@@ -57,13 +50,13 @@ class CustomMixinState extends State<CustomMixin> {
     'assets/nature/rainforest.ogg',
     'assets/nature/wind.ogg',
     //Animals
-    'assets/animals/birds.ogg', //not working
-    'assets/animals/rainforest_birds.ogg', //not working
-    'assets/animals/crickets.ogg', //not working
-    'assets/animals/frogs.ogg', //not working
-    'assets/animals/owls.ogg', //not working
-    'assets/animals/whales.ogg', //not working
-    'assets/animals/wolves.ogg', //not working
+    'assets/animals/birds.ogg',
+    'assets/animals/rainforest_birds.ogg',
+    'assets/animals/crickets.ogg',
+    'assets/animals/frogs.ogg',
+    'assets/animals/owls.ogg',
+    'assets/animals/whales.ogg',
+    'assets/animals/wolves.ogg',
     //rain
     'assets/rain/rain.ogg',
     'assets/rain/thunders.ogg',
@@ -122,7 +115,7 @@ class CustomMixinState extends State<CustomMixin> {
     'Wind',
     //animals
     "Birds",
-    "Birds 2",
+    "Birds",
     "Crickets",
     "Frogs",
     "Owls",
@@ -131,38 +124,38 @@ class CustomMixinState extends State<CustomMixin> {
     //rain
     "Rain",
     "Thunder",
-    "Thunder 2",
-    "Rain in Forest",
-    "Rain on Leaves",
-    "Rain on Roof",
-    "Rain on Tent",
-    "Rain on Window",
-    "Rain under Umbrella",
+    "Thunder",
+    "Forest",
+    "Leaves",
+    "Roof",
+    "Tent",
+    "Window",
+    "Umbrella",
 
     //music
     'Harp',
     'Piano',
-    'Piano 2',
+    'Piano',
     'Guitar',
-    'Guitar 2',
-    'Guitar 3',
-    'Guitar 4',
+    'Guitar',
+    'Guitar',
+    'Guitar',
     'Violin',
     'Peaceful',
     'Rhodes',
     'Ambient',
-    'Ambient 2',
+    'Ambient',
     'Chill',
     'Cinematic',
     //ASMR
     'Breathing',
-    'Car Engine',
+    'Engine',
     'Cat Purring',
     'Chewing',
     'Crackling',
-    'Hair Clippers',
-    'Page Turning',
-    'Scratching',
+    'Hair Clip.',
+    'Page',
+    'Scratch',
     'Tapping',
     'Whispering',
     //transport
@@ -170,7 +163,7 @@ class CustomMixinState extends State<CustomMixin> {
     'Train',
     'Airplane',
     'Boat',
-    'Boat 2',
+    'Boat',
   ];
 
   final List<Widget> audioIcons = [
@@ -236,6 +229,12 @@ class CustomMixinState extends State<CustomMixin> {
     Image.asset('assets/icons/transport/boat.png'),
     Image.asset('assets/icons/transport/boat.png'),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAudios();
+  }
 
   Future<void> _loadAudios() async {
     try {
@@ -371,7 +370,7 @@ class CustomMixinState extends State<CustomMixin> {
                   Container(
                     width: MediaQuery.of(context).size.width - 40,
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 28, 28, 48),
+                      color: const Color.fromARGB(255, 28, 28, 48),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Padding(
@@ -422,13 +421,13 @@ class CustomMixinState extends State<CustomMixin> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width - 40,
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 28, 28, 48),
+                      color: const Color.fromARGB(255, 28, 28, 48),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Padding(
@@ -445,7 +444,6 @@ class CustomMixinState extends State<CustomMixin> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Container(),
                               for (int i = 9; i < 13; i++)
                                 _buildAudioControl(
                                   icon: audioIcons[i],
@@ -456,7 +454,7 @@ class CustomMixinState extends State<CustomMixin> {
                             ],
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               for (int i = 13; i < 16; i++)
                                 _buildAudioControl(
@@ -471,13 +469,13 @@ class CustomMixinState extends State<CustomMixin> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width - 40,
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 28, 28, 48),
+                      color: const Color.fromARGB(255, 28, 28, 48),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Padding(
@@ -494,8 +492,7 @@ class CustomMixinState extends State<CustomMixin> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Container(),
-                              for (int i = 16; i < 19; i++)
+                              for (int i = 16; i < 20; i++)
                                 _buildAudioControl(
                                   icon: audioIcons[i],
                                   label: audioNames[i],
@@ -507,8 +504,7 @@ class CustomMixinState extends State<CustomMixin> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Container(),
-                              for (int i = 19; i < 21; i++)
+                              for (int i = 20; i < 24; i++)
                                 _buildAudioControl(
                                   icon: audioIcons[i],
                                   label: audioNames[i],
@@ -518,23 +514,9 @@ class CustomMixinState extends State<CustomMixin> {
                             ],
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Container(),
-                              for (int i = 21; i < 23; i++)
-                                _buildAudioControl(
-                                  icon: audioIcons[i],
-                                  label: audioNames[i],
-                                  audioPlayer: audioPlayers[i],
-                                  volume: volumes[i],
-                                ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Container(),
-                              for (int i = 23; i < 25; i++)
+                              for (int i = 24; i < 25; i++)
                                 _buildAudioControl(
                                   icon: audioIcons[i],
                                   label: audioNames[i],
@@ -547,13 +529,13 @@ class CustomMixinState extends State<CustomMixin> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width - 40,
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 28, 28, 48),
+                      color: const Color.fromARGB(255, 28, 28, 48),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Padding(
@@ -570,8 +552,7 @@ class CustomMixinState extends State<CustomMixin> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Container(),
-                              for (int i = 25; i < 28; i++)
+                              for (int i = 25; i < 29; i++)
                                 _buildAudioControl(
                                   icon: audioIcons[i],
                                   label: audioNames[i],
@@ -583,8 +564,7 @@ class CustomMixinState extends State<CustomMixin> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Container(),
-                              for (int i = 28; i < 31; i++)
+                              for (int i = 29; i < 33; i++)
                                 _buildAudioControl(
                                   icon: audioIcons[i],
                                   label: audioNames[i],
@@ -596,8 +576,7 @@ class CustomMixinState extends State<CustomMixin> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Container(),
-                              for (int i = 31; i < 34; i++)
+                              for (int i = 33; i < 37; i++)
                                 _buildAudioControl(
                                   icon: audioIcons[i],
                                   label: audioNames[i],
@@ -607,22 +586,8 @@ class CustomMixinState extends State<CustomMixin> {
                             ],
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Container(),
-                              for (int i = 34; i < 37; i++)
-                                _buildAudioControl(
-                                  icon: audioIcons[i],
-                                  label: audioNames[i],
-                                  audioPlayer: audioPlayers[i],
-                                  volume: volumes[i],
-                                ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Container(),
                               for (int i = 37; i < 39; i++)
                                 _buildAudioControl(
                                   icon: audioIcons[i],
@@ -636,13 +601,13 @@ class CustomMixinState extends State<CustomMixin> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width - 40,
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 28, 28, 48),
+                      color: const Color.fromARGB(255, 28, 28, 48),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Padding(
@@ -659,8 +624,7 @@ class CustomMixinState extends State<CustomMixin> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Container(),
-                              for (int i = 39; i < 42; i++)
+                              for (int i = 39; i < 43; i++)
                                 _buildAudioControl(
                                   icon: audioIcons[i],
                                   label: audioNames[i],
@@ -672,8 +636,7 @@ class CustomMixinState extends State<CustomMixin> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Container(),
-                              for (int i = 42; i < 45; i++)
+                              for (int i = 43; i < 47; i++)
                                 _buildAudioControl(
                                   icon: audioIcons[i],
                                   label: audioNames[i],
@@ -683,23 +646,9 @@ class CustomMixinState extends State<CustomMixin> {
                             ],
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Container(),
-                              for (int i = 45; i < 48; i++)
-                                _buildAudioControl(
-                                  icon: audioIcons[i],
-                                  label: audioNames[i],
-                                  audioPlayer: audioPlayers[i],
-                                  volume: volumes[i],
-                                ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Container(),
-                              for (int i = 48; i < 49; i++)
+                              for (int i = 47; i < 49; i++)
                                 _buildAudioControl(
                                   icon: audioIcons[i],
                                   label: audioNames[i],
@@ -712,13 +661,13 @@ class CustomMixinState extends State<CustomMixin> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width - 40,
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 28, 28, 48),
+                      color: const Color.fromARGB(255, 28, 28, 48),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Padding(
@@ -735,8 +684,7 @@ class CustomMixinState extends State<CustomMixin> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Container(),
-                              for (int i = 49; i < 52; i++)
+                              for (int i = 49; i < 53; i++)
                                 _buildAudioControl(
                                   icon: audioIcons[i],
                                   label: audioNames[i],
@@ -746,10 +694,9 @@ class CustomMixinState extends State<CustomMixin> {
                             ],
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Container(),
-                              for (int i = 52; i < 54; i++)
+                              for (int i = 53; i < 54; i++)
                                 _buildAudioControl(
                                   icon: audioIcons[i],
                                   label: audioNames[i],
@@ -781,7 +728,7 @@ class CustomMixinState extends State<CustomMixin> {
     required ValueNotifier<double> volume,
     required Widget icon,
   }) {
-    return Expanded(
+    return Flexible(
       child: Column(
         children: [
           Container(
@@ -791,7 +738,7 @@ class CustomMixinState extends State<CustomMixin> {
               borderRadius: BorderRadius.circular(15),
               color: audioPlayer.playing
                   ? const Color.fromARGB(255, 37, 194, 42)
-                  : Color.fromARGB(255, 38, 43, 80),
+                  : const Color.fromARGB(255, 38, 43, 80),
             ),
             child: InkWell(
               onTap: () {
@@ -800,12 +747,18 @@ class CustomMixinState extends State<CustomMixin> {
               child: SizedBox(height: 44, width: 44, child: icon),
             ),
           ),
+          const SizedBox(
+            height: 3,
+          ),
           Text(
             label,
             style: const TextStyle(
               color: Color.fromARGB(255, 103, 247, 110),
               // fontWeight: FontWeight.bold
             ),
+          ),
+          const SizedBox(
+            height: 3,
           ),
         ],
       ),

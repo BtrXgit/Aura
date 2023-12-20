@@ -111,7 +111,7 @@ class HomePageState extends State<HomePage>
             AuraHomePage(
               controller: controller,
             ),
-            const CustomMixin(
+            const AuraComposer(
                 // controller: controller,
                 ),
             const ExploreWorld(

@@ -2,11 +2,9 @@ import 'package:aura/data/songs.dart';
 import 'package:aura/routes/pages/player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:just_audio_cache/just_audio_cache.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class AuraHomePage extends StatefulWidget {

@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:aura/data/songs.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:just_audio/just_audio.dart';
@@ -23,7 +24,6 @@ class AuraPlayer extends StatefulWidget {
 class _AuraPlayerState extends State<AuraPlayer> {
   final AudioPlayer _audioPlayer = AudioPlayer();
   int _currentIndex = 0;
-  bool _isPlaying = false;
 
   @override
   void initState() {
@@ -42,7 +42,6 @@ class _AuraPlayerState extends State<AuraPlayer> {
 
       _audioPlayer.processingStateStream.listen((processingState) {
         setState(() {
-          _isPlaying = _audioPlayer.playing;
         });
 
         if (processingState == ProcessingState.completed) {
@@ -78,8 +77,8 @@ class _AuraPlayerState extends State<AuraPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    print(
-        "Songs length: ${widget.songs.length}, Current Index: $_currentIndex");
+    if (kDebugMode) {
+    }
 
     return Scaffold(
       appBar: null,
@@ -121,17 +120,17 @@ class _AuraPlayerState extends State<AuraPlayer> {
                               const Icon(Icons.error),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Text(
                         widget.songs[_currentIndex].songName,
-                        style: TextStyle(color: Colors.white, fontSize: 24),
+                        style: const TextStyle(color: Colors.white, fontSize: 24),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Text(
                         widget.songs[_currentIndex].artist,
-                        style: TextStyle(color: Colors.white, fontSize: 18),
+                        style: const TextStyle(color: Colors.white, fontSize: 18),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       // Slider will come here
                       StreamBuilder<Duration>(
                         stream: _audioPlayer.positionStream,
@@ -149,13 +148,13 @@ class _AuraPlayerState extends State<AuraPlayer> {
                                   thumbColor: Colors.blue,
                                   overlayColor: Colors.blue.withOpacity(0.3),
                                   valueIndicatorColor: Colors.blue,
-                                  thumbShape: RoundSliderThumbShape(
+                                  thumbShape: const RoundSliderThumbShape(
                                       enabledThumbRadius: 8.0),
-                                  overlayShape: RoundSliderOverlayShape(
+                                  overlayShape: const RoundSliderOverlayShape(
                                       overlayRadius: 16.0),
                                   valueIndicatorShape:
-                                      PaddleSliderValueIndicatorShape(),
-                                  valueIndicatorTextStyle: TextStyle(
+                                      const PaddleSliderValueIndicatorShape(),
+                                  valueIndicatorTextStyle: const TextStyle(
                                     color: Colors.white,
                                   ),
                                 ),
@@ -177,11 +176,11 @@ class _AuraPlayerState extends State<AuraPlayer> {
                                   children: [
                                     Text(
                                       '${position.inMinutes}:${(position.inSeconds % 60).toString().padLeft(2, '0')}',
-                                      style: TextStyle(color: Colors.white),
+                                      style: const TextStyle(color: Colors.white),
                                     ),
                                     Text(
                                       '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}',
-                                      style: TextStyle(color: Colors.white),
+                                      style: const TextStyle(color: Colors.white),
                                     ),
                                   ],
                                 ),
@@ -191,13 +190,13 @@ class _AuraPlayerState extends State<AuraPlayer> {
                         },
                       ),
 
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       // Next/Previous button will come here
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           IconButton(
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.skip_previous,
                               size: 34,
                               color: Colors.white,
@@ -224,7 +223,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
                             },
                           ),
                           IconButton(
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.skip_next,
                               size: 34,
                               color: Colors.white,
@@ -237,13 +236,13 @@ class _AuraPlayerState extends State<AuraPlayer> {
                         height: 20,
                       ),
                       Padding(
-                        padding: EdgeInsets.only(right: 20),
+                        padding: const EdgeInsets.only(right: 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             IconButton(
                               onPressed: () {},
-                              icon: Icon(
+                              icon: const Icon(
                                 IconlyBold.heart,
                                 color: Colors.white,
                                 size: 30,
@@ -251,7 +250,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
                             ),
                             IconButton(
                               onPressed: () {},
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.share,
                                 color: Colors.white,
                                 size: 30,
@@ -264,12 +263,10 @@ class _AuraPlayerState extends State<AuraPlayer> {
                   ),
                 ],
               )
-            : Container(
-                child: Text(
-                  'No song available',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
+            : const Text(
+              'No song available',
+              style: TextStyle(color: Colors.white),
+            ),
       ),
     );
   }

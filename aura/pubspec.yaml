@@ -79,19 +79,20 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/nature/
-    - assets/asmr/
-    - assets/rain/
     - assets/animals/
-    - assets/music/
-    - assets/transport/
-    - assets/images/
+    - assets/asmr/
     - assets/icons/
+    - assets/images/
+    - assets/music/
+    - assets/nature/
+    - assets/rain/
+    - assets/slider/
+    - assets/transport/
     - assets/icons/rain/
     - assets/icons/asmr/
     - assets/icons/transport/
     - assets/
-    - assets/slider/
+    
     
   #   - images/a_dot_ham.jpeg
 
