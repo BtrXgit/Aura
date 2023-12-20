@@ -384,31 +384,11 @@ class AuraComposerState extends State<AuraComposer> {
                               fontSize: 16,
                             ),
                           ),
-                          Row(
-                            children: [
-                              for (int i = 0; i < 4; i++)
-                                _buildAudioControl(
-                                  icon: audioIcons[i],
-                                  label: audioNames[i],
-                                  audioPlayer: audioPlayers[i],
-                                  volume: volumes[i],
-                                ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              for (int i = 4; i < 8; i++)
-                                _buildAudioControl(
-                                  icon: audioIcons[i],
-                                  label: audioNames[i],
-                                  audioPlayer: audioPlayers[i],
-                                  volume: volumes[i],
-                                ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              for (int i = 8; i < 9; i++)
+                          Wrap(
+                            spacing: 8.0,
+                            runSpacing: 4.0,
+                            children: <Widget>[
+                              for (int i = 0; i < 9; i++)
                                 _buildAudioControl(
                                   icon: audioIcons[i],
                                   label: audioNames[i],
@@ -441,22 +421,11 @@ class AuraComposerState extends State<AuraComposer> {
                               fontSize: 16,
                             ),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              for (int i = 9; i < 13; i++)
-                                _buildAudioControl(
-                                  icon: audioIcons[i],
-                                  label: audioNames[i],
-                                  audioPlayer: audioPlayers[i],
-                                  volume: volumes[i],
-                                ),
-                            ],
-                          ),
-                          Row(
-                            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              for (int i = 13; i < 16; i++)
+                          Wrap(
+                            spacing: 8.0,
+                            runSpacing: 4.0,
+                            children: <Widget>[
+                              for (int i = 9; i < 16; i++)
                                 _buildAudioControl(
                                   icon: audioIcons[i],
                                   label: audioNames[i],
@@ -489,34 +458,11 @@ class AuraComposerState extends State<AuraComposer> {
                               fontSize: 16,
                             ),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              for (int i = 16; i < 20; i++)
-                                _buildAudioControl(
-                                  icon: audioIcons[i],
-                                  label: audioNames[i],
-                                  audioPlayer: audioPlayers[i],
-                                  volume: volumes[i],
-                                ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              for (int i = 20; i < 24; i++)
-                                _buildAudioControl(
-                                  icon: audioIcons[i],
-                                  label: audioNames[i],
-                                  audioPlayer: audioPlayers[i],
-                                  volume: volumes[i],
-                                ),
-                            ],
-                          ),
-                          Row(
-                            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              for (int i = 24; i < 25; i++)
+                          Wrap(
+                            spacing: 8.0,
+                            runSpacing: 4.0,
+                            children: <Widget>[
+                              for (int i = 16; i < 25; i++)
                                 _buildAudioControl(
                                   icon: audioIcons[i],
                                   label: audioNames[i],
@@ -549,46 +495,11 @@ class AuraComposerState extends State<AuraComposer> {
                               fontSize: 16,
                             ),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              for (int i = 25; i < 29; i++)
-                                _buildAudioControl(
-                                  icon: audioIcons[i],
-                                  label: audioNames[i],
-                                  audioPlayer: audioPlayers[i],
-                                  volume: volumes[i],
-                                ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              for (int i = 29; i < 33; i++)
-                                _buildAudioControl(
-                                  icon: audioIcons[i],
-                                  label: audioNames[i],
-                                  audioPlayer: audioPlayers[i],
-                                  volume: volumes[i],
-                                ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              for (int i = 33; i < 37; i++)
-                                _buildAudioControl(
-                                  icon: audioIcons[i],
-                                  label: audioNames[i],
-                                  audioPlayer: audioPlayers[i],
-                                  volume: volumes[i],
-                                ),
-                            ],
-                          ),
-                          Row(
-                            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              for (int i = 37; i < 39; i++)
+                          Wrap(
+                            spacing: 8.0,
+                            runSpacing: 4.0,
+                            children: <Widget>[
+                              for (int i = 25; i < 39; i++)
                                 _buildAudioControl(
                                   icon: audioIcons[i],
                                   label: audioNames[i],
@@ -621,34 +532,11 @@ class AuraComposerState extends State<AuraComposer> {
                               fontSize: 16,
                             ),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              for (int i = 39; i < 43; i++)
-                                _buildAudioControl(
-                                  icon: audioIcons[i],
-                                  label: audioNames[i],
-                                  audioPlayer: audioPlayers[i],
-                                  volume: volumes[i],
-                                ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              for (int i = 43; i < 47; i++)
-                                _buildAudioControl(
-                                  icon: audioIcons[i],
-                                  label: audioNames[i],
-                                  audioPlayer: audioPlayers[i],
-                                  volume: volumes[i],
-                                ),
-                            ],
-                          ),
-                          Row(
-                            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              for (int i = 47; i < 49; i++)
+                          Wrap(
+                            spacing: 8.0,
+                            runSpacing: 4.0,
+                            children: <Widget>[
+                              for (int i = 39; i < 49; i++)
                                 _buildAudioControl(
                                   icon: audioIcons[i],
                                   label: audioNames[i],
@@ -681,22 +569,11 @@ class AuraComposerState extends State<AuraComposer> {
                               fontSize: 16,
                             ),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              for (int i = 49; i < 53; i++)
-                                _buildAudioControl(
-                                  icon: audioIcons[i],
-                                  label: audioNames[i],
-                                  audioPlayer: audioPlayers[i],
-                                  volume: volumes[i],
-                                ),
-                            ],
-                          ),
-                          Row(
-                            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              for (int i = 53; i < 54; i++)
+                          Wrap(
+                            spacing: 8.0,
+                            runSpacing: 4.0,
+                            children: <Widget>[
+                              for (int i = 49; i < 54; i++)
                                 _buildAudioControl(
                                   icon: audioIcons[i],
                                   label: audioNames[i],
@@ -728,7 +605,7 @@ class AuraComposerState extends State<AuraComposer> {
     required ValueNotifier<double> volume,
     required Widget icon,
   }) {
-    return Flexible(
+    return Expanded(
       child: Column(
         children: [
           Container(
