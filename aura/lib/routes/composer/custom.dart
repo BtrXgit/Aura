@@ -232,10 +232,9 @@ class AuraComposerState extends State<AuraComposer> {
       for (int i = 0; i < audioPlayers.length && i < audioPaths.length; i++) {
         try {
           await audioPlayers[i].setAsset(audioPaths[i]);
+          print('Audio at index $i loaded successfully.');
         } catch (e) {
-          if (kDebugMode) {
-            print('Error loading audio: $e');
-          }
+          print('Error loading audio at index $i: $e');
         }
       }
       for (final audioPlayer in audioPlayers) {
@@ -654,6 +653,7 @@ class AuraComposerState extends State<AuraComposer> {
         });
       });
     }
+    print('Audio Player State: ${audioPlayer.playing ? 'Playing' : 'Paused'}');
   }
 
   void _stopPlayingSounds(List<AudioPlayer> audioPlayers) {
@@ -745,7 +745,6 @@ class AuraComposerState extends State<AuraComposer> {
           width: MediaQuery.of(context).size.width * 0.75,
           height: 64,
           decoration: BoxDecoration(
-              // color: Colors.transparent,
               gradient: const LinearGradient(colors: [
                 Color.fromARGB(255, 80, 218, 243),
                 Color.fromARGB(255, 12, 26, 176),
