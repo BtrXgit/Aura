@@ -29,15 +29,6 @@ class AuraComposerState extends State<AuraComposer> {
   List<ValueNotifier<double>> volumes =
       List.generate(54, (_) => ValueNotifier<double>(1.0));
 
-  final List<String> data = [
-    "Nature",
-    "Animals",
-    "Rain",
-    "Music",
-    "ASMR",
-    "Transport",
-  ];
-
   final List<String> audioPaths = [
     //nature
     'assets/nature/cave.ogg',
@@ -605,40 +596,38 @@ class AuraComposerState extends State<AuraComposer> {
     required ValueNotifier<double> volume,
     required Widget icon,
   }) {
-    return Expanded(
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12.0),
-            margin: const EdgeInsets.all(3.5),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: audioPlayer.playing
-                  ? const Color.fromARGB(255, 37, 194, 42)
-                  : const Color.fromARGB(255, 38, 43, 80),
-            ),
-            child: InkWell(
-              onTap: () {
-                _toggleAudioPlayback(audioPlayer);
-              },
-              child: SizedBox(height: 44, width: 44, child: icon),
-            ),
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(12.0),
+          margin: const EdgeInsets.all(3.5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: audioPlayer.playing
+                ? const Color.fromARGB(255, 37, 194, 42)
+                : const Color.fromARGB(255, 38, 43, 80),
           ),
-          const SizedBox(
-            height: 3,
+          child: InkWell(
+            onTap: () {
+              _toggleAudioPlayback(audioPlayer);
+            },
+            child: SizedBox(height: 44, width: 44, child: icon),
           ),
-          Text(
-            label,
-            style: const TextStyle(
-              color: Color.fromARGB(255, 103, 247, 110),
-              // fontWeight: FontWeight.bold
-            ),
+        ),
+        const SizedBox(
+          height: 3,
+        ),
+        Text(
+          label,
+          style: const TextStyle(
+            color: Color.fromARGB(255, 103, 247, 110),
+            // fontWeight: FontWeight.bold
           ),
-          const SizedBox(
-            height: 3,
-          ),
-        ],
-      ),
+        ),
+        const SizedBox(
+          height: 3,
+        ),
+      ],
     );
   }
 
@@ -700,7 +689,7 @@ class AuraComposerState extends State<AuraComposer> {
     audioTimer = Timer(Duration(seconds: duration), () {
       for (final audioPlayer in audioPlayers) {
         if (audioPlayer.playing) {
-          audioPlayer.pause();
+          audioPlayer.stop();
         }
       }
     });
