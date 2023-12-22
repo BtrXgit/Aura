@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:aura/data/composer_data.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
 
 class AuraComposerTest extends StatefulWidget {
@@ -16,7 +17,10 @@ class AuraComposerTestState extends State<AuraComposerTest> {
       List.generate(9, (index) => AudioPlayer());
   final List<AudioPlayer> animalsaudioPlayer =
       List.generate(7, (index) => AudioPlayer());
-
+  final List<AudioPlayer> rainaudioPlayer =
+      List.generate(9, (index) => AudioPlayer());
+  final List<AudioPlayer> musicaudioPlayer =
+      List.generate(14, (index) => AudioPlayer());
   late Timer _timer;
 
   @override
@@ -24,6 +28,8 @@ class AuraComposerTestState extends State<AuraComposerTest> {
     super.initState();
     _loadnatureAudios();
     _loadanimalsAudios();
+    _loadrainAudios();
+    _loadmusicAudios();
   }
 
   Future<void> _loadnatureAudios() async {
@@ -48,37 +54,193 @@ class AuraComposerTestState extends State<AuraComposerTest> {
     }
   }
 
+  Future<void> _loadrainAudios() async {
+    for (int i = 0;
+        i < rainaudioPlayer.length && i < rainaudioPaths.length;
+        i++) {
+      await rainaudioPlayer[i].setAsset(rainaudioPaths[i]);
+    }
+    for (final audioPlayer in rainaudioPlayer) {
+      audioPlayer.setLoopMode(LoopMode.all);
+    }
+  }
+
+  Future<void> _loadmusicAudios() async {
+    for (int i = 0;
+        i < musicaudioPlayer.length && i < musicaudioPaths.length;
+        i++) {
+      await musicaudioPlayer[i].setAsset(musicaudioPaths[i]);
+    }
+    for (final audioPlayer in musicaudioPlayer) {
+      audioPlayer.setLoopMode(LoopMode.all);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Wrap(
-                spacing: 8.0,
-                runSpacing: 4.0,
-                children: <Widget>[
-                  for (int i = 0; i < 9; i++)
-                    _buildAudioControl(
-                      icon: natureIcons[i],
-                      label: natureaudioNames[i],
-                      audioPlayer: natureaudioPlayer[i],
-                    ),
-                ],
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Customization Sound',
+                    style: GoogleFonts.inter(color: Colors.white, fontSize: 18),
+                  ),
+                ),
               ),
-              Wrap(
-                spacing: 8.0,
-                runSpacing: 4.0,
-                children: <Widget>[
-                  for (int i = 0; i < 7; i++)
-                    _buildAudioControl(
-                      icon: animalsIcons[i],
-                      label: animalsaudioNames[i],
-                      audioPlayer: animalsaudioPlayer[i],
-                    ),
-                ],
+              Container(
+                width: MediaQuery.of(context).size.width - 40,
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 28, 28, 48),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Nature Category',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Wrap(
+                        spacing: 8.0,
+                        runSpacing: 4.0,
+                        children: <Widget>[
+                          for (int i = 0; i < 9; i++)
+                            _buildAudioControl(
+                              icon: natureIcons[i],
+                              label: natureaudioNames[i],
+                              audioPlayer: natureaudioPlayer[i],
+                            ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width - 40,
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 28, 28, 48),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Animals Category',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Wrap(
+                        spacing: 8.0,
+                        runSpacing: 4.0,
+                        children: <Widget>[
+                          for (int i = 0; i < 7; i++)
+                            _buildAudioControl(
+                              icon: animalsIcons[i],
+                              label: animalsaudioNames[i],
+                              audioPlayer: animalsaudioPlayer[i],
+                            ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width - 40,
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 28, 28, 48),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Rain Category',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Wrap(
+                        spacing: 8.0,
+                        runSpacing: 4.0,
+                        children: <Widget>[
+                          for (int i = 0; i < 9; i++)
+                            _buildAudioControl(
+                              icon: rainIcons[i],
+                              label: rainaudioNames[i],
+                              audioPlayer: rainaudioPlayer[i],
+                            ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width - 40,
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 28, 28, 48),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Music Category',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Wrap(
+                        spacing: 8.0,
+                        runSpacing: 4.0,
+                        children: <Widget>[
+                          for (int i = 0; i < 14; i++)
+                            _buildAudioControl(
+                              icon: musicIcons[i],
+                              label: musicaudioNames[i],
+                              audioPlayer: musicaudioPlayer[i],
+                            ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 100,
               ),
             ],
           ),
@@ -114,8 +276,8 @@ class AuraComposerTestState extends State<AuraComposerTest> {
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.all(12.0),
-          margin: const EdgeInsets.all(3.5),
+          padding: const EdgeInsets.all(10.0),
+          margin: const EdgeInsets.all(2),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             color: audioPlayer.playing
@@ -126,7 +288,7 @@ class AuraComposerTestState extends State<AuraComposerTest> {
             onTap: () {
               _toggleAudioPlayback(audioPlayer);
             },
-            child: SizedBox(height: 44, width: 44, child: icon),
+            child: SizedBox(height: 40, width: 40, child: icon),
           ),
         ),
         const SizedBox(height: 3),
@@ -145,8 +307,8 @@ class AuraComposerTestState extends State<AuraComposerTest> {
 
   Widget _buildVolumeSlider(AudioPlayer audioPlayer) {
     return SizedBox(
-      width: 80,
-      height: 30,
+      width: 74,
+      height: 20,
       child: Slider(
         value: audioPlayer.volume,
         onChanged: (value) {
@@ -185,47 +347,54 @@ class AuraComposerTestState extends State<AuraComposerTest> {
     print('Audio Player State: ${audioPlayer.playing ? 'Playing' : 'Paused'}');
   }
 
+  int? selectedTime;
+
   Future<void> _showTimerDialog() async {
-    int? selectedTime = await showDialog<int>(
+    selectedTime = await showDialog<int>(
       context: context,
       builder: (BuildContext context) {
-        int? selectedTime;
+        List<Map<String, dynamic>> timerOptions = [
+          {'duration': 60, 'label': '1M'},
+          {'duration': 120, 'label': '2M'},
+          {'duration': 300, 'label': '5M'},
+          {'duration': 600, 'label': '10M'},
+          {'duration': 1800, 'label': '30M'},
+          {'duration': 3600, 'label': '1H'},
+          {'duration': 7200, 'label': '2H'},
+          {'duration': 18000, 'label': '5H'},
+        ];
+
         return AlertDialog(
-          title: Text('Select Timer Duration (seconds)'),
-          content: Column(
-            children: [
-              TextFormField(
-                keyboardType: TextInputType.number,
-                onChanged: (value) {
-                  // Validate and set the selected time
-                  if (value.isNotEmpty) {
-                    selectedTime = int.tryParse(value);
-                  }
-                },
-                decoration: InputDecoration(labelText: 'Duration'),
-              ),
-            ],
+          title: Text(
+            'Select Timer Duration',
+            style: GoogleFonts.inter(fontSize: 18),
           ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancel'),
+          content: Container(
+            height: 150,
+            width: MediaQuery.of(context).size.width - 100,
+            child: Wrap(
+              children: timerOptions
+                  .map((option) => ElevatedButton(
+                        onPressed: () {
+                          selectedTime = option['duration'];
+                          Navigator.of(context).pop(selectedTime);
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: (selectedTime == option['duration'])
+                              ? MaterialStateProperty.all(Colors.red)
+                              : null,
+                        ),
+                        child: Text(option['label']),
+                      ))
+                  .toList(),
             ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(selectedTime);
-              },
-              child: Text('OK'),
-            ),
-          ],
+          ),
         );
       },
     );
 
     if (selectedTime != null) {
-      _startTimer(selectedTime);
+      _startTimer(selectedTime!);
     }
   }
 
@@ -243,6 +412,12 @@ class AuraComposerTestState extends State<AuraComposerTest> {
       player.stop();
     }
     for (var player in animalsaudioPlayer) {
+      player.stop();
+    }
+    for (var player in rainaudioPlayer) {
+      player.stop();
+    }
+    for (var player in musicaudioPlayer) {
       player.stop();
     }
     setState(() {
