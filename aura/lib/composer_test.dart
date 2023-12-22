@@ -121,7 +121,6 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                       icon: animalsIcons[i],
                       label: animalsaudioNames[i],
                       audioPlayer: animalsaudioPlayer[i],
-                      // volume: volumes[i],
                     ),
                 ],
               ),
@@ -129,11 +128,24 @@ class AuraComposerTestState extends State<AuraComposerTest> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _showTimerDialog();
-        },
-        child: Icon(Icons.timer),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              _showTimerDialog();
+            },
+            child: Icon(Icons.timer),
+          ),
+          SizedBox(height: 16),
+          FloatingActionButton(
+            onPressed: () {
+              _stopAllAudioPlayers();
+            },
+            child: Icon(Icons.stop),
+          ),
+        ],
       ),
     );
   }
@@ -141,7 +153,6 @@ class AuraComposerTestState extends State<AuraComposerTest> {
   Widget _buildAudioControl({
     required String label,
     required AudioPlayer audioPlayer,
-    // required ValueNotifier<double> volume,
     required Widget icon,
   }) {
     return Column(
