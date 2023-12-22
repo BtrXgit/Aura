@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:aura/data/composer_data.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
@@ -12,54 +13,9 @@ class AuraComposerTest extends StatefulWidget {
 class AuraComposerTestState extends State<AuraComposerTest> {
   int playingAudioCount = 0;
   final List<AudioPlayer> natureaudioPlayer =
-      List.generate(4, (index) => AudioPlayer());
+      List.generate(9, (index) => AudioPlayer());
   final List<AudioPlayer> animalsaudioPlayer =
-      List.generate(4, (index) => AudioPlayer());
-
-  final List<String> natureaudioPaths = [
-    //nature
-    'assets/nature/cave.ogg',
-    'assets/nature/creek.ogg',
-    'assets/nature/desert.ogg',
-    'assets/nature/fire.ogg',
-  ];
-  final List<String> animalsaudioPaths = [
-    //Animals
-    'assets/animals/birds.ogg',
-    'assets/animals/rainforest_birds.ogg',
-    'assets/animals/crickets.ogg',
-    'assets/animals/frogs.ogg',
-  ];
-
-  final List<String> natureaudioNames = [
-    //nature
-    'Cave',
-    'Creek',
-    'Desert',
-    'Fire',
-  ];
-  final List<String> animalsaudioNames = [
-    //animals
-    "Birds",
-    "Birds",
-    "Crickets",
-    "Frogs",
-  ];
-
-  final List<Widget> natureIcons = [
-    Image.asset('assets/icons/cave.png'),
-    Image.asset('assets/icons/creek.png'),
-    Image.asset('assets/icons/desert.png'),
-    Image.asset('assets/icons/fire.png'),
-  ];
-
-  final List<Widget> animalsIcons = [
-    //animals
-    Image.asset('assets/icons/birds.png'),
-    Image.asset('assets/icons/birds2.png'),
-    Image.asset('assets/icons/crickets.png'),
-    Image.asset('assets/icons/frog.png'),
-  ];
+      List.generate(7, (index) => AudioPlayer());
 
   late Timer _timer;
 
@@ -104,7 +60,7 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                 spacing: 8.0,
                 runSpacing: 4.0,
                 children: <Widget>[
-                  for (int i = 0; i < 4; i++)
+                  for (int i = 0; i < 9; i++)
                     _buildAudioControl(
                       icon: natureIcons[i],
                       label: natureaudioNames[i],
@@ -116,7 +72,7 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                 spacing: 8.0,
                 runSpacing: 4.0,
                 children: <Widget>[
-                  for (int i = 0; i < 4; i++)
+                  for (int i = 0; i < 7; i++)
                     _buildAudioControl(
                       icon: animalsIcons[i],
                       label: animalsaudioNames[i],

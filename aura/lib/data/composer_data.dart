@@ -147,7 +147,7 @@ final List<String> transportaudioNames = [
   'Boat',
 ];
 
-final List<Widget> natureaudioIcons = [
+final List<Widget> natureIcons = [
   Image.asset('assets/icons/cave.png'),
   Image.asset('assets/icons/creek.png'),
   Image.asset('assets/icons/desert.png'),
@@ -158,7 +158,7 @@ final List<Widget> natureaudioIcons = [
   Image.asset('assets/icons/forest.png'),
   Image.asset('assets/icons/wind.png'),
 ];
-final List<Widget> animalsaudioIcons = [
+final List<Widget> animalsIcons = [
   //animals
   Image.asset('assets/icons/birds.png'),
   Image.asset('assets/icons/birds2.png'),
@@ -168,7 +168,7 @@ final List<Widget> animalsaudioIcons = [
   Image.asset('assets/icons/whale.png'),
   Image.asset('assets/icons/wolves.png'),
 ];
-final List<Widget> rainaudioIcons = [
+final List<Widget> rainIcons = [
   //rain
   Image.asset('assets/icons/rain/rain.png'),
   Image.asset('assets/icons/rain/storm.png'),
@@ -180,7 +180,7 @@ final List<Widget> rainaudioIcons = [
   Image.asset('assets/icons/rain/rain_on_window.png'),
   Image.asset('assets/icons/rain/rain_under_umbrella.png'),
 ];
-final List<Widget> musicaudioIcons = [
+final List<Widget> musicIcons = [
   //music
   Image.asset('assets/icons/harp.png'),
   Image.asset('assets/icons/piano.png'),
@@ -197,7 +197,7 @@ final List<Widget> musicaudioIcons = [
   Image.asset('assets/icons/piano2.png'),
   Image.asset('assets/icons/piano2.png'),
 ];
-final List<Widget> asmraudioIcons = [
+final List<Widget> asmrIcons = [
   //ASMR
   Image.asset('assets/icons/asmr/breathing.png'),
   Image.asset('assets/icons/asmr/car_engine.png'),
@@ -210,7 +210,7 @@ final List<Widget> asmraudioIcons = [
   Image.asset('assets/icons/asmr/tapping.png'),
   Image.asset('assets/icons/asmr/whispering.png'),
 ];
-final List<Widget> transportaudioIcons = [
+final List<Widget> transportIcons = [
   //transport
   Image.asset('assets/icons/transport/car.png'),
   Image.asset('assets/icons/transport/train.png'),
