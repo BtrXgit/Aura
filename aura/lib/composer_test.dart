@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:aura/data/composer_data.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -68,259 +67,299 @@ class AuraComposerTestState extends State<AuraComposerTest> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Customization Sound',
-                    style: GoogleFonts.inter(color: Colors.white, fontSize: 18),
-                  ),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width - 40,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 28, 28, 48),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Nature Category',
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Customization Sound',
                         style: GoogleFonts.inter(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
+                            color: Colors.white, fontSize: 18),
                       ),
-                      Wrap(
-                        spacing: 8.0,
-                        runSpacing: 4.0,
-                        children: <Widget>[
-                          for (int i = 0; i < natureaudioPaths.length; i++)
-                            _buildAudioControl(
-                              icon: natureIcons[i],
-                              label: natureaudioNames[i],
-                              audioPlayer: natureaudioPlayer[i],
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width - 40,
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 28, 28, 48),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Nature Category',
+                            style: GoogleFonts.inter(
+                              color: Colors.white,
+                              fontSize: 16,
                             ),
+                          ),
+                          Wrap(
+                            spacing: 8.0,
+                            runSpacing: 4.0,
+                            children: <Widget>[
+                              for (int i = 0; i < natureaudioPaths.length; i++)
+                                _buildAudioControl(
+                                  icon: natureIcons[i],
+                                  label: natureaudioNames[i],
+                                  audioPlayer: natureaudioPlayer[i],
+                                ),
+                            ],
+                          ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width - 40,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 28, 28, 48),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Animals Category',
-                        style: GoogleFonts.inter(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Wrap(
-                        spacing: 8.0,
-                        runSpacing: 4.0,
-                        children: <Widget>[
-                          for (int i = 0; i < animalsaudioPaths.length; i++)
-                            _buildAudioControl(
-                              icon: animalsIcons[i],
-                              label: animalsaudioNames[i],
-                              audioPlayer: animalsaudioPlayer[i],
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width - 40,
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 28, 28, 48),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Animals Category',
+                            style: GoogleFonts.inter(
+                              color: Colors.white,
+                              fontSize: 16,
                             ),
+                          ),
+                          Wrap(
+                            spacing: 8.0,
+                            runSpacing: 4.0,
+                            children: <Widget>[
+                              for (int i = 0; i < animalsaudioPaths.length; i++)
+                                _buildAudioControl(
+                                  icon: animalsIcons[i],
+                                  label: animalsaudioNames[i],
+                                  audioPlayer: animalsaudioPlayer[i],
+                                ),
+                            ],
+                          ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width - 40,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 28, 28, 48),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Rain Category',
-                        style: GoogleFonts.inter(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Wrap(
-                        spacing: 8.0,
-                        runSpacing: 4.0,
-                        children: <Widget>[
-                          for (int i = 0; i < rainaudioPaths.length; i++)
-                            _buildAudioControl(
-                              icon: rainIcons[i],
-                              label: rainaudioNames[i],
-                              audioPlayer: rainaudioPlayer[i],
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width - 40,
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 28, 28, 48),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Rain Category',
+                            style: GoogleFonts.inter(
+                              color: Colors.white,
+                              fontSize: 16,
                             ),
+                          ),
+                          Wrap(
+                            spacing: 8.0,
+                            runSpacing: 4.0,
+                            children: <Widget>[
+                              for (int i = 0; i < rainaudioPaths.length; i++)
+                                _buildAudioControl(
+                                  icon: rainIcons[i],
+                                  label: rainaudioNames[i],
+                                  audioPlayer: rainaudioPlayer[i],
+                                ),
+                            ],
+                          ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width - 40,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 28, 28, 48),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Music Category',
-                        style: GoogleFonts.inter(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Wrap(
-                        spacing: 8.0,
-                        runSpacing: 4.0,
-                        children: <Widget>[
-                          for (int i = 0; i < musicaudioPaths.length; i++)
-                            _buildAudioControl(
-                              icon: musicIcons[i],
-                              label: musicaudioNames[i],
-                              audioPlayer: musicaudioPlayer[i],
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width - 40,
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 28, 28, 48),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Music Category',
+                            style: GoogleFonts.inter(
+                              color: Colors.white,
+                              fontSize: 16,
                             ),
+                          ),
+                          Wrap(
+                            spacing: 8.0,
+                            runSpacing: 4.0,
+                            children: <Widget>[
+                              for (int i = 0; i < musicaudioPaths.length; i++)
+                                _buildAudioControl(
+                                  icon: musicIcons[i],
+                                  label: musicaudioNames[i],
+                                  audioPlayer: musicaudioPlayer[i],
+                                ),
+                            ],
+                          ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width - 40,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 28, 28, 48),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        'ASMR Category',
-                        style: GoogleFonts.inter(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Wrap(
-                        spacing: 8.0,
-                        runSpacing: 4.0,
-                        children: <Widget>[
-                          for (int i = 0; i < asmraudioPaths.length; i++)
-                            _buildAudioControl(
-                              icon: asmrIcons[i],
-                              label: asmraudioNames[i],
-                              audioPlayer: asmraudioPlayer[i],
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width - 40,
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 28, 28, 48),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            'ASMR Category',
+                            style: GoogleFonts.inter(
+                              color: Colors.white,
+                              fontSize: 16,
                             ),
+                          ),
+                          Wrap(
+                            spacing: 8.0,
+                            runSpacing: 4.0,
+                            children: <Widget>[
+                              for (int i = 0; i < asmraudioPaths.length; i++)
+                                _buildAudioControl(
+                                  icon: asmrIcons[i],
+                                  label: asmraudioNames[i],
+                                  audioPlayer: asmraudioPlayer[i],
+                                ),
+                            ],
+                          ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width - 40,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 28, 28, 48),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Transport Category',
-                        style: GoogleFonts.inter(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Wrap(
-                        spacing: 8.0,
-                        runSpacing: 4.0,
-                        children: <Widget>[
-                          for (int i = 0; i < transportaudioPaths.length; i++)
-                            _buildAudioControl(
-                              icon: transportIcons[i],
-                              label: transportaudioNames[i],
-                              audioPlayer: transportaudioPlayer[i],
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width - 40,
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 28, 28, 48),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Transport Category',
+                            style: GoogleFonts.inter(
+                              color: Colors.white,
+                              fontSize: 16,
                             ),
+                          ),
+                          Wrap(
+                            spacing: 8.0,
+                            runSpacing: 4.0,
+                            children: <Widget>[
+                              for (int i = 0;
+                                  i < transportaudioPaths.length;
+                                  i++)
+                                _buildAudioControl(
+                                  icon: transportIcons[i],
+                                  label: transportaudioNames[i],
+                                  audioPlayer: transportaudioPlayer[i],
+                                ),
+                            ],
+                          ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                  const SizedBox(
+                    height: 100,
+                  ),
+                ],
               ),
-              const SizedBox(
-                height: 100,
-              ),
-            ],
-          ),
+            ),
+            _buildController(),
+          ],
         ),
       ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
+    );
+  }
+
+  Widget _buildController() {
+    bool isAudioPlaying = false;
+    for (var player in natureaudioPlayer) {
+      if (player.playing) {
+        isAudioPlaying = true;
+      }
+    }
+    for (var player in animalsaudioPlayer) {
+      if (player.playing) {
+        isAudioPlaying = true;
+      }
+    }
+    for (var player in rainaudioPlayer) {
+      if (player.playing) {
+        isAudioPlaying = true;
+      }
+    }
+    for (var player in musicaudioPlayer) {
+      if (player.playing) {
+        isAudioPlaying = true;
+      }
+    }
+    return Positioned(
+      right: 20,
+      bottom: MediaQuery.of(context).size.height * 0.1,
+      child: Row(
         children: [
-          FloatingActionButton(
-            onPressed: () {
-              _showTimerDialog();
-            },
-            child: const Icon(Icons.timer),
+          Visibility(
+            visible: isAudioPlaying,
+            child: FloatingActionButton(
+              onPressed: () {
+                _showTimerDialog();
+              },
+              child: const Icon(Icons.timer),
+            ),
           ),
-          const SizedBox(height: 16),
-          FloatingActionButton(
-            onPressed: () {
-              _stopAllAudioPlayers();
-            },
-            child: const Icon(Icons.stop),
+          const SizedBox(width: 8),
+          Visibility(
+            visible: isAudioPlaying,
+            child: FloatingActionButton(
+              onPressed: () {
+                _stopAllAudioPlayers();
+              },
+              child: const Icon(Icons.stop),
+            ),
           ),
         ],
       ),
