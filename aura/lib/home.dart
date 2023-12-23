@@ -1,8 +1,7 @@
 import 'package:aura/composer_test.dart';
 import 'package:aura/routes/aura.dart';
-import 'package:aura/routes/composer/custom.dart';
 import 'package:aura/routes/explore.dart';
-import 'package:aura/test.dart';
+import 'package:aura/util/composer_text1.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
@@ -122,7 +121,8 @@ class HomePageState extends State<HomePage>
             // SettingsPage(
             //   controller: controller,
             // ),
-            SongsScreen(),
+            // SongsScreen(),
+            const ComposerAudio(),
             // AuraPlayer(),
           ],
         ),

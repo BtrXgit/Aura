@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:aura/data/composer_data.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,97 +15,53 @@ class AuraComposerTest extends StatefulWidget {
 class AuraComposerTestState extends State<AuraComposerTest> {
   int playingAudioCount = 0;
   final List<AudioPlayer> natureaudioPlayer =
-      List.generate(9, (index) => AudioPlayer());
+      List.generate(6, (index) => AudioPlayer());
   final List<AudioPlayer> animalsaudioPlayer =
-      List.generate(7, (index) => AudioPlayer());
+      List.generate(5, (index) => AudioPlayer());
   final List<AudioPlayer> rainaudioPlayer =
-      List.generate(9, (index) => AudioPlayer());
+      List.generate(6, (index) => AudioPlayer());
   final List<AudioPlayer> musicaudioPlayer =
-      List.generate(14, (index) => AudioPlayer());
-
+      List.generate(8, (index) => AudioPlayer());
   final List<AudioPlayer> asmraudioPlayer =
-      List.generate(10, (index) => AudioPlayer());
-  // final List<AudioPlayer> transportaudioPlayer =
-  //     List.generate(5, (index) => AudioPlayer());
+      List.generate(6, (index) => AudioPlayer());
+  final List<AudioPlayer> transportaudioPlayer =
+      List.generate(4, (index) => AudioPlayer());
+  final Map<String, AudioPlayer> audioCache = {};
 
   late Timer _timer;
 
   @override
   void initState() {
     super.initState();
-    _loadnatureAudios();
-    _loadanimalsAudios();
-    _loadrainAudios();
-    _loadmusicAudios();
-    _loadasmrAudios();
-    // _loadtransportAudios();
+    _loadAllAudios();
   }
 
-  Future<void> _loadnatureAudios() async {
-    for (int i = 0;
-        i < natureaudioPlayer.length && i < natureaudioPaths.length;
-        i++) {
-      await natureaudioPlayer[i].setAsset(natureaudioPaths[i]);
+  Future<void> _loadAllAudios() async {
+    await _loadCategoryAudios(natureaudioPaths, natureaudioPlayer);
+    await _loadCategoryAudios(animalsaudioPaths, animalsaudioPlayer);
+    await _loadCategoryAudios(rainaudioPaths, rainaudioPlayer);
+    await _loadCategoryAudios(musicaudioPaths, musicaudioPlayer);
+    await _loadCategoryAudios(asmraudioPaths, asmraudioPlayer);
+    await _loadCategoryAudios(transportaudioPaths, transportaudioPlayer);
+  }
+
+  Future<void> _loadCategoryAudios(
+      List<String> paths, List<AudioPlayer> players) async {
+    for (int i = 0; i < paths.length; i++) {
+      await _loadAudio(paths[i], players[i]);
     }
-    for (final audioPlayer in natureaudioPlayer) {
+
+    for (final audioPlayer in players) {
       audioPlayer.setLoopMode(LoopMode.all);
     }
   }
 
-  Future<void> _loadanimalsAudios() async {
-    for (int i = 0;
-        i < animalsaudioPlayer.length && i < animalsaudioPaths.length;
-        i++) {
-      await animalsaudioPlayer[i].setAsset(animalsaudioPaths[i]);
-    }
-    for (final audioPlayer in animalsaudioPlayer) {
-      audioPlayer.setLoopMode(LoopMode.all);
+  Future<void> _loadAudio(String path, AudioPlayer audioPlayer) async {
+    if (!audioCache.containsKey(path)) {
+      await audioPlayer.setAsset(path);
+      audioCache[path] = audioPlayer;
     }
   }
-
-  Future<void> _loadrainAudios() async {
-    for (int i = 0;
-        i < rainaudioPlayer.length && i < rainaudioPaths.length;
-        i++) {
-      await rainaudioPlayer[i].setAsset(rainaudioPaths[i]);
-    }
-    for (final audioPlayer in rainaudioPlayer) {
-      audioPlayer.setLoopMode(LoopMode.all);
-    }
-  }
-
-  Future<void> _loadmusicAudios() async {
-    for (int i = 0;
-        i < musicaudioPlayer.length && i < musicaudioPaths.length;
-        i++) {
-      await musicaudioPlayer[i].setAsset(musicaudioPaths[i]);
-    }
-    for (final audioPlayer in musicaudioPlayer) {
-      audioPlayer.setLoopMode(LoopMode.all);
-    }
-  }
-
-  Future<void> _loadasmrAudios() async {
-    for (int i = 0;
-        i < asmraudioPlayer.length && i < asmraudioPaths.length;
-        i++) {
-      await asmraudioPlayer[i].setAsset(asmraudioPaths[i]);
-    }
-    for (final audioPlayer in asmraudioPlayer) {
-      audioPlayer.setLoopMode(LoopMode.all);
-    }
-  }
-
-  // Future<void> _loadtransportAudios() async {
-  //   for (int i = 0;
-  //       i < transportaudioPlayer.length && i < transportaudioPaths.length;
-  //       i++) {
-  //     await transportaudioPlayer[i].setAsset(transportaudioPaths[i]);
-  //   }
-  //   for (final audioPlayer in transportaudioPlayer) {
-  //     audioPlayer.setLoopMode(LoopMode.all);
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +106,7 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                         spacing: 8.0,
                         runSpacing: 4.0,
                         children: <Widget>[
-                          for (int i = 0; i < 9; i++)
+                          for (int i = 0; i < natureaudioPaths.length; i++)
                             _buildAudioControl(
                               icon: natureIcons[i],
                               label: natureaudioNames[i],
@@ -185,7 +142,7 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                         spacing: 8.0,
                         runSpacing: 4.0,
                         children: <Widget>[
-                          for (int i = 0; i < 7; i++)
+                          for (int i = 0; i < animalsaudioPaths.length; i++)
                             _buildAudioControl(
                               icon: animalsIcons[i],
                               label: animalsaudioNames[i],
@@ -221,7 +178,7 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                         spacing: 8.0,
                         runSpacing: 4.0,
                         children: <Widget>[
-                          for (int i = 0; i < 9; i++)
+                          for (int i = 0; i < rainaudioPaths.length; i++)
                             _buildAudioControl(
                               icon: rainIcons[i],
                               label: rainaudioNames[i],
@@ -257,7 +214,7 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                         spacing: 8.0,
                         runSpacing: 4.0,
                         children: <Widget>[
-                          for (int i = 0; i < 14; i++)
+                          for (int i = 0; i < musicaudioPaths.length; i++)
                             _buildAudioControl(
                               icon: musicIcons[i],
                               label: musicaudioNames[i],
@@ -293,7 +250,7 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                         spacing: 8.0,
                         runSpacing: 4.0,
                         children: <Widget>[
-                          for (int i = 0; i < 10; i++)
+                          for (int i = 0; i < asmraudioPaths.length; i++)
                             _buildAudioControl(
                               icon: asmrIcons[i],
                               label: asmraudioNames[i],
@@ -308,39 +265,39 @@ class AuraComposerTestState extends State<AuraComposerTest> {
               const SizedBox(
                 height: 20,
               ),
-              // Container(
-              //   width: MediaQuery.of(context).size.width - 40,
-              //   decoration: BoxDecoration(
-              //     color: const Color.fromARGB(255, 28, 28, 48),
-              //     borderRadius: BorderRadius.circular(10),
-              //   ),
-              //   child: Padding(
-              //     padding: const EdgeInsets.all(8.0),
-              //     child: Column(
-              //       children: [
-              //         Text(
-              //           'Transport Category',
-              //           style: GoogleFonts.inter(
-              //             color: Colors.white,
-              //             fontSize: 16,
-              //           ),
-              //         ),
-              //         Wrap(
-              //           spacing: 8.0,
-              //           runSpacing: 4.0,
-              //           children: <Widget>[
-              //             for (int i = 0; i < 5; i++)
-              //               _buildAudioControl(
-              //                 icon: transportIcons[i],
-              //                 label: transportaudioNames[i],
-              //                 audioPlayer: transportaudioPlayer[i],
-              //               ),
-              //           ],
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
+              Container(
+                width: MediaQuery.of(context).size.width - 40,
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 28, 28, 48),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Transport Category',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Wrap(
+                        spacing: 8.0,
+                        runSpacing: 4.0,
+                        children: <Widget>[
+                          for (int i = 0; i < transportaudioPaths.length; i++)
+                            _buildAudioControl(
+                              icon: transportIcons[i],
+                              label: transportaudioNames[i],
+                              audioPlayer: transportaudioPlayer[i],
+                            ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               const SizedBox(
                 height: 100,
               ),
@@ -356,14 +313,14 @@ class AuraComposerTestState extends State<AuraComposerTest> {
             onPressed: () {
               _showTimerDialog();
             },
-            child: Icon(Icons.timer),
+            child: const Icon(Icons.timer),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           FloatingActionButton(
             onPressed: () {
               _stopAllAudioPlayers();
             },
-            child: Icon(Icons.stop),
+            child: const Icon(Icons.stop),
           ),
         ],
       ),
