@@ -21,6 +21,12 @@ class AuraComposerTestState extends State<AuraComposerTest> {
       List.generate(9, (index) => AudioPlayer());
   final List<AudioPlayer> musicaudioPlayer =
       List.generate(14, (index) => AudioPlayer());
+
+  // final List<AudioPlayer> asmraudioPlayer =
+  //     List.generate(10, (index) => AudioPlayer());
+  // final List<AudioPlayer> transportaudioPlayer =
+  //     List.generate(5, (index) => AudioPlayer());
+
   late Timer _timer;
 
   @override
@@ -30,6 +36,8 @@ class AuraComposerTestState extends State<AuraComposerTest> {
     _loadanimalsAudios();
     _loadrainAudios();
     _loadmusicAudios();
+    // _loadasmrAudios();
+    // _loadtransportAudios();
   }
 
   Future<void> _loadnatureAudios() async {
@@ -75,6 +83,28 @@ class AuraComposerTestState extends State<AuraComposerTest> {
       audioPlayer.setLoopMode(LoopMode.all);
     }
   }
+
+  // Future<void> _loadasmrAudios() async {
+  //   for (int i = 0;
+  //       i < asmraudioPlayer.length && i < asmraudioPaths.length;
+  //       i++) {
+  //     await asmraudioPlayer[i].setAsset(asmraudioPaths[i]);
+  //   }
+  //   for (final audioPlayer in asmraudioPlayer) {
+  //     audioPlayer.setLoopMode(LoopMode.all);
+  //   }
+  // }
+
+  // Future<void> _loadtransportAudios() async {
+  //   for (int i = 0;
+  //       i < transportaudioPlayer.length && i < transportaudioPaths.length;
+  //       i++) {
+  //     await transportaudioPlayer[i].setAsset(transportaudioPaths[i]);
+  //   }
+  //   for (final audioPlayer in transportaudioPlayer) {
+  //     audioPlayer.setLoopMode(LoopMode.all);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -239,6 +269,78 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                   ),
                 ),
               ),
+              const SizedBox(
+                height: 20,
+              ),
+              // Container(
+              //   width: MediaQuery.of(context).size.width - 40,
+              //   decoration: BoxDecoration(
+              //     color: const Color.fromARGB(255, 28, 28, 48),
+              //     borderRadius: BorderRadius.circular(10),
+              //   ),
+              //   child: Padding(
+              //     padding: const EdgeInsets.all(8.0),
+              //     child: Column(
+              //       children: [
+              //         Text(
+              //           'ASMR Category',
+              //           style: GoogleFonts.inter(
+              //             color: Colors.white,
+              //             fontSize: 16,
+              //           ),
+              //         ),
+              //         Wrap(
+              //           spacing: 8.0,
+              //           runSpacing: 4.0,
+              //           children: <Widget>[
+              //             for (int i = 0; i < 10; i++)
+              //               _buildAudioControl(
+              //                 icon: asmrIcons[i],
+              //                 label: asmraudioNames[i],
+              //                 audioPlayer: asmraudioPlayer[i],
+              //               ),
+              //           ],
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
+              const SizedBox(
+                height: 20,
+              ),
+              // Container(
+              //   width: MediaQuery.of(context).size.width - 40,
+              //   decoration: BoxDecoration(
+              //     color: const Color.fromARGB(255, 28, 28, 48),
+              //     borderRadius: BorderRadius.circular(10),
+              //   ),
+              //   child: Padding(
+              //     padding: const EdgeInsets.all(8.0),
+              //     child: Column(
+              //       children: [
+              //         Text(
+              //           'Transport Category',
+              //           style: GoogleFonts.inter(
+              //             color: Colors.white,
+              //             fontSize: 16,
+              //           ),
+              //         ),
+              //         Wrap(
+              //           spacing: 8.0,
+              //           runSpacing: 4.0,
+              //           children: <Widget>[
+              //             for (int i = 0; i < 5; i++)
+              //               _buildAudioControl(
+              //                 icon: transportIcons[i],
+              //                 label: transportaudioNames[i],
+              //                 audioPlayer: transportaudioPlayer[i],
+              //               ),
+              //           ],
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
               const SizedBox(
                 height: 100,
               ),
