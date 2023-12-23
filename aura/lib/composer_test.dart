@@ -22,8 +22,8 @@ class AuraComposerTestState extends State<AuraComposerTest> {
   final List<AudioPlayer> musicaudioPlayer =
       List.generate(14, (index) => AudioPlayer());
 
-  // final List<AudioPlayer> asmraudioPlayer =
-  //     List.generate(10, (index) => AudioPlayer());
+  final List<AudioPlayer> asmraudioPlayer =
+      List.generate(10, (index) => AudioPlayer());
   // final List<AudioPlayer> transportaudioPlayer =
   //     List.generate(5, (index) => AudioPlayer());
 
@@ -36,7 +36,7 @@ class AuraComposerTestState extends State<AuraComposerTest> {
     _loadanimalsAudios();
     _loadrainAudios();
     _loadmusicAudios();
-    // _loadasmrAudios();
+    _loadasmrAudios();
     // _loadtransportAudios();
   }
 
@@ -84,16 +84,16 @@ class AuraComposerTestState extends State<AuraComposerTest> {
     }
   }
 
-  // Future<void> _loadasmrAudios() async {
-  //   for (int i = 0;
-  //       i < asmraudioPlayer.length && i < asmraudioPaths.length;
-  //       i++) {
-  //     await asmraudioPlayer[i].setAsset(asmraudioPaths[i]);
-  //   }
-  //   for (final audioPlayer in asmraudioPlayer) {
-  //     audioPlayer.setLoopMode(LoopMode.all);
-  //   }
-  // }
+  Future<void> _loadasmrAudios() async {
+    for (int i = 0;
+        i < asmraudioPlayer.length && i < asmraudioPaths.length;
+        i++) {
+      await asmraudioPlayer[i].setAsset(asmraudioPaths[i]);
+    }
+    for (final audioPlayer in asmraudioPlayer) {
+      audioPlayer.setLoopMode(LoopMode.all);
+    }
+  }
 
   // Future<void> _loadtransportAudios() async {
   //   for (int i = 0;
@@ -272,39 +272,39 @@ class AuraComposerTestState extends State<AuraComposerTest> {
               const SizedBox(
                 height: 20,
               ),
-              // Container(
-              //   width: MediaQuery.of(context).size.width - 40,
-              //   decoration: BoxDecoration(
-              //     color: const Color.fromARGB(255, 28, 28, 48),
-              //     borderRadius: BorderRadius.circular(10),
-              //   ),
-              //   child: Padding(
-              //     padding: const EdgeInsets.all(8.0),
-              //     child: Column(
-              //       children: [
-              //         Text(
-              //           'ASMR Category',
-              //           style: GoogleFonts.inter(
-              //             color: Colors.white,
-              //             fontSize: 16,
-              //           ),
-              //         ),
-              //         Wrap(
-              //           spacing: 8.0,
-              //           runSpacing: 4.0,
-              //           children: <Widget>[
-              //             for (int i = 0; i < 10; i++)
-              //               _buildAudioControl(
-              //                 icon: asmrIcons[i],
-              //                 label: asmraudioNames[i],
-              //                 audioPlayer: asmraudioPlayer[i],
-              //               ),
-              //           ],
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
+              Container(
+                width: MediaQuery.of(context).size.width - 40,
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 28, 28, 48),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        'ASMR Category',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Wrap(
+                        spacing: 8.0,
+                        runSpacing: 4.0,
+                        children: <Widget>[
+                          for (int i = 0; i < 10; i++)
+                            _buildAudioControl(
+                              icon: asmrIcons[i],
+                              label: asmraudioNames[i],
+                              audioPlayer: asmraudioPlayer[i],
+                            ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               const SizedBox(
                 height: 20,
               ),
