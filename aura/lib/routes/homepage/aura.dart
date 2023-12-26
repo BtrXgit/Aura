@@ -7,16 +7,17 @@ import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-class AuraHomePage extends StatefulWidget {
+class AuraHomePageMorning extends StatefulWidget {
   final ScrollController controller;
 
-  const AuraHomePage({required this.controller, Key? key}) : super(key: key);
+  const AuraHomePageMorning({required this.controller, Key? key})
+      : super(key: key);
 
   @override
-  State<AuraHomePage> createState() => _AuraHomePageState();
+  State<AuraHomePageMorning> createState() => _AuraHomePageMorningState();
 }
 
-class _AuraHomePageState extends State<AuraHomePage>
+class _AuraHomePageMorningState extends State<AuraHomePageMorning>
     with SingleTickerProviderStateMixin {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final AudioPlayer _audioPlayer = AudioPlayer();
