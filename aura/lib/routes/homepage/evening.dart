@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class AuraHomePageEvening extends StatefulWidget {
@@ -11,6 +10,8 @@ class AuraHomePageEvening extends StatefulWidget {
 class _AuraHomePageEveningState extends State<AuraHomePageEvening> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      backgroundColor: Colors.black,
+    );
   }
 }

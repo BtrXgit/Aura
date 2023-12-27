@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -149,26 +150,31 @@ class _AuraHomePageMorningState extends State<AuraHomePageMorning>
     final greeting = _getGreeting();
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Color.fromARGB(255, 14, 3, 31),
       body: SafeArea(
         child: Stack(
           children: [
             SingleChildScrollView(
+              controller: widget.controller,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.fromLTRB(20, 10, 10, 0),
                     child: Text(
                       greeting,
-                      style: const TextStyle(color: Colors.white, fontSize: 30),
+                      style: GoogleFonts.dancingScript(
+                          //lobster  // carattere  //dancing script
+                          color: Colors.white,
+                          fontSize: 30),
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                     child: Text(
-                      "XD",
-                      style: TextStyle(color: Colors.white, fontSize: 20),
+                      "Yogi",
+                      style: GoogleFonts.openSans(
+                          color: Colors.white, fontSize: 18),
                     ),
                   ),
                   const Text(

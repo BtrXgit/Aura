@@ -1,9 +1,10 @@
 import 'package:aura/composer_test.dart';
-import 'package:aura/routes/homepage/aura.dart';
+import 'package:aura/routes/homepage/morning.dart';
 import 'package:aura/routes/explore.dart';
 import 'package:aura/routes/homepage/afternoon.dart';
 import 'package:aura/routes/homepage/evening.dart';
 import 'package:aura/routes/homepage/night.dart';
+import 'package:aura/routes/tweaks.dart';
 import 'package:aura/util/composer_text1.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -133,20 +134,18 @@ class HomePageState extends State<HomePage>
 
             if (greeting == 'Good Evening') AuraHomePageEvening(),
 
-            if (greeting == 'Good Night') AuraHomePageNight(),
+            if (greeting == 'Good Night')
+              AuraHomePageNight(controller: controller),
 
-            // const AuraComposer(
-            //     // controller: controller,
-            //     ),
             const AuraComposerTest(),
             const ExploreWorld(
                 // controller: controller,
                 ),
-            // SettingsPage(
-            //   controller: controller,
-            // ),
+            SettingsPage(
+              controller: controller,
+            ),
             // SongsScreen(),
-            const ComposerAudio(),
+            // const ComposerAudio(),
             // AuraPlayer(),
           ],
         ),
