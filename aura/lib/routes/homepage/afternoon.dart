@@ -62,12 +62,6 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
         songs = snapshot.docs.map((doc) => Song.fromFirestore(doc)).toList();
       });
     });
-    _getRelaxingData().listen((snapshot) {
-      setState(() {
-        songstest =
-            snapshot.docs.map((doc) => Song.fromFirestore(doc)).toList();
-      });
-    });
     fetchUserProfileData();
   }
 
@@ -108,243 +102,235 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
     return _firestore.collection('songs').snapshots();
   }
 
-  Stream<QuerySnapshot> _getRelaxingData() {
-    return _firestore.collection('songtest').snapshots();
-  }
-
-  Widget _buildSongtestList(BuildContext context) {
-    return SingleChildScrollView(
-      child: ListView.builder(
-        shrinkWrap: true,
-        itemCount: songstest.length,
-        itemBuilder: (context, index) {
-          var song = songstest[index];
-
-          return ListTile(
-            title: Text(
-              song.songName,
-              style: const TextStyle(color: Colors.white),
-            ),
-            leading: CachedNetworkImage(
-              width: 64,
-              fit: BoxFit.cover,
-              imageUrl: song.imageUrl,
-              placeholder: (context, url) => const CircularProgressIndicator(),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-            ),
-            // onTap: () {
-            //   _playAudio(song.songUrl);
-            // },
-          );
-        },
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final greeting = _getGreeting();
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 14, 3, 31),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            controller: widget.controller,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.18,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('assets/evening.jpg'),
-                        fit: BoxFit.cover),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 50, 20, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              greeting,
-                              style: GoogleFonts.dancingScript(
-                                //lobster  // carattere  //dancing script
-                                color: Colors.white,
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              '$userName',
-                              style: GoogleFonts.openSans(
-                                  color: Colors.white, fontSize: 16),
-                            ),
-                          ],
+      body: NestedScrollView(
+        controller: widget.controller,
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              forceMaterialTransparency: false,
+              expandedHeight: MediaQuery.of(context).size.height * 0.2,
+              floating: true,
+              pinned: true,
+              backgroundColor: const Color.fromARGB(255, 14, 3, 31),
+              flexibleSpace: LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                double offset = constraints.biggest.height;
+                bool isAppBarExpanded = offset > 100;
+
+                return FlexibleSpaceBar(
+                  centerTitle: false,
+                  titlePadding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
+                  title: isAppBarExpanded
+                      ? null
+                      : Text(
+                          'Explore',
+                          style: GoogleFonts.dancingScript(
+                            color: Colors.white,
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        Row(
-                          children: [
-                            const Icon(
-                              IconlyBold.bookmark,
-                              color: Colors.white,
-                            ),
-                            const SizedBox(
-                              width: 14,
-                            ),
-                            GestureDetector(
-                              onTap: () => Get.to(
-                                  () => SettingsPage(
-                                        controller: widget.controller,
-                                      ),
-                                  transition: Transition.rightToLeftWithFade),
-                              child: (userPhotoUrl != null)
-                                  ? CircleAvatar(
-                                      radius: 18,
-                                      backgroundImage:
-                                          CachedNetworkImageProvider(
-                                        userPhotoUrl!,
-                                      ),
-                                    )
-                                  : const Icon(
-                                      Icons.person,
-                                      color: Colors.blue,
-                                      size: 28,
-                                    ),
-                            ),
-                          ],
-                        ),
-                      ],
+                  background: Container(
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/morning.jpg'),
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(left: 20.0, top: 10, bottom: 10),
-                  child: Text(
-                    'Live',
-                    style: GoogleFonts.openSans(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: CarouselSlider(
-                    options: CarouselOptions(
-                      scrollPhysics: const BouncingScrollPhysics(),
-                      height: MediaQuery.of(context).size.height * 0.4,
-                      autoPlay: false,
-                      enlargeCenterPage: true,
-                      viewportFraction: 0.8,
-                      enlargeFactor: 0.3,
-                      padEnds: false,
-                      reverse: false,
-                    ),
-                    items: kImages.asMap().entries.map((entry) {
-                      String imageUrl = entry.value;
-                      return Builder(
-                        builder: (BuildContext context) {
-                          return GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                image: DecorationImage(
-                                  image: AssetImage(imageUrl),
-                                  fit: BoxFit.cover,
-                                  filterQuality: FilterQuality.high,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 50, 20, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                greeting,
+                                style: GoogleFonts.dancingScript(
+                                  //lobster  // carattere  //dancing script
+                                  color: Colors.white,
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ),
-                          );
-                        },
-                      );
-                    }).toList(),
+                              Text(
+                                '$userName',
+                                style: GoogleFonts.openSans(
+                                    color: Colors.white, fontSize: 16),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              const Icon(
+                                IconlyBold.bookmark,
+                                color: Colors.white,
+                              ),
+                              const SizedBox(
+                                width: 14,
+                              ),
+                              GestureDetector(
+                                onTap: () => Get.to(
+                                    () => SettingsPage(
+                                          controller: widget.controller,
+                                        ),
+                                    transition: Transition.rightToLeftWithFade),
+                                child: (userPhotoUrl != null)
+                                    ? CircleAvatar(
+                                        radius: 18,
+                                        backgroundImage:
+                                            CachedNetworkImageProvider(
+                                          userPhotoUrl!,
+                                        ),
+                                      )
+                                    : const Icon(
+                                        Icons.person,
+                                        color: Colors.blue,
+                                        size: 28,
+                                      ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: Text(
-                    'Focus',
-                    style: GoogleFonts.openSans(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                _buildDummyCategory(),
-                // _buildSongList(context),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: Text(
-                    'Relaxing',
-                    style: GoogleFonts.openSans(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                _buildDummyCategory(),
-                // _buildSongtestList(context),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: Text(
-                    'Chill Beats',
-                    style: GoogleFonts.openSans(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                _buildDummyCategory(),
-                const SizedBox(
-                  height: 100,
-                ),
-              ],
+                );
+              }),
             ),
-          ),
-        ],
+          ];
+        },
+        body: _buildContentColumn(),
       ),
     );
   }
 
-  Widget _buildSongList(BuildContext context) {
+  Widget _buildContentColumn() {
     return SingleChildScrollView(
-      child: ListView.builder(
-        shrinkWrap: true,
-        itemCount: songs.length,
-        itemBuilder: (context, index) {
-          var song = songs[index];
-
-          return ListTile(
-            title: Text(
-              song.songName,
-              style: const TextStyle(color: Colors.white),
-            ),
-            subtitle: Text(song.artist),
-            leading: CachedNetworkImage(
-              width: 64,
-              fit: BoxFit.cover,
-              imageUrl: song.imageUrl,
-              placeholder: (context, url) => const CircularProgressIndicator(),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-            ),
-            onTap: () => Get.to(
-              AuraPlayer(
-                currentIndex: index,
-                songs: songs,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 10),
+            child: Text(
+              'Live',
+              style: GoogleFonts.openSans(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
               ),
-              transition: Transition.fadeIn,
             ),
-          );
-        },
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child: CarouselSlider(
+              options: CarouselOptions(
+                scrollPhysics: const BouncingScrollPhysics(),
+                height: MediaQuery.of(context).size.height * 0.4,
+                autoPlay: false,
+                enlargeCenterPage: true,
+                viewportFraction: 0.8,
+                enlargeFactor: 0.3,
+                padEnds: false,
+                reverse: false,
+              ),
+              items: kImages.asMap().entries.map((entry) {
+                String imageUrl = entry.value;
+                return Builder(
+                  builder: (BuildContext context) {
+                    return GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          image: DecorationImage(
+                            image: AssetImage(imageUrl),
+                            fit: BoxFit.cover,
+                            filterQuality: FilterQuality.high,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }).toList(),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0),
+            child: Text(
+              'Focus',
+              style: GoogleFonts.openSans(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          _buildDummyCategory(),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0),
+            child: Text(
+              'Relaxing',
+              style: GoogleFonts.openSans(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          _buildDummyCategory(),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0),
+            child: Text(
+              'Chill Beats 🤙🏝️',
+              style: GoogleFonts.openSans(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          _buildDummyCategory(),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0),
+            child: Text(
+              'LoFi - Hip Hop',
+              style: GoogleFonts.openSans(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0),
+            child: Text(
+              'LoFi - Jazz',
+              style: GoogleFonts.openSans(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0),
+            child: Text(
+              'LoFi - Dream Pop',
+              style: GoogleFonts.openSans(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          const SizedBox(
+            height: 100,
+          ),
+        ],
       ),
     );
   }
@@ -356,7 +342,7 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
         height: 250,
         child: GridView.builder(
           scrollDirection: Axis.horizontal,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 1,
               crossAxisSpacing: 8.0,
               mainAxisSpacing: 8.0,
@@ -383,7 +369,7 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
                   alignment: Alignment.bottomLeft,
                   child: Container(
                     height: 64,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Color.fromARGB(255, 13, 12, 53),
                     ),
                     child: ListTile(
@@ -402,18 +388,4 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
       ),
     );
   }
-  // Future<void> _playAudio(String audioUrl) async {
-  //   try {
-  //     await _audioPlayer.dynamicSet(pushIfNotExisted: true, url: audioUrl);
-  //     await _audioPlayer.play();
-
-  //     setState(() {
-  //       isPlaying = true;
-  //     });
-  //   } catch (e) {
-  //     if (kDebugMode) {
-  //       print("Error playing audio: $e");
-  //     }
-  //   }
-  // }
 }
