@@ -27,12 +27,13 @@ class AuraComposerTestState extends State<AuraComposerTest> {
       List.generate(4, (index) => AudioPlayer());
   final Map<String, AudioPlayer> audioCache = {};
 
-  late Timer _timer;
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
     _loadAllAudios();
+    _timer = null;
   }
 
   Future<void> _loadAllAudios() async {
@@ -82,8 +83,8 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Customization Sound',
-                        style: GoogleFonts.inter(
-                            color: Colors.white, fontSize: 18),
+                        style: GoogleFonts.dancingScript(
+                            color: Colors.white, fontSize: 30),
                       ),
                     ),
                   ),
@@ -91,17 +92,24 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                     width: MediaQuery.of(context).size.width - 40,
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 28, 28, 48),
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: [
-                          Text(
-                            'Nature Category',
-                            style: GoogleFonts.inter(
-                              color: Colors.white,
-                              fontSize: 16,
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 10, 0, 20),
+                              child: Text(
+                                'Nature Category',
+                                style: GoogleFonts.openSans(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
                           Wrap(
@@ -113,6 +121,8 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                                   icon: natureIcons[i],
                                   label: natureaudioNames[i],
                                   audioPlayer: natureaudioPlayer[i],
+                                  colour:
+                                      const Color.fromARGB(255, 38, 224, 45),
                                 ),
                             ],
                           ),
@@ -127,17 +137,24 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                     width: MediaQuery.of(context).size.width - 40,
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 28, 28, 48),
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: [
-                          Text(
-                            'Animals Category',
-                            style: GoogleFonts.inter(
-                              color: Colors.white,
-                              fontSize: 16,
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 10, 0, 20),
+                              child: Text(
+                                'Animals Category',
+                                style: GoogleFonts.openSans(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
                           Wrap(
@@ -149,6 +166,7 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                                   icon: animalsIcons[i],
                                   label: animalsaudioNames[i],
                                   audioPlayer: animalsaudioPlayer[i],
+                                  colour: const Color.fromARGB(255, 97, 33, 10),
                                 ),
                             ],
                           ),
@@ -163,17 +181,24 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                     width: MediaQuery.of(context).size.width - 40,
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 28, 28, 48),
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: [
-                          Text(
-                            'Rain Category',
-                            style: GoogleFonts.inter(
-                              color: Colors.white,
-                              fontSize: 16,
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 10, 0, 20),
+                              child: Text(
+                                'Rain Category',
+                                style: GoogleFonts.openSans(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
                           Wrap(
@@ -185,6 +210,8 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                                   icon: rainIcons[i],
                                   label: rainaudioNames[i],
                                   audioPlayer: rainaudioPlayer[i],
+                                  colour:
+                                      const Color.fromARGB(255, 33, 152, 243),
                                 ),
                             ],
                           ),
@@ -199,17 +226,24 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                     width: MediaQuery.of(context).size.width - 40,
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 28, 28, 48),
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: [
-                          Text(
-                            'Music Category',
-                            style: GoogleFonts.inter(
-                              color: Colors.white,
-                              fontSize: 16,
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 10, 0, 20),
+                              child: Text(
+                                'Music Category',
+                                style: GoogleFonts.openSans(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
                           Wrap(
@@ -221,6 +255,8 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                                   icon: musicIcons[i],
                                   label: musicaudioNames[i],
                                   audioPlayer: musicaudioPlayer[i],
+                                  colour:
+                                      const Color.fromARGB(255, 176, 39, 135),
                                 ),
                             ],
                           ),
@@ -235,17 +271,24 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                     width: MediaQuery.of(context).size.width - 40,
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 28, 28, 48),
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: [
-                          Text(
-                            'ASMR Category',
-                            style: GoogleFonts.inter(
-                              color: Colors.white,
-                              fontSize: 16,
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 10, 0, 20),
+                              child: Text(
+                                'ASMR Category',
+                                style: GoogleFonts.openSans(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
                           Wrap(
@@ -257,6 +300,8 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                                   icon: asmrIcons[i],
                                   label: asmraudioNames[i],
                                   audioPlayer: asmraudioPlayer[i],
+                                  colour:
+                                      const Color.fromARGB(255, 181, 115, 15),
                                 ),
                             ],
                           ),
@@ -271,17 +316,24 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                     width: MediaQuery.of(context).size.width - 40,
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 28, 28, 48),
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: [
-                          Text(
-                            'Transport Category',
-                            style: GoogleFonts.inter(
-                              color: Colors.white,
-                              fontSize: 16,
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 10, 0, 20),
+                              child: Text(
+                                'Transport Category',
+                                style: GoogleFonts.openSans(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
                           Wrap(
@@ -295,6 +347,7 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                                   icon: transportIcons[i],
                                   label: transportaudioNames[i],
                                   audioPlayer: transportaudioPlayer[i],
+                                  colour: Color.fromARGB(255, 24, 147, 98),
                                 ),
                             ],
                           ),
@@ -302,8 +355,8 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 100,
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.18,
                   ),
                 ],
               ),
@@ -370,16 +423,19 @@ class AuraComposerTestState extends State<AuraComposerTest> {
     required String label,
     required AudioPlayer audioPlayer,
     required Widget icon,
+    required Color colour,
   }) {
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.all(10.0),
-          margin: const EdgeInsets.all(2),
+          height: 64,
+          width: 64,
+          padding: const EdgeInsets.all(6.0),
+          // margin: const EdgeInsets.all(6),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             color: audioPlayer.playing
-                ? const Color.fromARGB(255, 37, 194, 42)
+                ? colour
                 : const Color.fromARGB(255, 38, 43, 80),
           ),
           child: InkWell(
@@ -389,7 +445,9 @@ class AuraComposerTestState extends State<AuraComposerTest> {
             child: SizedBox(height: 40, width: 40, child: icon),
           ),
         ),
-        const SizedBox(height: 3),
+        const SizedBox(
+          height: 8,
+        ),
         audioPlayer.playing
             ? _buildVolumeSlider(audioPlayer)
             : Text(
@@ -398,24 +456,31 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                   color: Color.fromARGB(255, 103, 247, 110),
                 ),
               ),
-        const SizedBox(height: 3),
+        const SizedBox(
+          height: 4,
+        ),
       ],
     );
   }
 
   Widget _buildVolumeSlider(AudioPlayer audioPlayer) {
     return SizedBox(
-      width: 74,
-      height: 20,
-      child: Slider(
-        value: audioPlayer.volume,
-        onChanged: (value) {
-          setState(() {
-            audioPlayer.setVolume(value);
-          });
-        },
-      ),
-    );
+        width: 64,
+        child: SliderTheme(
+          data: SliderThemeData(
+            trackHeight: 2.0,
+            thumbShape: RoundSliderThumbShape(enabledThumbRadius: 8.0),
+            overlayShape: RoundSliderOverlayShape(overlayRadius: 0.0),
+          ),
+          child: Slider(
+            value: audioPlayer.volume,
+            onChanged: (value) {
+              setState(() {
+                audioPlayer.setVolume(value);
+              });
+            },
+          ),
+        ));
   }
 
   void _toggleAudioPlayback(AudioPlayer audioPlayer) {
@@ -492,6 +557,7 @@ class AuraComposerTestState extends State<AuraComposerTest> {
     );
 
     if (selectedTime != null) {
+      _timer?.cancel();
       _startTimer(selectedTime!);
     }
   }
@@ -518,6 +584,12 @@ class AuraComposerTestState extends State<AuraComposerTest> {
     for (var player in musicaudioPlayer) {
       player.stop();
     }
+    for (var player in asmraudioPlayer) {
+      player.stop();
+    }
+    for (var player in transportaudioPlayer) {
+      player.stop();
+    }
     setState(() {
       playingAudioCount = 0;
     });
@@ -525,7 +597,27 @@ class AuraComposerTestState extends State<AuraComposerTest> {
 
   @override
   void dispose() {
-    _timer.cancel();
+    _timer?.cancel();
+    _timer = null;
+    _stopAllAudioPlayers();
+    for (var player in natureaudioPlayer) {
+      player.dispose();
+    }
+    for (var player in animalsaudioPlayer) {
+      player.dispose();
+    }
+    for (var player in rainaudioPlayer) {
+      player.dispose();
+    }
+    for (var player in musicaudioPlayer) {
+      player.dispose();
+    }
+    for (var player in asmraudioPlayer) {
+      player.dispose();
+    }
+    for (var player in transportaudioPlayer) {
+      player.dispose();
+    }
     super.dispose();
   }
 }

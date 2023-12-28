@@ -1,15 +1,419 @@
+import 'package:aura/data/songs.dart';
+import 'package:aura/routes/pages/player.dart';
+import 'package:aura/routes/tweaks.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:iconly/iconly.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class AuraHomePageAfternoon extends StatefulWidget {
-  const AuraHomePageAfternoon({super.key});
+  final ScrollController controller;
+
+  const AuraHomePageAfternoon({required this.controller, Key? key})
+      : super(key: key);
 
   @override
   State<AuraHomePageAfternoon> createState() => _AuraHomePageAfternoonState();
 }
 
-class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon> {
+class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
+    with SingleTickerProviderStateMixin {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final AudioPlayer _audioPlayer = AudioPlayer();
+
+  int index = 0;
+  List<Song> songs = [];
+  List<Song> songstest = [];
+
+  List<String> kImages = [
+    'assets/slider/1.jpg',
+    'assets/slider/2.jpg',
+    'assets/slider/3.jpg',
+    'assets/slider/4.jpg',
+    'assets/slider/5.jpg',
+    'assets/slider/6.jpg'
+  ];
+
+  final List<Color> itemColors = [
+    Colors.red,
+    Colors.green,
+    Colors.blue,
+    Colors.orange,
+    Colors.purple,
+    Colors.teal,
+    Colors.yellow,
+    Colors.pink,
+    Colors.indigo,
+    Colors.brown,
+  ];
+
+  bool isPlaying = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _getFocusData().listen((snapshot) {
+      setState(() {
+        songs = snapshot.docs.map((doc) => Song.fromFirestore(doc)).toList();
+      });
+    });
+    _getRelaxingData().listen((snapshot) {
+      setState(() {
+        songstest =
+            snapshot.docs.map((doc) => Song.fromFirestore(doc)).toList();
+      });
+    });
+    fetchUserProfileData();
+  }
+
+  String? userName;
+  String? userPhotoUrl;
+  Future<void> fetchUserProfileData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      setState(() {
+        userName = user.displayName;
+        userPhotoUrl = user.photoURL;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
+
+  String _getGreeting() {
+    final now = DateTime.now();
+    final hour = now.hour;
+    if (hour >= 5 && hour < 12) {
+      return 'Good Morning';
+    } else if (hour >= 12 && hour < 17) {
+      return 'Good Afternoon';
+    } else if (hour >= 17 && hour < 20) {
+      return 'Good Evening';
+    } else {
+      return 'Good Night';
+    }
+  }
+
+  Stream<QuerySnapshot> _getFocusData() {
+    return _firestore.collection('songs').snapshots();
+  }
+
+  Stream<QuerySnapshot> _getRelaxingData() {
+    return _firestore.collection('songtest').snapshots();
+  }
+
+  Widget _buildSongtestList(BuildContext context) {
+    return SingleChildScrollView(
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: songstest.length,
+        itemBuilder: (context, index) {
+          var song = songstest[index];
+
+          return ListTile(
+            title: Text(
+              song.songName,
+              style: const TextStyle(color: Colors.white),
+            ),
+            leading: CachedNetworkImage(
+              width: 64,
+              fit: BoxFit.cover,
+              imageUrl: song.imageUrl,
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
+            // onTap: () {
+            //   _playAudio(song.songUrl);
+            // },
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    final greeting = _getGreeting();
+
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 14, 3, 31),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            controller: widget.controller,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.18,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('assets/evening.jpg'),
+                        fit: BoxFit.cover),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 50, 20, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              greeting,
+                              style: GoogleFonts.dancingScript(
+                                //lobster  // carattere  //dancing script
+                                color: Colors.white,
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              '$userName',
+                              style: GoogleFonts.openSans(
+                                  color: Colors.white, fontSize: 16),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const Icon(
+                              IconlyBold.bookmark,
+                              color: Colors.white,
+                            ),
+                            const SizedBox(
+                              width: 14,
+                            ),
+                            GestureDetector(
+                              onTap: () => Get.to(
+                                  () => SettingsPage(
+                                        controller: widget.controller,
+                                      ),
+                                  transition: Transition.rightToLeftWithFade),
+                              child: (userPhotoUrl != null)
+                                  ? CircleAvatar(
+                                      radius: 18,
+                                      backgroundImage:
+                                          CachedNetworkImageProvider(
+                                        userPhotoUrl!,
+                                      ),
+                                    )
+                                  : const Icon(
+                                      Icons.person,
+                                      color: Colors.blue,
+                                      size: 28,
+                                    ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.only(left: 20.0, top: 10, bottom: 10),
+                  child: Text(
+                    'Live',
+                    style: GoogleFonts.openSans(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: CarouselSlider(
+                    options: CarouselOptions(
+                      scrollPhysics: const BouncingScrollPhysics(),
+                      height: MediaQuery.of(context).size.height * 0.4,
+                      autoPlay: false,
+                      enlargeCenterPage: true,
+                      viewportFraction: 0.8,
+                      enlargeFactor: 0.3,
+                      padEnds: false,
+                      reverse: false,
+                    ),
+                    items: kImages.asMap().entries.map((entry) {
+                      String imageUrl = entry.value;
+                      return Builder(
+                        builder: (BuildContext context) {
+                          return GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                image: DecorationImage(
+                                  image: AssetImage(imageUrl),
+                                  fit: BoxFit.cover,
+                                  filterQuality: FilterQuality.high,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    }).toList(),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: Text(
+                    'Focus',
+                    style: GoogleFonts.openSans(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                _buildDummyCategory(),
+                // _buildSongList(context),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: Text(
+                    'Relaxing',
+                    style: GoogleFonts.openSans(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                _buildDummyCategory(),
+                // _buildSongtestList(context),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: Text(
+                    'Chill Beats',
+                    style: GoogleFonts.openSans(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                _buildDummyCategory(),
+                const SizedBox(
+                  height: 100,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
+
+  Widget _buildSongList(BuildContext context) {
+    return SingleChildScrollView(
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: songs.length,
+        itemBuilder: (context, index) {
+          var song = songs[index];
+
+          return ListTile(
+            title: Text(
+              song.songName,
+              style: const TextStyle(color: Colors.white),
+            ),
+            subtitle: Text(song.artist),
+            leading: CachedNetworkImage(
+              width: 64,
+              fit: BoxFit.cover,
+              imageUrl: song.imageUrl,
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
+            onTap: () => Get.to(
+              AuraPlayer(
+                currentIndex: index,
+                songs: songs,
+              ),
+              transition: Transition.fadeIn,
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildDummyCategory() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20.0, bottom: 8, top: 10),
+      child: SizedBox(
+        height: 250,
+        child: GridView.builder(
+          scrollDirection: Axis.horizontal,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 1,
+              crossAxisSpacing: 8.0,
+              mainAxisSpacing: 8.0,
+              childAspectRatio: 1.2),
+          itemCount: songs.length,
+          itemBuilder: (BuildContext context, int index) {
+            var song = songs[index];
+            return GestureDetector(
+              onTap: () => Get.to(
+                AuraPlayer(
+                  currentIndex: index,
+                  songs: songs,
+                ),
+                transition: Transition.downToUp,
+              ),
+              child: Container(
+                width: 150,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: CachedNetworkImageProvider(song.imageUrl),
+                        fit: BoxFit.cover),
+                    borderRadius: BorderRadius.circular(14)),
+                child: Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Container(
+                    height: 64,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 13, 12, 53),
+                    ),
+                    child: ListTile(
+                      title: Text(
+                        song.songName,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      subtitle: Text(song.artist),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+  // Future<void> _playAudio(String audioUrl) async {
+  //   try {
+  //     await _audioPlayer.dynamicSet(pushIfNotExisted: true, url: audioUrl);
+  //     await _audioPlayer.play();
+
+  //     setState(() {
+  //       isPlaying = true;
+  //     });
+  //   } catch (e) {
+  //     if (kDebugMode) {
+  //       print("Error playing audio: $e");
+  //     }
+  //   }
+  // }
 }

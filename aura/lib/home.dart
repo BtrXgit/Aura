@@ -5,7 +5,7 @@ import 'package:aura/routes/homepage/afternoon.dart';
 import 'package:aura/routes/homepage/evening.dart';
 import 'package:aura/routes/homepage/night.dart';
 import 'package:aura/routes/tweaks.dart';
-import 'package:aura/util/composer_text1.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
@@ -46,7 +46,6 @@ class HomePageState extends State<HomePage>
   }
 
   Color homeColor = const Color.fromARGB(255, 175, 202, 0);
-
   Color customColor = const Color.fromARGB(255, 59, 255, 226);
   Color locationColor = Colors.blue;
   Color settingsColor = Colors.black;
@@ -127,16 +126,24 @@ class HomePageState extends State<HomePage>
           dragStartBehavior: DragStartBehavior.down,
           physics: const NeverScrollableScrollPhysics(),
           children: [
-            if (greeting == 'Good Morning')
-              AuraHomePageMorning(controller: controller),
+            // if (greeting == 'Good Morning')
+            //   AuraHomePageMorning(controller: controller),
 
-            if (greeting == 'Good Afternoon') AuraHomePageAfternoon(),
+            // if (greeting == 'Good Afternoon')
+            //   AuraHomePageAfternoon(
+            //     controller: controller,
+            //   ),
 
-            if (greeting == 'Good Evening') AuraHomePageEvening(),
+            // if (greeting == 'Good Evening')
+            //   AuraHomePageEvening(
+            //     controller: controller,
+            //   ),
 
-            if (greeting == 'Good Night')
-              AuraHomePageNight(controller: controller),
-
+            // if (greeting == 'Good Night')
+            //   AuraHomePageNight(controller: controller),
+            AuraHomePageAfternoon(
+              controller: controller,
+            ),
             const AuraComposerTest(),
             const ExploreWorld(
                 // controller: controller,
@@ -154,8 +161,9 @@ class HomePageState extends State<HomePage>
           indicatorPadding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
           controller: tabController,
           indicator: UnderlineTabIndicator(
+              borderRadius: BorderRadius.circular(20),
               borderSide:
-                  BorderSide(color: _getIndicatorColor(currentPage), width: 4),
+                  BorderSide(color: _getIndicatorColor(currentPage), width: 6),
               insets: const EdgeInsets.fromLTRB(16, 0, 16, 8)),
           tabs: [
             SizedBox(

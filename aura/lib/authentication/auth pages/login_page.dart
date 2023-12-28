@@ -3,8 +3,6 @@ import 'dart:ui';
 import 'package:aura/authentication/services/auth_service.dart';
 import 'package:aura/component/square_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/get_core.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginPage extends StatefulWidget {

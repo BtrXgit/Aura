@@ -1,4 +1,5 @@
 import 'package:bootstrap_icons/bootstrap_icons.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -30,67 +31,67 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  // void signUserOut() {
-  //   FirebaseAuth.instance.signOut();
-  //   Navigator.pop(context);
-  // }
+  void signUserOut() {
+    FirebaseAuth.instance.signOut();
+    Navigator.pop(context);
+  }
 
-  // void deleteAccount(BuildContext context) async {
-  //   try {
-  //     User? user = FirebaseAuth.instance.currentUser;
-  //     if (user != null) {
-  //       showDialog(
-  //         context: context,
-  //         builder: (BuildContext context) {
-  //           Color backgroundColor = Theme.of(context).colorScheme.background;
-  //           return AlertDialog(
-  //             backgroundColor: backgroundColor,
-  //             title: const Text('Confirm Deletion'),
-  //             content:
-  //                 const Text('Are you sure you want to delete your account?'),
-  //             actions: <Widget>[
-  //               TextButton(
-  //                 onPressed: () {
-  //                   Navigator.of(context).pop();
-  //                 },
-  //                 child: const Text('Cancel'),
-  //               ),
-  //               TextButton(
-  //                 onPressed: () async {
-  //                   await user.delete();
-  //                   // ignore: use_build_context_synchronously
-  //                   Navigator.of(context).pop();
-  //                   // ignore: use_build_context_synchronously
-  //                   ScaffoldMessenger.of(context).showSnackBar(
-  //                     const SnackBar(
-  //                       content: Text('Account deleted successfully.'),
-  //                     ),
-  //                   );
-  //                 },
-  //                 child: Text(
-  //                   'Delete',
-  //                   style: GoogleFonts.kanit(color: Colors.red),
-  //                 ),
-  //               ),
-  //             ],
-  //           );
-  //         },
-  //       );
-  //     } else {
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         const SnackBar(
-  //           content: Text('No user is currently signed in.'),
-  //         ),
-  //       );
-  //     }
-  //   } catch (e) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         content: Text('Error deleting user account: $e'),
-  //       ),
-  //     );
-  //   }
-  // }
+  void deleteAccount(BuildContext context) async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            Color backgroundColor = Theme.of(context).colorScheme.background;
+            return AlertDialog(
+              backgroundColor: backgroundColor,
+              title: const Text('Confirm Deletion'),
+              content:
+                  const Text('Are you sure you want to delete your account?'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    await user.delete();
+                    // ignore: use_build_context_synchronously
+                    Navigator.of(context).pop();
+                    // ignore: use_build_context_synchronously
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Account deleted successfully.'),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    'Delete',
+                    style: GoogleFonts.kanit(color: Colors.red),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('No user is currently signed in.'),
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error deleting user account: $e'),
+        ),
+      );
+    }
+  }
 
   final Uri urlPlayStore = Uri.parse(
       'https://play.google.com/store/apps/dev?id=4846033393809014453');
@@ -298,8 +299,8 @@ class _SettingsPageState extends State<SettingsPage> {
                               style: TextStyle(color: Colors.grey)),
                           iconColor: primaryColor,
                           textColor: primaryColor,
-                          // onTap: signUserOut,
-                          onTap: () {},
+                          onTap: signUserOut,
+                          // onTap: () {},
                         ),
                         ListTile(
                           leading: const Icon(Iconsax.trash),

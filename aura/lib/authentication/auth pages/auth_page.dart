@@ -1,11 +1,10 @@
 import 'package:aura/authentication/auth%20pages/login_page.dart';
-import 'package:aura/routes/homepage/morning.dart';
+import 'package:aura/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AuthPage extends StatelessWidget {
-  final ScrollController controller;
-  const AuthPage({super.key, required this.controller});
+  const AuthPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +13,8 @@ class AuthPage extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return AuraHomePageMorning(
-                controller: controller,
-                // title: '',
+              return const HomePage(
+                title: '',
               );
             } else {
               return const LoginPage();

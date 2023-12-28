@@ -150,7 +150,7 @@ class _AuraHomePageMorningState extends State<AuraHomePageMorning>
     final greeting = _getGreeting();
 
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 14, 3, 31),
+      backgroundColor: const Color.fromARGB(255, 14, 3, 31),
       body: SafeArea(
         child: Stack(
           children: [
@@ -170,7 +170,7 @@ class _AuraHomePageMorningState extends State<AuraHomePageMorning>
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                     child: Text(
                       "Yogi",
                       style: GoogleFonts.openSans(
