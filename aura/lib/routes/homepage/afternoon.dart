@@ -241,7 +241,7 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 10),
+            padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 8.0),
             child: Text(
               'Live',
               style: GoogleFonts.openSans(
@@ -252,7 +252,7 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 20),
+            padding: const EdgeInsets.only(left: 20, bottom: 20),
             child: CarouselSlider(
               options: CarouselOptions(
                 scrollPhysics: const BouncingScrollPhysics(),
@@ -288,7 +288,7 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 20.0),
+            padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
               'Focus',
               style: GoogleFonts.openSans(
@@ -299,18 +299,31 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
           ),
           _buildDummyCategory(),
           Padding(
-            padding: const EdgeInsets.only(left: 20.0),
+            padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
               'Relaxing',
               style: GoogleFonts.openSans(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold),
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           _buildDummyCategory(),
           Padding(
-            padding: const EdgeInsets.only(left: 20.0),
+            padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
+            child: Text(
+              'Devotional',
+              style: GoogleFonts.openSans(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          _buildDummyCategory(),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
               'Chill Beats 🤙🏝️',
               style: GoogleFonts.openSans(
@@ -321,7 +334,7 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
           ),
           _buildDummyCategory(),
           Padding(
-            padding: const EdgeInsets.only(left: 20.0),
+            padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
               'LoFi - Hip Hop',
               style: GoogleFonts.openSans(
@@ -330,8 +343,9 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
                   fontWeight: FontWeight.bold),
             ),
           ),
+          _buildDummyCategory(),
           Padding(
-            padding: const EdgeInsets.only(left: 20.0),
+            padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
               'LoFi - Jazz',
               style: GoogleFonts.openSans(
@@ -340,8 +354,9 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
                   fontWeight: FontWeight.bold),
             ),
           ),
+          _buildDummyCategory(),
           Padding(
-            padding: const EdgeInsets.only(left: 20.0),
+            padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
               'LoFi - Dream Pop',
               style: GoogleFonts.openSans(
@@ -350,8 +365,9 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
                   fontWeight: FontWeight.bold),
             ),
           ),
+          _buildDummyCategory(),
           const SizedBox(
-            height: 100,
+            height: 50,
           ),
         ],
       ),
@@ -360,16 +376,20 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
 
   Widget _buildDummyCategory() {
     return Padding(
-      padding: const EdgeInsets.only(left: 20.0, bottom: 8, top: 10),
+      padding: const EdgeInsets.only(
+        left: 20.0,
+        bottom: 20,
+      ),
       child: SizedBox(
         height: 250,
         child: GridView.builder(
           scrollDirection: Axis.horizontal,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 1,
-              crossAxisSpacing: 8.0,
-              mainAxisSpacing: 8.0,
-              childAspectRatio: 1.2),
+            crossAxisCount: 1,
+            crossAxisSpacing: 8.0,
+            mainAxisSpacing: 8.0,
+            childAspectRatio: 1.2,
+          ),
           itemCount: songs.length,
           itemBuilder: (BuildContext context, int index) {
             var song = songs[index];
@@ -381,29 +401,47 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
                 ),
                 transition: Transition.downToUp,
               ),
-              child: Container(
-                width: 150,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: CachedNetworkImageProvider(song.imageUrl),
-                        fit: BoxFit.cover),
-                    borderRadius: BorderRadius.circular(14)),
-                child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Container(
-                    height: 64,
-                    decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 13, 12, 53),
-                    ),
-                    child: ListTile(
-                      title: Text(
-                        song.songName,
-                        style: const TextStyle(color: Colors.white),
+              child: Stack(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: CachedNetworkImageProvider(song.imageUrl),
+                            fit: BoxFit.cover),
+                        borderRadius: BorderRadius.circular(14)),
+                    child: Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Container(
+                        height: 64,
+                        decoration: const BoxDecoration(
+                          color: Color.fromARGB(255, 13, 12, 53),
+                        ),
+                        child: ListTile(
+                          title: Text(
+                            song.songName,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          subtitle: Text(song.artist),
+                        ),
                       ),
-                      subtitle: Text(song.artist),
                     ),
                   ),
-                ),
+                  Positioned(
+                    right: 10,
+                    top: 10,
+                    child: Container(
+                      width: 34,
+                      height: 34,
+                      decoration: BoxDecoration(
+                          color: Colors.black, shape: BoxShape.circle),
+                      child: const Icon(
+                        IconlyBold.bookmark,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             );
           },
