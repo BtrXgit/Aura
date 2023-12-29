@@ -173,6 +173,7 @@ class HomePageState extends State<HomePage>
                   child: Icon(
                 IconlyBold.home,
                 color: currentPage == 0 ? homeColor : unselectedColor,
+                size: currentPage == 0 ? 32 : 28,
                 // color: Colors.black,
               )),
             ),
@@ -183,6 +184,7 @@ class HomePageState extends State<HomePage>
                   child: Icon(
                 IconlyBold.star,
                 color: currentPage == 1 ? customColor : unselectedColor,
+                size: currentPage == 1 ? 32 : 28,
               )),
             ),
             SizedBox(
@@ -192,6 +194,7 @@ class HomePageState extends State<HomePage>
                   child: Icon(
                 IconlyBold.location,
                 color: currentPage == 2 ? locationColor : unselectedColor,
+                size: currentPage == 2 ? 32 : 28,
               )),
             ),
             SizedBox(
@@ -201,6 +204,7 @@ class HomePageState extends State<HomePage>
                   child: Icon(
                 IconlyBold.profile,
                 color: currentPage == 3 ? settingsColor : unselectedColor,
+                size: currentPage == 3 ? 32 : 28,
               )),
             ),
           ],

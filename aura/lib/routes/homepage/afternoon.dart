@@ -125,16 +125,39 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
 
                 return FlexibleSpaceBar(
                   centerTitle: false,
-                  titlePadding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
+                  titlePadding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                   title: isAppBarExpanded
                       ? null
-                      : Text(
-                          'Explore',
-                          style: GoogleFonts.dancingScript(
-                            color: Colors.white,
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Explore',
+                              style: GoogleFonts.dancingScript(
+                                color: Colors.white,
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            // ElevatedButton(
+                            //     onPressed: () {}, child: Text('Live'))
+                            Container(
+                              width: 70,
+                              height: 34,
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: Colors.red, width: 2),
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Live",
+                                  style: GoogleFonts.openSans(
+                                      color: Colors.white, fontSize: 20),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                   background: Container(
                     decoration: const BoxDecoration(
