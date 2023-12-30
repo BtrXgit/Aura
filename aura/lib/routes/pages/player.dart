@@ -1,8 +1,10 @@
 import 'dart:ui';
+import 'package:aura/composer_test.dart';
 import 'package:aura/data/songs.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_cache/just_audio_cache.dart';
@@ -161,22 +163,39 @@ class _AuraPlayerState extends State<AuraPlayer> {
                       ),
                     ),
                     child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                      filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
                       child: Container(
                         color: Colors.black.withOpacity(0.4),
                       ),
                     ),
                   ),
                   Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.14,
+                        height: MediaQuery.of(context).size.height * 0.08,
+                      ),
+                      Text(
+                        'Playing From Playlist',
+                        style: GoogleFonts.openSans(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        'Focus',
+                        style: GoogleFonts.openSans(
+                            color: Colors.white, fontSize: 14),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.04,
                       ),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: CachedNetworkImage(
-                          height: MediaQuery.of(context).size.height * 0.4,
-                          width: MediaQuery.of(context).size.width - 50,
+                          height: MediaQuery.of(context).size.height * 0.38,
+                          width: MediaQuery.of(context).size.width - 74,
                           fit: BoxFit.cover,
                           imageUrl: widget.songs[_currentIndex].imageUrl,
                           placeholder: (context, url) =>
@@ -185,84 +204,110 @@ class _AuraPlayerState extends State<AuraPlayer> {
                               const Icon(Icons.error),
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      Text(
-                        widget.songs[_currentIndex].songName,
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 24),
+                      const SizedBox(height: 50),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            widget.songs[_currentIndex].songName,
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 24),
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 10),
-                      Text(
-                        widget.songs[_currentIndex].artist,
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 18),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            widget.songs[_currentIndex].artist,
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 18),
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 20),
                       // Slider will come here
-                      StreamBuilder<Duration>(
-                        stream: _audioPlayer.positionStream,
-                        builder: (context, snapshot) {
-                          final position = snapshot.data ?? Duration.zero;
-                          final duration =
-                              _audioPlayer.duration ?? Duration.zero;
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SliderTheme(
-                                data: SliderTheme.of(context).copyWith(
-                                  activeTrackColor: Colors.blue,
-                                  inactiveTrackColor: Colors.grey,
-                                  thumbColor: Colors.blue,
-                                  overlayColor: Colors.blue.withOpacity(0.3),
-                                  valueIndicatorColor: Colors.blue,
-                                  thumbShape: const RoundSliderThumbShape(
-                                      enabledThumbRadius: 8.0),
-                                  overlayShape: const RoundSliderOverlayShape(
-                                      overlayRadius: 16.0),
-                                  valueIndicatorShape:
-                                      const PaddleSliderValueIndicatorShape(),
-                                  valueIndicatorTextStyle: const TextStyle(
-                                    color: Colors.white,
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        child: StreamBuilder<Duration>(
+                          stream: _audioPlayer.positionStream,
+                          builder: (context, snapshot) {
+                            final position = snapshot.data ?? Duration.zero;
+                            final duration =
+                                _audioPlayer.duration ?? Duration.zero;
+                            return Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SliderTheme(
+                                  data: SliderTheme.of(context).copyWith(
+                                    activeTrackColor: Colors.blue,
+                                    inactiveTrackColor: Colors.grey,
+                                    thumbColor: Colors.blue,
+                                    overlayColor: Colors.blue.withOpacity(0.3),
+                                    valueIndicatorColor: Colors.blue,
+                                    thumbShape: const RoundSliderThumbShape(
+                                        enabledThumbRadius: 8.0),
+                                    overlayShape: const RoundSliderOverlayShape(
+                                        overlayRadius: 16.0),
+                                    valueIndicatorShape:
+                                        const PaddleSliderValueIndicatorShape(),
+                                    valueIndicatorTextStyle: const TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  child: Slider(
+                                    value: position.inSeconds.toDouble(),
+                                    max: duration.inSeconds.toDouble(),
+                                    onChanged: (value) {
+                                      _audioPlayer.seek(
+                                          Duration(seconds: value.toInt()));
+                                    },
                                   ),
                                 ),
-                                child: Slider(
-                                  value: position.inSeconds.toDouble(),
-                                  max: duration.inSeconds.toDouble(),
-                                  onChanged: (value) {
-                                    _audioPlayer
-                                        .seek(Duration(seconds: value.toInt()));
-                                  },
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '${position.inMinutes}:${(position.inSeconds % 60).toString().padLeft(2, '0')}',
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                      ),
+                                      Text(
+                                        '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}',
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      '${position.inMinutes}:${(position.inSeconds % 60).toString().padLeft(2, '0')}',
-                                      style:
-                                          const TextStyle(color: Colors.white),
-                                    ),
-                                    Text(
-                                      '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}',
-                                      style:
-                                          const TextStyle(color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          );
-                        },
+                              ],
+                            );
+                          },
+                        ),
                       ),
                       const SizedBox(height: 20),
                       // Next/Previous button will come here
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
+                          IconButton(
+                            icon: Icon(
+                              Icons.shuffle,
+                              color: _isShuffleOn ? Colors.blue : Colors.white,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isShuffleOn = !_isShuffleOn;
+                              });
+                            },
+                          ),
                           IconButton(
                             icon: const Icon(
                               Icons.skip_previous,
@@ -298,15 +343,26 @@ class _AuraPlayerState extends State<AuraPlayer> {
                             ),
                             onPressed: _playNext,
                           ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.repeat,
+                              color: _isRepeatOn ? Colors.blue : Colors.white,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isRepeatOn = !_isRepeatOn;
+                              });
+                            },
+                          ),
                         ],
                       ),
                       const SizedBox(
                         height: 20,
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(right: 20),
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             IconButton(
                               onPressed: () {},
@@ -330,43 +386,21 @@ class _AuraPlayerState extends State<AuraPlayer> {
                     ],
                   ),
                   Positioned(
-                    bottom: 20,
-                    left: 20,
-                    child: Row(
-                      children: [
-                        // Shuffle button
-                        IconButton(
-                          icon: Icon(
-                            Icons.shuffle,
-                            color: _isShuffleOn ? Colors.blue : Colors.white,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _isShuffleOn = !_isShuffleOn;
-                            });
-                          },
-                        ),
-                        // Repeat button
-                        IconButton(
-                          icon: Icon(
-                            Icons.repeat,
-                            color: _isRepeatOn ? Colors.blue : Colors.white,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _isRepeatOn = !_isRepeatOn;
-                            });
-                          },
-                        ),
-                        // Queue button
-                        IconButton(
-                          icon: const Icon(Icons.queue_music,
-                              color: Colors.white),
-                          onPressed: () {
-                            _showQueue(context);
-                          },
-                        ),
-                      ],
+                    top: 50,
+                    left: 10,
+                    child: IconButton(
+                      icon: Icon(IconlyBold.setting, color: Colors.white),
+                      onPressed: () {},
+                    ),
+                  ),
+                  Positioned(
+                    top: 50,
+                    right: 10,
+                    child: IconButton(
+                      icon: const Icon(Icons.queue_music, color: Colors.white),
+                      onPressed: () {
+                        _showQueue(context);
+                      },
                     ),
                   ),
                 ],
@@ -376,6 +410,14 @@ class _AuraPlayerState extends State<AuraPlayer> {
                 style: TextStyle(color: Colors.white),
               ),
       ),
+    );
+  }
+
+  Widget _openComposer() {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height - 100,
+      width: MediaQuery.of(context).size.width - 50,
+      child: AuraComposerTest(),
     );
   }
 

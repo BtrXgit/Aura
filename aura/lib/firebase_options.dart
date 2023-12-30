@@ -54,7 +54,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDItfYnyja3vbYorxq6xh78UaSEG9nWcgA',
-    appId: '1:623229969480:android:1c78b47509eab31481a47d',
+    appId: '1:623229969480:android:c6e5f1ce8ba38ae381a47d',
     messagingSenderId: '623229969480',
     projectId: 'aura-xd',
     storageBucket: 'aura-xd.appspot.com',

@@ -102,10 +102,25 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
     return _firestore.collection('songs').snapshots();
   }
 
+  String _getImageAsset(String greeting) {
+    switch (greeting) {
+      case 'Good Morning':
+        return 'assets/morning.jpg';
+      case 'Good Afternoon':
+        return 'assets/afternoon.jpg';
+      case 'Good Evening':
+        return 'assets/evening.jpg';
+      case 'Good Night':
+        return 'assets/night.jpg';
+      default:
+        return 'assets/morning.jpg';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final greeting = _getGreeting();
-
+    final backgroundImage = _getImageAsset(greeting);
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 14, 3, 31),
       body: NestedScrollView(
@@ -133,7 +148,7 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
                           children: [
                             Text(
                               'Explore',
-                              style: GoogleFonts.dancingScript(
+                              style: GoogleFonts.caveat(
                                 color: Colors.white,
                                 fontSize: 32,
                                 fontWeight: FontWeight.bold,
@@ -160,16 +175,17 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
                           ],
                         ),
                   background: Container(
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('assets/night.jpg'),
+                        image: AssetImage(backgroundImage),
                         fit: BoxFit.cover,
                       ),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(20, 50, 20, 0),
-                      child: Row(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -190,48 +206,53 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
                               ),
                             ],
                           ),
-                          Row(
-                            children: [
-                              Container(
-                                width: 44,
-                                height: 44,
-                                decoration: const BoxDecoration(
-                                  color: Colors.black,
-                                  shape: BoxShape.circle,
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Container(
+                                  width: 44,
+                                  height: 44,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.black,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    IconlyBold.bookmark,
+                                    color: Colors.white,
+                                  ),
                                 ),
-                                child: const Icon(
-                                  IconlyBold.bookmark,
-                                  color: Colors.white,
+                                const SizedBox(
+                                  width: 14,
                                 ),
-                              ),
-                              const SizedBox(
-                                width: 14,
-                              ),
-                              GestureDetector(
-                                onTap: () => Get.to(
-                                    () => SettingsPage(
-                                          controller: widget.controller,
-                                        ),
-                                    transition: Transition.rightToLeftWithFade),
-                                child: (userPhotoUrl != null)
-                                    ? SizedBox(
-                                        width: 44,
-                                        height: 44,
-                                        child: CircleAvatar(
-                                          radius: 18,
-                                          backgroundImage:
-                                              CachedNetworkImageProvider(
-                                            userPhotoUrl!,
+                                GestureDetector(
+                                  onTap: () => Get.to(
+                                      () => SettingsPage(
+                                            controller: widget.controller,
                                           ),
+                                      transition:
+                                          Transition.rightToLeftWithFade),
+                                  child: (userPhotoUrl != null)
+                                      ? SizedBox(
+                                          width: 44,
+                                          height: 44,
+                                          child: CircleAvatar(
+                                            radius: 18,
+                                            backgroundImage:
+                                                CachedNetworkImageProvider(
+                                              userPhotoUrl!,
+                                            ),
+                                          ),
+                                        )
+                                      : const Icon(
+                                          Icons.person,
+                                          color: Colors.blue,
+                                          size: 28,
                                         ),
-                                      )
-                                    : const Icon(
-                                        Icons.person,
-                                        color: Colors.blue,
-                                        size: 28,
-                                      ),
-                              ),
-                            ],
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
