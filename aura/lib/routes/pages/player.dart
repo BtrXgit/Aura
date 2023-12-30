@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_cache/just_audio_cache.dart';
+import 'dart:math';
 
 class AuraPlayer extends StatefulWidget {
   final int currentIndex;
@@ -24,6 +25,8 @@ class AuraPlayer extends StatefulWidget {
 class _AuraPlayerState extends State<AuraPlayer> {
   final AudioPlayer _audioPlayer = AudioPlayer();
   int _currentIndex = 0;
+  bool _isShuffleOn = false;
+  bool _isRepeatOn = false;
 
   @override
   void initState() {
@@ -35,6 +38,51 @@ class _AuraPlayerState extends State<AuraPlayer> {
     }
   }
 
+  // void _initializePlayer() {
+  //   if (_currentIndex >= 0 && _currentIndex < widget.songs.length) {
+  //     _audioPlayer.dynamicSet(
+  //         pushIfNotExisted: true, url: widget.songs[_currentIndex].songUrl);
+
+  //     _audioPlayer.processingStateStream.listen((processingState) {
+  //       setState(() {});
+
+  //       if (processingState == ProcessingState.completed) {
+  //         if (_isRepeatOn) {
+  //           // If repeat is on, seek to the beginning of the current song
+  //           _audioPlayer.seek(Duration.zero);
+  //         } else {
+  //           _playNext();
+  //         }
+  //       }
+  //     });
+  //   }
+  // }
+
+  // void _playNext() {
+  //   if (widget.songs.isNotEmpty) {
+  //     if (_isShuffleOn) {
+  //       _currentIndex = Random().nextInt(widget.songs.length);
+  //     } else {
+  //       if (_currentIndex < widget.songs.length - 1) {
+  //         _currentIndex++;
+  //       } else {
+  //         if (_isRepeatOn) {
+  //           // If repeat is on and we reached the end, go back to the first song
+  //           _currentIndex = 0;
+  //         } else {
+  //           // If repeat is off, stop playing
+  //           _audioPlayer.stop();
+  //           return;
+  //         }
+  //       }
+  //     }
+
+  //     _audioPlayer.dynamicSet(
+  //         pushIfNotExisted: true, url: widget.songs[_currentIndex].songUrl);
+  //     _audioPlayer.play();
+  //   }
+  // }
+
   void _initializePlayer() {
     if (_currentIndex >= 0 && _currentIndex < widget.songs.length) {
       _audioPlayer.dynamicSet(
@@ -44,15 +92,33 @@ class _AuraPlayerState extends State<AuraPlayer> {
         setState(() {});
 
         if (processingState == ProcessingState.completed) {
-          _playNext();
+          if (_isRepeatOn) {
+            _audioPlayer.seek(Duration.zero);
+          } else {
+            _playNext();
+          }
         }
       });
     }
   }
 
   void _playNext() {
-    if (widget.songs.isNotEmpty && _currentIndex < widget.songs.length - 1) {
-      _currentIndex++;
+    if (widget.songs.isNotEmpty) {
+      if (_isShuffleOn) {
+        _currentIndex = Random().nextInt(widget.songs.length);
+      } else {
+        if (_currentIndex < widget.songs.length - 1) {
+          _currentIndex++;
+        } else {
+          if (_isRepeatOn) {
+            _currentIndex = 0;
+          } else {
+            _currentIndex = 0;
+            _audioPlayer.stop();
+          }
+        }
+      }
+
       _audioPlayer.dynamicSet(
           pushIfNotExisted: true, url: widget.songs[_currentIndex].songUrl);
       _audioPlayer.play();
@@ -76,8 +142,6 @@ class _AuraPlayerState extends State<AuraPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    if (kDebugMode) {}
-
     return Scaffold(
       appBar: null,
       backgroundColor: Colors.black,
@@ -89,10 +153,13 @@ class _AuraPlayerState extends State<AuraPlayer> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: CachedNetworkImageProvider(
-                                widget.songs[_currentIndex].imageUrl),
-                            fit: BoxFit.cover)),
+                      image: DecorationImage(
+                        image: CachedNetworkImageProvider(
+                          widget.songs[_currentIndex].imageUrl,
+                        ),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                     child: BackdropFilter(
                       filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
                       child: Container(
@@ -191,7 +258,6 @@ class _AuraPlayerState extends State<AuraPlayer> {
                           );
                         },
                       ),
-
                       const SizedBox(height: 20),
                       // Next/Previous button will come here
                       Row(
@@ -264,13 +330,43 @@ class _AuraPlayerState extends State<AuraPlayer> {
                     ],
                   ),
                   Positioned(
-                    top: 20,
-                    right: 20,
-                    child: IconButton(
-                      icon: const Icon(Icons.queue_music, color: Colors.white),
-                      onPressed: () {
-                        _showQueue(context);
-                      },
+                    bottom: 20,
+                    left: 20,
+                    child: Row(
+                      children: [
+                        // Shuffle button
+                        IconButton(
+                          icon: Icon(
+                            Icons.shuffle,
+                            color: _isShuffleOn ? Colors.blue : Colors.white,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _isShuffleOn = !_isShuffleOn;
+                            });
+                          },
+                        ),
+                        // Repeat button
+                        IconButton(
+                          icon: Icon(
+                            Icons.repeat,
+                            color: _isRepeatOn ? Colors.blue : Colors.white,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _isRepeatOn = !_isRepeatOn;
+                            });
+                          },
+                        ),
+                        // Queue button
+                        IconButton(
+                          icon: const Icon(Icons.queue_music,
+                              color: Colors.white),
+                          onPressed: () {
+                            _showQueue(context);
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ],
