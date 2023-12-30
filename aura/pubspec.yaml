@@ -56,6 +56,8 @@ dependencies:
   just_audio_cache: ^0.1.2
   audioplayers: ^5.2.1
   google_sign_in: ^6.2.1
+  rename: ^3.0.1
+  icons_launcher: ^2.1.6
 
 dev_dependencies:
   flutter_test:
@@ -73,11 +75,19 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+icons_launcher:
+  image_path: "assets/aura.png"
+  platforms:
+    android:
+      enable: true
+    ios:
+      enable: true
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  
 
   # To add assets to your application, add an assets section, like this:
   assets:

@@ -356,7 +356,7 @@ class _AuraHomePageNightState extends State<AuraHomePageNight>
         height: 250,
         child: GridView.builder(
           scrollDirection: Axis.horizontal,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 1,
               crossAxisSpacing: 8.0,
               mainAxisSpacing: 8.0,
@@ -375,8 +375,8 @@ class _AuraHomePageNightState extends State<AuraHomePageNight>
                 alignment: Alignment.bottomLeft,
                 child: Container(
                   height: 64,
-                  decoration:
-                      BoxDecoration(color: Color.fromARGB(255, 5, 16, 58)),
+                  decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 5, 16, 58)),
                   child: ListTile(
                     title: Text(
                       song.songName,

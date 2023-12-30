@@ -368,7 +368,7 @@ class _AuraHomePageEveningState extends State<AuraHomePageEvening>
         height: 200,
         child: GridView.builder(
           scrollDirection: Axis.horizontal,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 1,
               crossAxisSpacing: 8.0,
               mainAxisSpacing: 8.0,
@@ -385,7 +385,7 @@ class _AuraHomePageEveningState extends State<AuraHomePageEvening>
                 child: Center(
                   child: Text(
                     'Item $index',
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ),
               ),

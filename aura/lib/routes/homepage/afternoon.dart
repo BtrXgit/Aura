@@ -151,7 +151,7 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
                               child: Align(
                                 alignment: Alignment.center,
                                 child: Text(
-                                  "Live",
+                                  "Live ",
                                   style: GoogleFonts.openSans(
                                       color: Colors.white, fontSize: 20),
                                 ),
@@ -162,7 +162,7 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
                   background: Container(
                     decoration: const BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('assets/morning.jpg'),
+                        image: AssetImage('assets/night.jpg'),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -192,9 +192,17 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
                           ),
                           Row(
                             children: [
-                              const Icon(
-                                IconlyBold.bookmark,
-                                color: Colors.white,
+                              Container(
+                                width: 44,
+                                height: 44,
+                                decoration: const BoxDecoration(
+                                  color: Colors.black,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(
+                                  IconlyBold.bookmark,
+                                  color: Colors.white,
+                                ),
                               ),
                               const SizedBox(
                                 width: 14,
@@ -206,11 +214,15 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
                                         ),
                                     transition: Transition.rightToLeftWithFade),
                                 child: (userPhotoUrl != null)
-                                    ? CircleAvatar(
-                                        radius: 18,
-                                        backgroundImage:
-                                            CachedNetworkImageProvider(
-                                          userPhotoUrl!,
+                                    ? SizedBox(
+                                        width: 44,
+                                        height: 44,
+                                        child: CircleAvatar(
+                                          radius: 18,
+                                          backgroundImage:
+                                              CachedNetworkImageProvider(
+                                            userPhotoUrl!,
+                                          ),
                                         ),
                                       )
                                     : const Icon(
@@ -432,7 +444,7 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
                     child: Container(
                       width: 34,
                       height: 34,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           color: Colors.black, shape: BoxShape.circle),
                       child: const Icon(
                         IconlyBold.bookmark,

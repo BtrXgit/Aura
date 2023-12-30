@@ -1,11 +1,7 @@
 import 'package:aura/composer_test.dart';
-import 'package:aura/routes/homepage/morning.dart';
 import 'package:aura/routes/explore.dart';
 import 'package:aura/routes/homepage/afternoon.dart';
-import 'package:aura/routes/homepage/evening.dart';
-import 'package:aura/routes/homepage/night.dart';
 import 'package:aura/routes/tweaks.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';

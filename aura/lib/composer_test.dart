@@ -347,7 +347,8 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                                   icon: transportIcons[i],
                                   label: transportaudioNames[i],
                                   audioPlayer: transportaudioPlayer[i],
-                                  colour: Color.fromARGB(255, 24, 147, 98),
+                                  colour:
+                                      const Color.fromARGB(255, 24, 147, 98),
                                 ),
                             ],
                           ),
@@ -467,7 +468,7 @@ class AuraComposerTestState extends State<AuraComposerTest> {
     return SizedBox(
         width: 64,
         child: SliderTheme(
-          data: SliderThemeData(
+          data: const SliderThemeData(
             trackHeight: 2.0,
             thumbShape: RoundSliderThumbShape(enabledThumbRadius: 8.0),
             overlayShape: RoundSliderOverlayShape(overlayRadius: 0.0),
@@ -532,7 +533,7 @@ class AuraComposerTestState extends State<AuraComposerTest> {
             'Select Timer Duration',
             style: GoogleFonts.inter(fontSize: 18),
           ),
-          content: Container(
+          content: SizedBox(
             height: 150,
             width: MediaQuery.of(context).size.width - 100,
             child: Wrap(
