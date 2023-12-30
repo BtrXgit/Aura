@@ -41,8 +41,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
           pushIfNotExisted: true, url: widget.songs[_currentIndex].songUrl);
 
       _audioPlayer.processingStateStream.listen((processingState) {
-        setState(() {
-        });
+        setState(() {});
 
         if (processingState == ProcessingState.completed) {
           _playNext();
@@ -77,8 +76,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    if (kDebugMode) {
-    }
+    if (kDebugMode) {}
 
     return Scaffold(
       appBar: null,
@@ -123,12 +121,14 @@ class _AuraPlayerState extends State<AuraPlayer> {
                       const SizedBox(height: 20),
                       Text(
                         widget.songs[_currentIndex].songName,
-                        style: const TextStyle(color: Colors.white, fontSize: 24),
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 24),
                       ),
                       const SizedBox(height: 10),
                       Text(
                         widget.songs[_currentIndex].artist,
-                        style: const TextStyle(color: Colors.white, fontSize: 18),
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 18),
                       ),
                       const SizedBox(height: 20),
                       // Slider will come here
@@ -176,11 +176,13 @@ class _AuraPlayerState extends State<AuraPlayer> {
                                   children: [
                                     Text(
                                       '${position.inMinutes}:${(position.inSeconds % 60).toString().padLeft(2, '0')}',
-                                      style: const TextStyle(color: Colors.white),
+                                      style:
+                                          const TextStyle(color: Colors.white),
                                     ),
                                     Text(
                                       '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}',
-                                      style: const TextStyle(color: Colors.white),
+                                      style:
+                                          const TextStyle(color: Colors.white),
                                     ),
                                   ],
                                 ),
@@ -261,13 +263,58 @@ class _AuraPlayerState extends State<AuraPlayer> {
                       )
                     ],
                   ),
+                  Positioned(
+                    top: 20,
+                    right: 20,
+                    child: IconButton(
+                      icon: const Icon(Icons.queue_music, color: Colors.white),
+                      onPressed: () {
+                        _showQueue(context);
+                      },
+                    ),
+                  ),
                 ],
               )
             : const Text(
-              'No song available',
-              style: TextStyle(color: Colors.white),
-            ),
+                'No song available',
+                style: TextStyle(color: Colors.white),
+              ),
       ),
+    );
+  }
+
+  void _showQueue(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return ListView.builder(
+          itemCount: widget.songs.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              leading: ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: CachedNetworkImage(
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.cover,
+                  imageUrl: widget.songs[index].imageUrl,
+                ),
+              ),
+              title: Text(widget.songs[index].songName),
+              subtitle: Text(widget.songs[index].artist),
+              onTap: () {
+                _currentIndex = index;
+                _audioPlayer.dynamicSet(
+                  pushIfNotExisted: true,
+                  url: widget.songs[_currentIndex].songUrl,
+                );
+                _audioPlayer.play();
+                Navigator.pop(context);
+              },
+            );
+          },
+        );
+      },
     );
   }
 }
