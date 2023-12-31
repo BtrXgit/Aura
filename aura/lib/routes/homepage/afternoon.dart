@@ -288,7 +288,13 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
           Padding(
             padding: const EdgeInsets.only(left: 20, bottom: 20),
             child: GestureDetector(
-              onTap: () => Get.to(() => LivePage()),
+              onTap: () => Get.to(
+                () => LivePage(
+                  currentIndex: 0,
+                  songs: songs,
+                ),
+                transition: Transition.downToUp,
+              ),
               child: CarouselSlider(
                 options: CarouselOptions(
                   scrollPhysics: const BouncingScrollPhysics(),
