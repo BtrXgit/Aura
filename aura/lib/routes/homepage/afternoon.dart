@@ -1,4 +1,5 @@
 import 'package:aura/data/songs.dart';
+import 'package:aura/routes/pages/live/live.dart';
 import 'package:aura/routes/pages/player.dart';
 import 'package:aura/routes/tweaks.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -286,38 +287,41 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
           ),
           Padding(
             padding: const EdgeInsets.only(left: 20, bottom: 20),
-            child: CarouselSlider(
-              options: CarouselOptions(
-                scrollPhysics: const BouncingScrollPhysics(),
-                height: MediaQuery.of(context).size.height * 0.4,
-                autoPlay: false,
-                enlargeCenterPage: true,
-                viewportFraction: 0.8,
-                enlargeFactor: 0.3,
-                padEnds: false,
-                reverse: false,
-              ),
-              items: kImages.asMap().entries.map((entry) {
-                String imageUrl = entry.value;
-                return Builder(
-                  builder: (BuildContext context) {
-                    return GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          image: DecorationImage(
-                            image: AssetImage(imageUrl),
-                            fit: BoxFit.cover,
-                            filterQuality: FilterQuality.high,
+            child: GestureDetector(
+              onTap: () => Get.to(() => LivePage()),
+              child: CarouselSlider(
+                options: CarouselOptions(
+                  scrollPhysics: const BouncingScrollPhysics(),
+                  height: MediaQuery.of(context).size.height * 0.4,
+                  autoPlay: false,
+                  enlargeCenterPage: true,
+                  viewportFraction: 0.8,
+                  enlargeFactor: 0.3,
+                  padEnds: false,
+                  reverse: false,
+                ),
+                items: kImages.asMap().entries.map((entry) {
+                  String imageUrl = entry.value;
+                  return Builder(
+                    builder: (BuildContext context) {
+                      return GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            image: DecorationImage(
+                              image: AssetImage(imageUrl),
+                              fit: BoxFit.cover,
+                              filterQuality: FilterQuality.high,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                );
-              }).toList(),
+                      );
+                    },
+                  );
+                }).toList(),
+              ),
             ),
           ),
           Padding(
