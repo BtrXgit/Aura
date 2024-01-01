@@ -8,7 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_cache/just_audio_cache.dart';
-import 'dart:math';
+import 'package:palette_generator/palette_generator.dart';
 
 class LivePage extends StatefulWidget {
   final int currentIndex;
@@ -27,6 +27,7 @@ class LivePage extends StatefulWidget {
 class _LivePageState extends State<LivePage> {
   final AudioPlayer _audioPlayer = AudioPlayer();
   int _currentIndex = 0;
+  Color? dominantColor;
 
   @override
   void initState() {
@@ -36,6 +37,16 @@ class _LivePageState extends State<LivePage> {
       _initializePlayer();
       _audioPlayer.play();
     }
+    _loadDominantColor();
+  }
+
+  Future<void> _loadDominantColor() async {
+    final PaletteGenerator paletteGenerator =
+        await PaletteGenerator.fromImageProvider(
+            CachedNetworkImageProvider(widget.songs[_currentIndex].imageUrl));
+    setState(() {
+      dominantColor = paletteGenerator.dominantColor?.color;
+    });
   }
 
   void _initializePlayer() {
@@ -58,14 +69,14 @@ class _LivePageState extends State<LivePage> {
       if (_currentIndex < widget.songs.length - 1) {
         _currentIndex++;
       } else {
-        // If we reached the end, stop playing
-        _audioPlayer.stop();
-        return;
+        // If we reached the end, start from the beginning
+        _currentIndex = 0;
       }
 
       _audioPlayer.dynamicSet(
           pushIfNotExisted: true, url: widget.songs[_currentIndex].songUrl);
       _audioPlayer.play();
+      _loadDominantColor();
     }
   }
 
@@ -75,6 +86,7 @@ class _LivePageState extends State<LivePage> {
       _audioPlayer.dynamicSet(
           pushIfNotExisted: true, url: widget.songs[_currentIndex].songUrl);
       _audioPlayer.play();
+      _loadDominantColor();
     }
   }
 
@@ -105,7 +117,7 @@ class _LivePageState extends State<LivePage> {
                       ),
                     ),
                     child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
+                      filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
                       child: Container(
                         color: Colors.black.withOpacity(0.4),
                       ),
@@ -174,12 +186,28 @@ class _LivePageState extends State<LivePage> {
                                 ),
                               ],
                             ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                IconlyLight.heart,
-                                color: Colors.white,
-                                size: 28,
+                            Container(
+                              width: 44,
+                              height: 44,
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.2),
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    spreadRadius: 5,
+                                    blurRadius: 7,
+                                    offset: Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: IconButton(
+                                onPressed: () {},
+                                icon: const Icon(
+                                  IconlyLight.heart,
+                                  color: Colors.white,
+                                  size: 28,
+                                ),
                               ),
                             ),
                           ],
@@ -200,9 +228,10 @@ class _LivePageState extends State<LivePage> {
                               children: [
                                 SliderTheme(
                                   data: SliderTheme.of(context).copyWith(
-                                    activeTrackColor: Colors.blue,
+                                    activeTrackColor:
+                                        dominantColor ?? Colors.blue,
                                     inactiveTrackColor: Colors.grey,
-                                    thumbColor: Colors.blue,
+                                    thumbColor: Colors.white,
                                     overlayColor: Colors.blue.withOpacity(0.3),
                                     valueIndicatorColor: Colors.blue,
                                     thumbShape: const RoundSliderThumbShape(
@@ -262,24 +291,38 @@ class _LivePageState extends State<LivePage> {
                             ),
                             onPressed: _playPrevious,
                           ),
-                          IconButton(
-                            icon: Icon(
-                              _audioPlayer.playing
-                                  ? Icons.pause
-                                  : Icons.play_arrow,
-                              size: 34,
-                              color: Colors.white,
+                          Container(
+                            width: 64,
+                            height: 64,
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.2),
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  spreadRadius: 5,
+                                  blurRadius: 7,
+                                  offset: Offset(0, 3),
+                                ),
+                              ],
                             ),
-                            onPressed: () {
-                              if (_audioPlayer.playing) {
-                                _audioPlayer.pause();
-                              } else {
-                                _audioPlayer.play();
-                              }
-                              setState(() {
-                                // Updating the state to trigger a rebuild to change the icon
-                              });
-                            },
+                            child: IconButton(
+                              icon: Icon(
+                                _audioPlayer.playing
+                                    ? Icons.pause
+                                    : Icons.play_arrow,
+                                size: 34,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                if (_audioPlayer.playing) {
+                                  _audioPlayer.pause();
+                                } else {
+                                  _audioPlayer.play();
+                                }
+                                setState(() {});
+                              },
+                            ),
                           ),
                           IconButton(
                             icon: const Icon(

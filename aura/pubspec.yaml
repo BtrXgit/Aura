@@ -58,6 +58,7 @@ dependencies:
   google_sign_in: ^6.2.1
   rename: ^3.0.1
   flutter_launcher_icons: ^0.13.1
+  palette_generator: ^0.3.3+3
 
 dev_dependencies:
   flutter_test:

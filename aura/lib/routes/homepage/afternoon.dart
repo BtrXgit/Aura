@@ -276,12 +276,21 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 8.0),
-            child: Text(
-              'Live',
-              style: GoogleFonts.openSans(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+            child: GestureDetector(
+              onTap: () => Get.to(
+                () => LivePage(
+                  currentIndex: 0,
+                  songs: songs,
+                ),
+                transition: Transition.downToUp,
+              ),
+              child: Text(
+                'Live',
+                style: GoogleFonts.openSans(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
