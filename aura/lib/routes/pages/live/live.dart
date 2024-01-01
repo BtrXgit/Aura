@@ -101,94 +101,205 @@ class _LivePageState extends State<LivePage> {
     return Scaffold(
       appBar: null,
       backgroundColor: Colors.black,
-      body: Center(
-        child: widget.songs.isNotEmpty &&
-                _currentIndex >= 0 &&
-                _currentIndex < widget.songs.length
-            ? Stack(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: CachedNetworkImageProvider(
-                          widget.songs[_currentIndex].imageUrl,
-                        ),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
-                      child: Container(
-                        color: Colors.black.withOpacity(0.4),
-                      ),
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.08,
-                      ),
-                      Text(
-                        'Playing From Playlist',
-                        style: GoogleFonts.openSans(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        'Focus',
-                        style: GoogleFonts.openSans(
-                            color: Colors.white, fontSize: 14),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.04,
-                      ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: CachedNetworkImage(
-                          height: MediaQuery.of(context).size.height * 0.38,
-                          width: MediaQuery.of(context).size.width - 74,
+      body: GestureDetector(
+        onHorizontalDragEnd: (DragEndDetails details) {
+          if (details.primaryVelocity! > 0) {
+            _playPrevious();
+          } else if (details.primaryVelocity! < 0) {
+            _playNext();
+          }
+        },
+        child: Center(
+          child: widget.songs.isNotEmpty &&
+                  _currentIndex >= 0 &&
+                  _currentIndex < widget.songs.length
+              ? Stack(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: CachedNetworkImageProvider(
+                            widget.songs[_currentIndex].imageUrl,
+                          ),
                           fit: BoxFit.cover,
-                          imageUrl: widget.songs[_currentIndex].imageUrl,
-                          placeholder: (context, url) =>
-                              const CircularProgressIndicator(),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
                         ),
                       ),
-                      const SizedBox(height: 50),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20, right: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+                        child: Container(
+                          color: Colors.white.withOpacity(0.5),
+                        ),
+                      ),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.08,
+                        ),
+                        Text(
+                          'Playing From Playlist',
+                          style: GoogleFonts.openSans(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'Focus',
+                          style: GoogleFonts.openSans(
+                              color: Colors.white, fontSize: 14),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.04,
+                        ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(14),
+                          child: CachedNetworkImage(
+                            height: MediaQuery.of(context).size.height * 0.38,
+                            width: MediaQuery.of(context).size.width - 74,
+                            fit: BoxFit.cover,
+                            imageUrl: widget.songs[_currentIndex].imageUrl,
+                          ),
+                        ),
+                        const SizedBox(height: 50),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20, right: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      widget.songs[_currentIndex].songName,
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 24),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      widget.songs[_currentIndex].artist,
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 18),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                width: 44,
+                                height: 44,
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.2),
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      spreadRadius: 5,
+                                      blurRadius: 7,
+                                      offset: Offset(0, 3),
+                                    ),
+                                  ],
+                                ),
+                                child: IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(
+                                    IconlyLight.heart,
+                                    color: Colors.white,
+                                    size: 28,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        // Slider will come here
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                          child: StreamBuilder<Duration>(
+                            stream: _audioPlayer.positionStream,
+                            builder: (context, snapshot) {
+                              final position = snapshot.data ?? Duration.zero;
+                              final duration =
+                                  _audioPlayer.duration ?? Duration.zero;
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SliderTheme(
+                                    data: SliderTheme.of(context).copyWith(
+                                      activeTrackColor:
+                                          dominantColor ?? Colors.blue,
+                                      inactiveTrackColor: Colors.grey,
+                                      thumbColor: Colors.white,
+                                      overlayColor:
+                                          Colors.blue.withOpacity(0.3),
+                                      valueIndicatorColor: Colors.blue,
+                                      thumbShape: const RoundSliderThumbShape(
+                                          enabledThumbRadius: 8.0),
+                                      overlayShape:
+                                          const RoundSliderOverlayShape(
+                                              overlayRadius: 16.0),
+                                      valueIndicatorShape:
+                                          const PaddleSliderValueIndicatorShape(),
+                                      valueIndicatorTextStyle: const TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    child: Slider(
+                                      value: position.inSeconds.toDouble(),
+                                      max: duration.inSeconds.toDouble(),
+                                      onChanged: (value) {
+                                        _audioPlayer.seek(
+                                            Duration(seconds: value.toInt()));
+                                      },
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          '${position.inMinutes}:${(position.inSeconds % 60).toString().padLeft(2, '0')}',
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                        ),
+                                        Text(
+                                          '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}',
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 50),
+                        // Next/Previous button will come here
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    widget.songs[_currentIndex].songName,
-                                    style: const TextStyle(
-                                        color: Colors.white, fontSize: 24),
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    widget.songs[_currentIndex].artist,
-                                    style: const TextStyle(
-                                        color: Colors.white, fontSize: 18),
-                                  ),
-                                ),
-                              ],
+                            IconButton(
+                              icon: const Icon(
+                                Icons.skip_previous,
+                                size: 34,
+                                color: Colors.white,
+                              ),
+                              onPressed: _playPrevious,
                             ),
                             Container(
-                              width: 44,
-                              height: 44,
+                              width: 64,
+                              height: 64,
                               decoration: BoxDecoration(
                                 color: Colors.white.withOpacity(0.2),
                                 shape: BoxShape.circle,
@@ -202,169 +313,65 @@ class _LivePageState extends State<LivePage> {
                                 ],
                               ),
                               child: IconButton(
-                                onPressed: () {},
-                                icon: const Icon(
-                                  IconlyLight.heart,
+                                icon: Icon(
+                                  _audioPlayer.playing
+                                      ? Icons.pause
+                                      : Icons.play_arrow,
+                                  size: 34,
                                   color: Colors.white,
-                                  size: 28,
                                 ),
+                                onPressed: () {
+                                  if (_audioPlayer.playing) {
+                                    _audioPlayer.pause();
+                                  } else {
+                                    _audioPlayer.play();
+                                  }
+                                  setState(() {});
+                                },
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      // Slider will come here
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                        child: StreamBuilder<Duration>(
-                          stream: _audioPlayer.positionStream,
-                          builder: (context, snapshot) {
-                            final position = snapshot.data ?? Duration.zero;
-                            final duration =
-                                _audioPlayer.duration ?? Duration.zero;
-                            return Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                SliderTheme(
-                                  data: SliderTheme.of(context).copyWith(
-                                    activeTrackColor:
-                                        dominantColor ?? Colors.blue,
-                                    inactiveTrackColor: Colors.grey,
-                                    thumbColor: Colors.white,
-                                    overlayColor: Colors.blue.withOpacity(0.3),
-                                    valueIndicatorColor: Colors.blue,
-                                    thumbShape: const RoundSliderThumbShape(
-                                        enabledThumbRadius: 8.0),
-                                    overlayShape: const RoundSliderOverlayShape(
-                                        overlayRadius: 16.0),
-                                    valueIndicatorShape:
-                                        const PaddleSliderValueIndicatorShape(),
-                                    valueIndicatorTextStyle: const TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  child: Slider(
-                                    value: position.inSeconds.toDouble(),
-                                    max: duration.inSeconds.toDouble(),
-                                    onChanged: (value) {
-                                      _audioPlayer.seek(
-                                          Duration(seconds: value.toInt()));
-                                    },
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        '${position.inMinutes}:${(position.inSeconds % 60).toString().padLeft(2, '0')}',
-                                        style: const TextStyle(
-                                            color: Colors.white),
-                                      ),
-                                      Text(
-                                        '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}',
-                                        style: const TextStyle(
-                                            color: Colors.white),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 50),
-                      // Next/Previous button will come here
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          IconButton(
-                            icon: const Icon(
-                              Icons.skip_previous,
-                              size: 34,
-                              color: Colors.white,
-                            ),
-                            onPressed: _playPrevious,
-                          ),
-                          Container(
-                            width: 64,
-                            height: 64,
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.2),
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  spreadRadius: 5,
-                                  blurRadius: 7,
-                                  offset: Offset(0, 3),
-                                ),
-                              ],
-                            ),
-                            child: IconButton(
-                              icon: Icon(
-                                _audioPlayer.playing
-                                    ? Icons.pause
-                                    : Icons.play_arrow,
+                            IconButton(
+                              icon: const Icon(
+                                Icons.skip_next,
                                 size: 34,
                                 color: Colors.white,
                               ),
-                              onPressed: () {
-                                if (_audioPlayer.playing) {
-                                  _audioPlayer.pause();
-                                } else {
-                                  _audioPlayer.play();
-                                }
-                                setState(() {});
-                              },
+                              onPressed: _playNext,
                             ),
-                          ),
-                          IconButton(
-                            icon: const Icon(
-                              Icons.skip_next,
-                              size: 34,
-                              color: Colors.white,
-                            ),
-                            onPressed: _playNext,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                    ],
-                  ),
-                  Positioned(
-                    top: 50,
-                    left: 10,
-                    child: IconButton(
-                      icon: Icon(IconlyBold.setting, color: Colors.white),
-                      onPressed: () {},
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                      ],
                     ),
-                  ),
-                  Positioned(
-                    top: 50,
-                    right: 10,
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.share,
-                        color: Colors.white,
-                        size: 30,
+                    Positioned(
+                      top: 50,
+                      left: 10,
+                      child: IconButton(
+                        icon: Icon(IconlyBold.setting, color: Colors.white),
+                        onPressed: () {},
                       ),
                     ),
-                  )
-                ],
-              )
-            : const Text(
-                'No song available',
-                style: TextStyle(color: Colors.white),
-              ),
+                    Positioned(
+                      top: 50,
+                      right: 10,
+                      child: IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.share,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                      ),
+                    )
+                  ],
+                )
+              : const Text(
+                  'No song available',
+                  style: TextStyle(color: Colors.white),
+                ),
+        ),
       ),
     );
   }
