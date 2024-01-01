@@ -2,7 +2,9 @@ import 'dart:ui';
 
 import 'package:aura/authentication/services/auth_service.dart';
 import 'package:aura/component/square_tile.dart';
+import 'package:aura/routes/pages/privacy_policy.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginPage extends StatefulWidget {
@@ -71,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const Center(
                     child: Text(
-                      'Prism',
+                      'Aura',
                       style: TextStyle(
                         fontFamily: 'Anurati',
                         color: Colors.white,
@@ -108,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'By Continuing, you agree with Prism',
+                            'By Continuing, you agree with Aura',
                             style: TextStyle(
                               color: Colors.grey[500],
                               fontSize: 12,
@@ -118,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                       ),
                       GestureDetector(
-                        // onTap: () => Get.to(const PrivacyPage()),
+                        onTap: () => Get.to(const PrivacyPage()),
                         child: const Text(
                           'Privacy Policy',
                           style: TextStyle(

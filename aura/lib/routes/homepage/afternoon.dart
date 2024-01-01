@@ -40,19 +40,6 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
     'assets/slider/6.jpg'
   ];
 
-  final List<Color> itemColors = [
-    Colors.red,
-    Colors.green,
-    Colors.blue,
-    Colors.orange,
-    Colors.purple,
-    Colors.teal,
-    Colors.yellow,
-    Colors.pink,
-    Colors.indigo,
-    Colors.brown,
-  ];
-
   bool isPlaying = false;
 
   @override
@@ -125,6 +112,7 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 14, 3, 31),
       body: NestedScrollView(
+        physics: BouncingScrollPhysics(),
         controller: widget.controller,
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return <Widget>[
@@ -271,6 +259,7 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
 
   Widget _buildContentColumn() {
     return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -418,6 +407,17 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
             ),
           ),
           _buildDummyCategory(),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
+            child: Text(
+              'LoFi Radios',
+              style: GoogleFonts.openSans(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          _buildDummyRadios(),
           const SizedBox(
             height: 50,
           ),
@@ -498,6 +498,45 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
             );
           },
         ),
+      ),
+    );
+  }
+
+  Widget _buildDummyRadios() {
+    return SingleChildScrollView(
+      physics: PageScrollPhysics(),
+      child: Column(
+        children: [
+          Container(
+            width: 200,
+            height: 400,
+            color: Colors.red,
+          ),
+          SizedBox(height: 20),
+          Container(
+            width: 200,
+            height: 400,
+            color: Colors.red,
+          ),
+          SizedBox(height: 20),
+          Container(
+            width: 200,
+            height: 400,
+            color: Colors.red,
+          ),
+          SizedBox(height: 20),
+          Container(
+            width: 200,
+            height: 400,
+            color: Colors.red,
+          ),
+          SizedBox(height: 20),
+          Container(
+            width: 200,
+            height: 400,
+            color: Colors.red,
+          ),
+        ],
       ),
     );
   }

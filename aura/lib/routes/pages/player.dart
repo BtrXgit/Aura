@@ -10,6 +10,8 @@ import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_cache/just_audio_cache.dart';
 import 'dart:math';
 
+import 'package:palette_generator/palette_generator.dart';
+
 class AuraPlayer extends StatefulWidget {
   final int currentIndex;
   final List<Song> songs;
@@ -29,6 +31,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
   int _currentIndex = 0;
   bool _isShuffleOn = false;
   bool _isRepeatOn = false;
+  Color? dominantColor;
 
   @override
   void initState() {
@@ -38,6 +41,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
       _initializePlayer();
       _audioPlayer.play();
     }
+    _loadDominantColor();
   }
 
   // void _initializePlayer() {
@@ -124,6 +128,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
       _audioPlayer.dynamicSet(
           pushIfNotExisted: true, url: widget.songs[_currentIndex].songUrl);
       _audioPlayer.play();
+      _loadDominantColor();
     }
   }
 
@@ -133,7 +138,17 @@ class _AuraPlayerState extends State<AuraPlayer> {
       _audioPlayer.dynamicSet(
           pushIfNotExisted: true, url: widget.songs[_currentIndex].songUrl);
       _audioPlayer.play();
+      _loadDominantColor();
     }
+  }
+
+  Future<void> _loadDominantColor() async {
+    final PaletteGenerator paletteGenerator =
+        await PaletteGenerator.fromImageProvider(
+            CachedNetworkImageProvider(widget.songs[_currentIndex].imageUrl));
+    setState(() {
+      dominantColor = paletteGenerator.dominantColor?.color;
+    });
   }
 
   @override
@@ -163,9 +178,9 @@ class _AuraPlayerState extends State<AuraPlayer> {
                       ),
                     ),
                     child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
+                      filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
                       child: Container(
-                        color: Colors.black.withOpacity(0.4),
+                        color: Colors.white.withOpacity(0.1),
                       ),
                     ),
                   ),
@@ -206,26 +221,57 @@ class _AuraPlayerState extends State<AuraPlayer> {
                       ),
                       const SizedBox(height: 50),
                       Padding(
-                        padding: const EdgeInsets.only(left: 20.0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            widget.songs[_currentIndex].songName,
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 24),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20.0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            widget.songs[_currentIndex].artist,
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 18),
-                          ),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    widget.songs[_currentIndex].songName,
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 24),
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    widget.songs[_currentIndex].artist,
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 18),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              width: 44,
+                              height: 44,
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.2),
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    spreadRadius: 5,
+                                    blurRadius: 7,
+                                    offset: Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: IconButton(
+                                onPressed: () {},
+                                icon: const Icon(
+                                  IconlyLight.heart,
+                                  color: Colors.white,
+                                  size: 28,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -243,9 +289,10 @@ class _AuraPlayerState extends State<AuraPlayer> {
                               children: [
                                 SliderTheme(
                                   data: SliderTheme.of(context).copyWith(
-                                    activeTrackColor: Colors.blue,
+                                    activeTrackColor:
+                                        dominantColor ?? Colors.blue,
                                     inactiveTrackColor: Colors.grey,
-                                    thumbColor: Colors.blue,
+                                    thumbColor: Colors.white,
                                     overlayColor: Colors.blue.withOpacity(0.3),
                                     valueIndicatorColor: Colors.blue,
                                     thumbShape: const RoundSliderThumbShape(
@@ -298,17 +345,6 @@ class _AuraPlayerState extends State<AuraPlayer> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           IconButton(
-                            icon: Icon(
-                              Icons.shuffle,
-                              color: _isShuffleOn ? Colors.blue : Colors.white,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _isShuffleOn = !_isShuffleOn;
-                              });
-                            },
-                          ),
-                          IconButton(
                             icon: const Icon(
                               Icons.skip_previous,
                               size: 34,
@@ -316,24 +352,38 @@ class _AuraPlayerState extends State<AuraPlayer> {
                             ),
                             onPressed: _playPrevious,
                           ),
-                          IconButton(
-                            icon: Icon(
-                              _audioPlayer.playing
-                                  ? Icons.pause
-                                  : Icons.play_arrow,
-                              size: 34,
-                              color: Colors.white,
+                          Container(
+                            width: 64,
+                            height: 64,
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.2),
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  spreadRadius: 5,
+                                  blurRadius: 7,
+                                  offset: Offset(0, 3),
+                                ),
+                              ],
                             ),
-                            onPressed: () {
-                              if (_audioPlayer.playing) {
-                                _audioPlayer.pause();
-                              } else {
-                                _audioPlayer.play();
-                              }
-                              setState(() {
-                                // Updating the state to trigger a rebuild to change the icon
-                              });
-                            },
+                            child: IconButton(
+                              icon: Icon(
+                                _audioPlayer.playing
+                                    ? Icons.pause
+                                    : Icons.play_arrow,
+                                size: 34,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                if (_audioPlayer.playing) {
+                                  _audioPlayer.pause();
+                                } else {
+                                  _audioPlayer.play();
+                                }
+                                setState(() {});
+                              },
+                            ),
                           ),
                           IconButton(
                             icon: const Icon(
@@ -343,46 +393,78 @@ class _AuraPlayerState extends State<AuraPlayer> {
                             ),
                             onPressed: _playNext,
                           ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.repeat,
-                              color: _isRepeatOn ? Colors.blue : Colors.white,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _isRepeatOn = !_isRepeatOn;
-                              });
-                            },
-                          ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
+
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                IconlyBold.heart,
-                                color: Colors.white,
-                                size: 30,
-                              ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.shuffle,
+                                    color: _isShuffleOn
+                                        ? Colors.blue
+                                        : Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _isShuffleOn = !_isShuffleOn;
+                                    });
+                                  },
+                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.repeat,
+                                    color: _isRepeatOn
+                                        ? Colors.blue
+                                        : Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _isRepeatOn = !_isRepeatOn;
+                                    });
+                                  },
+                                ),
+                              ],
                             ),
                             IconButton(
                               onPressed: () {},
-                              icon: const Icon(
-                                Icons.share,
+                              icon: Icon(
+                                Icons.ios_share_outlined,
                                 color: Colors.white,
-                                size: 30,
                               ),
                             ),
                           ],
                         ),
-                      )
+                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //     children: [
+                      //       IconButton(
+                      //         onPressed: () {},
+                      //         icon: const Icon(
+                      //           IconlyBold.heart,
+                      //           color: Colors.white,
+                      //           size: 30,
+                      //         ),
+                      //       ),
+                      //       IconButton(
+                      //         onPressed: () {},
+                      //         icon: const Icon(
+                      //           Icons.share,
+                      //           color: Colors.white,
+                      //           size: 30,
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // )
                     ],
                   ),
                   Positioned(
