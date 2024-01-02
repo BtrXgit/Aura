@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 import 'package:aura/composer_test.dart';
 import 'package:aura/data/songs.dart';
@@ -158,6 +159,79 @@ class _AuraPlayerState extends State<AuraPlayer> {
   void dispose() {
     _audioPlayer.dispose();
     super.dispose();
+  }
+
+  Timer? _timer;
+  Future<void> _showTimerDialog() async {
+    int? selectedTime;
+
+    selectedTime = await showDialog<int>(
+      context: context,
+      builder: (BuildContext context) {
+        List<Map<String, dynamic>> timerOptions = [
+          {'duration': 60, 'label': '1M'},
+          {'duration': 120, 'label': '2M'},
+          {'duration': 300, 'label': '5M'},
+          {'duration': 600, 'label': '10M'},
+          {'duration': 1800, 'label': '30M'},
+          {'duration': 3600, 'label': '1H'},
+          {'duration': 7200, 'label': '2H'},
+          {'duration': 18000, 'label': '5H'},
+        ];
+
+        return AlertDialog(
+          title: Text(
+            'Select Timer Duration',
+            style: GoogleFonts.inter(fontSize: 18, color: Colors.white),
+          ),
+          content: SizedBox(
+            height: 150,
+            width: MediaQuery.of(context).size.width - 100,
+            child: Wrap(
+              spacing: 5,
+              runSpacing: 5,
+              children: timerOptions
+                  .map((option) => ElevatedButton(
+                        onPressed: () {
+                          selectedTime = option['duration'];
+                          Navigator.of(context).pop(selectedTime);
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: (selectedTime == option['duration'])
+                              ? MaterialStateProperty.all(Color(0xFF131321))
+                              : MaterialStateProperty.all(Colors.grey[800]),
+                        ),
+                        child: Text(
+                          option['label'],
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ))
+                  .toList(),
+            ),
+          ),
+        );
+      },
+    );
+
+    if (selectedTime != null) {
+      _stopTimer();
+      _startTimer(selectedTime!);
+    }
+  }
+
+  void _startTimer(int durationInSeconds) {
+    _timer = Timer(Duration(seconds: durationInSeconds), () {
+      _audioPlayer.stop();
+      setState(() {});
+    });
+
+    setState(() {});
+  }
+
+  void _stopTimer() {
+    if (_timer != null && _timer!.isActive) {
+      _timer!.cancel();
+    }
   }
 
   @override
@@ -493,6 +567,18 @@ class _AuraPlayerState extends State<AuraPlayer> {
                         onPressed: () {
                           _showQueue(context);
                         },
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 10,
+                      right: 10,
+                      child: IconButton(
+                        onPressed: _showTimerDialog,
+                        icon: const Icon(
+                          Icons.timer,
+                          color: Colors.white,
+                          size: 30,
+                        ),
                       ),
                     ),
                   ],

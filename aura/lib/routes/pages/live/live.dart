@@ -32,7 +32,7 @@ class _LivePageState extends State<LivePage> {
   int _currentIndex = 0;
   Color? dominantColor;
 
-  Timer? _timer;
+  
 
   @override
   void initState() {
@@ -101,6 +101,8 @@ class _LivePageState extends State<LivePage> {
     super.dispose();
   }
 
+Timer? _timer;
+
   Future<void> _showTimerDialog() async {
     int? selectedTime;
 
@@ -108,7 +110,7 @@ class _LivePageState extends State<LivePage> {
       context: context,
       builder: (BuildContext context) {
         List<Map<String, dynamic>> timerOptions = [
-          {'duration': 5, 'label': '1M'},
+          {'duration': 60, 'label': '1M'},
           {'duration': 120, 'label': '2M'},
           {'duration': 300, 'label': '5M'},
           {'duration': 600, 'label': '10M'},
@@ -121,12 +123,14 @@ class _LivePageState extends State<LivePage> {
         return AlertDialog(
           title: Text(
             'Select Timer Duration',
-            style: GoogleFonts.inter(fontSize: 18),
+            style: GoogleFonts.inter(fontSize: 18, color: Colors.white),
           ),
           content: SizedBox(
             height: 150,
             width: MediaQuery.of(context).size.width - 100,
             child: Wrap(
+              spacing: 5,
+              runSpacing: 5,
               children: timerOptions
                   .map((option) => ElevatedButton(
                         onPressed: () {
@@ -135,10 +139,13 @@ class _LivePageState extends State<LivePage> {
                         },
                         style: ButtonStyle(
                           backgroundColor: (selectedTime == option['duration'])
-                              ? MaterialStateProperty.all(Colors.red)
-                              : null,
+                              ? MaterialStateProperty.all(Color(0xFF131321))
+                              : MaterialStateProperty.all(Colors.grey[800]),
                         ),
-                        child: Text(option['label']),
+                        child: Text(
+                          option['label'],
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ))
                   .toList(),
             ),
