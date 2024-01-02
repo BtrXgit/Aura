@@ -16,10 +16,12 @@ import 'package:palette_generator/palette_generator.dart';
 class AuraPlayer extends StatefulWidget {
   final int currentIndex;
   final List<Song> songs;
+  final String title;
 
   const AuraPlayer({
     required this.currentIndex,
     required this.songs,
+    required this.title,
     Key? key,
   }) : super(key: key);
 

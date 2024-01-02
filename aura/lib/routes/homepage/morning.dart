@@ -106,7 +106,7 @@ class _AuraHomePageMorningState extends State<AuraHomePageMorning>
             onTap: () => Get.to(
               AuraPlayer(
                 currentIndex: index,
-                songs: songs,
+                songs: songs,title: 'Live Radios',
               ),
               transition: Transition.fadeIn,
             ),

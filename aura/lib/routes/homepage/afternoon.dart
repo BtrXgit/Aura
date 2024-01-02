@@ -270,6 +270,7 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
                 () => LivePage(
                   currentIndex: 0,
                   songs: songs,
+                  title: 'Live Radios',
                 ),
                 transition: Transition.downToUp,
               ),
@@ -290,6 +291,7 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
                 () => LivePage(
                   currentIndex: 0,
                   songs: songs,
+                  title: 'Live Radios',
                 ),
                 transition: Transition.downToUp,
               ),
@@ -453,6 +455,7 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
                 AuraPlayer(
                   currentIndex: index,
                   songs: songs,
+                  title: 'Focus',
                 ),
                 transition: Transition.downToUp,
               ),

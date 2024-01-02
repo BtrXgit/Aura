@@ -12,11 +12,13 @@ import 'package:palette_generator/palette_generator.dart';
 
 class LivePage extends StatefulWidget {
   final int currentIndex;
+  final String title;
   final List<Song> songs;
 
   const LivePage({
     required this.currentIndex,
     required this.songs,
+    required this.title,
     Key? key,
   }) : super(key: key);
 

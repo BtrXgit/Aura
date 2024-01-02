@@ -340,6 +340,7 @@ class _AuraHomePageNightState extends State<AuraHomePageNight>
               AuraPlayer(
                 currentIndex: index,
                 songs: songs,
+                title: 'Live Radios',
               ),
               transition: Transition.fadeIn,
             ),

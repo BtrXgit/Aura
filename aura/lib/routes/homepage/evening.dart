@@ -137,6 +137,7 @@ class _AuraHomePageEveningState extends State<AuraHomePageEvening>
               AuraPlayer(
                 currentIndex: index,
                 songs: songs,
+                title: 'Live Radios',
               ),
               transition: Transition.fadeIn,
             ),
