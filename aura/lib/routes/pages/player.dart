@@ -514,12 +514,25 @@ class _AuraPlayerState extends State<AuraPlayer> {
                                   ),
                                 ],
                               ),
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Iconsax.share,
-                                  color: Colors.white,
-                                ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  IconButton(
+                                    onPressed: _showTimerDialog,
+                                    icon: const Icon(
+                                      Iconsax.timer_1,
+                                      color: Colors.white,
+                                      size: 30,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Iconsax.share,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -567,18 +580,6 @@ class _AuraPlayerState extends State<AuraPlayer> {
                         onPressed: () {
                           _showQueue(context);
                         },
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 10,
-                      right: 10,
-                      child: IconButton(
-                        onPressed: _showTimerDialog,
-                        icon: const Icon(
-                          Icons.timer,
-                          color: Colors.white,
-                          size: 30,
-                        ),
                       ),
                     ),
                   ],
