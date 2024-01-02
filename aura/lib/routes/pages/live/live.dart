@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_cache/just_audio_cache.dart';
 import 'package:palette_generator/palette_generator.dart';
@@ -31,8 +32,6 @@ class _LivePageState extends State<LivePage> {
   final AudioPlayer _audioPlayer = AudioPlayer();
   int _currentIndex = 0;
   Color? dominantColor;
-
-  
 
   @override
   void initState() {
@@ -101,7 +100,7 @@ class _LivePageState extends State<LivePage> {
     super.dispose();
   }
 
-Timer? _timer;
+  Timer? _timer;
 
   Future<void> _showTimerDialog() async {
     int? selectedTime;
@@ -363,14 +362,14 @@ Timer? _timer;
                             },
                           ),
                         ),
-                        const SizedBox(height: 30),
+                        const SizedBox(height: 20),
                         // Next/Previous button will come here
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             IconButton(
                               icon: const Icon(
-                                Icons.skip_previous,
+                                Iconsax.previous,
                                 size: 34,
                                 color: Colors.white,
                               ),
@@ -394,8 +393,8 @@ Timer? _timer;
                               child: IconButton(
                                 icon: Icon(
                                   _audioPlayer.playing
-                                      ? Icons.pause
-                                      : Icons.play_arrow,
+                                      ? Iconsax.pause
+                                      : Iconsax.play,
                                   size: 34,
                                   color: Colors.white,
                                 ),
@@ -411,7 +410,7 @@ Timer? _timer;
                             ),
                             IconButton(
                               icon: const Icon(
-                                Icons.skip_next,
+                                Iconsax.next,
                                 size: 34,
                                 color: Colors.white,
                               ),
@@ -419,8 +418,28 @@ Timer? _timer;
                             ),
                           ],
                         ),
-                        const SizedBox(
-                          height: 20,
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconButton(
+                                onPressed: _showTimerDialog,
+                                icon: const Icon(
+                                  Iconsax.timer_1,
+                                  color: Colors.white,
+                                  // size: 30,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(
+                                  Iconsax.share,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -428,7 +447,7 @@ Timer? _timer;
                       top: 50,
                       left: 10,
                       child: IconButton(
-                        icon: Icon(IconlyBold.setting, color: Colors.white),
+                        icon: Icon(Iconsax.setting_3, color: Colors.white),
                         onPressed: () {},
                       ),
                     ),
@@ -436,24 +455,11 @@ Timer? _timer;
                       top: 50,
                       right: 10,
                       child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.share,
-                          color: Colors.white,
-                          size: 30,
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 10,
-                      right: 10,
-                      child: IconButton(
-                        onPressed: _showTimerDialog,
-                        icon: const Icon(
-                          Icons.timer,
-                          color: Colors.white,
-                          size: 30,
-                        ),
+                        icon: const Icon(Iconsax.music_playlist,
+                            color: Colors.white),
+                        onPressed: () {
+                          _showQueue(context);
+                        },
                       ),
                     ),
                   ],
@@ -464,6 +470,86 @@ Timer? _timer;
                 ),
         ),
       ),
+    );
+  }
+
+  void _showQueue(BuildContext context) {
+    showModalBottomSheet(
+      backgroundColor: Color(0xFF131321),
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    'Now Playing',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: widget.songs.length,
+                    itemBuilder: (context, index) {
+                      bool isCurrentSong = _currentIndex == index;
+
+                      return ListTile(
+                        tileColor: isCurrentSong
+                            ? Color.fromARGB(255, 36, 36, 58)
+                            : null,
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: CachedNetworkImage(
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.cover,
+                            imageUrl: widget.songs[index].imageUrl,
+                          ),
+                        ),
+                        title: Text(
+                          widget.songs[index].songName,
+                          style: TextStyle(
+                              fontWeight: isCurrentSong
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                              color: Colors.white),
+                        ),
+                        subtitle: Text(widget.songs[index].artist),
+                        trailing: IconButton(
+                          icon: Icon(Icons.close),
+                          onPressed: () {
+                            setState(() {
+                              widget.songs.removeAt(index);
+                              if (_currentIndex == index) {
+                                _audioPlayer.stop();
+                              }
+                            });
+                          },
+                        ),
+                        onTap: () {
+                          _currentIndex = index;
+                          _audioPlayer.dynamicSet(
+                            pushIfNotExisted: true,
+                            url: widget.songs[_currentIndex].songUrl,
+                          );
+                          _audioPlayer.play();
+                          Navigator.pop(context);
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 }

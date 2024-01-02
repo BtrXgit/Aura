@@ -522,7 +522,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
                                     icon: const Icon(
                                       Iconsax.timer_1,
                                       color: Colors.white,
-                                      size: 30,
+                                      // size: 30,
                                     ),
                                   ),
                                   IconButton(
@@ -593,42 +593,76 @@ class _AuraPlayerState extends State<AuraPlayer> {
     );
   }
 
-  Widget _openComposer() {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height - 100,
-      width: MediaQuery.of(context).size.width - 50,
-      child: AuraComposerTest(),
-    );
-  }
-
   void _showQueue(BuildContext context) {
     showModalBottomSheet(
+      backgroundColor: Color(0xFF131321),
       context: context,
       builder: (context) {
-        return ListView.builder(
-          itemCount: widget.songs.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              leading: ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child: CachedNetworkImage(
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.cover,
-                  imageUrl: widget.songs[index].imageUrl,
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    'Now Playing',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              ),
-              title: Text(widget.songs[index].songName),
-              subtitle: Text(widget.songs[index].artist),
-              onTap: () {
-                _currentIndex = index;
-                _audioPlayer.dynamicSet(
-                  pushIfNotExisted: true,
-                  url: widget.songs[_currentIndex].songUrl,
-                );
-                _audioPlayer.play();
-                Navigator.pop(context);
-              },
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: widget.songs.length,
+                    itemBuilder: (context, index) {
+                      bool isCurrentSong = _currentIndex == index;
+
+                      return ListTile(
+                        tileColor: isCurrentSong ? Colors.grey[200] : null,
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: CachedNetworkImage(
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.cover,
+                            imageUrl: widget.songs[index].imageUrl,
+                          ),
+                        ),
+                        title: Text(
+                          widget.songs[index].songName,
+                          style: TextStyle(
+                            fontWeight: isCurrentSong
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                          ),
+                        ),
+                        subtitle: Text(widget.songs[index].artist),
+                        trailing: IconButton(
+                          icon: Icon(Icons.close),
+                          onPressed: () {
+                            setState(() {
+                              widget.songs.removeAt(index);
+                              if (_currentIndex == index) {
+                                _audioPlayer.stop();
+                              }
+                            });
+                          },
+                        ),
+                        onTap: () {
+                          _currentIndex = index;
+                          _audioPlayer.dynamicSet(
+                            pushIfNotExisted: true,
+                            url: widget.songs[_currentIndex].songUrl,
+                          );
+                          _audioPlayer.play();
+                          Navigator.pop(context);
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ],
             );
           },
         );
