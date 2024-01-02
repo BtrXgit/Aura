@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 import 'package:aura/composer_test.dart';
 import 'package:aura/data/songs.dart';
@@ -30,6 +31,8 @@ class _LivePageState extends State<LivePage> {
   final AudioPlayer _audioPlayer = AudioPlayer();
   int _currentIndex = 0;
   Color? dominantColor;
+
+  Timer? _timer;
 
   @override
   void initState() {
@@ -98,6 +101,73 @@ class _LivePageState extends State<LivePage> {
     super.dispose();
   }
 
+  Future<void> _showTimerDialog() async {
+    int? selectedTime;
+
+    selectedTime = await showDialog<int>(
+      context: context,
+      builder: (BuildContext context) {
+        List<Map<String, dynamic>> timerOptions = [
+          {'duration': 5, 'label': '1M'},
+          {'duration': 120, 'label': '2M'},
+          {'duration': 300, 'label': '5M'},
+          {'duration': 600, 'label': '10M'},
+          {'duration': 1800, 'label': '30M'},
+          {'duration': 3600, 'label': '1H'},
+          {'duration': 7200, 'label': '2H'},
+          {'duration': 18000, 'label': '5H'},
+        ];
+
+        return AlertDialog(
+          title: Text(
+            'Select Timer Duration',
+            style: GoogleFonts.inter(fontSize: 18),
+          ),
+          content: SizedBox(
+            height: 150,
+            width: MediaQuery.of(context).size.width - 100,
+            child: Wrap(
+              children: timerOptions
+                  .map((option) => ElevatedButton(
+                        onPressed: () {
+                          selectedTime = option['duration'];
+                          Navigator.of(context).pop(selectedTime);
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: (selectedTime == option['duration'])
+                              ? MaterialStateProperty.all(Colors.red)
+                              : null,
+                        ),
+                        child: Text(option['label']),
+                      ))
+                  .toList(),
+            ),
+          ),
+        );
+      },
+    );
+
+    if (selectedTime != null) {
+      _stopTimer();
+      _startTimer(selectedTime!);
+    }
+  }
+
+  void _startTimer(int durationInSeconds) {
+    _timer = Timer(Duration(seconds: durationInSeconds), () {
+      _audioPlayer.stop();
+      setState(() {});
+    });
+
+    setState(() {});
+  }
+
+  void _stopTimer() {
+    if (_timer != null && _timer!.isActive) {
+      _timer!.cancel();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,7 +197,7 @@ class _LivePageState extends State<LivePage> {
                         ),
                       ),
                       child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+                        filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
                         child: Container(
                           color: Colors.white.withOpacity(0.5),
                         ),
@@ -140,7 +210,7 @@ class _LivePageState extends State<LivePage> {
                           height: MediaQuery.of(context).size.height * 0.08,
                         ),
                         Text(
-                          'Playing From Playlist',
+                          'From Playlist',
                           style: GoogleFonts.openSans(
                             color: Colors.white,
                             fontSize: 16,
@@ -148,7 +218,7 @@ class _LivePageState extends State<LivePage> {
                           ),
                         ),
                         Text(
-                          'Focus',
+                          widget.title,
                           style: GoogleFonts.openSans(
                               color: Colors.white, fontSize: 14),
                         ),
@@ -286,7 +356,7 @@ class _LivePageState extends State<LivePage> {
                             },
                           ),
                         ),
-                        const SizedBox(height: 50),
+                        const SizedBox(height: 30),
                         // Next/Previous button will come here
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -366,7 +436,19 @@ class _LivePageState extends State<LivePage> {
                           size: 30,
                         ),
                       ),
-                    )
+                    ),
+                    Positioned(
+                      bottom: 10,
+                      right: 10,
+                      child: IconButton(
+                        onPressed: _showTimerDialog,
+                        icon: const Icon(
+                          Icons.timer,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                      ),
+                    ),
                   ],
                 )
               : const Text(
@@ -375,14 +457,6 @@ class _LivePageState extends State<LivePage> {
                 ),
         ),
       ),
-    );
-  }
-
-  Widget _openComposer() {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height - 100,
-      width: MediaQuery.of(context).size.width - 50,
-      child: AuraComposerTest(),
     );
   }
 }

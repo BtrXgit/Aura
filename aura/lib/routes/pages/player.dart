@@ -189,7 +189,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
                         ),
                       ),
                       child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+                        filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
                         child: Container(
                           color: Colors.white.withOpacity(0.5),
                         ),
@@ -210,7 +210,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
                           ),
                         ),
                         Text(
-                          'Focus',
+                          widget.title,
                           style: GoogleFonts.openSans(
                               color: Colors.white, fontSize: 14),
                         ),

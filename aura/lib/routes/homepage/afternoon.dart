@@ -110,7 +110,7 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
     final greeting = _getGreeting();
     final backgroundImage = _getImageAsset(greeting);
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 14, 3, 31),
+      backgroundColor: Color(0xFF131321),
       body: NestedScrollView(
         physics: ClampingScrollPhysics(),
         controller: widget.controller,
