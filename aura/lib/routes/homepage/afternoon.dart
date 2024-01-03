@@ -1,4 +1,5 @@
 import 'package:aura/data/songs.dart';
+import 'package:aura/routes/pages/favorites.dart';
 import 'package:aura/routes/pages/live/live.dart';
 import 'package:aura/routes/pages/player.dart';
 import 'package:aura/routes/tweaks.dart';
@@ -11,6 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuraHomePageAfternoon extends StatefulWidget {
   final ScrollController controller;
@@ -42,6 +44,8 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
 
   bool isPlaying = false;
 
+  Set<String> favoriteSongs = Set<String>();
+
   @override
   void initState() {
     super.initState();
@@ -51,6 +55,16 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
       });
     });
     fetchUserProfileData();
+    _loadFavoriteSongs();
+  }
+
+  Future<void> _loadFavoriteSongs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    Set<String> favorites =
+        prefs.getStringList('favorites')?.toSet() ?? Set<String>();
+    setState(() {
+      favoriteSongs = favorites;
+    });
   }
 
   String? userName;
@@ -330,14 +344,22 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
-            child: Text(
-              'Relaxing',
-              style: GoogleFonts.openSans(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold),
+          GestureDetector(
+            onTap: () => Get.to(
+              FavoritesPage(
+                  favoriteSongs: songs
+                      .where((song) => favoriteSongs.contains(song.id))
+                      .toList()),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
+              child: Text(
+                'Relaxing',
+                style: GoogleFonts.openSans(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           ),
           _buildDummyCategory(),

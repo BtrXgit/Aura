@@ -66,7 +66,7 @@ class AuraComposerTestState extends State<AuraComposerTest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color(0xFF131321),
       body: SafeArea(
         child: Stack(
           children: [
@@ -91,7 +91,7 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                   Container(
                     width: MediaQuery.of(context).size.width - 40,
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 28, 28, 48),
+                      color: const Color(0xFF1F1F36),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Padding(
@@ -136,7 +136,7 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                   Container(
                     width: MediaQuery.of(context).size.width - 40,
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 28, 28, 48),
+                      color: const Color(0xFF1F1F36),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Padding(
@@ -180,7 +180,7 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                   Container(
                     width: MediaQuery.of(context).size.width - 40,
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 28, 28, 48),
+                      color: const Color(0xFF1F1F36),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Padding(
@@ -225,7 +225,7 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                   Container(
                     width: MediaQuery.of(context).size.width - 40,
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 28, 28, 48),
+                      color: const Color(0xFF1F1F36),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Padding(
@@ -270,7 +270,7 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                   Container(
                     width: MediaQuery.of(context).size.width - 40,
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 28, 28, 48),
+                      color: const Color(0xFF1F1F36),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Padding(
@@ -315,7 +315,7 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                   Container(
                     width: MediaQuery.of(context).size.width - 40,
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 28, 28, 48),
+                      color: const Color(0xFF1F1F36),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Padding(
@@ -435,9 +435,7 @@ class AuraComposerTestState extends State<AuraComposerTest> {
           // margin: const EdgeInsets.all(6),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: audioPlayer.playing
-                ? colour
-                : const Color.fromARGB(255, 38, 43, 80),
+            color: audioPlayer.playing ? colour : const Color(0xFF131321),
           ),
           child: InkWell(
             onTap: () {
