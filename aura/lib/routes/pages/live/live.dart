@@ -2,15 +2,18 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:aura/composer_test.dart';
 import 'package:aura/data/songs.dart';
+import 'package:aura/routes/pages/favorites.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_cache/just_audio_cache.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LivePage extends StatefulWidget {
   final int currentIndex;
@@ -32,6 +35,7 @@ class _LivePageState extends State<LivePage> {
   final AudioPlayer _audioPlayer = AudioPlayer();
   int _currentIndex = 0;
   Color? dominantColor;
+  Set<String> favoriteSongs = Set<String>();
 
   @override
   void initState() {
@@ -42,6 +46,7 @@ class _LivePageState extends State<LivePage> {
       _audioPlayer.play();
     }
     _loadDominantColor();
+    _loadFavoriteSongs();
   }
 
   Future<void> _loadDominantColor() async {
@@ -73,7 +78,6 @@ class _LivePageState extends State<LivePage> {
       if (_currentIndex < widget.songs.length - 1) {
         _currentIndex++;
       } else {
-        // If we reached the end, start from the beginning
         _currentIndex = 0;
       }
 
@@ -92,6 +96,34 @@ class _LivePageState extends State<LivePage> {
       _audioPlayer.play();
       _loadDominantColor();
     }
+  }
+
+  Future<void> _loadFavoriteSongs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    Set<String> favorites =
+        prefs.getStringList('favorites')?.toSet() ?? Set<String>();
+    setState(() {
+      favoriteSongs = favorites;
+    });
+  }
+
+  Future<void> _saveFavoriteSongs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setStringList('favorites', favoriteSongs.toList());
+  }
+
+  void _toggleFavorite() {
+    String currentSongId = widget.songs[_currentIndex].id;
+    if (favoriteSongs.contains(currentSongId)) {
+      setState(() {
+        favoriteSongs.remove(currentSongId);
+      });
+    } else {
+      setState(() {
+        favoriteSongs.add(currentSongId);
+      });
+    }
+    _saveFavoriteSongs();
   }
 
   @override
@@ -284,12 +316,16 @@ class _LivePageState extends State<LivePage> {
                                   ],
                                 ),
                                 child: IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(
+                                  icon: Icon(
                                     IconlyLight.heart,
-                                    color: Colors.white,
+                                    color: favoriteSongs.contains(
+                                            widget.songs[_currentIndex].id)
+                                        ? Colors
+                                            .red // Change color for favorites
+                                        : Colors.white,
                                     size: 28,
                                   ),
+                                  onPressed: _toggleFavorite,
                                 ),
                               ),
                             ],
@@ -432,7 +468,13 @@ class _LivePageState extends State<LivePage> {
                                 ),
                               ),
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () => Get.to(
+                                  FavoritesPage(
+                                      favoriteSongs: widget.songs
+                                          .where((song) =>
+                                              favoriteSongs.contains(song.id))
+                                          .toList()),
+                                ),
                                 icon: Icon(
                                   Iconsax.share,
                                   color: Colors.white,
