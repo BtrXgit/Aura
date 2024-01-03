@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 class FavoritesPage extends StatelessWidget {
   final List<Song> favoriteSongs;
 
-  const FavoritesPage({Key? key, required this.favoriteSongs}) : super(key: key);
+  const FavoritesPage({Key? key, required this.favoriteSongs})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,6 @@ class FavoritesPage extends StatelessWidget {
           return ListTile(
             title: Text(song.songName),
             subtitle: Text(song.artist),
-            // Add more details or customize UI based on your Song model
           );
         },
       ),

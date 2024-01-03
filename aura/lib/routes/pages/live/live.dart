@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'dart:ui';
-import 'package:aura/composer_test.dart';
 import 'package:aura/data/songs.dart';
 import 'package:aura/routes/pages/favorites.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -317,11 +315,13 @@ class _LivePageState extends State<LivePage> {
                                 ),
                                 child: IconButton(
                                   icon: Icon(
-                                    IconlyLight.heart,
+                                    favoriteSongs.contains(
+                                            widget.songs[_currentIndex].id)
+                                        ? IconlyBold.heart
+                                        : IconlyLight.heart,
                                     color: favoriteSongs.contains(
                                             widget.songs[_currentIndex].id)
-                                        ? Colors
-                                            .red // Change color for favorites
+                                        ? Colors.red
                                         : Colors.white,
                                     size: 28,
                                   ),
