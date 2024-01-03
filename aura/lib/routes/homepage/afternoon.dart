@@ -333,7 +333,7 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
           Padding(
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
-              'Focus',
+              'Relaxing',
               style: GoogleFonts.openSans(
                   color: Colors.white,
                   fontSize: 24,
@@ -344,7 +344,7 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
           Padding(
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
-              'Relaxing',
+              'Focus',
               style: GoogleFonts.openSans(
                 color: Colors.white,
                 fontSize: 24,
@@ -356,7 +356,7 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
           Padding(
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
-              'Chill Beats 🤙🏝️',
+              'Calm & Cozy',
               style: GoogleFonts.openSans(
                   color: Colors.white,
                   fontSize: 24,
@@ -390,6 +390,17 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
               'LoFi - Dream Pop',
+              style: GoogleFonts.openSans(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          _buildDummyCategory(),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
+            child: Text(
+              'LoFi - Sad',
               style: GoogleFonts.openSans(
                   color: Colors.white,
                   fontSize: 24,
