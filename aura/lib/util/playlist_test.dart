@@ -15,10 +15,11 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
       ),
       body: FutureBuilder(
         future: _fetchPlaylists(),
-        builder: (context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+        builder:
+            (context, AsyncSnapshot<List<Map<String, dynamic>>?> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator();
-          } else if (snapshot.hasError) {
+          } else if (snapshot.hasError || snapshot.data == null) {
             return Text('Error: ${snapshot.error}');
           } else {
             // Display the playlists
@@ -27,14 +28,18 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
               itemBuilder: (context, index) {
                 Map<String, dynamic> playlist = snapshot.data![index];
                 return ListTile(
-                  title: Text(playlist['name']),
-                  subtitle: Text(playlist['description']),
+                  title: Text(playlist['artist'] ?? ''),
+                  subtitle: Image.network(playlist['imageUrl'] ?? ''),
                   onTap: () {
                     // Navigate to a new screen to display songs in the selected playlist
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SongsScreen(playlist['id']),
+                        builder: (context) => SongsScreen(
+                          playlist['id'],
+                          artist: playlist['artist'],
+                          imageUrl: playlist['imageUrl'],
+                        ),
                       ),
                     );
                   },
@@ -47,50 +52,72 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
     );
   }
 
-  Future<List<Map<String, dynamic>>> _fetchPlaylists() async {
-    QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection('playlists').get();
+  Future<List<Map<String, dynamic>>?> _fetchPlaylists() async {
+    try {
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection('relaxing').get();
 
-    return querySnapshot.docs.map((doc) {
-      return {
-        'id': doc.id,
-        'name': doc['name'],
-        'description': doc['description'],
-      };
-    }).toList();
+      return querySnapshot.docs.map((doc) {
+        return {
+          'id': doc.id,
+          'artist': doc['artist'],
+          'imageUrl': doc['imageUrl'],
+        };
+      }).toList();
+    } catch (e) {
+      print('Error fetching playlists: $e');
+      return null;
+    }
   }
 }
 
 class SongsScreen extends StatelessWidget {
   final String playlistId;
+  final String artist;
+  final String imageUrl;
 
-  SongsScreen(this.playlistId);
+  SongsScreen(this.playlistId, {required this.artist, required this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Songs'),
+        title: Text('Songs by $artist'),
       ),
       body: FutureBuilder(
         future: _fetchSongs(),
-        builder: (context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+        builder:
+            (context, AsyncSnapshot<List<Map<String, dynamic>>?> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator();
-          } else if (snapshot.hasError) {
+          } else if (snapshot.hasError || snapshot.data == null) {
             return Text('Error: ${snapshot.error}');
           } else {
             // Display the songs in the selected playlist
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                Map<String, dynamic> song = snapshot.data![index];
-                return ListTile(
-                  title: Text(song['sound_name']),
-                  subtitle: Text('Duration: ${song['duration']}'),
-                  // Add any other UI elements or functionality you need
-                );
-              },
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text('Artist: $artist', style: TextStyle(fontSize: 18)),
+                SizedBox(height: 16),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      Map<String, dynamic> song = snapshot.data![index];
+                      return Column(
+                        children: [
+                          Image.network(imageUrl),
+                          ListTile(
+                            title: Text(song['songName'] ?? ''),
+                            subtitle: Text('URL: ${song['songUrl']}'),
+                            // Add any other UI elements or functionality you need
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              ],
             );
           }
         },
@@ -98,25 +125,23 @@ class SongsScreen extends StatelessWidget {
     );
   }
 
-  Future<List<Map<String, dynamic>>> _fetchSongs() async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('playlists')
-        .doc(playlistId)
-        .collection('sounds')
-        .get();
+  Future<List<Map<String, dynamic>>?> _fetchSongs() async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('relaxing')
+          .doc(playlistId)
+          .collection('sounds')
+          .get();
 
-    return querySnapshot.docs.map((doc) {
-      return {
-        'sound_name': doc['sound_name'],
-        'url': doc['url'],
-        'duration': doc['duration'],
-      };
-    }).toList();
+      return querySnapshot.docs.map((doc) {
+        return {
+          'songName': doc['songName'],
+          'songUrl': doc['songUrl'],
+        };
+      }).toList();
+    } catch (e) {
+      print('Error fetching songs: $e');
+      return null;
+    }
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: PlaylistScreen(),
-  ));
 }
