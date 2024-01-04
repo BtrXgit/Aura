@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:ui';
-import 'package:aura/composer_test.dart';
 import 'package:aura/data/songs.dart';
 import 'package:aura/routes/pages/favorites.dart';
 import 'package:cached_network_image/cached_network_image.dart';

@@ -135,7 +135,7 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
               expandedHeight: MediaQuery.of(context).size.height * 0.2,
               floating: true,
               pinned: true,
-              backgroundColor: const Color.fromARGB(255, 14, 3, 31),
+              backgroundColor: const Color(0xFF131321),
               flexibleSpace: LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
                 double offset = constraints.biggest.height;
@@ -159,22 +159,22 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
                             ),
                             // ElevatedButton(
                             //     onPressed: () {}, child: Text('Live'))
-                            Container(
-                              width: 70,
-                              height: 34,
-                              decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: Colors.red, width: 2),
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "Live ",
-                                  style: GoogleFonts.openSans(
-                                      color: Colors.white, fontSize: 20),
-                                ),
-                              ),
-                            ),
+                            // Container(
+                            //   width: 70,
+                            //   height: 34,
+                            //   decoration: BoxDecoration(
+                            //       border:
+                            //           Border.all(color: Colors.red, width: 2),
+                            //       borderRadius: BorderRadius.circular(20)),
+                            //   child: Align(
+                            //     alignment: Alignment.center,
+                            //     child: Text(
+                            //       "Live ",
+                            //       style: GoogleFonts.openSans(
+                            //           color: Colors.white, fontSize: 20),
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                   background: Container(
@@ -480,64 +480,84 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
             mainAxisSpacing: 8.0,
             childAspectRatio: 1.2,
           ),
-          itemCount: songs.length,
+          itemCount: songs.length + 1,
           itemBuilder: (BuildContext context, int index) {
-            var song = songs[index];
-            return GestureDetector(
-              onTap: () => Get.to(
-                AuraPlayer(
-                  currentIndex: index,
-                  songs: songs,
-                  title: 'Focus',
-                ),
-                transition: Transition.downToUp,
-              ),
-              child: Stack(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: CachedNetworkImageProvider(song.imageUrl),
-                            fit: BoxFit.cover),
-                        borderRadius: BorderRadius.circular(14)),
-                    child: Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Container(
-                        height: 64,
-                        decoration: const BoxDecoration(
-                          color: Color.fromARGB(255, 13, 12, 53),
-                        ),
-                        child: ListTile(
-                          title: Text(
-                            song.songName,
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                          subtitle: Text(song.artist),
-                        ),
-                      ),
-                    ),
+            if (index == songs.length) {
+              return GestureDetector(
+                onTap: () {
+                  Get.to(RelaxingPage());
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.circular(14),
                   ),
-                  Positioned(
-                    right: 10,
-                    top: 10,
-                    child: Container(
-                      width: 34,
-                      height: 34,
-                      decoration: const BoxDecoration(
-                          color: Colors.black, shape: BoxShape.circle),
-                      child: const Icon(
-                        IconlyBold.bookmark,
+                  child: Center(
+                    child: Text(
+                      'See More',
+                      style: TextStyle(
                         color: Colors.white,
-                        size: 20,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                ],
-              ),
-            );
+                ),
+              );
+            } else {
+              // This is a regular grid item
+              var song = songs[index];
+              return GestureDetector(
+                onTap: () => Get.to(
+                  AuraPlayer(
+                    currentIndex: index,
+                    songs: songs,
+                    title: 'Focus',
+                  ),
+                  transition: Transition.downToUp,
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: CachedNetworkImageProvider(song.imageUrl),
+                          fit: BoxFit.cover),
+                      borderRadius: BorderRadius.circular(14)),
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Container(
+                      height: 64,
+                      decoration: const BoxDecoration(
+                        color: Color.fromARGB(255, 13, 12, 53),
+                      ),
+                      child: ListTile(
+                        title: Text(
+                          song.songName,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        subtitle: Text(song.artist),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }
           },
         ),
       ),
     );
+  }
+}
+
+class RelaxingPage extends StatefulWidget {
+  const RelaxingPage({super.key});
+
+  @override
+  State<RelaxingPage> createState() => _RelaxingPageState();
+}
+
+class _RelaxingPageState extends State<RelaxingPage> {
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }
