@@ -25,4 +25,26 @@ class Song {
       songUrl: data['songUrl'] ?? '',
     );
   }
+
+  // Other methods, if needed
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'songName': songName,
+      'artist': artist,
+      'imageUrl': imageUrl,
+      'songUrl': songUrl,
+    };
+  }
+
+  factory Song.fromMap(Map<String, dynamic> map) {
+    return Song(
+      id: map['id'],
+      songName: map['songName'],
+      artist: map['artist'],
+      imageUrl: map['imageUrl'],
+      songUrl: map['songUrl'],
+    );
+  }
 }
