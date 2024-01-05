@@ -18,14 +18,13 @@ import 'package:palette_generator/palette_generator.dart';
 class AuraPlaylistPlayer extends StatefulWidget {
   final int currentIndex;
   final List<Song> songs;
+
   final String title;
-  final String imageUrl;
 
   const AuraPlaylistPlayer({
     required this.currentIndex,
     required this.songs,
     required this.title,
-    required this.imageUrl,
     Key? key,
   }) : super(key: key);
 
@@ -462,7 +461,6 @@ class _AuraPlaylistPlayerState extends State<AuraPlaylistPlayer> {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        // Next/Previous button will come here
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [

@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
+
 import 'package:aura/data/songs.dart';
 import 'package:aura/routes/pages/player.dart';
-import 'package:aura/routes/pages/playlistplayer.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
@@ -14,14 +16,17 @@ class PlaylistScreen extends StatefulWidget {
 
 class _PlaylistScreenState extends State<PlaylistScreen> {
   SharedPreferences? _preferences;
+  late StreamController<List<Song>> _playlistsController;
 
   @override
   void initState() {
     super.initState();
     _initPreferences();
+    _playlistsController = StreamController<List<Song>>();
+    _fetchPlaylists();
   }
 
-  Future<void> _initPreferences() async {
+  void _initPreferences() async {
     _preferences = await SharedPreferences.getInstance();
   }
 
@@ -36,9 +41,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   }
 
   Widget _buildPlaylistBody() {
-    return FutureBuilder(
-      future: _fetchPlaylists(),
-      builder: (context, AsyncSnapshot<List<Song>?> snapshot) {
+    return StreamBuilder<List<Song>>(
+      stream: _playlistsController.stream,
+      builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
         } else if (snapshot.hasError || snapshot.data == null) {
@@ -57,7 +62,8 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
         Song playlist = playlists[index];
         return ListTile(
           title: Text(playlist.artist),
-          subtitle: Image.network(playlist.imageUrl),
+          subtitle: CachedNetworkImage(
+              width: 200, height: 200, imageUrl: playlist.imageUrl),
           onTap: () {
             Navigator.push(
               context,
@@ -71,13 +77,13 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
     );
   }
 
-  Future<List<Song>?> _fetchPlaylists() async {
+  void _fetchPlaylists() async {
     try {
       final cachedData = _preferences?.getStringList('playlists');
       if (cachedData != null) {
-        return cachedData
-            .map((json) => Song.fromMap(jsonDecode(json)))
-            .toList();
+        _playlistsController.add(cachedData
+            .map((json) => Song.fromFirestore(jsonDecode(json)))
+            .toList());
       }
 
       QuerySnapshot querySnapshot =
@@ -92,11 +98,17 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
         playlists.map((playlist) => jsonEncode(playlist.toMap())).toList(),
       );
 
-      return playlists;
+      _playlistsController.add(playlists);
     } catch (e) {
       print('Error fetching playlists: $e');
-      return null;
+      _playlistsController.addError(e);
     }
+  }
+
+  @override
+  void dispose() {
+    _playlistsController.close();
+    super.dispose();
   }
 }
 
@@ -143,20 +155,20 @@ class SongsScreen extends StatelessWidget {
               Song song = songs[index];
               return GestureDetector(
                 onTap: () => Get.to(
-                  AuraPlaylistPlayer(
+                  AuraPlayer(
                     currentIndex: index,
                     songs: songs,
                     title: 'Focus',
-                    imageUrl: playlist.imageUrl,
                   ),
                   transition: Transition.downToUp,
                 ),
                 child: Column(
                   children: [
-                    Image.network(playlist.imageUrl),
+                    CachedNetworkImage(
+                        width: 200, height: 200, imageUrl: playlist.imageUrl),
                     ListTile(
                       title: Text(song.songName),
-                      subtitle: Text('URL: ${song.songUrl}'),
+                      // subtitle: Text('URL: ${song.songUrl}'),
                     ),
                   ],
                 ),
@@ -172,11 +184,22 @@ class SongsScreen extends StatelessWidget {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('relaxing')
-          .doc(playlist.id)
+          .doc(playlist
+              .id) // Assuming 'playlist.id' refers to the playlist document ID
           .collection('sounds')
           .get();
 
-      return querySnapshot.docs.map((doc) => Song.fromFirestore(doc)).toList();
+      return querySnapshot.docs.map((doc) {
+        // Use the data from the 'sounds' subcollection
+        final data = doc.data() as Map<String, dynamic>;
+        return Song(
+          id: doc.id,
+          songName: data['songName'] ?? '',
+          artist: playlist.artist,
+          imageUrl: playlist.imageUrl,
+          songUrl: data['songUrl'] ?? '',
+        );
+      }).toList();
     } catch (e) {
       print('Error fetching songs: $e');
       return null;
