@@ -1,17 +1,16 @@
-import 'package:flutter/material.dart';
-import 'package:aura/data/songs.dart';
+// import 'package:flutter/material.dart';
 
-class FavoriteProvider extends ChangeNotifier {
-  List<Song> _favoriteSongs = [];
+// class FavoritesProvider extends ChangeNotifier {
+//   Set<String> _favoriteSongs = {};
 
-  List<Song> get favoriteSongs => _favoriteSongs;
+//   Set<String> get favoriteSongs => _favoriteSongs;
 
-  void toggleFavorite(Song song) {
-    if (_favoriteSongs.contains(song)) {
-      _favoriteSongs.remove(song);
-    } else {
-      _favoriteSongs.add(song);
-    }
-    notifyListeners();
-  }
-}
+//   void toggleFavorite(String songId) {
+//     if (_favoriteSongs.contains(songId)) {
+//       _favoriteSongs.remove(songId);
+//     } else {
+//       _favoriteSongs.add(songId);
+//     }
+//     notifyListeners();
+//   }
+// }

@@ -468,9 +468,7 @@ class _LivePageState extends State<LivePage> {
                                 ),
                               ),
                               IconButton(
-                                onPressed: () => Get.to(
-                                  FavoritesPage(),
-                                ),
+                                onPressed: () {},
                                 icon: Icon(
                                   Iconsax.share,
                                   color: Colors.white,

@@ -1,21 +1,17 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:aura/data/songs.dart';
-import 'package:aura/routes/pages/favorites.dart';
 import 'package:aura/util/provider/favorites_provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_cache/just_audio_cache.dart';
-import 'package:provider/provider.dart';
 import 'dart:math';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:provider/provider.dart';
 
 class AuraPlayer extends StatefulWidget {
   final int currentIndex;
@@ -39,7 +35,6 @@ class _AuraPlayerState extends State<AuraPlayer> {
   bool _isShuffleOn = false;
   bool _isRepeatOn = false;
   Color? dominantColor;
-  Set<String> favoriteSongs = Set<String>();
 
   @override
   void initState() {
@@ -50,53 +45,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
       _audioPlayer.play();
     }
     _loadDominantColor();
-    _loadFavoriteSongs();
   }
-
-  // void _initializePlayer() {
-  //   if (_currentIndex >= 0 && _currentIndex < widget.songs.length) {
-  //     _audioPlayer.dynamicSet(
-  //         pushIfNotExisted: true, url: widget.songs[_currentIndex].songUrl);
-
-  //     _audioPlayer.processingStateStream.listen((processingState) {
-  //       setState(() {});
-
-  //       if (processingState == ProcessingState.completed) {
-  //         if (_isRepeatOn) {
-  //           // If repeat is on, seek to the beginning of the current song
-  //           _audioPlayer.seek(Duration.zero);
-  //         } else {
-  //           _playNext();
-  //         }
-  //       }
-  //     });
-  //   }
-  // }
-
-  // void _playNext() {
-  //   if (widget.songs.isNotEmpty) {
-  //     if (_isShuffleOn) {
-  //       _currentIndex = Random().nextInt(widget.songs.length);
-  //     } else {
-  //       if (_currentIndex < widget.songs.length - 1) {
-  //         _currentIndex++;
-  //       } else {
-  //         if (_isRepeatOn) {
-  //           // If repeat is on and we reached the end, go back to the first song
-  //           _currentIndex = 0;
-  //         } else {
-  //           // If repeat is off, stop playing
-  //           _audioPlayer.stop();
-  //           return;
-  //         }
-  //       }
-  //     }
-
-  //     _audioPlayer.dynamicSet(
-  //         pushIfNotExisted: true, url: widget.songs[_currentIndex].songUrl);
-  //     _audioPlayer.play();
-  //   }
-  // }
 
   void _initializePlayer() {
     if (_currentIndex >= 0 && _currentIndex < widget.songs.length) {
@@ -159,29 +108,6 @@ class _AuraPlayerState extends State<AuraPlayer> {
       dominantColor = paletteGenerator.dominantColor?.color;
     });
   }
-
-  Future<void> _loadFavoriteSongs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    Set<String> favorites =
-        prefs.getStringList('favorites')?.toSet() ?? Set<String>();
-    setState(() {
-      favoriteSongs = favorites;
-    });
-  }
-
-  Future<void> _saveFavoriteSongs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setStringList('favorites', favoriteSongs.toList());
-  }
-
- void _toggleFavorite() {
-  Song currentSong = widget.songs[_currentIndex];
-  var favoriteProvider = Provider.of<FavoriteProvider>(context, listen: false);
-
-  favoriteProvider.toggleFavorite(currentSong);
-  // No need to call setState because the provider will automatically notify listeners.
-}
-
 
   @override
   void dispose() {
@@ -373,17 +299,11 @@ class _AuraPlayerState extends State<AuraPlayer> {
                                 ),
                                 child: IconButton(
                                   icon: Icon(
-                                    favoriteSongs.contains(
-                                            widget.songs[_currentIndex].id)
-                                        ? IconlyBold.heart
-                                        : IconlyLight.heart,
-                                    color: favoriteSongs.contains(
-                                            widget.songs[_currentIndex].id)
-                                        ? Colors.red
-                                        : Colors.white,
+                                    IconlyBold.heart,
+                                    color: Colors.white,
                                     size: 28,
                                   ),
-                                  onPressed: _toggleFavorite,
+                                  onPressed: () {},
                                 ),
                               ),
                             ],
@@ -560,9 +480,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
                                     ),
                                   ),
                                   IconButton(
-                                    onPressed: () => Get.to(
-                                      FavoritesPage(),
-                                    ),
+                                    onPressed: () {},
                                     icon: Icon(
                                       Iconsax.share,
                                       color: Colors.white,

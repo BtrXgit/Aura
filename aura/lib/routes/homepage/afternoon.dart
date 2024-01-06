@@ -346,9 +346,12 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
             ),
           ),
           GestureDetector(
-            onTap: () => Get.to(
-              FavoritesPage(),
-            ),
+            // onTap: () => Get.to(
+            //   FavoritesPage(
+            //       favoriteSongs: songs
+            //           .where((song) => favoriteSongs.contains(song.id))
+            //           .toList()),
+            // ),
             child: Padding(
               padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
               child: Text(

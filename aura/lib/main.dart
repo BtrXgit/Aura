@@ -12,7 +12,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,10 +19,9 @@ Future<void> main() async {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
-  await Future.wait([
-    _initSharedPreferences(),
-  ]);
-  runApp(const MyApp());
+  runApp(
+    MyApp(),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -31,17 +29,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => FavoriteProvider(),
-      child: GetMaterialApp(
-        home: AuthPage(
-            // title: 'Aura',
-            ),
-      ),
+    return GetMaterialApp(
+      home: AuthPage(
+          // title: 'Aura',
+          ),
     );
   }
-}
-
-Future<void> _initSharedPreferences() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
 }
