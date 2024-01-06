@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:aura/data/songs.dart';
 import 'package:aura/routes/pages/favorites.dart';
+import 'package:aura/util/provider/favorites_provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:iconly/iconly.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_cache/just_audio_cache.dart';
+import 'package:provider/provider.dart';
 import 'dart:math';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:palette_generator/palette_generator.dart';
@@ -172,19 +174,14 @@ class _AuraPlayerState extends State<AuraPlayer> {
     prefs.setStringList('favorites', favoriteSongs.toList());
   }
 
-  void _toggleFavorite() {
-    String currentSongId = widget.songs[_currentIndex].id;
-    if (favoriteSongs.contains(currentSongId)) {
-      setState(() {
-        favoriteSongs.remove(currentSongId);
-      });
-    } else {
-      setState(() {
-        favoriteSongs.add(currentSongId);
-      });
-    }
-    _saveFavoriteSongs();
-  }
+ void _toggleFavorite() {
+  Song currentSong = widget.songs[_currentIndex];
+  var favoriteProvider = Provider.of<FavoriteProvider>(context, listen: false);
+
+  favoriteProvider.toggleFavorite(currentSong);
+  // No need to call setState because the provider will automatically notify listeners.
+}
+
 
   @override
   void dispose() {
@@ -564,11 +561,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
                                   ),
                                   IconButton(
                                     onPressed: () => Get.to(
-                                      FavoritesPage(
-                                          favoriteSongs: widget.songs
-                                              .where((song) => favoriteSongs
-                                                  .contains(song.id))
-                                              .toList()),
+                                      FavoritesPage(),
                                     ),
                                     icon: Icon(
                                       Iconsax.share,
@@ -580,30 +573,6 @@ class _AuraPlayerState extends State<AuraPlayer> {
                             ],
                           ),
                         ),
-                        // Padding(
-                        //   padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-                        //   child: Row(
-                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //     children: [
-                        //       IconButton(
-                        //         onPressed: () {},
-                        //         icon: const Icon(
-                        //           IconlyBold.heart,
-                        //           color: Colors.white,
-                        //           size: 30,
-                        //         ),
-                        //       ),
-                        //       IconButton(
-                        //         onPressed: () {},
-                        //         icon: const Icon(
-                        //           Icons.share,
-                        //           color: Colors.white,
-                        //           size: 30,
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // )
                       ],
                     ),
                     Positioned(

@@ -469,11 +469,7 @@ class _LivePageState extends State<LivePage> {
                               ),
                               IconButton(
                                 onPressed: () => Get.to(
-                                  FavoritesPage(
-                                      favoriteSongs: widget.songs
-                                          .where((song) =>
-                                              favoriteSongs.contains(song.id))
-                                          .toList()),
+                                  FavoritesPage(),
                                 ),
                                 icon: Icon(
                                   Iconsax.share,

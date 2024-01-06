@@ -1,16 +1,16 @@
+import 'package:aura/util/provider/favorites_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:aura/data/songs.dart';
 import 'package:aura/routes/pages/player.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class FavoritesPage extends StatelessWidget {
-  final List<Song> favoriteSongs;
-
-  const FavoritesPage({Key? key, required this.favoriteSongs})
-      : super(key: key);
-
   @override
   Widget build(BuildContext context) {
+    var favoriteProvider = Provider.of<FavoriteProvider>(context);
+    List<Song> favoriteSongs = favoriteProvider.favoriteSongs.toList();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Favorite Songs'),
@@ -24,7 +24,7 @@ class FavoritesPage extends StatelessWidget {
               AuraPlayer(
                 currentIndex: index,
                 songs: favoriteSongs,
-                title: 'Focus',
+                title: 'Favorites',
               ),
               transition: Transition.downToUp,
             ),
