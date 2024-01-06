@@ -9,12 +9,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PlaylistScreen extends StatefulWidget {
+class RelaxingPlaylistScreen extends StatefulWidget {
   @override
-  _PlaylistScreenState createState() => _PlaylistScreenState();
+  _RelaxingPlaylistScreenState createState() => _RelaxingPlaylistScreenState();
 }
 
-class _PlaylistScreenState extends State<PlaylistScreen> {
+class _RelaxingPlaylistScreenState extends State<RelaxingPlaylistScreen> {
   SharedPreferences? _preferences;
   late StreamController<List<Song>> _playlistsController;
 
@@ -56,22 +56,41 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   }
 
   Widget _buildPlaylistListView(List<Song> playlists) {
-    return ListView.builder(
+    return GridView.builder(
       itemCount: playlists.length,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 8.0,
+        mainAxisSpacing: 8.0,
+        childAspectRatio: 1.2,
+      ),
       itemBuilder: (context, index) {
         Song playlist = playlists[index];
-        return ListTile(
-          title: Text(playlist.artist),
-          subtitle: CachedNetworkImage(
-              width: 200, height: 200, imageUrl: playlist.imageUrl),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SongsScreen(playlist),
+        return GestureDetector(
+          onTap: () => Get.to(() => SongsScreen(playlist)),
+          child: Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: CachedNetworkImageProvider(playlist.imageUrl),
+                    fit: BoxFit.cover),
+                borderRadius: BorderRadius.circular(14)),
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: Container(
+                height: 64,
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 13, 12, 53),
+                ),
+                child: ListTile(
+                  title: Text(
+                    playlist.playlistName,
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  subtitle: Text(playlist.artist),
+                ),
               ),
-            );
-          },
+            ),
+          ),
         );
       },
     );
@@ -198,6 +217,7 @@ class SongsScreen extends StatelessWidget {
           artist: playlist.artist,
           imageUrl: playlist.imageUrl,
           songUrl: data['songUrl'] ?? '',
+          playlistName: data['playlistName'] ?? '',
         );
       }).toList();
     } catch (e) {

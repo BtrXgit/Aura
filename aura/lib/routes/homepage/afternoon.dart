@@ -3,7 +3,7 @@ import 'package:aura/routes/pages/favorites.dart';
 import 'package:aura/routes/pages/live/live.dart';
 import 'package:aura/routes/pages/player.dart';
 import 'package:aura/routes/tweaks.dart';
-import 'package:aura/util/playlist_test.dart';
+import 'package:aura/routes/pages/playlists/relaxing_playlists.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -487,7 +487,7 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
               return GestureDetector(
                 onTap: () {
                   // Get.to(RelaxingPage());
-                  Get.to(PlaylistScreen());
+                  Get.to(RelaxingPlaylistScreen());
                 },
                 child: Container(
                   decoration: BoxDecoration(

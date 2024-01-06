@@ -6,6 +6,7 @@ class Song {
   final String artist;
   final String imageUrl;
   final String songUrl;
+  final String playlistName;
 
   Song({
     required this.id,
@@ -13,6 +14,7 @@ class Song {
     required this.artist,
     required this.imageUrl,
     required this.songUrl,
+    required this.playlistName,
   });
 
   factory Song.fromFirestore(DocumentSnapshot doc) {
@@ -23,6 +25,7 @@ class Song {
       artist: data['artist'] ?? '',
       imageUrl: data['imageUrl'] ?? '',
       songUrl: data['songUrl'] ?? '',
+      playlistName: data['playlistName'] ?? '',
     );
   }
 
@@ -33,6 +36,7 @@ class Song {
       'artist': artist,
       'imageUrl': imageUrl,
       'songUrl': songUrl,
+      'playlistName': playlistName,
     };
   }
 }
