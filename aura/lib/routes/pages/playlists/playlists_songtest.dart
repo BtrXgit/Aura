@@ -1,8 +1,8 @@
+import 'package:aura/data/songs.dart';
 import 'package:aura/routes/pages/player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:aura/data/songs.dart';
 import 'package:get/get.dart';
 
 class SongsScreen extends StatelessWidget {
@@ -13,49 +13,15 @@ class SongsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: null,
-      backgroundColor: Color(0xFF131321),
-      body: SafeArea(
-        child: NestedScrollView(
-          controller: ScrollController(),
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return <Widget>[
-              SliverAppBar(
-                forceMaterialTransparency: true,
-                floating: true,
-                pinned: false,
-                expandedHeight: MediaQuery.of(context).size.height * 0.4,
-                iconTheme: IconThemeData(color: Colors.white),
-                backgroundColor: Color(0xFF131321),
-                flexibleSpace: FlexibleSpaceBar(
-                  centerTitle: false,
-                  title: null,
-                  background: Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: CachedNetworkImageProvider(playlist.imageUrl),
-                          fit: BoxFit.cover),
-                    ),
-                  ),
-                ),
-              ),
-              SliverAppBar(
-                forceMaterialTransparency: true,
-                pinned: true,
-                expandedHeight: 50.0,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                    child: Text('${playlist.playlistName}',
-                        style: TextStyle(fontSize: 18, color: Colors.white)),
-                  ),
-                ),
-              ),
-            ];
-          },
-          body: _buildSongsBody(),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF131321),
+        title: Text(
+          '${playlist.playlistName}',
+          style: TextStyle(color: Colors.white),
         ),
       ),
+      backgroundColor: const Color(0xFF131321),
+      body: _buildSongsBody(),
     );
   }
 
@@ -78,6 +44,8 @@ class SongsScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        CachedNetworkImage(
+            width: 200, height: 200, imageUrl: playlist.imageUrl),
         Text('Artist: ${playlist.artist}',
             style: TextStyle(fontSize: 18, color: Colors.white)),
         SizedBox(height: 16),
@@ -136,27 +104,5 @@ class SongsScreen extends StatelessWidget {
       print('Error fetching songs: $e');
       return null;
     }
-  }
-}
-
-class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  final Widget tab;
-
-  SliverAppBarDelegate(this.tab);
-
-  @override
-  double get minExtent => 40;
-  @override
-  double get maxExtent => 40;
-
-  @override
-  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
-    return false;
-  }
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return tab;
   }
 }
