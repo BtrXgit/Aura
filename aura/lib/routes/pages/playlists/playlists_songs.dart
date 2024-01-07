@@ -1,9 +1,12 @@
+import 'dart:ui';
+
 import 'package:aura/routes/pages/player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:aura/data/songs.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SongsScreen extends StatelessWidget {
   final Song playlist;
@@ -21,34 +24,92 @@ class SongsScreen extends StatelessWidget {
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
-                forceMaterialTransparency: true,
-                floating: true,
-                pinned: false,
+                forceMaterialTransparency: false,
+                floating: false,
+                pinned: true,
                 expandedHeight: MediaQuery.of(context).size.height * 0.4,
                 iconTheme: IconThemeData(color: Colors.white),
                 backgroundColor: Color(0xFF131321),
-                flexibleSpace: FlexibleSpaceBar(
-                  centerTitle: false,
-                  title: null,
-                  background: Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: CachedNetworkImageProvider(playlist.imageUrl),
-                          fit: BoxFit.cover),
-                    ),
-                  ),
-                ),
-              ),
-              SliverAppBar(
-                forceMaterialTransparency: true,
-                pinned: true,
-                expandedHeight: 50.0,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                    child: Text('${playlist.playlistName}',
-                        style: TextStyle(fontSize: 18, color: Colors.white)),
-                  ),
+                flexibleSpace: LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                    double offset = constraints.biggest.height;
+                    bool isAppBarExpanded = offset > 100;
+
+                    return FlexibleSpaceBar(
+                      centerTitle: true,
+                      titlePadding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                      title: isAppBarExpanded
+                          ? null
+                          : Text(
+                              '${playlist.playlistName}',
+                              style: GoogleFonts.caveat(
+                                color: Colors.white,
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                      background: Stack(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: CachedNetworkImageProvider(
+                                  playlist.imageUrl,
+                                ),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+                              child: Container(
+                                color: Colors.white.withOpacity(0.2),
+                              ),
+                            ),
+                          ),
+                          Column(
+                            children: [
+                              Align(
+                                alignment: Alignment.center,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 28, 0, 10),
+                                  child: CachedNetworkImage(
+                                      width: 200,
+                                      height: 200,
+                                      imageUrl: playlist.imageUrl),
+                                ),
+                              ),
+                              Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                  child: Text('${playlist.playlistName}',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500,
+                                      )),
+                                ),
+                              ),
+                              Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                  child: Text('${playlist.artist}',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.white,
+                                      )),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    );
+                  },
                 ),
               ),
             ];
@@ -64,9 +125,18 @@ class SongsScreen extends StatelessWidget {
       future: _fetchSongs(),
       builder: (context, AsyncSnapshot<List<Song>?> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          );
         } else if (snapshot.hasError || snapshot.data == null) {
-          return Text('Error: ${snapshot.error}');
+          return Center(
+            child: Text(
+              'Error loading songs',
+              style: TextStyle(color: Colors.red),
+            ),
+          );
         } else {
           return _buildSongsListView(snapshot.data!);
         }
@@ -75,41 +145,38 @@ class SongsScreen extends StatelessWidget {
   }
 
   Widget _buildSongsListView(List<Song> songs) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text('Artist: ${playlist.artist}',
-            style: TextStyle(fontSize: 18, color: Colors.white)),
-        SizedBox(height: 16),
-        Expanded(
-          child: ListView.builder(
-            itemCount: songs.length,
-            itemBuilder: (context, index) {
-              Song song = songs[index];
-              return GestureDetector(
-                onTap: () => Get.to(
-                  AuraPlayer(
-                    currentIndex: index,
-                    songs: songs,
-                    title: 'Focus',
-                  ),
-                  transition: Transition.downToUp,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ListView.builder(
+        itemCount: songs.length,
+        itemBuilder: (context, index) {
+          Song song = songs[index];
+          return Card(
+            elevation: 2,
+            color: Color(0xFF1C1C1E), // Customize the card color
+            child: InkWell(
+              onTap: () => Get.to(
+                AuraPlayer(
+                  currentIndex: index,
+                  songs: songs,
+                  title: 'Focus',
                 ),
-                child: ListTile(
-                  title: Text(
-                    song.songName,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  subtitle: Text(
-                    song.artist,
-                    style: TextStyle(color: Colors.white.withOpacity(0.8)),
-                  ),
+                transition: Transition.downToUp,
+              ),
+              child: ListTile(
+                title: Text(
+                  song.songName,
+                  style: TextStyle(color: Colors.white),
                 ),
-              );
-            },
-          ),
-        ),
-      ],
+                subtitle: Text(
+                  song.artist,
+                  style: TextStyle(color: Colors.white.withOpacity(0.8)),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -136,27 +203,5 @@ class SongsScreen extends StatelessWidget {
       print('Error fetching songs: $e');
       return null;
     }
-  }
-}
-
-class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  final Widget tab;
-
-  SliverAppBarDelegate(this.tab);
-
-  @override
-  double get minExtent => 40;
-  @override
-  double get maxExtent => 40;
-
-  @override
-  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
-    return false;
-  }
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return tab;
   }
 }
