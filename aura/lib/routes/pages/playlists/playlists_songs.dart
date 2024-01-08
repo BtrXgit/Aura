@@ -139,12 +139,24 @@ class _SongsScreenState extends State<SongsScreen> {
                                             )),
                                       ],
                                     ),
-                                    IconButton.filled(
-                                      iconSize: 30,
-                                      color: dominantColor,
-                                      onPressed: () {},
-                                      icon: Icon(
-                                        IconlyBold.play,
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white,
+                                      ),
+                                      child: IconButton(
+                                        iconSize: 30,
+                                        color: dominantColor,
+                                        onPressed: () async {
+                                          List<Song>? songs =
+                                              await _fetchSongs();
+                                          if (songs != null) {
+                                            _playPlaylist(songs);
+                                          }
+                                        },
+                                        icon: Icon(
+                                          IconlyBold.play,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -162,6 +174,16 @@ class _SongsScreenState extends State<SongsScreen> {
           },
           body: _buildSongsBody(),
         ),
+      ),
+    );
+  }
+
+  void _playPlaylist(List<Song> songs) {
+    Get.to(
+      () => AuraPlayer(
+        currentIndex: 0,
+        songs: songs,
+        title: widget.playlist.playlistName,
       ),
     );
   }
@@ -202,12 +224,11 @@ class _SongsScreenState extends State<SongsScreen> {
             color: Color(0xFF1C1C1E),
             child: InkWell(
               onTap: () => Get.to(
-                AuraPlayer(
+                () => AuraPlayer(
                   currentIndex: index,
                   songs: songs,
-                  title: 'Focus',
+                  title: widget.playlist.playlistName,
                 ),
-                transition: Transition.downToUp,
               ),
               child: ListTile(
                 title: Text(
