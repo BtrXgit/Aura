@@ -35,6 +35,7 @@ class _RelaxingPlaylistScreenState extends State<RelaxingPlaylistScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: const Color(0xFF131321),
         title: Text(
           'Relaxing Playlists',

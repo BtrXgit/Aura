@@ -7,11 +7,40 @@ import 'package:flutter/material.dart';
 import 'package:aura/data/songs.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iconly/iconly.dart';
+import 'package:palette_generator/palette_generator.dart';
 
-class SongsScreen extends StatelessWidget {
+class SongsScreen extends StatefulWidget {
   final Song playlist;
 
   SongsScreen(this.playlist);
+
+  @override
+  State<SongsScreen> createState() => _SongsScreenState();
+}
+
+class _SongsScreenState extends State<SongsScreen> {
+  Color? dominantColor;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadDominantColor();
+  }
+
+  Future<void> _loadDominantColor() async {
+    final PaletteGenerator paletteGenerator =
+        await PaletteGenerator.fromImageProvider(
+            CachedNetworkImageProvider(widget.playlist.imageUrl));
+    setState(() {
+      dominantColor = paletteGenerator.dominantColor?.color;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +70,7 @@ class SongsScreen extends StatelessWidget {
                       title: isAppBarExpanded
                           ? null
                           : Text(
-                              '${playlist.playlistName}',
+                              '${widget.playlist.playlistName}',
                               style: GoogleFonts.caveat(
                                 color: Colors.white,
                                 fontSize: 32,
@@ -54,7 +83,7 @@ class SongsScreen extends StatelessWidget {
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                 image: CachedNetworkImageProvider(
-                                  playlist.imageUrl,
+                                  widget.playlist.imageUrl,
                                 ),
                                 fit: BoxFit.cover,
                               ),
@@ -73,35 +102,52 @@ class SongsScreen extends StatelessWidget {
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(0, 28, 0, 10),
-                                  child: CachedNetworkImage(
-                                      width: 200,
-                                      height: 200,
-                                      imageUrl: playlist.imageUrl),
+                                  child: Container(
+                                    width: 200,
+                                    height: 200,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: CachedNetworkImageProvider(
+                                              widget.playlist.imageUrl),
+                                        ),
+                                        borderRadius:
+                                            BorderRadius.circular(14)),
+                                  ),
                                 ),
                               ),
-                              Align(
-                                alignment: Alignment.bottomLeft,
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                  child: Text('${playlist.playlistName}',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w500,
-                                      )),
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.bottomLeft,
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                  child: Text('${playlist.artist}',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.white,
-                                      )),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(10, 10, 20, 0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text('${widget.playlist.playlistName}',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w500,
+                                            )),
+                                        Text('${widget.playlist.artist}',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.white,
+                                            )),
+                                      ],
+                                    ),
+                                    IconButton.filled(
+                                      iconSize: 30,
+                                      color: dominantColor,
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        IconlyBold.play,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
@@ -153,7 +199,7 @@ class SongsScreen extends StatelessWidget {
           Song song = songs[index];
           return Card(
             elevation: 2,
-            color: Color(0xFF1C1C1E), // Customize the card color
+            color: Color(0xFF1C1C1E),
             child: InkWell(
               onTap: () => Get.to(
                 AuraPlayer(
@@ -172,6 +218,7 @@ class SongsScreen extends StatelessWidget {
                   song.artist,
                   style: TextStyle(color: Colors.white.withOpacity(0.8)),
                 ),
+                trailing: IconButton(onPressed: () {}, icon: Icon(Icons.menu)),
               ),
             ),
           );
@@ -184,7 +231,7 @@ class SongsScreen extends StatelessWidget {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('relaxing')
-          .doc(playlist.id)
+          .doc(widget.playlist.id)
           .collection('sounds')
           .get();
 
@@ -193,8 +240,8 @@ class SongsScreen extends StatelessWidget {
         return Song(
           id: doc.id,
           songName: data['songName'] ?? '',
-          artist: playlist.artist,
-          imageUrl: playlist.imageUrl,
+          artist: widget.playlist.artist,
+          imageUrl: widget.playlist.imageUrl,
           songUrl: data['songUrl'] ?? '',
           playlistName: data['playlistName'] ?? '',
         );
