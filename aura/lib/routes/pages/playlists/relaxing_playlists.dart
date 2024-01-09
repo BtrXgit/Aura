@@ -78,7 +78,8 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
         itemBuilder: (context, index) {
           Song playlist = playlists[index];
           return GestureDetector(
-            onTap: () => Get.to(() => SongsScreen(playlist)),
+            onTap: () =>
+                Get.to(() => SongsScreen(playlist, '${widget.category}')),
             child: Container(
               decoration: BoxDecoration(
                   image: DecorationImage(

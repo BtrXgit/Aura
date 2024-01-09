@@ -12,8 +12,9 @@ import 'package:palette_generator/palette_generator.dart';
 
 class SongsScreen extends StatefulWidget {
   final Song playlist;
+  final String category;
 
-  SongsScreen(this.playlist);
+  SongsScreen(this.playlist, this.category);
 
   @override
   State<SongsScreen> createState() => _SongsScreenState();
@@ -251,7 +252,7 @@ class _SongsScreenState extends State<SongsScreen> {
   Future<List<Song>?> _fetchSongs() async {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('relaxing')
+          .collection('${widget.category}')
           .doc(widget.playlist.id)
           .collection('sounds')
           .get();

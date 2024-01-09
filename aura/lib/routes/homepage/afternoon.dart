@@ -94,10 +94,6 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
     }
   }
 
-  Stream<QuerySnapshot> _getFocusData() {
-    return _firestore.collection('songs').snapshots();
-  }
-
   String _getImageAsset(String greeting) {
     switch (greeting) {
       case 'Good Morning':
@@ -307,8 +303,8 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
           ),
           GestureDetector(
               onTap: () => Get.to(PlaylistsPage(
-                category: 'relaxing',
-              )),
+                    category: 'relaxing',
+                  )),
               child: _buildDummyCategory()),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
@@ -321,7 +317,12 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
               ),
             ),
           ),
-          _buildDummyCategory(),
+          GestureDetector(
+            onTap: () => Get.to(PlaylistsPage(
+              category: 'focus',
+            )),
+            child: _buildDummyCategory(),
+          ),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
