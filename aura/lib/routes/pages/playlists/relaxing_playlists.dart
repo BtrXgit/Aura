@@ -10,12 +10,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class RelaxingPlaylistScreen extends StatefulWidget {
+class PlaylistsPage extends StatefulWidget {
+  final String category;
+
+  const PlaylistsPage({required this.category, Key? key}) : super(key: key);
+
   @override
-  _RelaxingPlaylistScreenState createState() => _RelaxingPlaylistScreenState();
+  _PlaylistsPageState createState() => _PlaylistsPageState();
 }
 
-class _RelaxingPlaylistScreenState extends State<RelaxingPlaylistScreen> {
+class _PlaylistsPageState extends State<PlaylistsPage> {
   SharedPreferences? _preferences;
   late StreamController<List<Song>> _playlistsController;
 
@@ -38,7 +42,7 @@ class _RelaxingPlaylistScreenState extends State<RelaxingPlaylistScreen> {
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: const Color(0xFF131321),
         title: Text(
-          'Relaxing Playlists',
+          '${widget.category} Playlists',
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -138,8 +142,9 @@ class _RelaxingPlaylistScreenState extends State<RelaxingPlaylistScreen> {
             .toList());
       }
 
-      QuerySnapshot querySnapshot =
-          await FirebaseFirestore.instance.collection('relaxing').get();
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('${widget.category}')
+          .get();
 
       final playlists =
           querySnapshot.docs.map((doc) => Song.fromFirestore(doc)).toList();
