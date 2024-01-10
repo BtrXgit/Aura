@@ -68,12 +68,13 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
     return Padding(
       padding: EdgeInsets.fromLTRB(8, 10, 8, 0),
       child: GridView.builder(
+        physics: BouncingScrollPhysics(),
         itemCount: playlists.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 1,
           crossAxisSpacing: 8.0,
           mainAxisSpacing: 8.0,
-          childAspectRatio: 1.5,
+          childAspectRatio: 1.8,
         ),
         itemBuilder: (context, index) {
           Song playlist = playlists[index];
@@ -81,7 +82,9 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
             onTap: () =>
                 Get.to(() => SongsScreen(playlist, '${widget.category}')),
             child: Container(
-              color: Colors.blue,
+              decoration: BoxDecoration(
+                  color: const Color(0xFF1F1F36),
+                  borderRadius: BorderRadius.circular(14)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -95,21 +98,29 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
                           Text(
                             playlist.playlistName,
                             style: const TextStyle(
-                                color: Colors.white, fontSize: 16),
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600),
                           ),
                           Text(
                             playlist.artist,
                             style: const TextStyle(
-                                color: Colors.white, fontSize: 14),
+                                color: Colors.white70, fontSize: 14),
                           ),
                         ],
                       ),
                     ),
                   ),
-                  CachedNetworkImage(
-                    height: 200,
-                    width: 200,
-                    imageUrl: playlist.imageUrl,
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image:
+                                CachedNetworkImageProvider(playlist.imageUrl),
+                            fit: BoxFit.cover),
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
                   ),
                 ],
               ),
