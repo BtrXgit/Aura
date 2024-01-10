@@ -70,10 +70,10 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
       child: GridView.builder(
         itemCount: playlists.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
+          crossAxisCount: 1,
           crossAxisSpacing: 8.0,
           mainAxisSpacing: 8.0,
-          childAspectRatio: 0.85,
+          childAspectRatio: 1.5,
         ),
         itemBuilder: (context, index) {
           Song playlist = playlists[index];
@@ -81,51 +81,37 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
             onTap: () =>
                 Get.to(() => SongsScreen(playlist, '${widget.category}')),
             child: Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: CachedNetworkImageProvider(playlist.imageUrl),
-                      fit: BoxFit.cover),
-                  borderRadius: BorderRadius.circular(14)),
-              child: Align(
-                alignment: Alignment.bottomLeft,
-                child: Container(
-                  height: 54,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.4),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(14),
-                      bottomRight: Radius.circular(14),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: Offset(0, 3),
+              color: Colors.blue,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            playlist.playlistName,
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 16),
+                          ),
+                          Text(
+                            playlist.artist,
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 14),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          playlist.playlistName,
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 16),
-                        ),
-                        Text(
-                          playlist.artist,
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 14),
-                        ),
-                      ],
                     ),
                   ),
-                ),
+                  CachedNetworkImage(
+                    height: 200,
+                    width: 200,
+                    imageUrl: playlist.imageUrl,
+                  ),
+                ],
               ),
             ),
           );
