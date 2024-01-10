@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:aura/data/songs.dart';
-import 'package:aura/routes/pages/player.dart';
 import 'package:aura/routes/pages/playlists/playlists_songs.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -79,8 +77,9 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
         itemBuilder: (context, index) {
           Song playlist = playlists[index];
           return GestureDetector(
-            onTap: () =>
-                Get.to(() => SongsScreen(playlist, '${widget.category}')),
+            onTap: () => Get.to(
+              () => SongsScreen(playlist, '${widget.category}'),
+            ),
             child: Container(
               decoration: BoxDecoration(
                   color: const Color(0xFF1F1F36),

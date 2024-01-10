@@ -1,11 +1,6 @@
-import 'package:aura/data/songs.dart';
-import 'package:aura/routes/pages/favorites.dart';
-import 'package:aura/routes/pages/live/live.dart';
-import 'package:aura/routes/pages/player.dart';
 import 'package:aura/routes/tweaks.dart';
 import 'package:aura/routes/pages/playlists/playlists.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -27,7 +22,6 @@ class AuraHomePageAfternoon extends StatefulWidget {
 
 class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
     with SingleTickerProviderStateMixin {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final AudioPlayer _audioPlayer = AudioPlayer();
 
   int index = 0;
@@ -305,7 +299,9 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
               onTap: () => Get.to(PlaylistsPage(
                     category: 'relaxing',
                   )),
-              child: _buildDummyCategory()),
+              child: _buildDummyCategory(
+                  imageLink:
+                      'https://i.pinimg.com/564x/44/71/a8/4471a8ddace0be709396f797b1e89729.jpg')),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
@@ -321,7 +317,9 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
             onTap: () => Get.to(PlaylistsPage(
               category: 'focus',
             )),
-            child: _buildDummyCategory(),
+            child: _buildDummyCategory(
+                imageLink:
+                    'https://i.pinimg.com/564x/41/59/e2/4159e2b7160850b7051fe7d91ce674dc.jpg'),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
@@ -333,7 +331,14 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
                   fontWeight: FontWeight.bold),
             ),
           ),
-          _buildDummyCategory(),
+          GestureDetector(
+            onTap: () => Get.to(PlaylistsPage(
+              category: 'calm and cozy',
+            )),
+            child: _buildDummyCategory(
+                imageLink:
+                    'https://i.pinimg.com/564x/47/16/03/471603819ac91c1c73d947ada797bf07.jpg'),
+          ),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
@@ -344,7 +349,9 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
                   fontWeight: FontWeight.bold),
             ),
           ),
-          _buildDummyCategory(),
+          _buildDummyCategory(
+              imageLink:
+                  'https://i.pinimg.com/564x/9e/00/71/9e0071917b7fcc601f24c058de09c221.jpg'),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
@@ -355,7 +362,9 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
                   fontWeight: FontWeight.bold),
             ),
           ),
-          _buildDummyCategory(),
+          _buildDummyCategory(
+              imageLink:
+                  'https://i.pinimg.com/564x/3a/ee/3e/3aee3e7a1d246af2d101c3a533ee6bae.jpg'),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
@@ -366,7 +375,9 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
                   fontWeight: FontWeight.bold),
             ),
           ),
-          _buildDummyCategory(),
+          _buildDummyCategory(
+              imageLink:
+                  'https://i.pinimg.com/564x/90/fd/ba/90fdbaaefd745116eb4a3e79033757c1.jpg'),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
@@ -377,7 +388,9 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
                   fontWeight: FontWeight.bold),
             ),
           ),
-          _buildDummyCategory(),
+          _buildDummyCategory(
+              imageLink:
+                  'https://i.pinimg.com/564x/e1/a9/a8/e1a9a85ca836f02953b5a64b4516210e.jpg'),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
@@ -389,21 +402,9 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 20.0,
-              right: 20.0,
-              bottom: 20,
-            ),
-            child: Container(
-              height: 200,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(14),
-              ),
-            ),
-          ),
+          _buildDummyCategory(
+              imageLink:
+                  'https://i.pinimg.com/564x/7b/87/0e/7b870ec101537650c42c5b169f9ee186.jpg'),
           const SizedBox(
             height: 50,
           ),
@@ -412,7 +413,9 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
     );
   }
 
-  Widget _buildDummyCategory() {
+  Widget _buildDummyCategory({
+    required String imageLink,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(
         left: 20.0,
@@ -424,6 +427,8 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           color: Colors.white,
+          image: DecorationImage(
+              image: CachedNetworkImageProvider(imageLink), fit: BoxFit.cover),
           borderRadius: BorderRadius.circular(14),
         ),
       ),
