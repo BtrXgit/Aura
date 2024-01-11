@@ -1,6 +1,6 @@
 import 'package:aura/composer_test.dart';
 import 'package:aura/routes/explore.dart';
-import 'package:aura/routes/homepage/afternoon.dart';
+import 'package:aura/routes/homepage/homepage.dart';
 import 'package:aura/routes/tweaks.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -61,20 +61,6 @@ class HomePageState extends State<HomePage>
     }
   }
 
-  String _getGreeting() {
-    final now = DateTime.now();
-    final hour = now.hour;
-    if (hour >= 5 && hour < 12) {
-      return 'Good Morning';
-    } else if (hour >= 12 && hour < 17) {
-      return 'Good Afternoon';
-    } else if (hour >= 17 && hour < 20) {
-      return 'Good Evening';
-    } else {
-      return 'Good Night';
-    }
-  }
-
   @override
   void dispose() {
     tabController.dispose();
@@ -83,7 +69,6 @@ class HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    final greeting = _getGreeting();
     return Scaffold(
       appBar: null,
       body: BottomBar(
@@ -123,22 +108,7 @@ class HomePageState extends State<HomePage>
           dragStartBehavior: DragStartBehavior.down,
           physics: const NeverScrollableScrollPhysics(),
           children: [
-            // if (greeting == 'Good Morning')
-            //   AuraHomePageMorning(controller: controller),
-
-            // if (greeting == 'Good Afternoon')
-            //   AuraHomePageAfternoon(
-            //     controller: controller,
-            //   ),
-
-            // if (greeting == 'Good Evening')
-            //   AuraHomePageEvening(
-            //     controller: controller,
-            //   ),
-
-            // if (greeting == 'Good Night')
-            //   AuraHomePageNight(controller: controller),
-            AuraHomePageAfternoon(
+            AuraHomePage(
               controller: controller,
             ),
             const AuraComposerTest(),

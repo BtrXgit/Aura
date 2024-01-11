@@ -10,17 +10,16 @@ import 'package:just_audio/just_audio.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuraHomePageAfternoon extends StatefulWidget {
+class AuraHomePage extends StatefulWidget {
   final ScrollController controller;
 
-  const AuraHomePageAfternoon({required this.controller, Key? key})
-      : super(key: key);
+  const AuraHomePage({required this.controller, Key? key}) : super(key: key);
 
   @override
-  State<AuraHomePageAfternoon> createState() => _AuraHomePageAfternoonState();
+  State<AuraHomePage> createState() => _AuraHomePageState();
 }
 
-class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
+class _AuraHomePageState extends State<AuraHomePage>
     with SingleTickerProviderStateMixin {
   final AudioPlayer _audioPlayer = AudioPlayer();
 
@@ -342,6 +341,42 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
           Padding(
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
+              'Synthwave/Chillwave',
+              style: GoogleFonts.openSans(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          GestureDetector(
+            onTap: () => Get.to(PlaylistsPage(
+              category: 'chillwave',
+            )),
+            child: _buildDummyCategory(
+                imageLink:
+                    'https://i.pinimg.com/564x/9e/00/71/9e0071917b7fcc601f24c058de09c221.jpg'),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
+            child: Text(
+              'LoFi - Sad',
+              style: GoogleFonts.openSans(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          GestureDetector(
+            onTap: () => Get.to(PlaylistsPage(
+              category: 'lofi sad',
+            )),
+            child: _buildDummyCategory(
+                imageLink:
+                    'https://i.pinimg.com/564x/9e/00/71/9e0071917b7fcc601f24c058de09c221.jpg'),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
+            child: Text(
               'LoFi - Hip Hop',
               style: GoogleFonts.openSans(
                   color: Colors.white,
@@ -349,35 +384,41 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
                   fontWeight: FontWeight.bold),
             ),
           ),
-          _buildDummyCategory(
-              imageLink:
-                  'https://i.pinimg.com/564x/9e/00/71/9e0071917b7fcc601f24c058de09c221.jpg'),
-          Padding(
-            padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
-            child: Text(
-              'LoFi - Jazz',
-              style: GoogleFonts.openSans(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold),
-            ),
+          GestureDetector(
+            onTap: () => Get.to(PlaylistsPage(
+              category: 'lofi hiphop',
+            )),
+            child: _buildDummyCategory(
+                imageLink:
+                    'https://i.pinimg.com/564x/9e/00/71/9e0071917b7fcc601f24c058de09c221.jpg'),
           ),
-          _buildDummyCategory(
-              imageLink:
-                  'https://i.pinimg.com/564x/3a/ee/3e/3aee3e7a1d246af2d101c3a533ee6bae.jpg'),
-          Padding(
-            padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
-            child: Text(
-              'LoFi - Dream Pop',
-              style: GoogleFonts.openSans(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-          _buildDummyCategory(
-              imageLink:
-                  'https://i.pinimg.com/564x/90/fd/ba/90fdbaaefd745116eb4a3e79033757c1.jpg'),
+
+          // Padding(
+          //   padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
+          //   child: Text(
+          //     'LoFi - Jazz',
+          //     style: GoogleFonts.openSans(
+          //         color: Colors.white,
+          //         fontSize: 24,
+          //         fontWeight: FontWeight.bold),
+          //   ),
+          // ),
+          // _buildDummyCategory(
+          //     imageLink:
+          //         'https://i.pinimg.com/564x/3a/ee/3e/3aee3e7a1d246af2d101c3a533ee6bae.jpg'),
+          // Padding(
+          //   padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
+          //   child: Text(
+          //     'LoFi - Dream Pop',
+          //     style: GoogleFonts.openSans(
+          //         color: Colors.white,
+          //         fontSize: 24,
+          //         fontWeight: FontWeight.bold),
+          //   ),
+          // ),
+          // _buildDummyCategory(
+          //     imageLink:
+          // 'https://i.pinimg.com/564x/90/fd/ba/90fdbaaefd745116eb4a3e79033757c1.jpg'),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
@@ -426,7 +467,6 @@ class _AuraHomePageAfternoonState extends State<AuraHomePageAfternoon>
         height: 200,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          color: Colors.white,
           image: DecorationImage(
               image: CachedNetworkImageProvider(imageLink), fit: BoxFit.cover),
           borderRadius: BorderRadius.circular(14),
