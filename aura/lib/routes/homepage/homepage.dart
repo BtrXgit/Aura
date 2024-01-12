@@ -73,6 +73,8 @@ class _AuraHomePageState extends State<AuraHomePage>
     super.dispose();
   }
 
+  List<String> recommendedImageUrl = [''];
+
   String _getGreeting() {
     final now = DateTime.now();
     final hour = now.hour;
@@ -104,139 +106,127 @@ class _AuraHomePageState extends State<AuraHomePage>
 
   @override
   Widget build(BuildContext context) {
-    final greeting = _getGreeting();
-    final backgroundImage = _getImageAsset(greeting);
     return Scaffold(
       backgroundColor: Color(0xFF131321),
-      body: NestedScrollView(
-        physics: ClampingScrollPhysics(),
-        controller: widget.controller,
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          return <Widget>[
-            SliverAppBar(
-              forceMaterialTransparency: false,
-              expandedHeight: MediaQuery.of(context).size.height * 0.2,
-              floating: true,
-              pinned: true,
-              backgroundColor: const Color(0xFF131321),
-              flexibleSpace: LayoutBuilder(
-                  builder: (BuildContext context, BoxConstraints constraints) {
-                double offset = constraints.biggest.height;
-                bool isAppBarExpanded = offset > 100;
-
-                return FlexibleSpaceBar(
-                  centerTitle: false,
-                  titlePadding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                  title: isAppBarExpanded
-                      ? null
-                      : Text(
-                          'Explore',
-                          style: GoogleFonts.caveat(
-                            color: Colors.white,
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                  background: Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(backgroundImage),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 50, 20, 0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                greeting,
-                                style: GoogleFonts.dancingScript(
-                                  //lobster  // carattere  //dancing script
-                                  color: Colors.white,
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                '$userName',
-                                style: GoogleFonts.openSans(
-                                    color: Colors.white, fontSize: 16),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Container(
-                                  width: 44,
-                                  height: 44,
-                                  decoration: const BoxDecoration(
-                                    color: Colors.black,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: const Icon(
-                                    IconlyBold.bookmark,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 14,
-                                ),
-                                GestureDetector(
-                                  onTap: () => Get.to(
-                                      () => SettingsPage(
-                                            controller: widget.controller,
-                                          ),
-                                      transition:
-                                          Transition.rightToLeftWithFade),
-                                  child: (userPhotoUrl != null)
-                                      ? SizedBox(
-                                          width: 44,
-                                          height: 44,
-                                          child: CircleAvatar(
-                                            radius: 18,
-                                            backgroundImage:
-                                                CachedNetworkImageProvider(
-                                              userPhotoUrl!,
-                                            ),
-                                          ),
-                                        )
-                                      : const Icon(
-                                          Icons.person,
-                                          color: Colors.blue,
-                                          size: 28,
-                                        ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              }),
-            ),
-          ];
-        },
-        body: _buildContentColumn(),
-      ),
+      body: _buildContentColumn(),
     );
   }
 
   Widget _buildContentColumn() {
+    final greeting = _getGreeting();
+    final backgroundImage = _getImageAsset(greeting);
     return SingleChildScrollView(
+      controller: widget.controller,
       physics: ClampingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(backgroundImage),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 50, 20, 0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        greeting,
+                        style: GoogleFonts.dancingScript(
+                          //lobster  // carattere  //dancing script
+                          color: Colors.white,
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        '$userName',
+                        style: GoogleFonts.openSans(
+                            color: Colors.white, fontSize: 16),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          width: 44,
+                          height: 44,
+                          decoration: const BoxDecoration(
+                            color: Colors.black,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            IconlyBold.bookmark,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 14,
+                        ),
+                        GestureDetector(
+                          onTap: () => Get.to(
+                              () => SettingsPage(
+                                    controller: widget.controller,
+                                  ),
+                              transition: Transition.rightToLeftWithFade),
+                          child: (userPhotoUrl != null)
+                              ? SizedBox(
+                                  width: 44,
+                                  height: 44,
+                                  child: CircleAvatar(
+                                    radius: 18,
+                                    backgroundImage: CachedNetworkImageProvider(
+                                      userPhotoUrl!,
+                                    ),
+                                  ),
+                                )
+                              : const Icon(
+                                  Icons.person,
+                                  color: Colors.blue,
+                                  size: 28,
+                                ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 8.0),
+            child: Text(
+              'Recommended',
+              style: GoogleFonts.openSans(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+            child: SizedBox(
+              height: 100,
+              child: ListView.builder(
+                  physics: ClampingScrollPhysics(),
+                  itemCount: 5,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (BuildContext, int) {
+                    return _recommendedContainer();
+                  }),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 8.0),
             child: Text(
@@ -392,33 +382,6 @@ class _AuraHomePageState extends State<AuraHomePage>
                 imageLink:
                     'https://i.pinimg.com/564x/9e/00/71/9e0071917b7fcc601f24c058de09c221.jpg'),
           ),
-
-          // Padding(
-          //   padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
-          //   child: Text(
-          //     'LoFi - Jazz',
-          //     style: GoogleFonts.openSans(
-          //         color: Colors.white,
-          //         fontSize: 24,
-          //         fontWeight: FontWeight.bold),
-          //   ),
-          // ),
-          // _buildDummyCategory(
-          //     imageLink:
-          //         'https://i.pinimg.com/564x/3a/ee/3e/3aee3e7a1d246af2d101c3a533ee6bae.jpg'),
-          // Padding(
-          //   padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
-          //   child: Text(
-          //     'LoFi - Dream Pop',
-          //     style: GoogleFonts.openSans(
-          //         color: Colors.white,
-          //         fontSize: 24,
-          //         fontWeight: FontWeight.bold),
-          //   ),
-          // ),
-          // _buildDummyCategory(
-          //     imageLink:
-          // 'https://i.pinimg.com/564x/90/fd/ba/90fdbaaefd745116eb4a3e79033757c1.jpg'),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
@@ -451,6 +414,18 @@ class _AuraHomePageState extends State<AuraHomePage>
           ),
         ],
       ),
+    );
+  }
+
+  Widget _recommendedContainer() {
+    return Container(
+      margin: EdgeInsets.only(left: 18),
+      width: 100,
+      decoration: BoxDecoration(
+          image: DecorationImage(
+              image: CachedNetworkImageProvider(recommendedImageUrl[index])),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14)),
     );
   }
 
