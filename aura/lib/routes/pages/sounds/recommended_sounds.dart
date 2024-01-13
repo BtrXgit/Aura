@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:iconly/iconly.dart';
 
 class RecommendedSoundsPage extends StatefulWidget {
   const RecommendedSoundsPage({super.key});
@@ -15,13 +16,28 @@ class _RecommendedSoundsPageState extends State<RecommendedSoundsPage> {
     'https://i.pinimg.com/564x/6d/b2/d4/6db2d4c4c456211650429781a47ee95b.jpg',
     'https://i.pinimg.com/564x/75/50/0b/75500bd88c86833f3c64b769d5d197de.jpg',
     'https://i.pinimg.com/564x/b6/31/84/b631841cb3a29e6f7be99c5ec0bca1d0.jpg',
+    'https://i.pinimg.com/564x/6e/21/e0/6e21e00acfcfbbb7b334486261e8e77d.jpg',
+    'https://i.pinimg.com/564x/e4/22/3c/e4223c9d320ca6e36d1df970a51f698e.jpg',
+    'https://i.pinimg.com/564x/01/17/27/01172784637ef7315a6273afb8cc6321.jpg',
+    'https://i.pinimg.com/564x/08/d8/15/08d815e77dd4e30228615c502ae063a3.jpg',
+    'https://i.pinimg.com/564x/34/00/9c/34009cf70efce641f8fcf91cc6e8b815.jpg',
+    'https://i.pinimg.com/564x/f8/0e/04/f80e04732ee19168c1f5d0372ff4a460.jpg',
+    'https://i.pinimg.com/564x/72/1a/9b/721a9bccca150b0e99b8fade5385e984.jpg',
   ];
+
   List<String> recommendedSoundes = [
     'Ocean Waves',
     'Birdsong',
     'Soft Piano',
     'Harp',
     'Bonfire',
+    'Wind Chimes',
+    'Wind in the Trees',
+    'Zen Garden',
+    'Rainfall',
+    'Thunderstorm',
+    'Tibetan Bowl',
+    'City Rain',
   ];
 
   @override
@@ -73,9 +89,9 @@ class _RecommendedSoundsPageState extends State<RecommendedSoundsPage> {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.only(right: 10),
+                    padding: EdgeInsets.fromLTRB(0, 20, 10, 10),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
@@ -84,6 +100,11 @@ class _RecommendedSoundsPageState extends State<RecommendedSoundsPage> {
                               color: Colors.white,
                               fontSize: 18,
                               fontWeight: FontWeight.w600),
+                        ),
+                        Icon(
+                          IconlyBold.play,
+                          size: 54,
+                          color: Colors.white,
                         ),
                       ],
                     ),
