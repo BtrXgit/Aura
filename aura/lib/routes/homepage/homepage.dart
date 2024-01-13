@@ -1,3 +1,4 @@
+import 'package:aura/routes/pages/sounds/recommended_sounds.dart';
 import 'package:aura/routes/tweaks.dart';
 import 'package:aura/routes/pages/playlists/playlists.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -230,14 +231,42 @@ class _AuraHomePageState extends State<AuraHomePage>
           SizedBox(
             height: 130,
             child: ListView.builder(
-                physics: ClampingScrollPhysics(),
-                itemCount: 5,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (BuildContext, int) {
+              physics: ClampingScrollPhysics(),
+              itemCount: recommendedSoundes.length + 1,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (BuildContext, int) {
+                if (int == recommendedSoundes.length) {
+                  return GestureDetector(
+                    onTap: () {
+                      Get.to(RecommendedSoundsPage());
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(left: 18),
+                      height: 100,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1F1F36),
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'See More',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
                   return _recommendedContainer(
                       soundsName: recommendedSoundes[int],
                       imageLink: recommendedImageUrl[int]);
-                }),
+                }
+              },
+            ),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 8.0),
@@ -356,7 +385,7 @@ class _AuraHomePageState extends State<AuraHomePage>
             )),
             child: _buildDummyCategory(
                 imageLink:
-                    'https://i.pinimg.com/564x/9e/00/71/9e0071917b7fcc601f24c058de09c221.jpg'),
+                    'https://i.pinimg.com/564x/6f/a2/6e/6fa26eb2b9bf7fbd32671d3617a9a3fd.jpg'),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
@@ -374,7 +403,7 @@ class _AuraHomePageState extends State<AuraHomePage>
             )),
             child: _buildDummyCategory(
                 imageLink:
-                    'https://i.pinimg.com/564x/9e/00/71/9e0071917b7fcc601f24c058de09c221.jpg'),
+                    'https://i.pinimg.com/564x/91/53/57/91535759da1d41ec29fe4c9c1f3fc3b0.jpg'),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
@@ -397,7 +426,7 @@ class _AuraHomePageState extends State<AuraHomePage>
           Padding(
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
-              'LoFi - Sad',
+              'ChillDrive',
               style: GoogleFonts.openSans(
                   color: Colors.white,
                   fontSize: 24,
@@ -406,7 +435,7 @@ class _AuraHomePageState extends State<AuraHomePage>
           ),
           _buildDummyCategory(
               imageLink:
-                  'https://i.pinimg.com/564x/e1/a9/a8/e1a9a85ca836f02953b5a64b4516210e.jpg'),
+                  'https://i.pinimg.com/564x/d8/b2/7f/d8b27f84e75c359d0c786890f6f1dac3.jpg'),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
@@ -421,6 +450,56 @@ class _AuraHomePageState extends State<AuraHomePage>
           _buildDummyCategory(
               imageLink:
                   'https://i.pinimg.com/564x/7b/87/0e/7b870ec101537650c42c5b169f9ee186.jpg'),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 8.0),
+            child: Text(
+              'Noises',
+              style: GoogleFonts.openSans(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 130,
+            child: ListView.builder(
+              physics: ClampingScrollPhysics(),
+              itemCount: recommendedSoundes.length + 1,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (BuildContext, int) {
+                if (int == recommendedSoundes.length) {
+                  return GestureDetector(
+                    onTap: () {
+                      Get.to(RecommendedSoundsPage());
+                    },
+                    child: Container(
+                      height: 100,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'See More',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  return _recommendedContainer(
+                      soundsName: recommendedSoundes[int],
+                      imageLink: recommendedImageUrl[int]);
+                }
+              },
+            ),
+          ),
           const SizedBox(
             height: 50,
           ),
