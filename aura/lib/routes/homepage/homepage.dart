@@ -1,3 +1,4 @@
+import 'package:aura/routes/pages/sounds/noises.dart';
 import 'package:aura/routes/pages/sounds/recommended_sounds.dart';
 import 'package:aura/routes/tweaks.dart';
 import 'package:aura/routes/pages/playlists/playlists.dart';
@@ -87,6 +88,21 @@ class _AuraHomePageState extends State<AuraHomePage>
     'Soft Piano',
     'Harp',
     'Bonfire',
+  ];
+
+  List<String> noisesImageUrl = [
+    'https://i.pinimg.com/564x/85/fb/ce/85fbceb25101eb2e3fba7a7ffcb20bae.jpg',
+    'https://blog.noisli.com/wp-content/uploads/2022/08/Noisli-Pink-Noise.png',
+    'https://i.kym-cdn.com/entries/icons/facebook/000/040/983/bnoise.jpg',
+    'https://images.genius.com/3e8640695c1f56148f30626ac1007a67.1000x1000x1.png',
+    'https://i.scdn.co/image/ab67616d0000b273f98f724102403c1e69958c8c',
+  ];
+  List<String> noises = [
+    'White',
+    'Pink',
+    'Brown',
+    'Blue',
+    'Violet',
   ];
 
   String _getGreeting() {
@@ -316,6 +332,56 @@ class _AuraHomePageState extends State<AuraHomePage>
             ),
           ),
           Padding(
+            padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 8.0),
+            child: Text(
+              'Noises',
+              style: GoogleFonts.openSans(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 130,
+            child: ListView.builder(
+              physics: ClampingScrollPhysics(),
+              itemCount: noises.length + 1,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (BuildContext, int) {
+                if (int == noises.length) {
+                  return GestureDetector(
+                    onTap: () {
+                      Get.to(NoisesPage());
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(left: 18),
+                      height: 100,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1F1F36),
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'See More',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  return _recommendedContainer(
+                      soundsName: noises[int], imageLink: noisesImageUrl[int]);
+                }
+              },
+            ),
+          ),
+          Padding(
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
               'Relaxing',
@@ -450,56 +516,6 @@ class _AuraHomePageState extends State<AuraHomePage>
           _buildDummyCategory(
               imageLink:
                   'https://i.pinimg.com/564x/7b/87/0e/7b870ec101537650c42c5b169f9ee186.jpg'),
-          Padding(
-            padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 8.0),
-            child: Text(
-              'Noises',
-              style: GoogleFonts.openSans(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 130,
-            child: ListView.builder(
-              physics: ClampingScrollPhysics(),
-              itemCount: recommendedSoundes.length + 1,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (BuildContext, int) {
-                if (int == recommendedSoundes.length) {
-                  return GestureDetector(
-                    onTap: () {
-                      Get.to(RecommendedSoundsPage());
-                    },
-                    child: Container(
-                      height: 100,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'See More',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                } else {
-                  return _recommendedContainer(
-                      soundsName: recommendedSoundes[int],
-                      imageLink: recommendedImageUrl[int]);
-                }
-              },
-            ),
-          ),
           const SizedBox(
             height: 50,
           ),
