@@ -73,7 +73,20 @@ class _AuraHomePageState extends State<AuraHomePage>
     super.dispose();
   }
 
-  List<String> recommendedImageUrl = [''];
+  List<String> recommendedImageUrl = [
+    'https://i.pinimg.com/564x/a5/ba/00/a5ba003ca05f2646b8c2735ac0b6e3d9.jpg',
+    'https://i.pinimg.com/736x/7e/bb/a1/7ebba1c8f506046205f223e7f4477994.jpg',
+    'https://i.pinimg.com/564x/6d/b2/d4/6db2d4c4c456211650429781a47ee95b.jpg',
+    'https://i.pinimg.com/564x/75/50/0b/75500bd88c86833f3c64b769d5d197de.jpg',
+    'https://i.pinimg.com/564x/b6/31/84/b631841cb3a29e6f7be99c5ec0bca1d0.jpg',
+  ];
+  List<String> recommendedSoundes = [
+    'Ocean Waves',
+    'Birdsong',
+    'Soft Piano',
+    'Harp',
+    'Bonfire',
+  ];
 
   String _getGreeting() {
     final now = DateTime.now();
@@ -214,18 +227,17 @@ class _AuraHomePageState extends State<AuraHomePage>
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-            child: SizedBox(
-              height: 100,
-              child: ListView.builder(
-                  physics: ClampingScrollPhysics(),
-                  itemCount: 5,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (BuildContext, int) {
-                    return _recommendedContainer();
-                  }),
-            ),
+          SizedBox(
+            height: 130,
+            child: ListView.builder(
+                physics: ClampingScrollPhysics(),
+                itemCount: 5,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (BuildContext, int) {
+                  return _recommendedContainer(
+                      soundsName: recommendedSoundes[int],
+                      imageLink: recommendedImageUrl[int]);
+                }),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 8.0),
@@ -417,15 +429,46 @@ class _AuraHomePageState extends State<AuraHomePage>
     );
   }
 
-  Widget _recommendedContainer() {
-    return Container(
-      margin: EdgeInsets.only(left: 18),
-      width: 100,
-      decoration: BoxDecoration(
-          image: DecorationImage(
-              image: CachedNetworkImageProvider(recommendedImageUrl[index])),
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(14)),
+  Widget _recommendedContainer({
+    required String soundsName,
+    required String imageLink,
+  }) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Stack(
+          children: [
+            Container(
+              margin: EdgeInsets.only(left: 18),
+              height: 100,
+              width: 100,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: CachedNetworkImageProvider(imageLink),
+                      fit: BoxFit.cover,
+                      filterQuality: FilterQuality.high),
+                  borderRadius: BorderRadius.circular(14)),
+            ),
+            Positioned(
+              right: 2,
+              bottom: 2,
+              child: Icon(
+                IconlyBold.play,
+                size: 32,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 18, top: 4),
+          child: Text(
+            soundsName,
+            style: TextStyle(color: Colors.white, fontSize: 14),
+          ),
+        )
+      ],
     );
   }
 
