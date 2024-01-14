@@ -38,7 +38,7 @@ class _NoisesPageState extends State<NoisesPage> {
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: const Color(0xFF131321),
         title: Text(
-          'Recommended Sounds',
+          'Noises',
           style: TextStyle(color: Colors.white),
         ),
       ),

@@ -159,32 +159,35 @@ class _AuraHomePageState extends State<AuraHomePage>
               ),
             ),
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 50, 20, 0),
+              padding: const EdgeInsets.only(top: 50.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        greeting,
-                        style: GoogleFonts.dancingScript(
-                          //lobster  // carattere  //dancing script
-                          color: Colors.white,
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          greeting,
+                          style: GoogleFonts.dancingScript(
+                            //lobster  // carattere  //dancing script
+                            color: Colors.white,
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      Text(
-                        '$userName',
-                        style: GoogleFonts.openSans(
-                            color: Colors.white, fontSize: 16),
-                      ),
-                    ],
+                        Text(
+                          '$userName',
+                          style: GoogleFonts.openSans(
+                              color: Colors.white, fontSize: 16),
+                        ),
+                      ],
+                    ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -229,12 +232,23 @@ class _AuraHomePageState extends State<AuraHomePage>
                       ],
                     ),
                   ),
+                  Container(
+                    height: 20,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: Color(0xFF131321),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 8.0),
+            padding: const EdgeInsets.only(left: 20.0, top: 0, bottom: 8.0),
             child: Text(
               'Recommended',
               style: GoogleFonts.openSans(
