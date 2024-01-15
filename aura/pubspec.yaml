@@ -60,6 +60,7 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   palette_generator: ^0.3.3+3
   provider: ^6.1.1
+  flutter_cube: ^0.1.1
 
 dev_dependencies:
   flutter_test:
@@ -102,6 +103,7 @@ flutter:
     - assets/icons/rain/
     - assets/icons/asmr/
     - assets/icons/transport/
+    - assets/earth
     - assets/
     
     
