@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:aura/data/composer_data.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
@@ -67,304 +68,313 @@ class AuraComposerTestState extends State<AuraComposerTest> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF131321),
-      body: SafeArea(
-        child: Stack(
-          children: [
-            SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: CachedNetworkImageProvider(
+                          'https://i.pinimg.com/originals/82/c8/63/82c863a500887952a88f1115a0e7389c.gif'),
+                      fit: BoxFit.cover,
+                    ),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 0, 10),
                     child: Align(
-                      alignment: Alignment.centerLeft,
+                      alignment: Alignment.bottomLeft,
                       child: Text(
-                        'Customization Sound',
+                        'Sounds',
                         style: GoogleFonts.dancingScript(
-                            color: Colors.white, fontSize: 30),
+                            color: Colors.white, fontSize: 38),
                       ),
                     ),
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width - 40,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF1F1F36),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 10, 0, 20),
-                              child: Text(
-                                'Nature Category',
-                                style: GoogleFonts.openSans(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width - 40,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1F1F36),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 10, 0, 20),
+                            child: Text(
+                              'Nature Category',
+                              style: GoogleFonts.openSans(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
-                          Wrap(
-                            spacing: 8.0,
-                            runSpacing: 4.0,
-                            children: <Widget>[
-                              for (int i = 0; i < natureaudioPaths.length; i++)
-                                _buildAudioControl(
-                                  icon: natureIcons[i],
-                                  label: natureaudioNames[i],
-                                  audioPlayer: natureaudioPlayer[i],
-                                  colour:
-                                      const Color.fromARGB(255, 38, 224, 45),
-                                ),
-                            ],
-                          ),
-                        ],
-                      ),
+                        ),
+                        Wrap(
+                          spacing: 8.0,
+                          runSpacing: 4.0,
+                          children: <Widget>[
+                            for (int i = 0; i < natureaudioPaths.length; i++)
+                              _buildAudioControl(
+                                icon: natureIcons[i],
+                                label: natureaudioNames[i],
+                                audioPlayer: natureaudioPlayer[i],
+                                colour: const Color.fromARGB(255, 38, 224, 45),
+                              ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width - 40,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1F1F36),
+                    borderRadius: BorderRadius.circular(15),
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width - 40,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF1F1F36),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 10, 0, 20),
-                              child: Text(
-                                'Animals Category',
-                                style: GoogleFonts.openSans(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 10, 0, 20),
+                            child: Text(
+                              'Animals Category',
+                              style: GoogleFonts.openSans(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
-                          Wrap(
-                            spacing: 8.0,
-                            runSpacing: 4.0,
-                            children: <Widget>[
-                              for (int i = 0; i < animalsaudioPaths.length; i++)
-                                _buildAudioControl(
-                                  icon: animalsIcons[i],
-                                  label: animalsaudioNames[i],
-                                  audioPlayer: animalsaudioPlayer[i],
-                                  colour: const Color.fromARGB(255, 97, 33, 10),
-                                ),
-                            ],
-                          ),
-                        ],
-                      ),
+                        ),
+                        Wrap(
+                          spacing: 8.0,
+                          runSpacing: 4.0,
+                          children: <Widget>[
+                            for (int i = 0; i < animalsaudioPaths.length; i++)
+                              _buildAudioControl(
+                                icon: animalsIcons[i],
+                                label: animalsaudioNames[i],
+                                audioPlayer: animalsaudioPlayer[i],
+                                colour: const Color.fromARGB(255, 97, 33, 10),
+                              ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width - 40,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1F1F36),
+                    borderRadius: BorderRadius.circular(15),
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width - 40,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF1F1F36),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 10, 0, 20),
-                              child: Text(
-                                'Rain Category',
-                                style: GoogleFonts.openSans(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 10, 0, 20),
+                            child: Text(
+                              'Rain Category',
+                              style: GoogleFonts.openSans(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
-                          Wrap(
-                            spacing: 8.0,
-                            runSpacing: 4.0,
-                            children: <Widget>[
-                              for (int i = 0; i < rainaudioPaths.length; i++)
-                                _buildAudioControl(
-                                  icon: rainIcons[i],
-                                  label: rainaudioNames[i],
-                                  audioPlayer: rainaudioPlayer[i],
-                                  colour:
-                                      const Color.fromARGB(255, 33, 152, 243),
-                                ),
-                            ],
-                          ),
-                        ],
-                      ),
+                        ),
+                        Wrap(
+                          spacing: 8.0,
+                          runSpacing: 4.0,
+                          children: <Widget>[
+                            for (int i = 0; i < rainaudioPaths.length; i++)
+                              _buildAudioControl(
+                                icon: rainIcons[i],
+                                label: rainaudioNames[i],
+                                audioPlayer: rainaudioPlayer[i],
+                                colour: const Color.fromARGB(255, 33, 152, 243),
+                              ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width - 40,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1F1F36),
+                    borderRadius: BorderRadius.circular(15),
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width - 40,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF1F1F36),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 10, 0, 20),
-                              child: Text(
-                                'Music Category',
-                                style: GoogleFonts.openSans(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 10, 0, 20),
+                            child: Text(
+                              'Music Category',
+                              style: GoogleFonts.openSans(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
-                          Wrap(
-                            spacing: 8.0,
-                            runSpacing: 4.0,
-                            children: <Widget>[
-                              for (int i = 0; i < musicaudioPaths.length; i++)
-                                _buildAudioControl(
-                                  icon: musicIcons[i],
-                                  label: musicaudioNames[i],
-                                  audioPlayer: musicaudioPlayer[i],
-                                  colour:
-                                      const Color.fromARGB(255, 176, 39, 135),
-                                ),
-                            ],
-                          ),
-                        ],
-                      ),
+                        ),
+                        Wrap(
+                          spacing: 8.0,
+                          runSpacing: 4.0,
+                          children: <Widget>[
+                            for (int i = 0; i < musicaudioPaths.length; i++)
+                              _buildAudioControl(
+                                icon: musicIcons[i],
+                                label: musicaudioNames[i],
+                                audioPlayer: musicaudioPlayer[i],
+                                colour: const Color.fromARGB(255, 176, 39, 135),
+                              ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width - 40,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1F1F36),
+                    borderRadius: BorderRadius.circular(15),
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width - 40,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF1F1F36),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 10, 0, 20),
-                              child: Text(
-                                'ASMR Category',
-                                style: GoogleFonts.openSans(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 10, 0, 20),
+                            child: Text(
+                              'ASMR Category',
+                              style: GoogleFonts.openSans(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
-                          Wrap(
-                            spacing: 8.0,
-                            runSpacing: 4.0,
-                            children: <Widget>[
-                              for (int i = 0; i < asmraudioPaths.length; i++)
-                                _buildAudioControl(
-                                  icon: asmrIcons[i],
-                                  label: asmraudioNames[i],
-                                  audioPlayer: asmraudioPlayer[i],
-                                  colour:
-                                      const Color.fromARGB(255, 181, 115, 15),
-                                ),
-                            ],
-                          ),
-                        ],
-                      ),
+                        ),
+                        Wrap(
+                          spacing: 8.0,
+                          runSpacing: 4.0,
+                          children: <Widget>[
+                            for (int i = 0; i < asmraudioPaths.length; i++)
+                              _buildAudioControl(
+                                icon: asmrIcons[i],
+                                label: asmraudioNames[i],
+                                audioPlayer: asmraudioPlayer[i],
+                                colour: const Color.fromARGB(255, 181, 115, 15),
+                              ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width - 40,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1F1F36),
+                    borderRadius: BorderRadius.circular(15),
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width - 40,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF1F1F36),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 10, 0, 20),
-                              child: Text(
-                                'Transport Category',
-                                style: GoogleFonts.openSans(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 10, 0, 20),
+                            child: Text(
+                              'Transport Category',
+                              style: GoogleFonts.openSans(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
-                          Wrap(
-                            spacing: 8.0,
-                            runSpacing: 4.0,
-                            children: <Widget>[
-                              for (int i = 0;
-                                  i < transportaudioPaths.length;
-                                  i++)
-                                _buildAudioControl(
-                                  icon: transportIcons[i],
-                                  label: transportaudioNames[i],
-                                  audioPlayer: transportaudioPlayer[i],
-                                  colour:
-                                      const Color.fromARGB(255, 24, 147, 98),
-                                ),
-                            ],
-                          ),
-                        ],
-                      ),
+                        ),
+                        Wrap(
+                          spacing: 8.0,
+                          runSpacing: 4.0,
+                          children: <Widget>[
+                            for (int i = 0; i < transportaudioPaths.length; i++)
+                              _buildAudioControl(
+                                icon: transportIcons[i],
+                                label: transportaudioNames[i],
+                                audioPlayer: transportaudioPlayer[i],
+                                colour: const Color.fromARGB(255, 24, 147, 98),
+                              ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.18,
-                  ),
-                ],
-              ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.1,
+                ),
+              ],
             ),
-            _buildController(),
-          ],
-        ),
+          ),
+          _buildController(),
+        ],
       ),
     );
   }
