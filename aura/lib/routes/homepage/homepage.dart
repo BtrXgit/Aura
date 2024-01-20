@@ -273,8 +273,11 @@ class _AuraHomePageState extends State<AuraHomePage>
               physics: BouncingScrollPhysics(),
               itemCount: recommendedSoundes.length + 1,
               scrollDirection: Axis.horizontal,
-              itemBuilder: (BuildContext, int) {
-                if (int == recommendedSoundes.length) {
+              itemBuilder: (BuildContext context, int index) {
+                // Capture the current index in a separate variable
+                int currentIndex = index;
+
+                if (index == recommendedSoundes.length) {
                   return GestureDetector(
                     onTap: () {
                       Get.to(RecommendedSoundsPage());
@@ -301,8 +304,10 @@ class _AuraHomePageState extends State<AuraHomePage>
                   );
                 } else {
                   return _recommendedContainer(
-                      soundsName: recommendedSoundes[int],
-                      imageLink: recommendedImageUrl[int]);
+                    soundsName: recommendedSoundes[currentIndex],
+                    imageLink: recommendedImageUrl[currentIndex],
+                    index: currentIndex,
+                  );
                 }
               },
             ),
@@ -399,7 +404,9 @@ class _AuraHomePageState extends State<AuraHomePage>
                   );
                 } else {
                   return _recommendedContainer(
-                      soundsName: noises[int], imageLink: noisesImageUrl[int]);
+                      soundsName: noises[int],
+                      imageLink: noisesImageUrl[int],
+                      index: index);
                 }
               },
             ),
@@ -550,6 +557,7 @@ class _AuraHomePageState extends State<AuraHomePage>
   Widget _recommendedContainer({
     required String soundsName,
     required String imageLink,
+    required int index,
   }) {
     return GestureDetector(
       onTap: () => Get.to(LivePage(
