@@ -100,6 +100,8 @@ flutter:
     - assets/rain/
     - assets/slider/
     - assets/transport/
+    - assets/icons/nature/
+    - assets/icons/animals/
     - assets/icons/rain/
     - assets/icons/asmr/
     - assets/icons/transport/

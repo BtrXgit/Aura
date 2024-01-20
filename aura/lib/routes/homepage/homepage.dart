@@ -261,7 +261,7 @@ class _AuraHomePageState extends State<AuraHomePage>
           SizedBox(
             height: 130,
             child: ListView.builder(
-              physics: ClampingScrollPhysics(),
+              physics: BouncingScrollPhysics(),
               itemCount: recommendedSoundes.length + 1,
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext, int) {
@@ -359,7 +359,7 @@ class _AuraHomePageState extends State<AuraHomePage>
           SizedBox(
             height: 130,
             child: ListView.builder(
-              physics: ClampingScrollPhysics(),
+              physics: BouncingScrollPhysics(),
               itemCount: noises.length + 1,
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext, int) {

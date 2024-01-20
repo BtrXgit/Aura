@@ -299,7 +299,7 @@ final List<String> rainaudioNames = [
   "Thunder",
   "Forest",
   "Leaves",
-  "Tent",
+  "Roof",
   "Window",
 ];
 final List<String> musicaudioNames = [
@@ -317,7 +317,7 @@ final List<String> asmraudioNames = [
   //ASMR
   'Breathing',
   'Cat Purring',
-  'Crackling',
+  'Bonfire',
   'Hair Clip.',
   'Page',
   'Scratch',
@@ -331,20 +331,20 @@ final List<String> transportaudioNames = [
 ];
 
 final List<Widget> natureIcons = [
-  Image.asset('assets/icons/cave.png'),
-  Image.asset('assets/icons/fire.png'),
-  Image.asset('assets/icons/lake.png'),
-  Image.asset('assets/icons/night.png'),
-  Image.asset('assets/icons/ocean.png'),
-  Image.asset('assets/icons/wind.png'),
+  Image.asset('assets/icons/nature/cave.png'),
+  Image.asset('assets/icons/nature/fire.png'),
+  Image.asset('assets/icons/nature/lake.png'),
+  Image.asset('assets/icons/nature/night.png'),
+  Image.asset('assets/icons/nature/ocean.png'),
+  Image.asset('assets/icons/nature/wind.png'),
 ];
 final List<Widget> animalsIcons = [
   //animals
-  Image.asset('assets/icons/birds.png'),
-  Image.asset('assets/icons/crickets.png'),
-  Image.asset('assets/icons/frog.png'),
-  Image.asset('assets/icons/owls.png'),
-  Image.asset('assets/icons/wolves.png'),
+  Image.asset('assets/icons/animals/birds.png'),
+  Image.asset('assets/icons/animals/crickets.png'),
+  Image.asset('assets/icons/animals/frogs.png'),
+  Image.asset('assets/icons/animals/owls.png'),
+  Image.asset('assets/icons/animals/wolves.png'),
 ];
 final List<Widget> rainIcons = [
   //rain
@@ -352,7 +352,7 @@ final List<Widget> rainIcons = [
   Image.asset('assets/icons/rain/storm.png'),
   Image.asset('assets/icons/rain/rain_in_forest.png'),
   Image.asset('assets/icons/rain/rain_on_leaves.png'),
-  Image.asset('assets/icons/rain/rain_on_leaves.png'),
+  Image.asset('assets/icons/rain/rain_on_roof.png'),
   Image.asset('assets/icons/rain/rain_on_window.png'),
 ];
 final List<Widget> musicIcons = [

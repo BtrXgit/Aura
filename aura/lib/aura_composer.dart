@@ -441,7 +441,7 @@ class AuraComposerTestState extends State<AuraComposerTest> {
         Container(
           height: 64,
           width: 64,
-          padding: const EdgeInsets.all(6.0),
+          padding: const EdgeInsets.all(14.0),
           // margin: const EdgeInsets.all(6),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
