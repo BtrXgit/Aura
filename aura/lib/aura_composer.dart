@@ -109,7 +109,11 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                 Container(
                   width: MediaQuery.of(context).size.width - 40,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF1F1F36),
+                    // color: const Color(0xFF1F1F36),
+                    image: DecorationImage(
+                      image: AssetImage('assets/style3.png'),
+                      fit: BoxFit.cover,
+                    ),
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Padding(
@@ -153,7 +157,10 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                 Container(
                   width: MediaQuery.of(context).size.width - 40,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF1F1F36),
+                    // color: const Color(0xFF1F1F36),
+                    image: DecorationImage(
+                        image: AssetImage('assets/style3.png'),
+                        fit: BoxFit.cover),
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Padding(
@@ -197,7 +204,10 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                 Container(
                   width: MediaQuery.of(context).size.width - 40,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF1F1F36),
+                    // color: const Color(0xFF1F1F36),
+                    image: DecorationImage(
+                        image: AssetImage('assets/style3.png'),
+                        fit: BoxFit.cover),
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Padding(
@@ -241,7 +251,10 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                 Container(
                   width: MediaQuery.of(context).size.width - 40,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF1F1F36),
+                    // color: const Color(0xFF1F1F36),
+                    image: DecorationImage(
+                        image: AssetImage('assets/style3.png'),
+                        fit: BoxFit.cover),
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Padding(
@@ -285,7 +298,10 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                 Container(
                   width: MediaQuery.of(context).size.width - 40,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF1F1F36),
+                    // color: const Color(0xFF1F1F36),
+                    image: DecorationImage(
+                        image: AssetImage('assets/style3.png'),
+                        fit: BoxFit.cover),
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Padding(
@@ -329,7 +345,10 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                 Container(
                   width: MediaQuery.of(context).size.width - 40,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF1F1F36),
+                    // color: const Color(0xFF1F1F36),
+                    image: DecorationImage(
+                        image: AssetImage('assets/style3.png'),
+                        fit: BoxFit.cover),
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Padding(
@@ -462,7 +481,8 @@ class AuraComposerTestState extends State<AuraComposerTest> {
             : Text(
                 label,
                 style: const TextStyle(
-                  color: Color.fromARGB(255, 103, 247, 110),
+                  // color: Color.fromARGB(255, 103, 247, 110),
+                  color: Colors.white,
                 ),
               ),
         const SizedBox(
@@ -480,6 +500,8 @@ class AuraComposerTestState extends State<AuraComposerTest> {
             trackHeight: 2.0,
             thumbShape: RoundSliderThumbShape(enabledThumbRadius: 8.0),
             overlayShape: RoundSliderOverlayShape(overlayRadius: 0.0),
+            thumbColor: Colors.white,
+            activeTrackColor: Colors.white,
           ),
           child: Slider(
             value: audioPlayer.volume,

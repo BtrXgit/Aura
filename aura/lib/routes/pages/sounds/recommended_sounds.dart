@@ -71,7 +71,9 @@ class _RecommendedSoundsPageState extends State<RecommendedSoundsPage> {
         itemBuilder: (context, index) {
           return Container(
             decoration: BoxDecoration(
-                color: const Color(0xFF1F1F36),
+                // color: const Color(0xFF1F1F36),
+                image: DecorationImage(
+                    image: AssetImage('assets/style2.png'), fit: BoxFit.cover),
                 borderRadius: BorderRadius.circular(14)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
