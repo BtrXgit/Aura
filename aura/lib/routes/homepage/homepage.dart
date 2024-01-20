@@ -1,3 +1,4 @@
+import 'package:aura/routes/pages/live/live.dart';
 import 'package:aura/routes/pages/sounds/noises.dart';
 import 'package:aura/routes/pages/sounds/recommended_sounds.dart';
 import 'package:aura/routes/tweaks.dart';
@@ -88,6 +89,14 @@ class _AuraHomePageState extends State<AuraHomePage>
     'Soft Piano',
     'Harp',
     'Bonfire',
+  ];
+
+  List<String> songs = [
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FRecommended%2FOcean%20Waves.mp3?alt=media&token=50e60efc-4d61-42f0-af36-ad9ba1be46ca',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FRecommended%2FBirdsong.mp3?alt=media&token=b589b721-3f73-4151-9b5b-ea8011a9f175',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FRecommended%2FSoft%20Piano.mp3?alt=media&token=b99e81a3-2f90-4dbb-9111-5df0d4b54143',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FRecommended%2FHarp.mp3?alt=media&token=74d14dfa-6255-469b-836b-613d17a4b622',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FRecommended%2FBonfire.mp3?alt=media&token=1f50ef65-565d-4b20-bb29-8a2a2ef8f8a1',
   ];
 
   List<String> noisesImageUrl = [
@@ -542,42 +551,49 @@ class _AuraHomePageState extends State<AuraHomePage>
     required String soundsName,
     required String imageLink,
   }) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Stack(
-          children: [
-            Container(
-              margin: EdgeInsets.only(left: 18),
-              height: 100,
-              width: 100,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: CachedNetworkImageProvider(imageLink),
-                      fit: BoxFit.cover,
-                      filterQuality: FilterQuality.high),
-                  borderRadius: BorderRadius.circular(14)),
-            ),
-            Positioned(
-              right: 2,
-              bottom: 2,
-              child: Icon(
-                IconlyBold.play,
-                size: 32,
-                color: Colors.white,
+    return GestureDetector(
+      onTap: () => Get.to(LivePage(
+        currentIndex: index,
+        songs: songs,
+        title: 'Recommended Sounds',
+      )),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Stack(
+            children: [
+              Container(
+                margin: EdgeInsets.only(left: 18),
+                height: 100,
+                width: 100,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: CachedNetworkImageProvider(imageLink),
+                        fit: BoxFit.cover,
+                        filterQuality: FilterQuality.high),
+                    borderRadius: BorderRadius.circular(14)),
               ),
-            ),
-          ],
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 18, top: 4),
-          child: Text(
-            soundsName,
-            style: TextStyle(color: Colors.white, fontSize: 14),
+              Positioned(
+                right: 2,
+                bottom: 2,
+                child: Icon(
+                  IconlyBold.play,
+                  size: 32,
+                  color: Colors.white,
+                ),
+              ),
+            ],
           ),
-        )
-      ],
+          Padding(
+            padding: EdgeInsets.only(left: 18, top: 4),
+            child: Text(
+              soundsName,
+              style: TextStyle(color: Colors.white, fontSize: 14),
+            ),
+          )
+        ],
+      ),
     );
   }
 

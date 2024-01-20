@@ -16,7 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class LivePage extends StatefulWidget {
   final int currentIndex;
   final String title;
-  final List<Song> songs;
+  final List<String> songs;
 
   const LivePage({
     required this.currentIndex,
@@ -43,23 +43,22 @@ class _LivePageState extends State<LivePage> {
       _initializePlayer();
       _audioPlayer.play();
     }
-    _loadDominantColor();
-    _loadFavoriteSongs();
+    // _loadDominantColor();
   }
 
-  Future<void> _loadDominantColor() async {
-    final PaletteGenerator paletteGenerator =
-        await PaletteGenerator.fromImageProvider(
-            CachedNetworkImageProvider(widget.songs[_currentIndex].imageUrl));
-    setState(() {
-      dominantColor = paletteGenerator.dominantColor?.color;
-    });
-  }
+  // Future<void> _loadDominantColor() async {
+  //   final PaletteGenerator paletteGenerator =
+  //       await PaletteGenerator.fromImageProvider(
+  //           CachedNetworkImageProvider(widget.songs[_currentIndex].imageUrl));
+  //   setState(() {
+  //     dominantColor = paletteGenerator.dominantColor?.color;
+  //   });
+  // }
 
   void _initializePlayer() {
     if (_currentIndex >= 0 && _currentIndex < widget.songs.length) {
       _audioPlayer.dynamicSet(
-          pushIfNotExisted: true, url: widget.songs[_currentIndex].songUrl);
+          pushIfNotExisted: true, url: widget.songs[_currentIndex]);
 
       _audioPlayer.processingStateStream.listen((processingState) {
         setState(() {});
@@ -80,9 +79,9 @@ class _LivePageState extends State<LivePage> {
       }
 
       _audioPlayer.dynamicSet(
-          pushIfNotExisted: true, url: widget.songs[_currentIndex].songUrl);
+          pushIfNotExisted: true, url: widget.songs[_currentIndex]);
       _audioPlayer.play();
-      _loadDominantColor();
+      // _loadDominantColor();
     }
   }
 
@@ -90,38 +89,10 @@ class _LivePageState extends State<LivePage> {
     if (widget.songs.isNotEmpty && _currentIndex > 0) {
       _currentIndex--;
       _audioPlayer.dynamicSet(
-          pushIfNotExisted: true, url: widget.songs[_currentIndex].songUrl);
+          pushIfNotExisted: true, url: widget.songs[_currentIndex]);
       _audioPlayer.play();
-      _loadDominantColor();
+      // _loadDominantColor();
     }
-  }
-
-  Future<void> _loadFavoriteSongs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    Set<String> favorites =
-        prefs.getStringList('favorites')?.toSet() ?? Set<String>();
-    setState(() {
-      favoriteSongs = favorites;
-    });
-  }
-
-  Future<void> _saveFavoriteSongs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setStringList('favorites', favoriteSongs.toList());
-  }
-
-  void _toggleFavorite() {
-    String currentSongId = widget.songs[_currentIndex].id;
-    if (favoriteSongs.contains(currentSongId)) {
-      setState(() {
-        favoriteSongs.remove(currentSongId);
-      });
-    } else {
-      setState(() {
-        favoriteSongs.add(currentSongId);
-      });
-    }
-    _saveFavoriteSongs();
   }
 
   @override
@@ -224,14 +195,7 @@ class _LivePageState extends State<LivePage> {
               ? Stack(
                   children: [
                     Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: CachedNetworkImageProvider(
-                            widget.songs[_currentIndex].imageUrl,
-                          ),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                      decoration: BoxDecoration(color: Colors.red),
                       child: BackdropFilter(
                         filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
                         child: Container(
@@ -263,11 +227,10 @@ class _LivePageState extends State<LivePage> {
                         ),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(14),
-                          child: CachedNetworkImage(
+                          child: Container(
                             height: MediaQuery.of(context).size.height * 0.38,
                             width: MediaQuery.of(context).size.width - 74,
-                            fit: BoxFit.cover,
-                            imageUrl: widget.songs[_currentIndex].imageUrl,
+                            color: Colors.red,
                           ),
                         ),
                         const SizedBox(height: 50),
@@ -279,54 +242,24 @@ class _LivePageState extends State<LivePage> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      widget.songs[_currentIndex].songName,
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 24),
-                                    ),
-                                  ),
+                                  // Align(
+                                  //   alignment: Alignment.centerLeft,
+                                  //   child: Text(
+                                  //     widget.songs[_currentIndex].songName,
+                                  //     style: const TextStyle(
+                                  //         color: Colors.white, fontSize: 24),
+                                  //   ),
+                                  // ),
                                   const SizedBox(height: 10),
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      widget.songs[_currentIndex].artist,
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 18),
-                                    ),
-                                  ),
+                                  // Align(
+                                  //   alignment: Alignment.centerLeft,
+                                  //   child: Text(
+                                  //     widget.songs[_currentIndex].artist,
+                                  //     style: const TextStyle(
+                                  //         color: Colors.white, fontSize: 18),
+                                  //   ),
+                                  // ),
                                 ],
-                              ),
-                              Container(
-                                width: 44,
-                                height: 44,
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.2),
-                                  shape: BoxShape.circle,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.1),
-                                      spreadRadius: 5,
-                                      blurRadius: 7,
-                                      offset: Offset(0, 3),
-                                    ),
-                                  ],
-                                ),
-                                child: IconButton(
-                                  icon: Icon(
-                                    favoriteSongs.contains(
-                                            widget.songs[_currentIndex].id)
-                                        ? IconlyBold.heart
-                                        : IconlyLight.heart,
-                                    color: favoriteSongs.contains(
-                                            widget.songs[_currentIndex].id)
-                                        ? Colors.red
-                                        : Colors.white,
-                                    size: 28,
-                                  ),
-                                  onPressed: _toggleFavorite,
-                                ),
                               ),
                             ],
                           ),
@@ -541,22 +474,12 @@ class _LivePageState extends State<LivePage> {
                             : null,
                         leading: ClipRRect(
                           borderRadius: BorderRadius.circular(8.0),
-                          child: CachedNetworkImage(
+                          child: Container(
                             width: 50,
                             height: 50,
-                            fit: BoxFit.cover,
-                            imageUrl: widget.songs[index].imageUrl,
+                            color: Colors.red,
                           ),
                         ),
-                        title: Text(
-                          widget.songs[index].songName,
-                          style: TextStyle(
-                              fontWeight: isCurrentSong
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                              color: Colors.white),
-                        ),
-                        subtitle: Text(widget.songs[index].artist),
                         trailing: IconButton(
                           icon: Icon(Icons.close),
                           onPressed: () {
@@ -572,7 +495,7 @@ class _LivePageState extends State<LivePage> {
                           _currentIndex = index;
                           _audioPlayer.dynamicSet(
                             pushIfNotExisted: true,
-                            url: widget.songs[_currentIndex].songUrl,
+                            url: widget.songs[_currentIndex],
                           );
                           _audioPlayer.play();
                           Navigator.pop(context);
