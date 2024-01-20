@@ -556,6 +556,8 @@ class _AuraHomePageState extends State<AuraHomePage>
         currentIndex: index,
         songs: songs,
         title: 'Recommended Sounds',
+        imageUrl: recommendedImageUrl,
+        soundNames: recommendedSoundes,
       )),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,

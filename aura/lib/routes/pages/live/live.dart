@@ -17,11 +17,15 @@ class LivePage extends StatefulWidget {
   final int currentIndex;
   final String title;
   final List<String> songs;
+  final List<String> imageUrl;
+  final List<String> soundNames;
 
   const LivePage({
     required this.currentIndex,
     required this.songs,
     required this.title,
+    required this.imageUrl,
+    required this.soundNames,
     Key? key,
   }) : super(key: key);
 
@@ -43,17 +47,17 @@ class _LivePageState extends State<LivePage> {
       _initializePlayer();
       _audioPlayer.play();
     }
-    // _loadDominantColor();
+    _loadDominantColor();
   }
 
-  // Future<void> _loadDominantColor() async {
-  //   final PaletteGenerator paletteGenerator =
-  //       await PaletteGenerator.fromImageProvider(
-  //           CachedNetworkImageProvider(widget.songs[_currentIndex].imageUrl));
-  //   setState(() {
-  //     dominantColor = paletteGenerator.dominantColor?.color;
-  //   });
-  // }
+  Future<void> _loadDominantColor() async {
+    final PaletteGenerator paletteGenerator =
+        await PaletteGenerator.fromImageProvider(
+            CachedNetworkImageProvider(widget.imageUrl[_currentIndex]));
+    setState(() {
+      dominantColor = paletteGenerator.dominantColor?.color;
+    });
+  }
 
   void _initializePlayer() {
     if (_currentIndex >= 0 && _currentIndex < widget.songs.length) {
@@ -81,7 +85,7 @@ class _LivePageState extends State<LivePage> {
       _audioPlayer.dynamicSet(
           pushIfNotExisted: true, url: widget.songs[_currentIndex]);
       _audioPlayer.play();
-      // _loadDominantColor();
+      _loadDominantColor();
     }
   }
 
@@ -91,7 +95,7 @@ class _LivePageState extends State<LivePage> {
       _audioPlayer.dynamicSet(
           pushIfNotExisted: true, url: widget.songs[_currentIndex]);
       _audioPlayer.play();
-      // _loadDominantColor();
+      _loadDominantColor();
     }
   }
 
@@ -195,11 +199,18 @@ class _LivePageState extends State<LivePage> {
               ? Stack(
                   children: [
                     Container(
-                      decoration: BoxDecoration(color: Colors.red),
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: CachedNetworkImageProvider(
+                            widget.imageUrl[_currentIndex],
+                          ),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                       child: BackdropFilter(
                         filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
                         child: Container(
-                          color: Colors.white.withOpacity(0.5),
+                          color: Colors.black.withOpacity(0.2),
                         ),
                       ),
                     ),
@@ -210,7 +221,7 @@ class _LivePageState extends State<LivePage> {
                           height: MediaQuery.of(context).size.height * 0.08,
                         ),
                         Text(
-                          'From Playlist',
+                          'Playing From',
                           style: GoogleFonts.openSans(
                             color: Colors.white,
                             fontSize: 16,
@@ -227,10 +238,11 @@ class _LivePageState extends State<LivePage> {
                         ),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(14),
-                          child: Container(
+                          child: CachedNetworkImage(
                             height: MediaQuery.of(context).size.height * 0.38,
                             width: MediaQuery.of(context).size.width - 74,
-                            color: Colors.red,
+                            fit: BoxFit.cover,
+                            imageUrl: widget.imageUrl[_currentIndex],
                           ),
                         ),
                         const SizedBox(height: 50),
@@ -242,96 +254,22 @@ class _LivePageState extends State<LivePage> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // Align(
-                                  //   alignment: Alignment.centerLeft,
-                                  //   child: Text(
-                                  //     widget.songs[_currentIndex].songName,
-                                  //     style: const TextStyle(
-                                  //         color: Colors.white, fontSize: 24),
-                                  //   ),
-                                  // ),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      widget.soundNames[_currentIndex],
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 24),
+                                    ),
+                                  ),
                                   const SizedBox(height: 10),
-                                  // Align(
-                                  //   alignment: Alignment.centerLeft,
-                                  //   child: Text(
-                                  //     widget.songs[_currentIndex].artist,
-                                  //     style: const TextStyle(
-                                  //         color: Colors.white, fontSize: 18),
-                                  //   ),
-                                  // ),
                                 ],
                               ),
                             ],
                           ),
                         ),
                         const SizedBox(height: 20),
-                        // Slider will come here
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                          child: StreamBuilder<Duration>(
-                            stream: _audioPlayer.positionStream,
-                            builder: (context, snapshot) {
-                              final position = snapshot.data ?? Duration.zero;
-                              final duration =
-                                  _audioPlayer.duration ?? Duration.zero;
-                              return Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  SliderTheme(
-                                    data: SliderTheme.of(context).copyWith(
-                                      activeTrackColor:
-                                          dominantColor ?? Colors.blue,
-                                      inactiveTrackColor: Colors.grey,
-                                      thumbColor: Colors.white,
-                                      overlayColor:
-                                          Colors.blue.withOpacity(0.3),
-                                      valueIndicatorColor: Colors.blue,
-                                      thumbShape: const RoundSliderThumbShape(
-                                          enabledThumbRadius: 8.0),
-                                      overlayShape:
-                                          const RoundSliderOverlayShape(
-                                              overlayRadius: 16.0),
-                                      valueIndicatorShape:
-                                          const PaddleSliderValueIndicatorShape(),
-                                      valueIndicatorTextStyle: const TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    child: Slider(
-                                      value: position.inSeconds.toDouble(),
-                                      max: duration.inSeconds.toDouble(),
-                                      onChanged: (value) {
-                                        _audioPlayer.seek(
-                                            Duration(seconds: value.toInt()));
-                                      },
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          '${position.inMinutes}:${(position.inSeconds % 60).toString().padLeft(2, '0')}',
-                                          style: const TextStyle(
-                                              color: Colors.white),
-                                        ),
-                                        Text(
-                                          '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}',
-                                          style: const TextStyle(
-                                              color: Colors.white),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ),
-                        const SizedBox(height: 20),
+
                         // Next/Previous button will come here
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -414,21 +352,26 @@ class _LivePageState extends State<LivePage> {
                     ),
                     Positioned(
                       top: 50,
-                      left: 10,
+                      right: 10,
                       child: IconButton(
-                        icon: Icon(Iconsax.setting_3, color: Colors.white),
+                        icon: Icon(
+                          Iconsax.setting_3,
+                          color: Colors.white,
+                          size: 28,
+                        ),
                         onPressed: () {},
                       ),
                     ),
                     Positioned(
                       top: 50,
-                      right: 10,
+                      left: 10,
                       child: IconButton(
-                        icon: const Icon(Iconsax.music_playlist,
-                            color: Colors.white),
-                        onPressed: () {
-                          _showQueue(context);
-                        },
+                        icon: Icon(
+                          Iconsax.close_circle,
+                          color: Colors.white,
+                          size: 34,
+                        ),
+                        onPressed: () => Navigator.pop(context),
                       ),
                     ),
                   ],
@@ -439,76 +382,6 @@ class _LivePageState extends State<LivePage> {
                 ),
         ),
       ),
-    );
-  }
-
-  void _showQueue(BuildContext context) {
-    showModalBottomSheet(
-      backgroundColor: Color(0xFF131321),
-      context: context,
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text(
-                    'Now Playing',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: widget.songs.length,
-                    itemBuilder: (context, index) {
-                      bool isCurrentSong = _currentIndex == index;
-
-                      return ListTile(
-                        tileColor: isCurrentSong
-                            ? Color.fromARGB(255, 36, 36, 58)
-                            : null,
-                        leading: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Container(
-                            width: 50,
-                            height: 50,
-                            color: Colors.red,
-                          ),
-                        ),
-                        trailing: IconButton(
-                          icon: Icon(Icons.close),
-                          onPressed: () {
-                            setState(() {
-                              widget.songs.removeAt(index);
-                              if (_currentIndex == index) {
-                                _audioPlayer.stop();
-                              }
-                            });
-                          },
-                        ),
-                        onTap: () {
-                          _currentIndex = index;
-                          _audioPlayer.dynamicSet(
-                            pushIfNotExisted: true,
-                            url: widget.songs[_currentIndex],
-                          );
-                          _audioPlayer.play();
-                          Navigator.pop(context);
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ],
-            );
-          },
-        );
-      },
     );
   }
 }
