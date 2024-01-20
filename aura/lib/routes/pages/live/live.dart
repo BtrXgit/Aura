@@ -1,17 +1,12 @@
 import 'dart:async';
 import 'dart:ui';
-import 'package:aura/data/songs.dart';
-import 'package:aura/routes/pages/favorites.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:iconly/iconly.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_cache/just_audio_cache.dart';
 import 'package:palette_generator/palette_generator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LivePage extends StatefulWidget {
   final int currentIndex;
@@ -37,7 +32,6 @@ class _LivePageState extends State<LivePage> {
   final AudioPlayer _audioPlayer = AudioPlayer();
   int _currentIndex = 0;
   Color? dominantColor;
-  Set<String> favoriteSongs = Set<String>();
 
   @override
   void initState() {
