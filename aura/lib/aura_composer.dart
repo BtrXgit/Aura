@@ -82,8 +82,7 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: CachedNetworkImageProvider(
-                          'https://i.pinimg.com/originals/82/c8/63/82c863a500887952a88f1115a0e7389c.gif'),
+                      image: AssetImage('assets/composer.gif'),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.only(

@@ -7,6 +7,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:iconly/iconly.dart';
+import 'package:iconsax/iconsax.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);
@@ -43,9 +44,9 @@ class HomePageState extends State<HomePage>
   }
 
   Color homeColor = const Color.fromARGB(255, 175, 202, 0);
-  Color customColor = const Color.fromARGB(255, 59, 255, 226);
-  Color locationColor = Colors.blue;
-  Color settingsColor = Colors.black;
+  Color customColor = Color(0xFF7B4294);
+  Color locationColor = const Color.fromARGB(255, 59, 255, 226);
+  Color settingsColor = Colors.blue;
   Color unselectedColor = Colors.grey;
   Color _getIndicatorColor(int page) {
     switch (page) {
@@ -139,7 +140,7 @@ class HomePageState extends State<HomePage>
               width: 40,
               child: Center(
                   child: Icon(
-                IconlyBold.home,
+                IconlyLight.home,
                 color: currentPage == 0 ? homeColor : unselectedColor,
                 size: currentPage == 0 ? 32 : 28,
                 // color: Colors.black,
@@ -150,7 +151,7 @@ class HomePageState extends State<HomePage>
               width: 40,
               child: Center(
                   child: Icon(
-                IconlyBold.star,
+                Iconsax.music,
                 color: currentPage == 1 ? customColor : unselectedColor,
                 size: currentPage == 1 ? 32 : 28,
               )),
@@ -160,7 +161,7 @@ class HomePageState extends State<HomePage>
               width: 40,
               child: Center(
                   child: Icon(
-                IconlyBold.location,
+                Iconsax.location,
                 color: currentPage == 2 ? locationColor : unselectedColor,
                 size: currentPage == 2 ? 32 : 28,
               )),
@@ -170,7 +171,7 @@ class HomePageState extends State<HomePage>
               width: 40,
               child: Center(
                   child: Icon(
-                IconlyBold.profile,
+                IconlyLight.profile,
                 color: currentPage == 3 ? settingsColor : unselectedColor,
                 size: currentPage == 3 ? 32 : 28,
               )),
