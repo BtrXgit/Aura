@@ -32,7 +32,10 @@ class _SongsScreenState extends State<SongsScreen> {
   Future<void> _loadDominantColor() async {
     final PaletteGenerator paletteGenerator =
         await PaletteGenerator.fromImageProvider(
-            CachedNetworkImageProvider(widget.playlist.imageUrl));
+      CachedNetworkImageProvider(
+        widget.playlist.imageUrl,
+      ),
+    );
     setState(() {
       dominantColor = paletteGenerator.dominantColor?.color;
     });
@@ -109,7 +112,9 @@ class _SongsScreenState extends State<SongsScreen> {
                                     decoration: BoxDecoration(
                                         image: DecorationImage(
                                           image: CachedNetworkImageProvider(
-                                              widget.playlist.imageUrl),
+                                            widget.playlist.imageUrl,
+                                          ),
+                                          fit: BoxFit.cover,
                                         ),
                                         borderRadius:
                                             BorderRadius.circular(14)),

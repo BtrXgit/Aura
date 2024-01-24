@@ -189,7 +189,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                         ),
                         Text(
                           '$userName',
-                          style: GoogleFonts.openSans(
+                          style: GoogleFonts.kanit(
                               color: Colors.white, fontSize: 16),
                         ),
                       ],
@@ -260,10 +260,9 @@ class _AuraHomePageState extends State<AuraHomePage>
             padding: const EdgeInsets.only(left: 20.0, top: 0, bottom: 8.0),
             child: Text(
               'Recommended',
-              style: GoogleFonts.openSans(
+              style: GoogleFonts.kanit(
                 color: Colors.white,
                 fontSize: 24,
-                fontWeight: FontWeight.bold,
               ),
             ),
           ),
@@ -316,10 +315,9 @@ class _AuraHomePageState extends State<AuraHomePage>
             padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 8.0),
             child: Text(
               'Live Radios',
-              style: GoogleFonts.openSans(
+              style: GoogleFonts.kanit(
                 color: Colors.white,
                 fontSize: 24,
-                fontWeight: FontWeight.bold,
               ),
             ),
           ),
@@ -363,10 +361,9 @@ class _AuraHomePageState extends State<AuraHomePage>
             padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 8.0),
             child: Text(
               'Noises',
-              style: GoogleFonts.openSans(
+              style: GoogleFonts.kanit(
                 color: Colors.white,
                 fontSize: 24,
-                fontWeight: FontWeight.bold,
               ),
             ),
           ),
@@ -412,13 +409,13 @@ class _AuraHomePageState extends State<AuraHomePage>
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
+            padding: const EdgeInsets.only(left: 20.0, bottom: 8.0, top: 10),
             child: Text(
               'Relaxing',
-              style: GoogleFonts.openSans(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold),
+              style: GoogleFonts.kanit(
+                color: Colors.white,
+                fontSize: 24,
+              ),
             ),
           ),
           GestureDetector(
@@ -432,10 +429,9 @@ class _AuraHomePageState extends State<AuraHomePage>
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
               'Focus',
-              style: GoogleFonts.openSans(
+              style: GoogleFonts.kanit(
                 color: Colors.white,
                 fontSize: 24,
-                fontWeight: FontWeight.bold,
               ),
             ),
           ),
@@ -451,10 +447,10 @@ class _AuraHomePageState extends State<AuraHomePage>
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
               'Calm & Cozy',
-              style: GoogleFonts.openSans(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold),
+              style: GoogleFonts.kanit(
+                color: Colors.white,
+                fontSize: 24,
+              ),
             ),
           ),
           GestureDetector(
@@ -469,10 +465,10 @@ class _AuraHomePageState extends State<AuraHomePage>
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
               'Synthwave/Chillwave',
-              style: GoogleFonts.openSans(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold),
+              style: GoogleFonts.kanit(
+                color: Colors.white,
+                fontSize: 24,
+              ),
             ),
           ),
           GestureDetector(
@@ -487,10 +483,10 @@ class _AuraHomePageState extends State<AuraHomePage>
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
               'LoFi - Sad',
-              style: GoogleFonts.openSans(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold),
+              style: GoogleFonts.kanit(
+                color: Colors.white,
+                fontSize: 24,
+              ),
             ),
           ),
           GestureDetector(
@@ -505,10 +501,10 @@ class _AuraHomePageState extends State<AuraHomePage>
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
               'LoFi - Hip Hop',
-              style: GoogleFonts.openSans(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold),
+              style: GoogleFonts.kanit(
+                color: Colors.white,
+                fontSize: 24,
+              ),
             ),
           ),
           GestureDetector(
@@ -523,10 +519,10 @@ class _AuraHomePageState extends State<AuraHomePage>
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
               'ChillDrive',
-              style: GoogleFonts.openSans(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold),
+              style: GoogleFonts.kanit(
+                color: Colors.white,
+                fontSize: 24,
+              ),
             ),
           ),
           _buildDummyCategory(
@@ -536,7 +532,7 @@ class _AuraHomePageState extends State<AuraHomePage>
             padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
             child: Text(
               'Devotional',
-              style: GoogleFonts.openSans(
+              style: GoogleFonts.kanit(
                 color: Colors.white,
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -621,8 +617,18 @@ class _AuraHomePageState extends State<AuraHomePage>
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           image: DecorationImage(
-              image: CachedNetworkImageProvider(imageLink), fit: BoxFit.cover),
+              image: AssetImage('assets/style2.png'), fit: BoxFit.cover),
           borderRadius: BorderRadius.circular(14),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: CachedNetworkImage(
+              imageUrl: imageLink,
+              fit: BoxFit.cover,
+            ),
+          ),
         ),
       ),
     );
