@@ -1,7 +1,6 @@
 import 'package:aura/aura_composer.dart';
-import 'package:aura/routes/explore.dart';
 import 'package:aura/routes/homepage/homepage.dart';
-import 'package:aura/routes/pages/planet/planet_page.dart';
+import 'package:aura/routes/pages/exploreworldpage.dart';
 import 'package:aura/routes/tweaks.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -114,7 +113,7 @@ class HomePageState extends State<HomePage>
               controller: controller,
             ),
             const AuraComposerTest(),
-            const PlanetPage(
+            const ExploreWorldPage(
                 // controller: controller,
                 ),
             SettingsPage(

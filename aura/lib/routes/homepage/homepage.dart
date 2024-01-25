@@ -1,3 +1,4 @@
+import 'package:aura/routes/pages/devotional_page.dart';
 import 'package:aura/routes/pages/live/live.dart';
 import 'package:aura/routes/pages/sounds/noises.dart';
 import 'package:aura/routes/pages/sounds/recommended_sounds.dart';
@@ -267,7 +268,7 @@ class _AuraHomePageState extends State<AuraHomePage>
             ),
           ),
           SizedBox(
-            height: 130,
+            height: 230,
             child: ListView.builder(
               physics: BouncingScrollPhysics(),
               itemCount: recommendedSoundes.length + 1,
@@ -284,7 +285,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                     child: Container(
                       margin: EdgeInsets.only(left: 18),
                       height: 100,
-                      width: 100,
+                      width: 200,
                       decoration: BoxDecoration(
                         color: const Color(0xFF1F1F36),
                         borderRadius: BorderRadius.circular(14),
@@ -306,6 +307,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                     soundsName: recommendedSoundes[currentIndex],
                     imageLink: recommendedImageUrl[currentIndex],
                     index: currentIndex,
+                    height: 200,
                   );
                 }
               },
@@ -403,7 +405,8 @@ class _AuraHomePageState extends State<AuraHomePage>
                   return _recommendedContainer(
                       soundsName: noises[int],
                       imageLink: noisesImageUrl[int],
-                      index: index);
+                      index: index,
+                      height: 100);
                 }
               },
             ),
@@ -535,13 +538,17 @@ class _AuraHomePageState extends State<AuraHomePage>
               style: GoogleFonts.kanit(
                 color: Colors.white,
                 fontSize: 24,
-                fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          _buildDummyCategory(
-              imageLink:
-                  'https://i.pinimg.com/564x/7b/87/0e/7b870ec101537650c42c5b169f9ee186.jpg'),
+          GestureDetector(
+            onTap: () => Get.to(DevotionalPage(
+              category: 'Devotional',
+            )),
+            child: _buildDummyCategory(
+                imageLink:
+                    'https://i.pinimg.com/564x/7b/87/0e/7b870ec101537650c42c5b169f9ee186.jpg'),
+          ),
           const SizedBox(
             height: 50,
           ),
@@ -554,6 +561,7 @@ class _AuraHomePageState extends State<AuraHomePage>
     required String soundsName,
     required String imageLink,
     required int index,
+    required double height,
   }) {
     return GestureDetector(
       onTap: () => Get.to(LivePage(
@@ -571,8 +579,8 @@ class _AuraHomePageState extends State<AuraHomePage>
             children: [
               Container(
                 margin: EdgeInsets.only(left: 18),
-                height: 100,
-                width: 100,
+                height: height,
+                width: 200,
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         image: CachedNetworkImageProvider(imageLink),
@@ -581,11 +589,11 @@ class _AuraHomePageState extends State<AuraHomePage>
                     borderRadius: BorderRadius.circular(14)),
               ),
               Positioned(
-                right: 2,
-                bottom: 2,
+                right: 10,
+                bottom: 10,
                 child: Icon(
                   IconlyBold.play,
-                  size: 32,
+                  size: 42,
                   color: Colors.white,
                 ),
               ),
