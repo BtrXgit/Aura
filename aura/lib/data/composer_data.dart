@@ -252,12 +252,12 @@ final List<String> musicaudioPaths = [
   //music
   'assets/music/harp.mp3',
   'assets/music/piano.ogg',
-  'assets/music/acoustic_guitar.mp3',
+  'assets/music/guitar.mp3',
   'assets/music/violin.mp3',
-  'assets/music/peaceful.mp3',
-  'assets/music/rhodes.mp3',
-  'assets/music/ambience.mp3',
-  'assets/music/chill.mp3',
+  'assets/music/flute.mp3',
+  'assets/music/koto.mp3',
+  'assets/music/sitar.mp3',
+  'assets/music/bowl.mp3',
 ];
 final List<String> asmraudioPaths = [
   //ASMR
@@ -308,10 +308,10 @@ final List<String> musicaudioNames = [
   'Piano',
   'Guitar',
   'Violin',
-  'Peaceful',
-  'Rhodes',
-  'Ambient',
-  'Chill',
+  'Flute',
+  'Koto',
+  'Sitar',
+  'Bowl',
 ];
 final List<String> asmraudioNames = [
   //ASMR
@@ -357,14 +357,14 @@ final List<Widget> rainIcons = [
 ];
 final List<Widget> musicIcons = [
   //music
-  Image.asset('assets/icons/harp.png'),
-  Image.asset('assets/icons/piano.png'),
-  Image.asset('assets/icons/piano2.png'),
-  Image.asset('assets/icons/piano2.png'),
-  Image.asset('assets/icons/piano2.png'),
-  Image.asset('assets/icons/piano2.png'),
-  Image.asset('assets/icons/piano2.png'),
-  Image.asset('assets/icons/piano2.png'),
+  Image.asset('assets/icons/music/harp.png'),
+  Image.asset('assets/icons/music/piano.png'),
+  Image.asset('assets/icons/music/guitar.png'),
+  Image.asset('assets/icons/music/violin.png'),
+  Image.asset('assets/icons/music/flute.png'),
+  Image.asset('assets/icons/music/koto.png'),
+  Image.asset('assets/icons/music/sitar.png'),
+  Image.asset('assets/icons/music/bowl.png'),
 ];
 final List<Widget> asmrIcons = [
   //ASMR

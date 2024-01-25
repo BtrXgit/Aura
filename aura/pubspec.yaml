@@ -94,18 +94,17 @@ flutter:
     - assets/animals/
     - assets/asmr/
     - assets/icons/
-    - assets/images/
     - assets/music/
     - assets/nature/
     - assets/rain/
     - assets/slider/
     - assets/transport/
     - assets/icons/nature/
+    - assets/icons/music/
     - assets/icons/animals/
     - assets/icons/rain/
     - assets/icons/asmr/
     - assets/icons/transport/
-    - assets/earth/
     - assets/
     
     
