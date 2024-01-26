@@ -233,6 +233,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.6"
+  drop_shadow:
+    dependency: "direct main"
+    description:
+      name: drop_shadow
+      sha256: "1fa552baeb7c6a3c36a7ff77186a2302a7bf53c93914f46328a9c4eb68ec6b08"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
   fake_async:
     dependency: transitive
     description:
@@ -342,14 +350,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.3.1"
-  flutter_cube:
-    dependency: "direct main"
-    description:
-      name: flutter_cube
-      sha256: "71cf679a251166eb97f86751c56582b09abdbf859485fbf60524948813914c3b"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.1"
   flutter_floating_bottom_bar:
     dependency: "direct main"
     description:

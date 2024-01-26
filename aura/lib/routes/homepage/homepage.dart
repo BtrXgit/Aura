@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'dart:math' as math;
 import 'package:aura/routes/pages/devotional_page.dart';
 import 'package:aura/routes/pages/live/live.dart';
 import 'package:aura/routes/pages/sounds/noises.dart';
@@ -7,6 +7,7 @@ import 'package:aura/routes/pages/sounds/recommended_sounds.dart';
 import 'package:aura/routes/tweaks.dart';
 import 'package:aura/routes/pages/playlists/playlists.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:drop_shadow/drop_shadow.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -136,6 +137,7 @@ class _AuraHomePageState extends State<AuraHomePage>
       case 'Good Morning':
         return 'assets/morning.jpg';
       case 'Good Afternoon':
+        // return 'assets/morning.jpg';
         return 'assets/afternoon.jpg';
       case 'Good Evening':
         return 'assets/evening.jpg';
@@ -158,19 +160,16 @@ class _AuraHomePageState extends State<AuraHomePage>
     final backgroundImage = _getImageAsset(greeting);
     return Stack(
       children: [
-        Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(
-                backgroundImage,
+        RotatedBox(
+          quarterTurns: 1,
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                  'assets/style3.png',
+                ),
+                fit: BoxFit.cover,
               ),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-            child: Container(
-              color: Colors.black.withOpacity(0.2),
             ),
           ),
         ),
@@ -181,12 +180,23 @@ class _AuraHomePageState extends State<AuraHomePage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
+                height: MediaQuery.of(context).size.height * 0.26,
                 decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(backgroundImage),
-                    fit: BoxFit.cover,
-                  ),
-                ),
+                    image: DecorationImage(
+                      image: AssetImage(backgroundImage),
+                      fit: BoxFit.cover,
+                    ),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 10,
+                        offset: Offset(0, 10),
+                      ),
+                    ]),
                 child: Padding(
                   padding: const EdgeInsets.only(top: 50.0),
                   child: Column(
@@ -262,23 +272,24 @@ class _AuraHomePageState extends State<AuraHomePage>
                           ],
                         ),
                       ),
-                      Container(
-                        height: 20,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          color: Color(0xFF131321),
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
-                          ),
-                        ),
-                      ),
+                      // Container(
+                      //   height: 20,
+                      //   width: MediaQuery.of(context).size.width,
+                      //   decoration: BoxDecoration(
+                      //     color: Color(0xFF131321),
+                      //     borderRadius: BorderRadius.only(
+                      //       topLeft: Radius.circular(20),
+                      //       topRight: Radius.circular(20),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 20.0, top: 0, bottom: 8.0),
+                padding:
+                    const EdgeInsets.only(left: 20.0, top: 10, bottom: 8.0),
                 child: Text(
                   'Recommended',
                   style: GoogleFonts.kanit(
@@ -308,7 +319,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                           width: 200,
                           decoration: BoxDecoration(
                             color: const Color(0xFF1F1F36),
-                            borderRadius: BorderRadius.circular(14),
+                            borderRadius: BorderRadius.circular(20),
                           ),
                           child: Center(
                             child: Text(
@@ -380,11 +391,16 @@ class _AuraHomePageState extends State<AuraHomePage>
                   }).toList(),
                 ),
               ),
+
+              //title: - Ambient Sounds
+              //subtitle: - Immersive Nature Sounds
+              //data: - Summer Seashore, morning sunshine, nighttime camping, mystic cosmos, zen temple, placid jungle, home comforts, stormy nights, city strolling
+
               Padding(
                 padding:
                     const EdgeInsets.only(left: 20.0, top: 10, bottom: 8.0),
                 child: Text(
-                  'Noises',
+                  'Coloured noise', //dive into digital world of sounds
                   style: GoogleFonts.kanit(
                     color: Colors.white,
                     fontSize: 24,
@@ -409,7 +425,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                           width: 100,
                           decoration: BoxDecoration(
                             color: const Color(0xFF1F1F36),
-                            borderRadius: BorderRadius.circular(14),
+                            borderRadius: BorderRadius.circular(20),
                           ),
                           child: Center(
                             child: Text(
@@ -433,6 +449,11 @@ class _AuraHomePageState extends State<AuraHomePage>
                   },
                 ),
               ),
+
+              //title: - Music
+              //subtitle: - Melodies that touch the soul
+              //space travel, hope, moonlight, sunglow, dust, buddhist chant, illusion, wandering, smoke, fantastic space, hesitance, sunspots, solitude, coffee shop, meditation, slumber, temple, ray of sunlight
+
               Padding(
                 padding:
                     const EdgeInsets.only(left: 20.0, bottom: 8.0, top: 10),
@@ -611,7 +632,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                         image: CachedNetworkImageProvider(imageLink),
                         fit: BoxFit.cover,
                         filterQuality: FilterQuality.high),
-                    borderRadius: BorderRadius.circular(14)),
+                    borderRadius: BorderRadius.circular(20)),
               ),
               Positioned(
                 right: 10,
@@ -650,18 +671,8 @@ class _AuraHomePageState extends State<AuraHomePage>
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('assets/style2.png'), fit: BoxFit.cover),
-          borderRadius: BorderRadius.circular(14),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: CachedNetworkImage(
-              imageUrl: imageLink,
-              fit: BoxFit.cover,
-            ),
-          ),
+              image: CachedNetworkImageProvider(imageLink), fit: BoxFit.cover),
+          borderRadius: BorderRadius.circular(20),
         ),
       ),
     );

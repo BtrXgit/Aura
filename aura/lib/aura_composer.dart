@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:aura/data/composer_data.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -67,9 +68,22 @@ class AuraComposerTestState extends State<AuraComposerTest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF131321),
       body: Stack(
         children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/composer.gif'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+              child: Container(
+                color: Colors.black.withOpacity(0.2),
+              ),
+            ),
+          ),
           SingleChildScrollView(
             physics: const ClampingScrollPhysics(),
             child: Column(
@@ -419,6 +433,16 @@ class AuraComposerTestState extends State<AuraComposerTest> {
         isAudioPlaying = true;
       }
     }
+    for (var player in asmraudioPlayer) {
+      if (player.playing) {
+        isAudioPlaying = true;
+      }
+    }
+    for (var player in transportaudioPlayer) {
+      if (player.playing) {
+        isAudioPlaying = true;
+      }
+    }
     return Positioned(
       right: 20,
       bottom: MediaQuery.of(context).size.height * 0.1,
@@ -427,20 +451,30 @@ class AuraComposerTestState extends State<AuraComposerTest> {
           Visibility(
             visible: isAudioPlaying,
             child: FloatingActionButton(
+              backgroundColor: Colors.white,
               onPressed: () {
                 _showTimerDialog();
               },
-              child: const Icon(Icons.timer),
+              child: const Icon(
+                Icons.timer,
+                size: 32,
+                color: Color(0xFF131321),
+              ),
             ),
           ),
           const SizedBox(width: 8),
           Visibility(
             visible: isAudioPlaying,
             child: FloatingActionButton(
+              backgroundColor: Colors.white,
               onPressed: () {
                 _stopAllAudioPlayers();
               },
-              child: const Icon(Icons.stop),
+              child: const Icon(
+                Icons.stop,
+                size: 32,
+                color: Color(0xFF131321),
+              ),
             ),
           ),
         ],
