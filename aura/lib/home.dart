@@ -1,4 +1,4 @@
-import 'package:aura/aura_composer.dart';
+import 'package:aura/routes/composer/aura_composer.dart';
 import 'package:aura/routes/homepage/homepage.dart';
 import 'package:aura/routes/pages/exploreworldpage.dart';
 import 'package:aura/routes/tweaks.dart';

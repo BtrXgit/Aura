@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:aura/data/songs.dart';
-import 'package:aura/util/provider/favorites_provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,7 +10,6 @@ import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_cache/just_audio_cache.dart';
 import 'dart:math';
 import 'package:palette_generator/palette_generator.dart';
-import 'package:provider/provider.dart';
 
 class AuraPlayer extends StatefulWidget {
   final int currentIndex;

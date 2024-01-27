@@ -107,6 +107,7 @@ flutter:
     - assets/icons/asmr/
     - assets/icons/transport/
     - assets/
+    - assets/noise/
     
     
   #   - images/a_dot_ham.jpeg

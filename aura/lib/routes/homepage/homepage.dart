@@ -1,5 +1,3 @@
-import 'dart:ui';
-import 'dart:math' as math;
 import 'package:aura/routes/pages/devotional_page.dart';
 import 'package:aura/routes/pages/live/live.dart';
 import 'package:aura/routes/pages/sounds/noises.dart';
@@ -7,9 +5,9 @@ import 'package:aura/routes/pages/sounds/recommended_sounds.dart';
 import 'package:aura/routes/tweaks.dart';
 import 'package:aura/routes/pages/playlists/playlists.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:drop_shadow/drop_shadow.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
@@ -103,13 +101,14 @@ class _AuraHomePageState extends State<AuraHomePage>
     'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FRecommended%2FBonfire.mp3?alt=media&token=1f50ef65-565d-4b20-bb29-8a2a2ef8f8a1',
   ];
 
-  List<String> noisesImageUrl = [
-    'https://i.pinimg.com/564x/85/fb/ce/85fbceb25101eb2e3fba7a7ffcb20bae.jpg',
-    'https://blog.noisli.com/wp-content/uploads/2022/08/Noisli-Pink-Noise.png',
-    'https://i.kym-cdn.com/entries/icons/facebook/000/040/983/bnoise.jpg',
-    'https://images.genius.com/3e8640695c1f56148f30626ac1007a67.1000x1000x1.png',
-    'https://i.scdn.co/image/ab67616d0000b273f98f724102403c1e69958c8c',
+  List<String> noisesImage = [
+    'assets/noise/white.jpg',
+    'assets/noise/pink.jpg',
+    'assets/noise/brown.jpg',
+    'assets/noise/blue.jpg',
+    'assets/noise/violet.jpg',
   ];
+
   List<String> noises = [
     'White',
     'Pink',
@@ -148,16 +147,32 @@ class _AuraHomePageState extends State<AuraHomePage>
     }
   }
 
+  String randomRelaxingImage(String greeting) {
+    switch (greeting) {
+      case 'Good Morning':
+        return 'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRelaxing%2F10.jpg?alt=media&token=c5f0a5f8-45f0-4a46-8837-04d46a4ecf7b';
+      case 'Good Afternoon':
+        return 'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRelaxing%2F3.jpg?alt=media&token=c5598838-ea0a-4038-8b77-5a45e48abe42';
+      case 'Good Evening':
+        return 'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRelaxing%2F2.jpg?alt=media&token=3e0cf4f7-11ef-4ad9-9d4e-5976b013b826';
+      case 'Good Night':
+        return 'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRelaxing%2F6.jpg?alt=media&token=80df50a3-5b3c-4586-b876-3e2a40480170';
+      default:
+        return 'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRelaxing%2F10.jpg?alt=media&token=c5f0a5f8-45f0-4a46-8837-04d46a4ecf7b';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _buildContentColumn(),
+      body: AnimationLimiter(child: _buildContentColumn()),
     );
   }
 
   Widget _buildContentColumn() {
     final greeting = _getGreeting();
     final backgroundImage = _getImageAsset(greeting);
+    final relaxingImage = randomRelaxingImage(greeting);
     return Stack(
       children: [
         RotatedBox(
@@ -334,11 +349,20 @@ class _AuraHomePageState extends State<AuraHomePage>
                         ),
                       );
                     } else {
-                      return _recommendedContainer(
-                        soundsName: recommendedSoundes[currentIndex],
-                        imageLink: recommendedImageUrl[currentIndex],
-                        index: currentIndex,
-                        height: 200,
+                      return AnimationConfiguration.staggeredList(
+                        position: index,
+                        duration: const Duration(milliseconds: 375),
+                        child: SlideAnimation(
+                          verticalOffset: 50.0,
+                          child: FadeInAnimation(
+                            child: _recommendedContainer(
+                              soundsName: recommendedSoundes[currentIndex],
+                              imageLink: recommendedImageUrl[currentIndex],
+                              index: currentIndex,
+                              height: 200,
+                            ),
+                          ),
+                        ),
                       );
                     }
                   },
@@ -370,23 +394,32 @@ class _AuraHomePageState extends State<AuraHomePage>
                   ),
                   items: kImages.asMap().entries.map((entry) {
                     String imageUrl = entry.value;
-                    return Builder(
-                      builder: (BuildContext context) {
-                        return GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              image: DecorationImage(
-                                image: AssetImage(imageUrl),
-                                fit: BoxFit.cover,
-                                filterQuality: FilterQuality.high,
-                              ),
-                            ),
+                    return AnimationConfiguration.staggeredList(
+                      position: index,
+                      duration: const Duration(milliseconds: 375),
+                      child: SlideAnimation(
+                        verticalOffset: 50.0,
+                        child: FadeInAnimation(
+                          child: Builder(
+                            builder: (BuildContext context) {
+                              return GestureDetector(
+                                onTap: () {},
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    image: DecorationImage(
+                                      image: AssetImage(imageUrl),
+                                      fit: BoxFit.cover,
+                                      filterQuality: FilterQuality.high,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
-                        );
-                      },
+                        ),
+                      ),
                     );
                   }).toList(),
                 ),
@@ -440,9 +473,9 @@ class _AuraHomePageState extends State<AuraHomePage>
                         ),
                       );
                     } else {
-                      return _recommendedContainer(
+                      return _noisesContainer(
                           soundsName: noises[int],
-                          imageLink: noisesImageUrl[int],
+                          imageLink: noisesImage[int],
                           index: index,
                           height: 100);
                     }
@@ -470,8 +503,8 @@ class _AuraHomePageState extends State<AuraHomePage>
                         category: 'relaxing',
                       )),
                   child: _buildDummyCategory(
-                      imageLink:
-                          'https://i.pinimg.com/564x/44/71/a8/4471a8ddace0be709396f797b1e89729.jpg')),
+                    imageLink: relaxingImage,
+                  )),
               Padding(
                 padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
                 child: Text(
@@ -630,6 +663,60 @@ class _AuraHomePageState extends State<AuraHomePage>
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         image: CachedNetworkImageProvider(imageLink),
+                        fit: BoxFit.cover,
+                        filterQuality: FilterQuality.high),
+                    borderRadius: BorderRadius.circular(20)),
+              ),
+              Positioned(
+                right: 10,
+                bottom: 10,
+                child: Icon(
+                  IconlyBold.play,
+                  size: 42,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 18, top: 4),
+            child: Text(
+              soundsName,
+              style: TextStyle(color: Colors.white, fontSize: 14),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _noisesContainer({
+    required String soundsName,
+    required String imageLink,
+    required int index,
+    required double height,
+  }) {
+    return GestureDetector(
+      onTap: () => Get.to(LivePage(
+        currentIndex: index,
+        songs: songs,
+        title: 'Coloured Noise',
+        imageUrl: noisesImage,
+        soundNames: noises,
+      )),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Stack(
+            children: [
+              Container(
+                margin: EdgeInsets.only(left: 18),
+                height: height,
+                width: 200,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage(imageLink),
                         fit: BoxFit.cover,
                         filterQuality: FilterQuality.high),
                     borderRadius: BorderRadius.circular(20)),

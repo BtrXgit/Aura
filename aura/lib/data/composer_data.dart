@@ -251,7 +251,7 @@ final List<String> rainaudioPaths = [
 final List<String> musicaudioPaths = [
   //music
   'assets/music/harp.mp3',
-  'assets/music/piano.ogg',
+  'assets/music/piano.mp3',
   'assets/music/guitar.mp3',
   'assets/music/violin.mp3',
   'assets/music/flute.mp3',
