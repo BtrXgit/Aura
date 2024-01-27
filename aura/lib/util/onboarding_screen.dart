@@ -27,13 +27,13 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
     return Image.asset('assets/$assetName', width: width);
   }
 
-  PageViewModel _buildPageViewModel(
-    String title,
-    String body,
-    String imageAsset,
-    PageDecoration pageDecoration,
-    bool reverse,
-  ) {
+  PageViewModel _buildPageViewModel({
+    required String title,
+    required String body,
+    required String imageAsset,
+    required PageDecoration pageDecoration,
+    required bool reverse,
+  }) {
     return PageViewModel(
       title: title,
       body: body,
@@ -61,54 +61,38 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
     return IntroductionScreen(
       key: introKey,
       globalBackgroundColor: Color(0xFF131321),
-      allowImplicitScrolling: true,
-      autoScrollDuration: 3000,
+      allowImplicitScrolling: false,
+      autoScrollDuration: 10000,
       infiniteAutoScroll: false,
       pages: [
         _buildPageViewModel(
-          "Fractional shares",
-          "Instead of having to buy an entire share, invest any amount you want.",
-          'img1.jpg',
-          pageDecoration,
-          false,
+          title: "Aura",
+          body:
+              ".",
+          imageAsset: 'img1.jpg',
+          pageDecoration: pageDecoration,
+          reverse: false,
         ),
         _buildPageViewModel(
-          "Learn as you go",
-          "Download the Stockpile app and master the market with our mini-lesson.",
-          'img2.jpg',
-          pageDecoration,
-          false,
+          title: "Categories",
+          body:
+              "Instead of having to buy an entire share, invest any amount you want.",
+          imageAsset: 'img2.jpg',
+          pageDecoration: pageDecoration,
+          reverse: false,
         ),
-        _buildPageViewModel(
-          "Kids and teens",
-          "Kids and teens can track their stocks 24/7 and place trades that you approve.",
-          'img3.jpg',
-          pageDecoration,
-          false,
-        ),
-        _buildPageViewModel(
-          "Another title page",
-          "Another beautiful body text for this example onboarding",
-          'img2.jpg',
-          pageDecoration.copyWith(
-            bodyFlex: 6,
-            imageFlex: 6,
-            safeArea: 80,
-          ),
-          false,
-        ),
-        _buildPageViewModel(
-          "Title of last page - reversed",
-          "",
-          'img1.jpg',
-          pageDecoration.copyWith(
-            bodyFlex: 2,
-            imageFlex: 4,
-            bodyAlignment: Alignment.bottomCenter,
-            imageAlignment: Alignment.topCenter,
-          ),
-          true,
-        ),
+        // _buildPageViewModel(
+        //   title: "Title of last page - reversed",
+        //   body: "Last beautiful body text for this example onboarding",
+        //   imageAsset: 'img1.jpg',
+        //   pageDecoration: pageDecoration.copyWith(
+        //     bodyFlex: 2,
+        //     imageFlex: 4,
+        //     bodyAlignment: Alignment.bottomCenter,
+        //     imageAlignment: Alignment.topCenter,
+        //   ),
+        //   reverse: true,
+        // ),
       ],
       onDone: () => _onIntroEnd(context),
       onSkip: () => _onIntroSkip(context),
