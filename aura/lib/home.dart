@@ -90,9 +90,10 @@ class HomePageState extends State<HomePage>
         curve: Curves.decelerate,
         showIcon: true,
         width: MediaQuery.of(context).size.width * 0.75,
-        barColor: Colors.black.computeLuminance() > 0.5
-            ? Colors.black
-            : const Color.fromARGB(255, 14, 3, 31),
+        // barColor: Colors.black.computeLuminance() > 0.5
+        //     ? Colors.black
+        //     : const Color.fromARGB(255, 14, 3, 31),
+        barColor: Color(0xFF020925),
         start: 2,
         end: 0,
         offset: 10,

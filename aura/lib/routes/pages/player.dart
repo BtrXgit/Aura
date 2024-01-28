@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:aura/data/songs.dart';
+import 'package:aura/util/visualizer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
 import 'package:iconsax/iconsax.dart';
@@ -495,16 +497,34 @@ class _AuraPlayerState extends State<AuraPlayer> {
                       top: 50,
                       left: 10,
                       child: IconButton(
-                        icon: Icon(Iconsax.setting_3, color: Colors.white),
-                        onPressed: () {},
+                        icon: Icon(
+                          Iconsax.setting_5,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                        // onPressed: () {
+                        //   showDialog(
+                        //     context: context,
+                        //     builder: (BuildContext context) {
+                        //       return Dialog(
+                        //         child: GlowingBalls(),
+                        //       );
+                        //     },
+                        //   );
+                        // },
+                        onPressed: (() => Get.to(GlowingBalls(),
+                            transition: Transition.fadeIn)),
                       ),
                     ),
                     Positioned(
                       top: 50,
                       right: 10,
                       child: IconButton(
-                        icon: const Icon(Iconsax.music_playlist,
-                            color: Colors.white),
+                        icon: const Icon(
+                          Iconsax.music_playlist,
+                          color: Colors.white,
+                          size: 28,
+                        ),
                         onPressed: () {
                           _showQueue(context);
                         },

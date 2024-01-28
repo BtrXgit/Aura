@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:aura/authentication/auth%20pages/auth_page.dart';
 import 'package:aura/firebase_options.dart';
 import 'package:aura/util/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -42,9 +44,9 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
 
     Timer(
-      Duration(seconds: 6000),
+      Duration(seconds: 2),
       () {
-        Get.off(AuthPage());
+        Get.off(AuthPage(), transition: Transition.rightToLeft);
       },
     );
   }
@@ -72,7 +74,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 color: Colors.white,
                 fontSize: 68,
               ),
-            ),
+            ).animate().fade(duration: Duration(milliseconds: 560)).scale(),
           ),
           Positioned(
             bottom: 20,
@@ -99,23 +101,6 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           )
         ],
-      ),
-    );
-  }
-}
-
-class AuthPage extends StatelessWidget {
-  const AuthPage({Key? key});
-
-  @override
-  Widget build(BuildContext context) {
-    // Your AuthPage content goes here
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Auth Page'),
-      ),
-      body: Center(
-        child: Text('Welcome to AuthPage!'),
       ),
     );
   }
