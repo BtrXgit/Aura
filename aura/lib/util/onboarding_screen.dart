@@ -67,32 +67,31 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
       pages: [
         _buildPageViewModel(
           title: "Aura",
-          body:
-              ".",
+          body: ".",
           imageAsset: 'img1.jpg',
           pageDecoration: pageDecoration,
           reverse: false,
         ),
         _buildPageViewModel(
-          title: "Categories",
+          title: "Aura",
           body:
-              "Instead of having to buy an entire share, invest any amount you want.",
+              "The app that calm your restless mind and improves sleep quality",
           imageAsset: 'img2.jpg',
           pageDecoration: pageDecoration,
           reverse: false,
         ),
-        // _buildPageViewModel(
-        //   title: "Title of last page - reversed",
-        //   body: "Last beautiful body text for this example onboarding",
-        //   imageAsset: 'img1.jpg',
-        //   pageDecoration: pageDecoration.copyWith(
-        //     bodyFlex: 2,
-        //     imageFlex: 4,
-        //     bodyAlignment: Alignment.bottomCenter,
-        //     imageAlignment: Alignment.topCenter,
-        //   ),
-        //   reverse: true,
-        // ),
+        _buildPageViewModel(
+          title: "Title of last page - reversed",
+          body: "Last beautiful body text for this example onboarding",
+          imageAsset: 'img1.jpg',
+          pageDecoration: pageDecoration.copyWith(
+            bodyFlex: 2,
+            imageFlex: 4,
+            bodyAlignment: Alignment.bottomCenter,
+            imageAlignment: Alignment.topCenter,
+          ),
+          reverse: true,
+        ),
       ],
       onDone: () => _onIntroEnd(context),
       onSkip: () => _onIntroSkip(context),

@@ -78,29 +78,6 @@ class _GlowingBallsState extends State<GlowingBalls> {
                 colors: colorsAndEffects[colorEffectIndex].colors,
                 begin: Alignment.bottomRight,
                 end: Alignment.topLeft),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'METABALLS',
-                    style: TextStyle(shadows: [
-                      Shadow(
-                          color: Colors.black.withOpacity(0.6), blurRadius: 80)
-                    ], fontSize: 50 * width / 400, fontWeight: FontWeight.w900),
-                  ),
-                  Text(
-                    'DOUBLE TAP TO CHANGE EFFECT AND COLOR\nCURRENT EFFECT: ${colorsAndEffects[colorEffectIndex].name}',
-                    style: TextStyle(shadows: [
-                      Shadow(
-                          color: Colors.black.withOpacity(0.6), blurRadius: 80)
-                    ], fontSize: 16 * width / 400, fontWeight: FontWeight.w900),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
           ),
         ),
       ),

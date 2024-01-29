@@ -219,7 +219,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
                       child: BackdropFilter(
                         filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
                         child: Container(
-                          color: Colors.white.withOpacity(0.5),
+                          color: Colors.black.withOpacity(0.2),
                         ),
                       ),
                     ),
@@ -254,59 +254,23 @@ class _AuraPlayerState extends State<AuraPlayer> {
                             imageUrl: widget.songs[_currentIndex].imageUrl,
                           ),
                         ),
-                        const SizedBox(height: 50),
+                        const SizedBox(height: 20),
                         Padding(
                           padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      widget.songs[_currentIndex].songName,
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 24),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      widget.songs[_currentIndex].artist,
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 18),
-                                    ),
-                                  ),
-                                ],
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: ListTile(
+                              title: Text(
+                                widget.songs[_currentIndex].songName,
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 24),
                               ),
-                              Container(
-                                width: 44,
-                                height: 44,
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.2),
-                                  shape: BoxShape.circle,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.1),
-                                      spreadRadius: 5,
-                                      blurRadius: 7,
-                                      offset: Offset(0, 3),
-                                    ),
-                                  ],
-                                ),
-                                child: IconButton(
-                                  icon: Icon(
-                                    IconlyBold.heart,
-                                    color: Colors.white,
-                                    size: 28,
-                                  ),
-                                  onPressed: () {},
-                                ),
+                              subtitle: Text(
+                                widget.songs[_currentIndex].artist,
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 18),
                               ),
-                            ],
+                            ),
                           ),
                         ),
                         const SizedBox(height: 20),
@@ -502,16 +466,6 @@ class _AuraPlayerState extends State<AuraPlayer> {
                           color: Colors.white,
                           size: 30,
                         ),
-                        // onPressed: () {
-                        //   showDialog(
-                        //     context: context,
-                        //     builder: (BuildContext context) {
-                        //       return Dialog(
-                        //         child: GlowingBalls(),
-                        //       );
-                        //     },
-                        //   );
-                        // },
                         onPressed: (() => Get.to(GlowingBalls(),
                             transition: Transition.fadeIn)),
                       ),

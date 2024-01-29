@@ -1,107 +1,46 @@
-import 'dart:async';
-
 import 'package:aura/authentication/auth%20pages/auth_page.dart';
 import 'package:aura/firebase_options.dart';
-import 'package:aura/util/onboarding_screen.dart';
+import 'package:aura/util/onboarding%20test/intro_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Check if it's the first launch
+  bool isFirstLaunch = await isFirstLaunchCheck();
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
-  runApp(MyApp());
+
+  runApp(MyApp(isFirstLaunch: isFirstLaunch));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key});
+  final bool isFirstLaunch;
+
+  const MyApp({Key? key, required this.isFirstLaunch}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      home: SplashScreen(),
+      home: isFirstLaunch ? TestScreen() : AuthPage(),
     );
   }
 }
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+Future<bool> isFirstLaunchCheck() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool isFirstLaunch = prefs.getBool('isFirstLaunch') ?? true;
 
-  @override
-  _SplashScreenState createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-
-    Timer(
-      Duration(seconds: 2),
-      () {
-        Get.off(AuthPage(), transition: Transition.rightToLeft);
-      },
-    );
+  if (isFirstLaunch) {
+    prefs.setBool('isFirstLaunch', false);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFF131321),
-      body: Stack(
-        children: [
-          Container(
-            height: double.infinity,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/splash/splash8.png'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Center(
-            child: Text(
-              'Aura',
-              style: GoogleFonts.dancingScript(
-                color: Colors.white,
-                fontSize: 68,
-              ),
-            ).animate().fade(duration: Duration(milliseconds: 560)).scale(),
-          ),
-          Positioned(
-            bottom: 20,
-            left: 0,
-            right: 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  Iconsax.headphone,
-                  color: Colors.white,
-                  size: 20,
-                ),
-                SizedBox(width: 8),
-                Text(
-                  'Better with headphones.',
-                  style: GoogleFonts.kanit(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
+  return isFirstLaunch;
 }

@@ -352,8 +352,8 @@ class _AuraHomePageState extends State<AuraHomePage>
                       return AnimationConfiguration.staggeredList(
                         position: index,
                         duration: const Duration(milliseconds: 375),
-                        child: SlideAnimation(
-                          verticalOffset: 50.0,
+                        child: ScaleAnimation(
+                          // verticalOffset: 50.0,
                           child: FadeInAnimation(
                             child: _recommendedContainer(
                               soundsName: recommendedSoundes[currentIndex],
