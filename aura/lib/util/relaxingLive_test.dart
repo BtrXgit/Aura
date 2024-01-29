@@ -26,25 +26,29 @@ class _RelaxingLiveState extends State<RelaxingLive> {
   @override
   void initState() {
     super.initState();
-    var random = Random();
-    index = random.nextInt(relaxingLive.length);
     _getRelaxingLiveData().listen((snapshot) {
       setState(() {
         relaxingLive =
             snapshot.docs.map((doc) => LiveSongs.fromFirestore(doc)).toList();
       });
-      Timer(
-        Duration(seconds: 5),
-        () {
-          Get.off(
-            AuraLivePlayer(
-              currentIndex: index,
-              songs: relaxingLive,
-            ),
-            transition: Transition.fadeIn,
-          );
-        },
-      );
+
+      if (relaxingLive.isNotEmpty) {
+        var random = Random();
+        index = random.nextInt(relaxingLive.length);
+
+        Timer(
+          Duration(seconds: 5),
+          () {
+            Get.off(
+              AuraLivePlayer(
+                currentIndex: index,
+                songs: relaxingLive,
+              ),
+              transition: Transition.fadeIn,
+            );
+          },
+        );
+      }
     });
   }
 

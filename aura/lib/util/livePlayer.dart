@@ -28,7 +28,6 @@ class AuraLivePlayer extends StatefulWidget {
 class _AuraLivePlayerState extends State<AuraLivePlayer> {
   final AudioPlayer _audioPlayer = AudioPlayer();
   int _currentIndex = 0;
-  bool _isRepeatOn = true;
   Color? dominantColor;
 
   @override
@@ -60,11 +59,7 @@ class _AuraLivePlayerState extends State<AuraLivePlayer> {
         setState(() {});
 
         if (processingState == ProcessingState.completed) {
-          if (_isRepeatOn) {
-            _audioPlayer.seek(Duration.zero);
-          } else {
-            _playNext();
-          }
+          _playNext();
         }
       });
     }
@@ -75,12 +70,8 @@ class _AuraLivePlayerState extends State<AuraLivePlayer> {
       if (_currentIndex < widget.songs.length - 1) {
         _currentIndex++;
       } else {
-        if (_isRepeatOn) {
-          _currentIndex = 0;
-        } else {
-          _currentIndex = 0;
-          _audioPlayer.stop();
-        }
+        _currentIndex = 0;
+        _audioPlayer.stop();
       }
 
       _audioPlayer.dynamicSet(
@@ -267,6 +258,71 @@ class _AuraLivePlayerState extends State<AuraLivePlayer> {
                               style: const TextStyle(
                                   color: Colors.white, fontSize: 18),
                             ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                          child: StreamBuilder<Duration>(
+                            stream: _audioPlayer.positionStream,
+                            builder: (context, snapshot) {
+                              final position = snapshot.data ?? Duration.zero;
+                              final duration =
+                                  _audioPlayer.duration ?? Duration.zero;
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SliderTheme(
+                                    data: SliderTheme.of(context).copyWith(
+                                      activeTrackColor:
+                                          dominantColor ?? Colors.blue,
+                                      inactiveTrackColor: Colors.grey,
+                                      thumbColor: Colors.white,
+                                      overlayColor:
+                                          Colors.blue.withOpacity(0.3),
+                                      valueIndicatorColor: Colors.blue,
+                                      thumbShape: const RoundSliderThumbShape(
+                                          enabledThumbRadius: 8.0),
+                                      overlayShape:
+                                          const RoundSliderOverlayShape(
+                                              overlayRadius: 16.0),
+                                      valueIndicatorShape:
+                                          const PaddleSliderValueIndicatorShape(),
+                                      valueIndicatorTextStyle: const TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    child: Slider(
+                                      value: position.inSeconds.toDouble(),
+                                      max: duration.inSeconds.toDouble(),
+                                      onChanged: (value) {
+                                        _audioPlayer.seek(
+                                            Duration(seconds: value.toInt()));
+                                      },
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          '${position.inMinutes}:${(position.inSeconds % 60).toString().padLeft(2, '0')}',
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                        ),
+                                        Text(
+                                          '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}',
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
                           ),
                         ),
                       ],
