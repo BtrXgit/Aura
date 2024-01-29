@@ -4,6 +4,7 @@ import 'package:aura/routes/pages/sounds/noises.dart';
 import 'package:aura/routes/pages/sounds/recommended_sounds.dart';
 import 'package:aura/routes/tweaks.dart';
 import 'package:aura/routes/pages/playlists/playlists.dart';
+import 'package:aura/util/relaxingLive_test.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -371,11 +372,17 @@ class _AuraHomePageState extends State<AuraHomePage>
               Padding(
                 padding:
                     const EdgeInsets.only(left: 20.0, top: 10, bottom: 8.0),
-                child: Text(
-                  'Live Radios',
-                  style: GoogleFonts.kanit(
-                    color: Colors.white,
-                    fontSize: 24,
+                child: GestureDetector(
+                  onTap: () => Get.to(
+                    RelaxingLive(),
+                    transition: Transition.fadeIn,
+                  ),
+                  child: Text(
+                    'Live Radios',
+                    style: GoogleFonts.kanit(
+                      color: Colors.white,
+                      fontSize: 24,
+                    ),
                   ),
                 ),
               ),
