@@ -3,10 +3,14 @@ import 'dart:ui';
 import 'package:aura/data/composer_data.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iconly/iconly.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
 
 class AuraComposerTest extends StatefulWidget {
-  const AuraComposerTest({Key? key}) : super(key: key);
+  final ScrollController controller;
+  const AuraComposerTest({Key? key, required this.controller})
+      : super(key: key);
 
   @override
   State<AuraComposerTest> createState() => AuraComposerTestState();
@@ -84,36 +88,95 @@ class AuraComposerTestState extends State<AuraComposerTest> {
             ),
           ),
           SingleChildScrollView(
+            controller: widget.controller,
             physics: const ClampingScrollPhysics(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/composer.gif'),
-                      fit: BoxFit.cover,
-                    ),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 0, 10),
-                    child: Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Text(
-                        'Sounds',
-                        style: GoogleFonts.dancingScript(
-                            color: Colors.white, fontSize: 38),
+                Stack(
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.4,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/composer.gif'),
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
                       ),
                     ),
-                  ),
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.075,
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20),
+                          ),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20),
+                          ),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height:
+                                  MediaQuery.of(context).size.height * 0.075,
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.4),
+                                borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(20),
+                                  bottomRight: Radius.circular(20),
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    spreadRadius: 5,
+                                    blurRadius: 7,
+                                    offset: Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: 20, right: 20),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Sounds',
+                                        style: GoogleFonts.dancingScript(
+                                          color: Colors.white,
+                                          fontSize: 38,
+                                        ),
+                                      ),
+                                      _buildController(),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(
                   height: 10,
@@ -404,7 +467,6 @@ class AuraComposerTestState extends State<AuraComposerTest> {
               ],
             ),
           ),
-          _buildController(),
         ],
       ),
     );
@@ -442,42 +504,37 @@ class AuraComposerTestState extends State<AuraComposerTest> {
         isAudioPlaying = true;
       }
     }
-    return Positioned(
-      right: 20,
-      bottom: MediaQuery.of(context).size.height * 0.1,
-      child: Row(
-        children: [
-          Visibility(
-            visible: isAudioPlaying,
-            child: FloatingActionButton(
-              backgroundColor: Colors.white,
-              onPressed: () {
-                _showTimerDialog();
-              },
-              child: const Icon(
-                Icons.timer,
-                size: 32,
-                color: Color(0xFF131321),
-              ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Visibility(
+          visible: isAudioPlaying,
+          child: GestureDetector(
+            onTap: () {
+              _showTimerDialog();
+            },
+            child: const Icon(
+              Iconsax.timer_1,
+              size: 32,
+              color: Colors.white,
             ),
           ),
-          const SizedBox(width: 8),
-          Visibility(
-            visible: isAudioPlaying,
-            child: FloatingActionButton(
-              backgroundColor: Colors.white,
-              onPressed: () {
-                _stopAllAudioPlayers();
-              },
-              child: const Icon(
-                Icons.stop,
-                size: 32,
-                color: Color(0xFF131321),
-              ),
+        ),
+        const SizedBox(width: 8),
+        Visibility(
+          visible: isAudioPlaying,
+          child: GestureDetector(
+            onTap: () {
+              _stopAllAudioPlayers();
+            },
+            child: const Icon(
+              Iconsax.stop_circle,
+              size: 32,
+              color: Colors.white,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

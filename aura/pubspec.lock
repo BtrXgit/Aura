@@ -241,14 +241,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.6"
-  drop_shadow:
-    dependency: "direct main"
-    description:
-      name: drop_shadow
-      sha256: "1fa552baeb7c6a3c36a7ff77186a2302a7bf53c93914f46328a9c4eb68ec6b08"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.0"
   fake_async:
     dependency: transitive
     description:
@@ -504,14 +496,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.3"
-  intro_screen_onboarding_flutter:
-    dependency: "direct main"
-    description:
-      name: intro_screen_onboarding_flutter
-      sha256: "5ef142f00a426fc6bc3a953557cd35661ab64dae757546d5980fd4fd4bce017e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0"
   js:
     dependency: transitive
     description:
@@ -877,6 +861,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.1"
+  text_scroll:
+    dependency: "direct main"
+    description:
+      name: text_scroll
+      sha256: "7869d86a6fdd725dee56bdd150216a99f0372b82fbfcac319214dbd5f36e1908"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
   typed_data:
     dependency: transitive
     description:

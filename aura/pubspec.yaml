@@ -59,11 +59,10 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   palette_generator: ^0.3.3+3
   provider: ^6.1.1
-  drop_shadow: ^0.1.0
   flutter_animate: ^4.4.1
   metaballs: ^1.5.0
-  intro_screen_onboarding_flutter: ^1.0.0
   animated_text_kit: ^4.2.2
+  text_scroll: ^0.2.0
 
 dev_dependencies:
   flutter_test:

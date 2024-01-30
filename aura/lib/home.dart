@@ -113,7 +113,9 @@ class HomePageState extends State<HomePage>
             AuraHomePage(
               controller: controller,
             ),
-            const AuraComposerTest(),
+            AuraComposerTest(
+              controller: controller,
+            ),
             const ExploreWorldPage(
                 // controller: controller,
                 ),

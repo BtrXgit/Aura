@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:aura/routes/pages/devotional_page.dart';
 import 'package:aura/routes/pages/live/focusLive.dart';
 import 'package:aura/routes/pages/live/live.dart';
@@ -16,6 +18,7 @@ import 'package:iconly/iconly.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:text_scroll/text_scroll.dart';
 
 import '../pages/live/sleepLive.dart';
 
@@ -203,7 +206,7 @@ class _AuraHomePageState extends State<AuraHomePage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                height: MediaQuery.of(context).size.height * 0.26,
+                height: MediaQuery.of(context).size.height * 0.28,
                 decoration: BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage(backgroundImage),
@@ -227,25 +230,70 @@ class _AuraHomePageState extends State<AuraHomePage>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              greeting,
-                              style: GoogleFonts.dancingScript(
-                                //lobster  // carattere  //dancing script
-                                color: Colors.white,
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
+                        padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                        child: Container(
+                          // width: MediaQuery.of(context).size.width,
+                          // height: MediaQuery.of(context).size.height * 0.075,
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(20),
+                              bottomRight: Radius.circular(20),
+                            ),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
+                            ),
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                              child: Container(
+                                // width: MediaQuery.of(context).size.width,
+                                // height:
+                                //     MediaQuery.of(context).size.height * 0.075,
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.4),
+                                  borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(10),
+                                    bottomRight: Radius.circular(10),
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      spreadRadius: 5,
+                                      blurRadius: 7,
+                                      offset: Offset(0, 3),
+                                    ),
+                                  ],
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 20.0, right: 10, bottom: 4),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        greeting,
+                                        style: GoogleFonts.dancingScript(
+                                          //lobster  // carattere  //dancing script
+                                          color: Colors.white,
+                                          fontSize: 32,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        '$userName',
+                                        style: GoogleFonts.kanit(
+                                            color: Colors.white, fontSize: 16),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ),
-                            Text(
-                              '$userName',
-                              style: GoogleFonts.kanit(
-                                  color: Colors.white, fontSize: 16),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
                       Padding(
@@ -376,17 +424,10 @@ class _AuraHomePageState extends State<AuraHomePage>
                   },
                 ),
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.only(left: 20.0, top: 10, bottom: 8.0),
-                child: Text(
-                  'Live Radios',
-                  style: GoogleFonts.kanit(
-                    color: Colors.white,
-                    fontSize: 24,
-                  ),
-                ),
-              ),
+              _ScrollText(
+                  title: 'Live Radios',
+                  scrollText:
+                      'Lofi | Beats to Relax | Beats to study | Beats to sleep.'),
               Padding(
                 padding: const EdgeInsets.only(left: 20, bottom: 20),
                 child: CarouselSlider(
@@ -456,42 +497,71 @@ class _AuraHomePageState extends State<AuraHomePage>
                                       left: 0,
                                       right: 0,
                                       child: Container(
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.075,
-                                          decoration: BoxDecoration(
-                                            color:
-                                                Colors.black.withOpacity(0.6),
-                                            borderRadius: BorderRadius.only(
-                                                bottomLeft: Radius.circular(20),
-                                                bottomRight:
-                                                    Radius.circular(20)),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.black
-                                                    .withOpacity(0.1),
-                                                spreadRadius: 5,
-                                                blurRadius: 7,
-                                                offset: Offset(0, 3),
-                                              ),
-                                            ],
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.075,
+                                        decoration: BoxDecoration(
+                                          color: Colors.transparent,
+                                          borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(20),
+                                            bottomRight: Radius.circular(20),
                                           ),
-                                          child: Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 10),
-                                              child: Text(
-                                                kNames[index],
-                                                style: GoogleFonts.kanit(
-                                                    color: Colors.white,
-                                                    fontSize: 26),
-                                              ),
-                                            ),
-                                          )),
+                                        ),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(20),
+                                            bottomRight: Radius.circular(20),
+                                          ),
+                                          child: BackdropFilter(
+                                            filter: ImageFilter.blur(
+                                                sigmaX: 5, sigmaY: 5),
+                                            child: Container(
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.075,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.black
+                                                      .withOpacity(0.4),
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    bottomLeft:
+                                                        Radius.circular(20),
+                                                    bottomRight:
+                                                        Radius.circular(20),
+                                                  ),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.black
+                                                          .withOpacity(0.1),
+                                                      spreadRadius: 5,
+                                                      blurRadius: 7,
+                                                      offset: Offset(0, 3),
+                                                    ),
+                                                  ],
+                                                ),
+                                                child: Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 10),
+                                                    child: Text(
+                                                      kNames[index],
+                                                      style: GoogleFonts.kanit(
+                                                          color: Colors.white,
+                                                          fontSize: 26),
+                                                    ),
+                                                  ),
+                                                )),
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                     Positioned(
                                       bottom: 10,
@@ -518,17 +588,9 @@ class _AuraHomePageState extends State<AuraHomePage>
               //subtitle: - Immersive Nature Sounds
               //data: - Summer Seashore, morning sunshine, nighttime camping, mystic cosmos, zen temple, placid jungle, home comforts, stormy nights, city strolling
 
-              Padding(
-                padding:
-                    const EdgeInsets.only(left: 20.0, top: 10, bottom: 8.0),
-                child: Text(
-                  'Coloured noise', //dive into digital world of sounds
-                  style: GoogleFonts.kanit(
-                    color: Colors.white,
-                    fontSize: 24,
-                  ),
-                ),
-              ),
+              _ScrollText(
+                  title: 'Coloured noise',
+                  scrollText: 'Dive into digital world of sounds.'),
               SizedBox(
                 height: 130,
                 child: ListView.builder(
@@ -576,17 +638,10 @@ class _AuraHomePageState extends State<AuraHomePage>
               //subtitle: - Melodies that touch the soul
               //space travel, hope, moonlight, sunglow, dust, buddhist chant, illusion, wandering, smoke, fantastic space, hesitance, sunspots, solitude, coffee shop, meditation, slumber, temple, ray of sunlight
 
-              Padding(
-                padding:
-                    const EdgeInsets.only(left: 20.0, bottom: 8.0, top: 10),
-                child: Text(
-                  'Relaxing',
-                  style: GoogleFonts.kanit(
-                    color: Colors.white,
-                    fontSize: 24,
-                  ),
-                ),
-              ),
+              _ScrollText(
+                  title: 'Relaxing',
+                  scrollText:
+                      'Relaxing Sound | Beats to Relax | Beats to chill.'),
               GestureDetector(
                   onTap: () => Get.to(PlaylistsPage(
                         category: 'relaxing',
@@ -594,16 +649,9 @@ class _AuraHomePageState extends State<AuraHomePage>
                   child: _buildDummyCategory(
                     imageLink: relaxingImage,
                   )),
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
-                child: Text(
-                  'Focus',
-                  style: GoogleFonts.kanit(
-                    color: Colors.white,
-                    fontSize: 24,
-                  ),
-                ),
-              ),
+              _ScrollText(
+                  title: 'Focus',
+                  scrollText: 'Lofi | Beats to Focus | Beats to study.'),
               GestureDetector(
                 onTap: () => Get.to(PlaylistsPage(
                   category: 'focus',
@@ -612,16 +660,10 @@ class _AuraHomePageState extends State<AuraHomePage>
                     imageLink:
                         'https://i.pinimg.com/564x/41/59/e2/4159e2b7160850b7051fe7d91ce674dc.jpg'),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
-                child: Text(
-                  'Calm & Cozy',
-                  style: GoogleFonts.kanit(
-                    color: Colors.white,
-                    fontSize: 24,
-                  ),
-                ),
-              ),
+              _ScrollText(
+                  title: 'Calm & Cozy',
+                  scrollText:
+                      'Ambient Sound | Beats to relax | Beats to work | Beats to sleep.'),
               GestureDetector(
                 onTap: () => Get.to(PlaylistsPage(
                   category: 'calm and cozy',
@@ -761,7 +803,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                 bottom: 10,
                 child: Icon(
                   IconlyBold.play,
-                  size: 42,
+                  size: 48,
                   color: Colors.white,
                 ),
               ),
@@ -842,14 +884,65 @@ class _AuraHomePageState extends State<AuraHomePage>
         right: 20.0,
         bottom: 20,
       ),
-      child: Container(
-        height: 200,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: CachedNetworkImageProvider(imageLink), fit: BoxFit.cover),
-          borderRadius: BorderRadius.circular(20),
-        ),
+      child: Stack(
+        children: [
+          Container(
+            height: 200,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: CachedNetworkImageProvider(imageLink),
+                  fit: BoxFit.cover),
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+          Positioned(
+            right: 10,
+            bottom: 10,
+            child: Icon(
+              IconlyBold.play,
+              size: 52,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _ScrollText({
+    required String title,
+    required String scrollText,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 20.0,
+        top: 10,
+        bottom: 8.0,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            title,
+            style: GoogleFonts.kanit(
+              color: Colors.white,
+              fontSize: 24,
+            ),
+          ),
+          const SizedBox(
+            width: 12,
+          ),
+          Expanded(
+            child: TextScroll(
+              scrollText,
+              intervalSpaces: 10,
+              velocity: Velocity(pixelsPerSecond: Offset(40, 0)),
+              style: GoogleFonts.kanit(color: Colors.grey, fontSize: 18),
+            ),
+          )
+        ],
       ),
     );
   }

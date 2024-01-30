@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
-import 'package:aura/util/relaxingLive_test.dart';
+import 'package:aura/data/live_songs.dart';
 import 'package:aura/util/visualizer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
