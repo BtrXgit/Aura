@@ -1,4 +1,7 @@
+import 'package:aura/routes/pages/live/live.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
 class NoisesPage extends StatefulWidget {
@@ -18,6 +21,17 @@ class _NoisesPageState extends State<NoisesPage> {
     'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FImages%2Fgrey.jpg?alt=media&token=6a08ebfb-3da7-49e6-a38f-3670238e2c0f',
     'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FImages%2Fred.jpg?alt=media&token=bd7506c8-6f6d-4cf8-8104-bd146696cf47',
     'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FImages%2Fgreen.jpg?alt=media&token=838a8722-d785-4a0b-a8e8-de171a351096',
+  ];
+
+  List<String> noisesSounds = [
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FWhite%20Noise.mp3?alt=media&token=bd7af2e8-2162-40c7-b0bd-e3c4ec9478e1',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FPink%20Noise.mp3?alt=media&token=4dc54875-28c0-4536-8128-450cc89679f2',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FBrown%20Noise.mp3?alt=media&token=3177c986-7c1a-4a6f-af88-9fec8ff1dd73',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FBlue%20Noise.mp3?alt=media&token=84a1d86a-9e8d-4eeb-b0a6-98c3b6b96d39',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FViolet%20Noise.mp3?alt=media&token=6dbb5547-2688-4eaa-80f7-6b24df2cc901',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FGrey%20Noise.mp3?alt=media&token=3b472e36-31cc-453a-abef-97fd6383d247',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FRed%20Noise.mp3?alt=media&token=87d2860a-ba83-41a9-99ce-8cdf5bdb0649',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FGreen%20Noise.mp3?alt=media&token=7dc7351d-9eb2-44a0-b2d1-26c963ae678c',
   ];
 
   List<String> noises = [
@@ -60,49 +74,60 @@ class _NoisesPageState extends State<NoisesPage> {
           childAspectRatio: 1.8,
         ),
         itemBuilder: (context, index) {
-          return Container(
-            decoration: BoxDecoration(
-                // color: const Color(0xFF1F1F36),
-                image: DecorationImage(
-                    image: AssetImage('assets/style2.png'), fit: BoxFit.cover),
-                borderRadius: BorderRadius.circular(14)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage(noisesImage[index]),
-                          fit: BoxFit.cover),
-                      borderRadius: BorderRadius.circular(14),
+          return InkWell(
+            onTap: () => Get.to(LivePage(
+              currentIndex: index,
+              songs: noisesSounds,
+              title: 'Coloured noises',
+              imageUrl: noisesImage,
+              soundNames: noises,
+            )),
+            child: Container(
+              decoration: BoxDecoration(
+                  // color: const Color(0xFF1F1F36),
+                  image: DecorationImage(
+                      image: AssetImage('assets/style2.png'),
+                      fit: BoxFit.cover),
+                  borderRadius: BorderRadius.circular(14)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image:
+                                CachedNetworkImageProvider(noisesImage[index]),
+                            fit: BoxFit.cover),
+                        borderRadius: BorderRadius.circular(14),
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(0, 20, 10, 10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          noises[index],
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        Icon(
-                          IconlyBold.play,
-                          size: 54,
-                          color: Colors.white,
-                        ),
-                      ],
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(0, 20, 10, 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            noises[index],
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          Icon(
+                            IconlyBold.play,
+                            size: 54,
+                            color: Colors.white,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },

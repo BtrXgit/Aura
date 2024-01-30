@@ -62,7 +62,7 @@ class _SplashScreenState extends State<SplashScreen> {
         .blurXY(end: 24)
         .fadeOut();
     return Scaffold(
-      backgroundColor: Color(0xFF020925),
+      backgroundColor: Color(131321),
       body: AnimationLimiter(
         child: Stack(
           children: [

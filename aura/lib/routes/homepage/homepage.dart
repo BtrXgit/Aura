@@ -5,7 +5,6 @@ import 'package:aura/routes/pages/live/live.dart';
 import 'package:aura/routes/pages/live/relaxingLive.dart';
 import 'package:aura/routes/pages/sounds/noises.dart';
 import 'package:aura/routes/pages/sounds/recommended_sounds.dart';
-import 'package:aura/routes/tweaks.dart';
 import 'package:aura/routes/pages/playlists/playlists.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -116,6 +115,14 @@ class _AuraHomePageState extends State<AuraHomePage>
     'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FImages%2Fbrown.jpg?alt=media&token=4213f35a-3ee1-43cc-9275-8a68c6effc81',
     'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FImages%2Fblue.jpg?alt=media&token=975c4669-2564-43c9-9cf4-2013dd1847a5',
     'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FImages%2Fviolet.jpg?alt=media&token=60ce2298-c146-4d3a-ad68-f545f764d5e5',
+  ];
+
+  List<String> noisesSounds = [
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FWhite%20Noise.mp3?alt=media&token=bd7af2e8-2162-40c7-b0bd-e3c4ec9478e1',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FPink%20Noise.mp3?alt=media&token=4dc54875-28c0-4536-8128-450cc89679f2',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FBrown%20Noise.mp3?alt=media&token=3177c986-7c1a-4a6f-af88-9fec8ff1dd73',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FBlue%20Noise.mp3?alt=media&token=84a1d86a-9e8d-4eeb-b0a6-98c3b6b96d39',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FViolet%20Noise.mp3?alt=media&token=6dbb5547-2688-4eaa-80f7-6b24df2cc901',
   ];
 
   List<String> noises = [
@@ -300,7 +307,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             InkWell(
-                              onTap: () => Get.off(BookmarkedPage(),
+                              onTap: () => Get.to(BookmarkedPage(),
                                   transition: Transition.fadeIn),
                               child: Container(
                                 width: 44,
@@ -318,30 +325,23 @@ class _AuraHomePageState extends State<AuraHomePage>
                             const SizedBox(
                               width: 14,
                             ),
-                            GestureDetector(
-                              onTap: () => Get.to(
-                                  () => SettingsPage(
-                                        controller: widget.controller,
+                            (userPhotoUrl != null)
+                                ? SizedBox(
+                                    width: 44,
+                                    height: 44,
+                                    child: CircleAvatar(
+                                      radius: 18,
+                                      backgroundImage:
+                                          CachedNetworkImageProvider(
+                                        userPhotoUrl!,
                                       ),
-                                  transition: Transition.rightToLeftWithFade),
-                              child: (userPhotoUrl != null)
-                                  ? SizedBox(
-                                      width: 44,
-                                      height: 44,
-                                      child: CircleAvatar(
-                                        radius: 18,
-                                        backgroundImage:
-                                            CachedNetworkImageProvider(
-                                          userPhotoUrl!,
-                                        ),
-                                      ),
-                                    )
-                                  : const Icon(
-                                      Icons.person,
-                                      color: Colors.blue,
-                                      size: 28,
                                     ),
-                            ),
+                                  )
+                                : const Icon(
+                                    Icons.person,
+                                    color: Colors.blue,
+                                    size: 28,
+                                  ),
                           ],
                         ),
                       ),
@@ -468,14 +468,14 @@ class _AuraHomePageState extends State<AuraHomePage>
                                   } else if (index == 1) {
                                     Get.to(
                                         const FocusLive(
-                                          imageUrl: 'assets/relaxingLive.jpg',
+                                          imageUrl: 'assets/studyLive.jpg',
                                         ),
                                         transition:
                                             Transition.rightToLeftWithFade);
                                   } else if (index == 2) {
                                     Get.to(
                                         const SleepLive(
-                                          imageUrl: 'assets/relaxingLive.jpg',
+                                          imageUrl: 'assets/sleepingLive.jpg',
                                         ),
                                         transition:
                                             Transition.rightToLeftWithFade);

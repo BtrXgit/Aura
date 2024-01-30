@@ -140,6 +140,7 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
         _playlistsController.add(cachedData
             .map((json) => Song.fromFirestore(jsonDecode(json)))
             .toList());
+        return; // Return early if data is cached
       }
 
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance

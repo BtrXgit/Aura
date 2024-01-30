@@ -35,15 +35,14 @@ class _RelaxingLiveState extends State<RelaxingLive> {
       });
 
       if (relaxingLive.isNotEmpty) {
-        var random = Random();
-        index = random.nextInt(relaxingLive.length);
+        relaxingLive.shuffle();
 
         Timer(
           Duration(seconds: 5),
           () {
             Get.off(
               AuraLivePlayer(
-                currentIndex: index,
+                currentIndex: 0,
                 songs: relaxingLive,
               ),
               transition: Transition.fadeIn,
