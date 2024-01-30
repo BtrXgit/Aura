@@ -1,10 +1,11 @@
 import 'package:aura/routes/pages/devotional_page.dart';
+import 'package:aura/routes/pages/live/focusLive.dart';
 import 'package:aura/routes/pages/live/live.dart';
+import 'package:aura/routes/pages/live/relaxingLive.dart';
 import 'package:aura/routes/pages/sounds/noises.dart';
 import 'package:aura/routes/pages/sounds/recommended_sounds.dart';
 import 'package:aura/routes/tweaks.dart';
 import 'package:aura/routes/pages/playlists/playlists.dart';
-import 'package:aura/util/relaxingLive_test.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,8 @@ import 'package:iconly/iconly.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../pages/live/sleepLive.dart';
 
 class AuraHomePage extends StatefulWidget {
   final ScrollController controller;
@@ -32,12 +35,15 @@ class _AuraHomePageState extends State<AuraHomePage>
   int index = 0;
 
   List<String> kImages = [
-    'assets/slider/1.jpg',
-    'assets/slider/2.jpg',
-    'assets/slider/3.jpg',
-    'assets/slider/4.jpg',
-    'assets/slider/5.jpg',
-    'assets/slider/6.jpg'
+    'assets/relaxingLive.jpg',
+    'assets/studyLive.jpg',
+    'assets/sleepingLive.jpg',
+  ];
+
+  List<String> kNames = [
+    'Relaxing',
+    'Focus/Study',
+    'Sleep',
   ];
 
   bool isPlaying = false;
@@ -86,6 +92,7 @@ class _AuraHomePageState extends State<AuraHomePage>
     'https://i.pinimg.com/564x/75/50/0b/75500bd88c86833f3c64b769d5d197de.jpg',
     'https://i.pinimg.com/564x/b6/31/84/b631841cb3a29e6f7be99c5ec0bca1d0.jpg',
   ];
+
   List<String> recommendedSoundes = [
     'Ocean Waves',
     'Birdsong',
@@ -352,7 +359,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                     } else {
                       return AnimationConfiguration.staggeredList(
                         position: index,
-                        duration: const Duration(milliseconds: 375),
+                        duration: const Duration(milliseconds: 400),
                         child: ScaleAnimation(
                           // verticalOffset: 50.0,
                           child: FadeInAnimation(
@@ -372,17 +379,11 @@ class _AuraHomePageState extends State<AuraHomePage>
               Padding(
                 padding:
                     const EdgeInsets.only(left: 20.0, top: 10, bottom: 8.0),
-                child: GestureDetector(
-                  onTap: () => Get.to(
-                    RelaxingLive(),
-                    transition: Transition.fadeIn,
-                  ),
-                  child: Text(
-                    'Live Radios',
-                    style: GoogleFonts.kanit(
-                      color: Colors.white,
-                      fontSize: 24,
-                    ),
+                child: Text(
+                  'Live Radios',
+                  style: GoogleFonts.kanit(
+                    color: Colors.white,
+                    fontSize: 24,
                   ),
                 ),
               ),
@@ -400,27 +401,108 @@ class _AuraHomePageState extends State<AuraHomePage>
                     reverse: false,
                   ),
                   items: kImages.asMap().entries.map((entry) {
+                    int index = entry.key;
                     String imageUrl = entry.value;
                     return AnimationConfiguration.staggeredList(
                       position: index,
-                      duration: const Duration(milliseconds: 375),
+                      duration: const Duration(milliseconds: 400),
                       child: SlideAnimation(
                         verticalOffset: 50.0,
                         child: FadeInAnimation(
                           child: Builder(
-                            builder: (BuildContext context) {
+                            builder: (
+                              BuildContext context,
+                            ) {
                               return GestureDetector(
-                                onTap: () {},
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    image: DecorationImage(
-                                      image: AssetImage(imageUrl),
-                                      fit: BoxFit.cover,
-                                      filterQuality: FilterQuality.high,
+                                onTap: () {
+                                  if (index == 0) {
+                                    Get.to(
+                                        const RelaxingLive(
+                                          imageUrl: 'assets/relaxingLive.jpg',
+                                        ),
+                                        transition:
+                                            Transition.rightToLeftWithFade);
+                                  } else if (index == 1) {
+                                    Get.to(
+                                        const FocusLive(
+                                          imageUrl: 'assets/relaxingLive.jpg',
+                                        ),
+                                        transition:
+                                            Transition.rightToLeftWithFade);
+                                  } else if (index == 2) {
+                                    Get.to(
+                                        const SleepLive(
+                                          imageUrl: 'assets/relaxingLive.jpg',
+                                        ),
+                                        transition:
+                                            Transition.rightToLeftWithFade);
+                                  }
+                                },
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        image: DecorationImage(
+                                          image: AssetImage(imageUrl),
+                                          fit: BoxFit.cover,
+                                          filterQuality: FilterQuality.high,
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                    Positioned(
+                                      bottom: 0,
+                                      left: 0,
+                                      right: 0,
+                                      child: Container(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.075,
+                                          decoration: BoxDecoration(
+                                            color:
+                                                Colors.black.withOpacity(0.6),
+                                            borderRadius: BorderRadius.only(
+                                                bottomLeft: Radius.circular(20),
+                                                bottomRight:
+                                                    Radius.circular(20)),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black
+                                                    .withOpacity(0.1),
+                                                spreadRadius: 5,
+                                                blurRadius: 7,
+                                                offset: Offset(0, 3),
+                                              ),
+                                            ],
+                                          ),
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 10),
+                                              child: Text(
+                                                kNames[index],
+                                                style: GoogleFonts.kanit(
+                                                    color: Colors.white,
+                                                    fontSize: 26),
+                                              ),
+                                            ),
+                                          )),
+                                    ),
+                                    Positioned(
+                                      bottom: 10,
+                                      right: 10,
+                                      child: Icon(
+                                        IconlyBold.play,
+                                        size: 74,
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  ],
                                 ),
                               );
                             },
