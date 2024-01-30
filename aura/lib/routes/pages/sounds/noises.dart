@@ -10,14 +10,14 @@ class NoisesPage extends StatefulWidget {
 
 class _NoisesPageState extends State<NoisesPage> {
   List<String> noisesImage = [
-    'assets/noise/white.jpg',
-    'assets/noise/pink.jpg',
-    'assets/noise/brown.jpg',
-    'assets/noise/blue.jpg',
-    'assets/noise/violet.jpg',
-    'assets/noise/grey.jpg',
-    'assets/noise/red.jpg',
-    'assets/noise/green.jpg',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FImages%2Fwhite.jpg?alt=media&token=9af3e878-629c-43b4-af8f-487c3b1f14d0',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FImages%2Fpink.jpg?alt=media&token=34a50113-949c-4942-aadb-7c3236f4a55c',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FImages%2Fbrown.jpg?alt=media&token=4213f35a-3ee1-43cc-9275-8a68c6effc81',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FImages%2Fblue.jpg?alt=media&token=975c4669-2564-43c9-9cf4-2013dd1847a5',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FImages%2Fviolet.jpg?alt=media&token=60ce2298-c146-4d3a-ad68-f545f764d5e5',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FImages%2Fgrey.jpg?alt=media&token=6a08ebfb-3da7-49e6-a38f-3670238e2c0f',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FImages%2Fred.jpg?alt=media&token=bd7506c8-6f6d-4cf8-8104-bd146696cf47',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FImages%2Fgreen.jpg?alt=media&token=838a8722-d785-4a0b-a8e8-de171a351096',
   ];
 
   List<String> noises = [
