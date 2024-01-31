@@ -29,13 +29,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      home: isFirstLaunch
-          ? HomePage(
-              title: '',
-            )
-          : HomePage(
-              title: '',
-            ),
+      home: isFirstLaunch ? SplashScreen() : SplashScreen(),
     );
   }
 }

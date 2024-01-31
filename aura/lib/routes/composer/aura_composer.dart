@@ -504,37 +504,40 @@ class AuraComposerTestState extends State<AuraComposerTest> {
         isAudioPlaying = true;
       }
     }
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Visibility(
-          visible: isAudioPlaying,
-          child: GestureDetector(
-            onTap: () {
-              _showTimerDialog();
-            },
-            child: const Icon(
-              Iconsax.timer_1,
-              size: 32,
-              color: Colors.white,
+    return Padding(
+      padding: EdgeInsets.only(right: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Visibility(
+            visible: isAudioPlaying,
+            child: GestureDetector(
+              onTap: () {
+                _showTimerDialog();
+              },
+              child: const Icon(
+                Iconsax.timer_1,
+                size: 32,
+                color: Colors.white,
+              ),
             ),
           ),
-        ),
-        const SizedBox(width: 8),
-        Visibility(
-          visible: isAudioPlaying,
-          child: GestureDetector(
-            onTap: () {
-              _stopAllAudioPlayers();
-            },
-            child: const Icon(
-              Iconsax.stop_circle,
-              size: 32,
-              color: Colors.white,
+          const SizedBox(width: 20),
+          Visibility(
+            visible: isAudioPlaying,
+            child: GestureDetector(
+              onTap: () {
+                _stopAllAudioPlayers();
+              },
+              child: const Icon(
+                Iconsax.stop_circle,
+                size: 32,
+                color: Colors.white,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

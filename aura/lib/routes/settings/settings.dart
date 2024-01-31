@@ -1,4 +1,9 @@
+import 'dart:ui';
+
+import 'package:aura/routes/settings/privacyPolicy.dart';
+import 'package:aura/routes/settings/settingsCard.dart';
 import 'package:bootstrap_icons/bootstrap_icons.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -17,6 +22,28 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  String? userName;
+  String? userEmail;
+  String? userPhotoUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserProfileData();
+  }
+
+  Future<void> fetchUserProfileData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      setState(() {
+        userName = user.displayName;
+        userEmail = user.email;
+        userPhotoUrl = user.photoURL;
+      });
+    }
+  }
+
   void _clearCache(BuildContext context) async {
     await DefaultCacheManager().emptyCache();
     // ignore: use_build_context_synchronously
@@ -136,13 +163,41 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
+  String _getGreeting() {
+    final now = DateTime.now();
+    final hour = now.hour;
+    if (hour >= 5 && hour < 12) {
+      return 'Good Morning';
+    } else if (hour >= 12 && hour < 17) {
+      return 'Good Afternoon';
+    } else if (hour >= 17 && hour < 20) {
+      return 'Good Evening';
+    } else {
+      return 'Good Night';
+    }
+  }
+
+  String _getImageAsset(String greeting) {
+    switch (greeting) {
+      case 'Good Morning':
+        return 'assets/morning.jpg';
+      case 'Good Afternoon':
+        // return 'assets/morning.jpg';
+        return 'assets/afternoon.jpg';
+      case 'Good Evening':
+        return 'assets/evening.jpg';
+      case 'Good Night':
+        return 'assets/night.jpg';
+      default:
+        return 'assets/morning.jpg';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    double containerWidth = MediaQuery.of(context).size.width / 2 - 25;
-    Color backgroundColor = Colors.black;
+    final greeting = _getGreeting();
+    final backgroundImage = _getImageAsset(greeting);
     Color primaryColor = Colors.white;
-    Color secondaryColor = Colors.grey;
-    Color tertiaryColor = Colors.green;
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
@@ -173,296 +228,222 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ),
                 children: [
-                  const SizedBox(height: 20),
-                  Text(
-                    'Aura',
-                    style: GoogleFonts.cookie(
-                      // fontFamily: 'Anurati',
-                      color: Colors.white,
-                      fontSize: 40,
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                  if (userName != null && userEmail != null)
+                    Stack(
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width - 50,
+                          height: MediaQuery.of(context).size.height * 0.3,
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            image: DecorationImage(
+                              image: AssetImage(backgroundImage),
+                              fit: BoxFit.cover,
+                              filterQuality: FilterQuality.high,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: -1,
+                          left: -1,
+                          right: -1,
+                          top: -1,
+                          child: Container(
+                            // width: MediaQuery.of(context).size.width,
+                            // height: MediaQuery.of(context).size.height * 0.075,
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: BackdropFilter(
+                                filter: ImageFilter.blur(
+                                  sigmaX: 20,
+                                  sigmaY: 20,
+                                ),
+                                child: Container(
+                                  // width: MediaQuery.of(context).size.width,
+                                  // height: MediaQuery.of(context).size.height *
+                                  //     0.075,
+                                  decoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0.4),
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        spreadRadius: 5,
+                                        blurRadius: 7,
+                                        offset: Offset(0, 3),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        if (userPhotoUrl != null)
+                                          CircleAvatar(
+                                            radius: 64,
+                                            backgroundImage:
+                                                CachedNetworkImageProvider(
+                                                    userPhotoUrl!),
+                                          ),
+                                        const SizedBox(
+                                          height: 8,
+                                        ),
+                                        Text(
+                                          '$userName',
+                                          style: GoogleFonts.kanit(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white),
+                                        ),
+                                        const SizedBox(
+                                          height: 8.0,
+                                        ),
+                                        Text(
+                                          '$userEmail',
+                                          style: TextStyle(
+                                              fontSize: 16, color: Colors.grey),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+                  const SizedBox(
+                    height: 10,
                   ),
-                  Text(
-                    'Harmonize Your Experience!',
-                    style: TextStyle(color: secondaryColor),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                    child: Container(
+                      color: Colors.transparent,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          GestureDetector(
+                            onTap: launchUrlPlayStore,
+                            child: Icon(
+                              BootstrapIcons.google_play,
+                              color: primaryColor,
+                              size: 34,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: launchUrlInstagram,
+                            child: Icon(
+                              BootstrapIcons.instagram,
+                              color: primaryColor,
+                              size: 34,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: launchUrlTwitter,
+                            child: Icon(
+                              BootstrapIcons.twitter,
+                              color: primaryColor,
+                              size: 34,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: launchUrlGithub,
+                            child: Icon(
+                              BootstrapIcons.github,
+                              color: primaryColor,
+                              size: 34,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: launchUrlYoutube,
+                            child: Icon(
+                              BootstrapIcons.youtube,
+                              color: primaryColor,
+                              size: 34,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                     child: Wrap(
-                      alignment: WrapAlignment.center,
+                      alignment: WrapAlignment.spaceBetween,
                       spacing: 10,
                       runSpacing: 10,
                       children: [
-                        Container(
-                          height: 180,
-                          width: containerWidth,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/style3.png'),
-                              fit: BoxFit.cover,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
+                        CustomStackCard(
+                          icon: Iconsax.info_circle,
+                          onTap: () => _showAboutAppBottomSheet(context),
+                          title: 'About',
+                          subtitle: 'Find out more about Aura',
                         ),
-                        Container(
-                          height: 180,
-                          width: containerWidth,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/style3.png'),
-                              fit: BoxFit.cover,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
+                        CustomStackCard(
+                          icon: Iconsax.activity,
+                          onTap: () => _showChangelogBottomSheet(context),
+                          title: 'Changelog',
+                          subtitle: 'Recent improvements and fixes',
                         ),
-                        Container(
-                          height: 180,
-                          width: containerWidth,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/style3.png'),
-                              fit: BoxFit.cover,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
+                        CustomStackCard(
+                          icon: Iconsax.trash,
+                          onTap: () => _clearCache(context),
+                          title: 'Clear Cache',
+                          subtitle: 'Clear all Cached data',
                         ),
-                        Container(
-                          height: 180,
-                          width: containerWidth,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/style3.png'),
-                              fit: BoxFit.cover,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
+                        CustomStackCard(
+                          icon: Iconsax.bookmark,
+                          onTap: () => showLicensePage(context: context),
+                          title: 'Licenses',
+                          subtitle: 'View open source licenses',
                         ),
-                        Container(
-                          height: 180,
-                          width: containerWidth,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/style3.png'),
-                              fit: BoxFit.cover,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
+                        CustomStackCard(
+                          icon: Iconsax.security_safe,
+                          onTap: () => Get.to(PrivacyPage(),
+                              transition: Transition.rightToLeftWithFade),
+                          title: 'Privacy Policy',
+                          subtitle: 'Aura privacy policy',
                         ),
-                        Container(
-                          height: 180,
-                          width: containerWidth,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/style3.png'),
-                              fit: BoxFit.cover,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
+                        CustomStackCard(
+                          icon: Iconsax.logout,
+                          onTap: () => signUserOut(),
+                          title: 'Logout',
+                          subtitle: 'Logout of your account',
                         ),
-                        Container(
-                          height: 180,
-                          width: containerWidth,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/style3.png'),
-                              fit: BoxFit.cover,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    width: 300,
-                    height: 250,
-                    decoration: BoxDecoration(
-                      color: tertiaryColor,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ListTile(
-                          leading: const Icon(
-                            Iconsax.info_circle,
-                            size: 28,
-                          ),
-                          title: const Text('About'),
-                          subtitle: Text('Find out more about Luca',
-                              style: TextStyle(color: secondaryColor)),
-                          iconColor: primaryColor,
-                          textColor: primaryColor,
-                          onTap: () {
-                            _showAboutAppBottomSheet(context);
-                          },
-                        ),
-                        ListTile(
-                          leading: const Icon(
-                            Iconsax.activity,
-                            size: 28,
-                          ),
-                          title: const Text('Changelog'),
-                          subtitle: const Text('Recent improvements and fixes',
-                              style: TextStyle(color: Colors.grey)),
-                          iconColor: primaryColor,
-                          textColor: primaryColor,
-                          onTap: () {
-                            _showChangelogBottomSheet(context);
-                          },
-                        ),
-                        ListTile(
-                          leading: const Icon(Iconsax.trash),
-                          title: const Text('Clear Cache'),
-                          subtitle: const Text('Clear all cached data',
-                              style: TextStyle(color: Colors.grey)),
-                          iconColor: primaryColor,
-                          textColor: primaryColor,
-                          onTap: () {
-                            _clearCache(
-                                context); // Call the function to clear cache and show snackbar
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    width: 300,
-                    height: 150,
-                    decoration: BoxDecoration(
-                      color: tertiaryColor,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ListTile(
-                          leading: const Icon(
-                            Iconsax.bookmark,
-                            size: 28,
-                          ),
-                          title: const Text('Liscenses'),
-                          subtitle: const Text('View open source liscenses',
-                              style: TextStyle(color: Colors.grey)),
-                          iconColor: primaryColor,
-                          textColor: primaryColor,
-                          onTap: () {
-                            showLicensePage(
-                                context: context); // Show the licenses page
-                          },
-                        ),
-                        ListTile(
-                          leading: const Icon(Icons.policy_outlined),
-                          title: const Text('Privacy Policy'),
-                          subtitle: const Text('Luca privacy policy',
-                              style: TextStyle(color: Colors.grey)),
-                          iconColor: primaryColor,
-                          textColor: primaryColor,
-                          onTap: () {},
-                          // onTap: () {
-                          //   Get.to(const PrivacyPage());
-                          // }
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    width: 300,
-                    height: 150,
-                    decoration: BoxDecoration(
-                      color: tertiaryColor,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ListTile(
-                          leading: const Icon(Iconsax.logout),
-                          title: const Text('Logout'),
-                          subtitle: const Text('Logout of your account',
-                              style: TextStyle(color: Colors.grey)),
-                          iconColor: primaryColor,
-                          textColor: primaryColor,
-                          onTap: signUserOut,
-                          // onTap: () {},
-                        ),
-                        ListTile(
-                          leading: const Icon(Iconsax.trash),
-                          title: const Text('Delete Account'),
-                          subtitle: const Text(
-                            'Warning! This cannot be undone',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          iconColor: Colors.red,
-                          textColor: primaryColor,
-                          onTap: () {},
-                          // onTap: () {
-                          //   deleteAccount(context);
-                          // },
+                        CustomStackCard(
+                          icon: Iconsax.logout,
+                          onTap: () => deleteAccount(context),
+                          title: 'Delete Account',
+                          subtitle: 'Warning! This cannot be undone',
                         ),
                       ],
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Container(
-                    color: Colors.transparent,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        GestureDetector(
-                          onTap: launchUrlPlayStore,
-                          child: Icon(
-                            BootstrapIcons.google_play,
-                            color: primaryColor,
-                            size: 34,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: launchUrlInstagram,
-                          child: Icon(
-                            BootstrapIcons.instagram,
-                            color: primaryColor,
-                            size: 34,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: launchUrlTwitter,
-                          child: Icon(
-                            BootstrapIcons.twitter,
-                            color: primaryColor,
-                            size: 34,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: launchUrlGithub,
-                          child: Icon(
-                            BootstrapIcons.github,
-                            color: primaryColor,
-                            size: 34,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: launchUrlYoutube,
-                          child: Icon(
-                            BootstrapIcons.youtube,
-                            color: primaryColor,
-                            size: 34,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 35),
                   Align(
                     alignment: Alignment.center,
                     child: Text(
                       'Aura v 1.0.0',
+                      style:
+                          GoogleFonts.kanit(color: primaryColor, fontSize: 12),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'By XD.',
                       style:
                           GoogleFonts.kanit(color: primaryColor, fontSize: 12),
                     ),
@@ -501,7 +482,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               const SizedBox(height: 16),
               Text(
-                '🌟 Immerse yourself in the world of Luca – the ultimate wallpaper app. Discover an extensive selection of static and dynamic wallpapers across various categories, all presented through a beautifully designed and intuitive interface. Elevate your device\'s aesthetic with Luca\'s stunning visuals that cater to every mood and style. 🎨📱',
+                '🌟 Immerse yourself in the world of Aura – the ultimate app for Relaxing your mind and soul, to focus on work, to study, to fall asleep better. Discover an extensive selection of sounds across various categories, all presented through a beautifully designed and intuitive interface. ',
                 style: TextStyle(
                   color: Colors.grey[400],
                   fontSize: 16,
@@ -514,6 +495,31 @@ class _SettingsPageState extends State<SettingsPage> {
                   color: Colors.grey[400],
                   fontSize: 16,
                 ),
+              ),
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton(
+                    onPressed: launchUrlPlayStore,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                    ),
+                    child: const Text(
+                      'Rate Us',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.close,
+                      color: Colors.grey[400],
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
               ),
             ],
           ),
@@ -538,7 +544,7 @@ void _showChangelogBottomSheet(BuildContext context) {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              '🚀 Luca Initial Release Changelog',
+              '🚀 Aura Initial Release Changelog',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 24,
@@ -548,11 +554,12 @@ void _showChangelogBottomSheet(BuildContext context) {
             SizedBox(height: 20),
             ChangelogEntry(
               version: '1.0.0',
-              date: 'October, 2023',
+              date: 'January, 2023',
               changes: [
-                '🎉 Welcome to the world of Luca - Your Ultimate Wallpaper Experience!',
-                '🖼️ Explore a captivating collection of dynamic and static wallpapers.',
-                '🎨 Immerse yourself in the beautifully designed user interface for seamless browsing.',
+                '🎉 Welcome to the world of Aura - the ultimate app for Relaxing your mind and soul, ',
+                '👩‍🏭 To focus on work, ',
+                '📚 To study,',
+                '😴 To fall asleep better.',
               ],
             ),
           ],

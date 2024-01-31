@@ -498,7 +498,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                                       ),
                                     ),
                                     Positioned(
-                                      bottom: 0,
+                                      bottom: -1,
                                       left: 0,
                                       right: 0,
                                       child: Container(
@@ -731,19 +731,19 @@ class _AuraHomePageState extends State<AuraHomePage>
                     imageLink:
                         'https://i.pinimg.com/564x/9e/00/71/9e0071917b7fcc601f24c058de09c221.jpg'),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
-                child: Text(
-                  'ChillDrive',
-                  style: GoogleFonts.kanit(
-                    color: Colors.white,
-                    fontSize: 24,
-                  ),
-                ),
-              ),
-              _buildDummyCategory(
-                  imageLink:
-                      'https://i.pinimg.com/564x/d8/b2/7f/d8b27f84e75c359d0c786890f6f1dac3.jpg'),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
+              //   child: Text(
+              //     'ChillDrive',
+              //     style: GoogleFonts.kanit(
+              //       color: Colors.white,
+              //       fontSize: 24,
+              //     ),
+              //   ),
+              // ),
+              // _buildDummyCategory(
+              //     imageLink:
+              //         'https://i.pinimg.com/564x/d8/b2/7f/d8b27f84e75c359d0c786890f6f1dac3.jpg'),
               // Padding(
               //   padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
               //   child: Text(
@@ -800,7 +800,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                 borderRadius: BorderRadius.circular(20)),
           ),
           Positioned(
-            bottom: 0,
+            bottom: -1,
             left: 0,
             right: 0,
             child: Container(
@@ -897,7 +897,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                 borderRadius: BorderRadius.circular(20)),
           ),
           Positioned(
-            bottom: 0,
+            bottom: -1,
             left: 0,
             right: 0,
             child: Container(
