@@ -1,10 +1,10 @@
 import 'dart:ui';
-import 'package:aura/routes/pages/bookmarked_page.dart';
+import 'package:aura/routes/pages/bookmarkedPage.dart';
 import 'package:aura/routes/pages/live/focusLive.dart';
-import 'package:aura/routes/pages/live/live.dart';
+import 'package:aura/util/players/soundsPlayer.dart';
 import 'package:aura/routes/pages/live/relaxingLive.dart';
 import 'package:aura/routes/pages/sounds/noises.dart';
-import 'package:aura/routes/pages/sounds/recommended_sounds.dart';
+import 'package:aura/routes/pages/sounds/recommendedSounds.dart';
 import 'package:aura/routes/pages/playlists/playlists.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -461,6 +461,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                                   if (index == 0) {
                                     Get.to(
                                         const RelaxingLive(
+                                          title: 'Relaxing Live',
                                           imageUrl: 'assets/relaxingLive.jpg',
                                         ),
                                         transition:
@@ -468,6 +469,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                                   } else if (index == 1) {
                                     Get.to(
                                         const FocusLive(
+                                          title: 'Focus Live',
                                           imageUrl: 'assets/studyLive.jpg',
                                         ),
                                         transition:
@@ -475,6 +477,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                                   } else if (index == 2) {
                                     Get.to(
                                         const SleepLive(
+                                          title: 'Sleep Live',
                                           imageUrl: 'assets/sleepingLive.jpg',
                                         ),
                                         transition:
@@ -776,7 +779,7 @@ class _AuraHomePageState extends State<AuraHomePage>
     required double height,
   }) {
     return GestureDetector(
-      onTap: () => Get.to(LivePage(
+      onTap: () => Get.to(SoundsPlayer(
         currentIndex: index,
         songs: songs,
         title: 'Recommended Sounds',
@@ -873,7 +876,7 @@ class _AuraHomePageState extends State<AuraHomePage>
     required double height,
   }) {
     return GestureDetector(
-      onTap: () => Get.to(LivePage(
+      onTap: () => Get.to(SoundsPlayer(
         currentIndex: index,
         songs: songs,
         title: 'Coloured Noise',

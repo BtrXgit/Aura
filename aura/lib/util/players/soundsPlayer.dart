@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:ui';
-import 'package:aura/data/live_songs.dart';
 import 'package:aura/util/visualizer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -11,23 +10,30 @@ import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_cache/just_audio_cache.dart';
 import 'package:palette_generator/palette_generator.dart';
 
-class AuraLivePlayer extends StatefulWidget {
+class SoundsPlayer extends StatefulWidget {
   final int currentIndex;
-  final List<LiveSongs> songs;
+  final String title;
+  final List<String> songs;
+  final List<String> imageUrl;
+  final List<String> soundNames;
 
-  const AuraLivePlayer({
+  const SoundsPlayer({
     required this.currentIndex,
     required this.songs,
+    required this.title,
+    required this.imageUrl,
+    required this.soundNames,
     Key? key,
   }) : super(key: key);
 
   @override
-  State<AuraLivePlayer> createState() => _AuraLivePlayerState();
+  State<SoundsPlayer> createState() => _SoundsPlayerState();
 }
 
-class _AuraLivePlayerState extends State<AuraLivePlayer> {
+class _SoundsPlayerState extends State<SoundsPlayer> {
   final AudioPlayer _audioPlayer = AudioPlayer();
   int _currentIndex = 0;
+  bool _isRepeatOn = true;
   Color? dominantColor;
 
   @override
@@ -44,7 +50,7 @@ class _AuraLivePlayerState extends State<AuraLivePlayer> {
   Future<void> _loadDominantColor() async {
     final PaletteGenerator paletteGenerator =
         await PaletteGenerator.fromImageProvider(
-            CachedNetworkImageProvider(widget.songs[_currentIndex].imageUrl));
+            CachedNetworkImageProvider(widget.imageUrl[_currentIndex]));
     setState(() {
       dominantColor = paletteGenerator.dominantColor?.color;
     });
@@ -53,13 +59,17 @@ class _AuraLivePlayerState extends State<AuraLivePlayer> {
   void _initializePlayer() {
     if (_currentIndex >= 0 && _currentIndex < widget.songs.length) {
       _audioPlayer.dynamicSet(
-          pushIfNotExisted: true, url: widget.songs[_currentIndex].songUrl);
+          pushIfNotExisted: true, url: widget.songs[_currentIndex]);
 
       _audioPlayer.processingStateStream.listen((processingState) {
         setState(() {});
 
         if (processingState == ProcessingState.completed) {
-          _playNext();
+          if (_isRepeatOn) {
+            _audioPlayer.seek(Duration.zero);
+          } else {
+            _playNext();
+          }
         }
       });
     }
@@ -71,11 +81,10 @@ class _AuraLivePlayerState extends State<AuraLivePlayer> {
         _currentIndex++;
       } else {
         _currentIndex = 0;
-        _audioPlayer.stop();
       }
 
       _audioPlayer.dynamicSet(
-          pushIfNotExisted: true, url: widget.songs[_currentIndex].songUrl);
+          pushIfNotExisted: true, url: widget.songs[_currentIndex]);
       _audioPlayer.play();
       _loadDominantColor();
     }
@@ -85,7 +94,7 @@ class _AuraLivePlayerState extends State<AuraLivePlayer> {
     if (widget.songs.isNotEmpty && _currentIndex > 0) {
       _currentIndex--;
       _audioPlayer.dynamicSet(
-          pushIfNotExisted: true, url: widget.songs[_currentIndex].songUrl);
+          pushIfNotExisted: true, url: widget.songs[_currentIndex]);
       _audioPlayer.play();
       _loadDominantColor();
     }
@@ -171,6 +180,64 @@ class _AuraLivePlayerState extends State<AuraLivePlayer> {
     }
   }
 
+  void _showPlaylist() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          color: Colors.black,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  'Music Playlist',
+                  style: GoogleFonts.openSans(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: widget.songs.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading: CircleAvatar(
+                        backgroundImage:
+                            CachedNetworkImageProvider(widget.imageUrl[index]),
+                      ),
+                      title: Text(
+                        widget.soundNames[index],
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onTap: () {
+                        _playSong(index);
+                        Navigator.pop(context);
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _playSong(int index) {
+    _currentIndex = index;
+    _audioPlayer.dynamicSet(
+      pushIfNotExisted: true,
+      url: widget.songs[_currentIndex],
+    );
+    _audioPlayer.play();
+    _loadDominantColor();
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -194,7 +261,7 @@ class _AuraLivePlayerState extends State<AuraLivePlayer> {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: CachedNetworkImageProvider(
-                      widget.songs[_currentIndex].imageUrl,
+                      widget.imageUrl[_currentIndex],
                     ),
                     fit: BoxFit.cover,
                   ),
@@ -221,7 +288,7 @@ class _AuraLivePlayerState extends State<AuraLivePlayer> {
                     ),
                   ),
                   Text(
-                    'widget.title',
+                    widget.title,
                     style: GoogleFonts.openSans(
                       color: Colors.white,
                       fontSize: 14,
@@ -236,7 +303,7 @@ class _AuraLivePlayerState extends State<AuraLivePlayer> {
                       height: screenHeight * 0.38,
                       width: screenWidth - 74,
                       fit: BoxFit.cover,
-                      imageUrl: widget.songs[_currentIndex].imageUrl,
+                      imageUrl: widget.imageUrl[_currentIndex],
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -249,80 +316,15 @@ class _AuraLivePlayerState extends State<AuraLivePlayer> {
                           alignment: Alignment.centerLeft,
                           child: ListTile(
                             title: Text(
-                              widget.songs[_currentIndex].songName,
+                              widget.soundNames[_currentIndex],
                               style: const TextStyle(
                                   color: Colors.white, fontSize: 24),
                             ),
                             subtitle: Text(
-                              widget.songs[_currentIndex].artist,
+                              'Aura',
                               style: const TextStyle(
                                   color: Colors.white, fontSize: 18),
                             ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                          child: StreamBuilder<Duration>(
-                            stream: _audioPlayer.positionStream,
-                            builder: (context, snapshot) {
-                              final position = snapshot.data ?? Duration.zero;
-                              final duration =
-                                  _audioPlayer.duration ?? Duration.zero;
-                              return Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  SliderTheme(
-                                    data: SliderTheme.of(context).copyWith(
-                                      activeTrackColor:
-                                          dominantColor ?? Colors.blue,
-                                      inactiveTrackColor: Colors.grey,
-                                      thumbColor: Colors.white,
-                                      overlayColor:
-                                          Colors.blue.withOpacity(0.3),
-                                      valueIndicatorColor: Colors.blue,
-                                      thumbShape: const RoundSliderThumbShape(
-                                          enabledThumbRadius: 8.0),
-                                      overlayShape:
-                                          const RoundSliderOverlayShape(
-                                              overlayRadius: 16.0),
-                                      valueIndicatorShape:
-                                          const PaddleSliderValueIndicatorShape(),
-                                      valueIndicatorTextStyle: const TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    child: Slider(
-                                      value: position.inSeconds.toDouble(),
-                                      max: duration.inSeconds.toDouble(),
-                                      onChanged: (value) {
-                                        _audioPlayer.seek(
-                                            Duration(seconds: value.toInt()));
-                                      },
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          '${position.inMinutes}:${(position.inSeconds % 60).toString().padLeft(2, '0')}',
-                                          style: const TextStyle(
-                                              color: Colors.white),
-                                        ),
-                                        Text(
-                                          '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}',
-                                          style: const TextStyle(
-                                              color: Colors.white),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
                           ),
                         ),
                       ],
@@ -420,12 +422,11 @@ class _AuraLivePlayerState extends State<AuraLivePlayer> {
                 right: screenWidth * 0.04,
                 child: IconButton(
                   icon: Icon(
-                    Iconsax.setting_5,
+                    Iconsax.music_playlist,
                     color: Colors.white,
                     size: 28,
                   ),
-                  onPressed: (() =>
-                      Get.to(GlowingBalls(), transition: Transition.fadeIn)),
+                  onPressed: _showPlaylist,
                 ),
               ),
               Positioned(
@@ -433,11 +434,12 @@ class _AuraLivePlayerState extends State<AuraLivePlayer> {
                 left: screenWidth * 0.04,
                 child: IconButton(
                   icon: Icon(
-                    Iconsax.close_circle,
+                    Iconsax.setting_5,
                     color: Colors.white,
                     size: 30,
                   ),
-                  onPressed: (() => Navigator.pop(context)),
+                  onPressed: (() =>
+                      Get.to(GlowingBalls(), transition: Transition.fadeIn)),
                 ),
               ),
             ],

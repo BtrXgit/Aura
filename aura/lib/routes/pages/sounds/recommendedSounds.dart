@@ -1,4 +1,4 @@
-import 'package:aura/routes/pages/live/live.dart';
+import 'package:aura/util/players/soundsPlayer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -87,7 +87,7 @@ class _RecommendedSoundsPageState extends State<RecommendedSoundsPage> {
         ),
         itemBuilder: (context, index) {
           return GestureDetector(
-            onTap: () => Get.to(LivePage(
+            onTap: () => Get.to(SoundsPlayer(
               currentIndex: index,
               songs: songs,
               title: 'Recommended Sounds',

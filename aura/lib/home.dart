@@ -1,7 +1,7 @@
 import 'package:aura/routes/composer/aura_composer.dart';
 import 'package:aura/routes/homepage/homepage.dart';
-import 'package:aura/routes/pages/exploreworldpage.dart';
-import 'package:aura/routes/tweaks.dart';
+import 'package:aura/routes/pages/exploreWorld.dart';
+import 'package:aura/routes/settings/settings.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';

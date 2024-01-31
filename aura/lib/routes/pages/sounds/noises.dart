@@ -1,4 +1,4 @@
-import 'package:aura/routes/pages/live/live.dart';
+import 'package:aura/util/players/soundsPlayer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -75,7 +75,7 @@ class _NoisesPageState extends State<NoisesPage> {
         ),
         itemBuilder: (context, index) {
           return InkWell(
-            onTap: () => Get.to(LivePage(
+            onTap: () => Get.to(SoundsPlayer(
               currentIndex: index,
               songs: noisesSounds,
               title: 'Coloured noises',

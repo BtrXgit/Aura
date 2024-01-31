@@ -4,7 +4,7 @@ import 'dart:ui';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:aura/data/live_songs.dart';
-import 'package:aura/util/livePlayer.dart';
+import 'package:aura/util/players/livePlayer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +12,10 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SleepLive extends StatefulWidget {
+  final String title;
   final String imageUrl;
 
-  const SleepLive({super.key, required this.imageUrl});
+  const SleepLive({super.key, required this.imageUrl, required this.title});
 
   @override
   State<SleepLive> createState() => _SleepLiveState();
@@ -44,6 +45,7 @@ class _SleepLiveState extends State<SleepLive> {
           () {
             Get.off(
               AuraLivePlayer(
+                title: widget.title,
                 currentIndex: index,
                 songs: relaxingLive,
               ),
@@ -68,9 +70,7 @@ class _SleepLiveState extends State<SleepLive> {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage(
-              widget.imageUrl),
-              fit: BoxFit.cover),
+                  image: AssetImage(widget.imageUrl), fit: BoxFit.cover),
             ),
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),

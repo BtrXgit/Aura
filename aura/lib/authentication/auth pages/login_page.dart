@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:aura/authentication/services/auth_service.dart';
 import 'package:aura/component/square_tile.dart';
-import 'package:aura/routes/pages/privacy_policy.dart';
+import 'package:aura/routes/pages/privacyPolicy.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';

@@ -4,7 +4,7 @@ import 'dart:ui';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:aura/data/live_songs.dart';
-import 'package:aura/util/livePlayer.dart';
+import 'package:aura/util/players/livePlayer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +12,10 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class FocusLive extends StatefulWidget {
+  final String title;
   final String imageUrl;
 
-  const FocusLive({super.key, required this.imageUrl});
+  const FocusLive({super.key, required this.imageUrl, required this.title});
 
   @override
   State<FocusLive> createState() => _FocusLiveState();
@@ -44,6 +45,7 @@ class _FocusLiveState extends State<FocusLive> {
           () {
             Get.off(
               AuraLivePlayer(
+                title: widget.title,
                 currentIndex: index,
                 songs: relaxingLive,
               ),

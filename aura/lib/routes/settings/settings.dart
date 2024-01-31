@@ -2,6 +2,7 @@ import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:iconsax/iconsax.dart';
@@ -137,25 +138,26 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    double containerWidth = MediaQuery.of(context).size.width / 2 - 25;
     Color backgroundColor = Colors.black;
     Color primaryColor = Colors.white;
     Color secondaryColor = Colors.grey;
     Color tertiaryColor = Colors.green;
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
         iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
         title: Text(
           'Settings',
-          style: GoogleFonts.orbitron(
-              fontWeight: FontWeight.bold,
-              fontSize: 22,
-              color: Theme.of(context).colorScheme.primary),
+          style: GoogleFonts.kanit(
+            // fontWeight: FontWeight.bold,
+            fontSize: 22,
+            color: Colors.white,
+          ),
         ),
         elevation: 0,
-        backgroundColor: backgroundColor,
+        backgroundColor: Color(0xFF131321),
       ),
-      backgroundColor: backgroundColor,
+      backgroundColor: Color(0xFF131321),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         controller: widget.controller,
@@ -173,10 +175,10 @@ class _SettingsPageState extends State<SettingsPage> {
                 children: [
                   const SizedBox(height: 20),
                   Text(
-                    'AURA',
-                    style: GoogleFonts.orbitron(
+                    'Aura',
+                    style: GoogleFonts.cookie(
                       // fontFamily: 'Anurati',
-                      color: primaryColor,
+                      color: Colors.white,
                       fontSize: 40,
                     ),
                   ),
@@ -185,6 +187,93 @@ class _SettingsPageState extends State<SettingsPage> {
                     style: TextStyle(color: secondaryColor),
                   ),
                   const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                    child: Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: [
+                        Container(
+                          height: 180,
+                          width: containerWidth,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('assets/style3.png'),
+                              fit: BoxFit.cover,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        Container(
+                          height: 180,
+                          width: containerWidth,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('assets/style3.png'),
+                              fit: BoxFit.cover,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        Container(
+                          height: 180,
+                          width: containerWidth,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('assets/style3.png'),
+                              fit: BoxFit.cover,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        Container(
+                          height: 180,
+                          width: containerWidth,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('assets/style3.png'),
+                              fit: BoxFit.cover,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        Container(
+                          height: 180,
+                          width: containerWidth,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('assets/style3.png'),
+                              fit: BoxFit.cover,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        Container(
+                          height: 180,
+                          width: containerWidth,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('assets/style3.png'),
+                              fit: BoxFit.cover,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        Container(
+                          height: 180,
+                          width: containerWidth,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('assets/style3.png'),
+                              fit: BoxFit.cover,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 10),
                     width: 300,
@@ -374,14 +463,6 @@ class _SettingsPageState extends State<SettingsPage> {
                     alignment: Alignment.center,
                     child: Text(
                       'Aura v 1.0.0',
-                      style:
-                          GoogleFonts.kanit(color: primaryColor, fontSize: 12),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Made in India.',
                       style:
                           GoogleFonts.kanit(color: primaryColor, fontSize: 12),
                     ),

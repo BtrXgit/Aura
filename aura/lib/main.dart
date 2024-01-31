@@ -1,5 +1,6 @@
 import 'package:aura/firebase_options.dart';
-import 'package:aura/util/splash.dart';
+import 'package:aura/home.dart';
+import 'package:aura/util/splash/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -28,7 +29,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      home: isFirstLaunch ? SplashScreen() : SplashScreen(),
+      home: isFirstLaunch
+          ? HomePage(
+              title: '',
+            )
+          : HomePage(
+              title: '',
+            ),
     );
   }
 }

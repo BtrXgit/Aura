@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:aura/data/live_songs.dart';
 import 'package:aura/util/visualizer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -10,30 +11,25 @@ import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_cache/just_audio_cache.dart';
 import 'package:palette_generator/palette_generator.dart';
 
-class LivePage extends StatefulWidget {
+class AuraLivePlayer extends StatefulWidget {
   final int currentIndex;
+  final List<LiveSongs> songs;
   final String title;
-  final List<String> songs;
-  final List<String> imageUrl;
-  final List<String> soundNames;
 
-  const LivePage({
+  const AuraLivePlayer({
     required this.currentIndex,
     required this.songs,
     required this.title,
-    required this.imageUrl,
-    required this.soundNames,
     Key? key,
   }) : super(key: key);
 
   @override
-  State<LivePage> createState() => _LivePageState();
+  State<AuraLivePlayer> createState() => _AuraLivePlayerState();
 }
 
-class _LivePageState extends State<LivePage> {
+class _AuraLivePlayerState extends State<AuraLivePlayer> {
   final AudioPlayer _audioPlayer = AudioPlayer();
   int _currentIndex = 0;
-  bool _isRepeatOn = true;
   Color? dominantColor;
 
   @override
@@ -50,7 +46,7 @@ class _LivePageState extends State<LivePage> {
   Future<void> _loadDominantColor() async {
     final PaletteGenerator paletteGenerator =
         await PaletteGenerator.fromImageProvider(
-            CachedNetworkImageProvider(widget.imageUrl[_currentIndex]));
+            CachedNetworkImageProvider(widget.songs[_currentIndex].imageUrl));
     setState(() {
       dominantColor = paletteGenerator.dominantColor?.color;
     });
@@ -59,17 +55,13 @@ class _LivePageState extends State<LivePage> {
   void _initializePlayer() {
     if (_currentIndex >= 0 && _currentIndex < widget.songs.length) {
       _audioPlayer.dynamicSet(
-          pushIfNotExisted: true, url: widget.songs[_currentIndex]);
+          pushIfNotExisted: true, url: widget.songs[_currentIndex].songUrl);
 
       _audioPlayer.processingStateStream.listen((processingState) {
         setState(() {});
 
         if (processingState == ProcessingState.completed) {
-          if (_isRepeatOn) {
-            _audioPlayer.seek(Duration.zero);
-          } else {
-            _playNext();
-          }
+          _playNext();
         }
       });
     }
@@ -81,10 +73,11 @@ class _LivePageState extends State<LivePage> {
         _currentIndex++;
       } else {
         _currentIndex = 0;
+        _audioPlayer.stop();
       }
 
       _audioPlayer.dynamicSet(
-          pushIfNotExisted: true, url: widget.songs[_currentIndex]);
+          pushIfNotExisted: true, url: widget.songs[_currentIndex].songUrl);
       _audioPlayer.play();
       _loadDominantColor();
     }
@@ -94,7 +87,7 @@ class _LivePageState extends State<LivePage> {
     if (widget.songs.isNotEmpty && _currentIndex > 0) {
       _currentIndex--;
       _audioPlayer.dynamicSet(
-          pushIfNotExisted: true, url: widget.songs[_currentIndex]);
+          pushIfNotExisted: true, url: widget.songs[_currentIndex].songUrl);
       _audioPlayer.play();
       _loadDominantColor();
     }
@@ -180,64 +173,6 @@ class _LivePageState extends State<LivePage> {
     }
   }
 
-  void _showPlaylist() {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          color: Colors.black,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  'Music Playlist',
-                  style: GoogleFonts.openSans(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: widget.songs.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage:
-                            CachedNetworkImageProvider(widget.imageUrl[index]),
-                      ),
-                      title: Text(
-                        widget.soundNames[index],
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onTap: () {
-                        _playSong(index);
-                        Navigator.pop(context);
-                      },
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  void _playSong(int index) {
-    _currentIndex = index;
-    _audioPlayer.dynamicSet(
-      pushIfNotExisted: true,
-      url: widget.songs[_currentIndex],
-    );
-    _audioPlayer.play();
-    _loadDominantColor();
-  }
-
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -261,7 +196,7 @@ class _LivePageState extends State<LivePage> {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: CachedNetworkImageProvider(
-                      widget.imageUrl[_currentIndex],
+                      widget.songs[_currentIndex].imageUrl,
                     ),
                     fit: BoxFit.cover,
                   ),
@@ -303,7 +238,7 @@ class _LivePageState extends State<LivePage> {
                       height: screenHeight * 0.38,
                       width: screenWidth - 74,
                       fit: BoxFit.cover,
-                      imageUrl: widget.imageUrl[_currentIndex],
+                      imageUrl: widget.songs[_currentIndex].imageUrl,
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -316,17 +251,82 @@ class _LivePageState extends State<LivePage> {
                           alignment: Alignment.centerLeft,
                           child: ListTile(
                             title: Text(
-                              widget.soundNames[_currentIndex],
+                              widget.songs[_currentIndex].songName,
                               style: const TextStyle(
                                   color: Colors.white, fontSize: 24),
                             ),
                             subtitle: Text(
-                              'Aura',
+                              widget.songs[_currentIndex].artist,
                               style: const TextStyle(
                                   color: Colors.white, fontSize: 18),
                             ),
                           ),
                         ),
+                        // Padding(
+                        //   padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        //   child: StreamBuilder<Duration>(
+                        //     stream: _audioPlayer.positionStream,
+                        //     builder: (context, snapshot) {
+                        //       final position = snapshot.data ?? Duration.zero;
+                        //       final duration =
+                        //           _audioPlayer.duration ?? Duration.zero;
+                        //       return Column(
+                        //         mainAxisSize: MainAxisSize.min,
+                        //         children: [
+                        //           SliderTheme(
+                        //             data: SliderTheme.of(context).copyWith(
+                        //               activeTrackColor:
+                        //                   dominantColor ?? Colors.blue,
+                        //               inactiveTrackColor: Colors.grey,
+                        //               thumbColor: Colors.white,
+                        //               overlayColor:
+                        //                   Colors.blue.withOpacity(0.3),
+                        //               valueIndicatorColor: Colors.blue,
+                        //               thumbShape: const RoundSliderThumbShape(
+                        //                   enabledThumbRadius: 8.0),
+                        //               overlayShape:
+                        //                   const RoundSliderOverlayShape(
+                        //                       overlayRadius: 16.0),
+                        //               valueIndicatorShape:
+                        //                   const PaddleSliderValueIndicatorShape(),
+                        //               valueIndicatorTextStyle: const TextStyle(
+                        //                 color: Colors.white,
+                        //               ),
+                        //             ),
+                        //             child: Slider(
+                        //               value: position.inSeconds.toDouble(),
+                        //               max: duration.inSeconds.toDouble(),
+                        //               onChanged: (value) {
+                        //                 _audioPlayer.seek(
+                        //                     Duration(seconds: value.toInt()));
+                        //               },
+                        //             ),
+                        //           ),
+                        //           Padding(
+                        //             padding:
+                        //                 const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                        //             child: Row(
+                        //               mainAxisAlignment:
+                        //                   MainAxisAlignment.spaceBetween,
+                        //               children: [
+                        //                 Text(
+                        //                   '${position.inMinutes}:${(position.inSeconds % 60).toString().padLeft(2, '0')}',
+                        //                   style: const TextStyle(
+                        //                       color: Colors.white),
+                        //                 ),
+                        //                 Text(
+                        //                   '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}',
+                        //                   style: const TextStyle(
+                        //                       color: Colors.white),
+                        //                 ),
+                        //               ],
+                        //             ),
+                        //           ),
+                        //         ],
+                        //       );
+                        //     },
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
@@ -422,11 +422,12 @@ class _LivePageState extends State<LivePage> {
                 right: screenWidth * 0.04,
                 child: IconButton(
                   icon: Icon(
-                    Iconsax.music_playlist,
+                    Iconsax.setting_5,
                     color: Colors.white,
                     size: 28,
                   ),
-                  onPressed: _showPlaylist,
+                  onPressed: (() =>
+                      Get.to(GlowingBalls(), transition: Transition.fadeIn)),
                 ),
               ),
               Positioned(
@@ -434,12 +435,11 @@ class _LivePageState extends State<LivePage> {
                 left: screenWidth * 0.04,
                 child: IconButton(
                   icon: Icon(
-                    Iconsax.setting_5,
+                    Iconsax.close_circle,
                     color: Colors.white,
                     size: 30,
                   ),
-                  onPressed: (() =>
-                      Get.to(GlowingBalls(), transition: Transition.fadeIn)),
+                  onPressed: (() => Navigator.pop(context)),
                 ),
               ),
             ],

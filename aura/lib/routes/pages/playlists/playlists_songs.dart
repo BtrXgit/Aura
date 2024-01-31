@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:aura/routes/pages/player.dart';
+import 'package:aura/util/players/mainAuraPlayer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
