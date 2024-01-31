@@ -13,18 +13,18 @@ class RecommendedSoundsPage extends StatefulWidget {
 
 class _RecommendedSoundsPageState extends State<RecommendedSoundsPage> {
   List<String> recommendedImageUrl = [
-    'https://i.pinimg.com/564x/a5/ba/00/a5ba003ca05f2646b8c2735ac0b6e3d9.jpg',
-    'https://i.pinimg.com/736x/7e/bb/a1/7ebba1c8f506046205f223e7f4477994.jpg',
-    'https://i.pinimg.com/564x/6d/b2/d4/6db2d4c4c456211650429781a47ee95b.jpg',
-    'https://i.pinimg.com/564x/75/50/0b/75500bd88c86833f3c64b769d5d197de.jpg',
-    'https://i.pinimg.com/564x/b6/31/84/b631841cb3a29e6f7be99c5ec0bca1d0.jpg',
-    'https://i.pinimg.com/564x/6e/21/e0/6e21e00acfcfbbb7b334486261e8e77d.jpg',
-    'https://i.pinimg.com/564x/e4/22/3c/e4223c9d320ca6e36d1df970a51f698e.jpg',
-    'https://i.pinimg.com/564x/01/17/27/01172784637ef7315a6273afb8cc6321.jpg',
-    'https://i.pinimg.com/564x/08/d8/15/08d815e77dd4e30228615c502ae063a3.jpg',
-    'https://i.pinimg.com/564x/34/00/9c/34009cf70efce641f8fcf91cc6e8b815.jpg',
-    'https://i.pinimg.com/564x/f8/0e/04/f80e04732ee19168c1f5d0372ff4a460.jpg',
-    'https://i.pinimg.com/564x/72/1a/9b/721a9bccca150b0e99b8fade5385e984.jpg',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRecommended%20Sounds%2Focean.jpg?alt=media&token=687073b1-be9f-4bf0-9f9f-379b60a59969',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRecommended%20Sounds%2Fbirdsong.jpg?alt=media&token=3273f108-27d8-4ad1-b96b-ddc845fe8407',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRecommended%20Sounds%2Fpiano.jpg?alt=media&token=72789b21-67b9-4f7c-a444-d19628e54489',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRecommended%20Sounds%2Fharp.jpg?alt=media&token=86b8d014-0547-404d-af58-90f9c156f4bf',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRecommended%20Sounds%2Fbonfire.jpg?alt=media&token=1a19e51f-260f-41b8-8e91-47afbf2572f9',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRecommended%20Sounds%2Fchimes.jpg?alt=media&token=a43f462d-0e40-4be5-8fbb-55397cca4d84',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRecommended%20Sounds%2Fwindintrees.jpg?alt=media&token=49c081bf-b63f-4994-92bb-eeb56cdb93d0',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRecommended%20Sounds%2Fzen.jpg?alt=media&token=3d71080b-bca6-4cd2-8830-f866f4e95867',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRecommended%20Sounds%2Frainfall.jpg?alt=media&token=de69900f-6f3f-4dc5-a99b-4f4d345db517',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRecommended%20Sounds%2Fthunderstorm.jpg?alt=media&token=92f285f5-3e1b-4981-bbd2-d21f4789b33f',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRecommended%20Sounds%2Fbowl.jpg?alt=media&token=c690e04e-e5a1-41d9-b38a-6a2c53a9d5ba',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRecommended%20Sounds%2Fcity%20rain.jpg?alt=media&token=fe70dac2-953a-479e-93af-04276c1ec624',
   ];
 
   List<String> recommendedSoundes = [

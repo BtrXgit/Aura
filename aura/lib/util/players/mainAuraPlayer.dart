@@ -134,6 +134,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
         ];
 
         return AlertDialog(
+          backgroundColor: Color(0xFF131321),
           title: Text(
             'Select Timer Duration',
             style: GoogleFonts.inter(fontSize: 18, color: Colors.white),
@@ -505,12 +506,14 @@ class _AuraPlayerState extends State<AuraPlayer> {
             return Column(
               children: [
                 Container(
+                  color: Colors.transparent,
                   padding: EdgeInsets.all(16.0),
                   child: Text(
                     'Now Playing',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -534,6 +537,9 @@ class _AuraPlayerState extends State<AuraPlayer> {
                         title: Text(
                           widget.songs[index].songName,
                           style: TextStyle(
+                            color: isCurrentSong
+                                ? Color(0xFF131321)
+                                : Colors.white,
                             fontWeight: isCurrentSong
                                 ? FontWeight.bold
                                 : FontWeight.normal,
@@ -541,7 +547,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
                         ),
                         subtitle: Text(widget.songs[index].artist),
                         trailing: IconButton(
-                          icon: Icon(Icons.close),
+                          icon: Icon(Iconsax.close_circle),
                           onPressed: () {
                             setState(() {
                               widget.songs.removeAt(index);

@@ -50,7 +50,7 @@ class _SoundsPlayerState extends State<SoundsPlayer> {
   Future<void> _loadDominantColor() async {
     final PaletteGenerator paletteGenerator =
         await PaletteGenerator.fromImageProvider(
-            CachedNetworkImageProvider(widget.imageUrl[_currentIndex]));
+            AssetImage(widget.imageUrl[_currentIndex]));
     setState(() {
       dominantColor = paletteGenerator.dominantColor?.color;
     });
@@ -126,6 +126,7 @@ class _SoundsPlayerState extends State<SoundsPlayer> {
         ];
 
         return AlertDialog(
+          backgroundColor: Color(0xFF131321),
           title: Text(
             'Select Timer Duration',
             style: GoogleFonts.inter(fontSize: 18, color: Colors.white),
@@ -180,49 +181,77 @@ class _SoundsPlayerState extends State<SoundsPlayer> {
     }
   }
 
-  void _showPlaylist() {
+  void _showQueue(BuildContext context) {
     showModalBottomSheet(
+      backgroundColor: Color(0xFF131321),
       context: context,
-      builder: (BuildContext context) {
-        return Container(
-          color: Colors.black,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  'Music Playlist',
-                  style: GoogleFonts.openSans(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Column(
+              children: [
+                Container(
+                  color: Colors.transparent,
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    'Now Playing',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: widget.songs.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage:
-                            CachedNetworkImageProvider(widget.imageUrl[index]),
-                      ),
-                      title: Text(
-                        widget.soundNames[index],
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onTap: () {
-                        _playSong(index);
-                        Navigator.pop(context);
-                      },
-                    );
-                  },
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: widget.songs.length,
+                    itemBuilder: (context, index) {
+                      bool isCurrentSong = _currentIndex == index;
+
+                      return ListTile(
+                        tileColor: isCurrentSong ? Colors.grey[200] : null,
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: CachedNetworkImage(
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.cover,
+                            imageUrl: widget.imageUrl[index],
+                          ),
+                        ),
+                        title: Text(
+                          widget.soundNames[index],
+                          style: TextStyle(
+                            color: isCurrentSong
+                                ? Color(0xFF131321)
+                                : Colors.white,
+                            fontWeight: isCurrentSong
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                          ),
+                        ),
+                        trailing: IconButton(
+                          icon: Icon(Iconsax.close_circle),
+                          onPressed: () {
+                            setState(() {
+                              widget.songs.removeAt(index);
+                              if (_currentIndex == index) {
+                                _audioPlayer.stop();
+                              }
+                            });
+                          },
+                        ),
+                        onTap: () {
+                          _playSong(index);
+                          Navigator.pop(context);
+                        },
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            );
+          },
         );
       },
     );
@@ -426,7 +455,9 @@ class _SoundsPlayerState extends State<SoundsPlayer> {
                     color: Colors.white,
                     size: 28,
                   ),
-                  onPressed: _showPlaylist,
+                  onPressed: () {
+                    _showQueue(context);
+                  },
                 ),
               ),
               Positioned(

@@ -110,6 +110,7 @@ flutter:
     - assets/
     - assets/noise/
     - assets/splash/
+    - assets/recommended/
     
     
   #   - images/a_dot_ham.jpeg

@@ -56,7 +56,7 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
         if (snapshot.hasData) {
           return _buildPlaylistListView(snapshot.data!);
         } else {
-          return Center(child: CircularProgressIndicator());
+          return Center(child: CircularProgressIndicator(color: Colors.white,));
         }
       },
     );

@@ -119,6 +119,7 @@ class _AuraLivePlayerState extends State<AuraLivePlayer> {
         ];
 
         return AlertDialog(
+          backgroundColor: Color(0xFF131321),
           title: Text(
             'Select Timer Duration',
             style: GoogleFonts.inter(fontSize: 18, color: Colors.white),

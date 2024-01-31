@@ -86,11 +86,11 @@ class _AuraHomePageState extends State<AuraHomePage>
   }
 
   List<String> recommendedImageUrl = [
-    'https://i.pinimg.com/564x/a5/ba/00/a5ba003ca05f2646b8c2735ac0b6e3d9.jpg',
-    'https://i.pinimg.com/736x/7e/bb/a1/7ebba1c8f506046205f223e7f4477994.jpg',
-    'https://i.pinimg.com/564x/6d/b2/d4/6db2d4c4c456211650429781a47ee95b.jpg',
-    'https://i.pinimg.com/564x/75/50/0b/75500bd88c86833f3c64b769d5d197de.jpg',
-    'https://i.pinimg.com/564x/b6/31/84/b631841cb3a29e6f7be99c5ec0bca1d0.jpg',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRecommended%20Sounds%2Focean.jpg?alt=media&token=687073b1-be9f-4bf0-9f9f-379b60a59969',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRecommended%20Sounds%2Fbirdsong.jpg?alt=media&token=3273f108-27d8-4ad1-b96b-ddc845fe8407',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRecommended%20Sounds%2Fpiano.jpg?alt=media&token=72789b21-67b9-4f7c-a444-d19628e54489',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRecommended%20Sounds%2Fharp.jpg?alt=media&token=86b8d014-0547-404d-af58-90f9c156f4bf',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRecommended%20Sounds%2Fbonfire.jpg?alt=media&token=1a19e51f-260f-41b8-8e91-47afbf2572f9',
   ];
 
   List<String> recommendedSoundes = [
@@ -178,6 +178,21 @@ class _AuraHomePageState extends State<AuraHomePage>
     }
   }
 
+  String randomFocusImage(String greeting) {
+    switch (greeting) {
+      case 'Good Morning':
+        return 'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FFocus%20Study%2FfocusMorning.jpg?alt=media&token=db0b3aa1-f38e-40f7-a29d-0fcadd17e3a7';
+      case 'Good Afternoon':
+        return 'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FFocus%20Study%2FfocusAfternoon.jpg?alt=media&token=dcdf8900-886c-459e-8e15-871999669766';
+      case 'Good Evening':
+        return 'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FFocus%20Study%2FfocusEvening.jpg?alt=media&token=abcbf1d0-39be-4c53-9f37-31c4fab1b702';
+      case 'Good Night':
+        return 'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FFocus%20Study%2FfocusNight.jpg?alt=media&token=942958f4-7aee-4891-b01e-30e14a7717de';
+      default:
+        return 'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FFocus%20Study%2FfocusNight.jpg?alt=media&token=942958f4-7aee-4891-b01e-30e14a7717de';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -189,6 +204,7 @@ class _AuraHomePageState extends State<AuraHomePage>
     final greeting = _getGreeting();
     final backgroundImage = _getImageAsset(greeting);
     final relaxingImage = randomRelaxingImage(greeting);
+    final focusImage = randomFocusImage(greeting);
     return Stack(
       children: [
         RotatedBox(
@@ -661,9 +677,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                 onTap: () => Get.to(PlaylistsPage(
                   category: 'focus',
                 )),
-                child: _buildDummyCategory(
-                    imageLink:
-                        'https://i.pinimg.com/564x/41/59/e2/4159e2b7160850b7051fe7d91ce674dc.jpg'),
+                child: _buildDummyCategory(imageLink: focusImage),
               ),
               _ScrollText(
                   title: 'Calm & Cozy ',
@@ -675,7 +689,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                 )),
                 child: _buildDummyCategory(
                     imageLink:
-                        'https://i.pinimg.com/564x/47/16/03/471603819ac91c1c73d947ada797bf07.jpg'),
+                        'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2Fcozy.jpg?alt=media&token=3269db39-02fe-4d89-a05c-506cf08f27cc'),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
@@ -693,7 +707,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                 )),
                 child: _buildDummyCategory(
                     imageLink:
-                        'https://i.pinimg.com/564x/6f/a2/6e/6fa26eb2b9bf7fbd32671d3617a9a3fd.jpg'),
+                        'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2Fsynthwave.jpg?alt=media&token=d2c50d2c-c6eb-40e4-b05b-7f88bf81af31'),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
@@ -711,7 +725,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                 )),
                 child: _buildDummyCategory(
                     imageLink:
-                        'https://i.pinimg.com/564x/91/53/57/91535759da1d41ec29fe4c9c1f3fc3b0.jpg'),
+                        'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2Fsad.jpg?alt=media&token=37f31103-0868-402e-8bf2-2401b5ca50bb'),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),
@@ -729,7 +743,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                 )),
                 child: _buildDummyCategory(
                     imageLink:
-                        'https://i.pinimg.com/564x/9e/00/71/9e0071917b7fcc601f24c058de09c221.jpg'),
+                        'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2Fhiphop.jpg?alt=media&token=88e8441e-3ef7-4b06-b628-c37de276be6e'),
               ),
               // Padding(
               //   padding: const EdgeInsets.only(left: 20.0, bottom: 8.0),

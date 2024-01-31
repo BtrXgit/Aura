@@ -93,7 +93,7 @@ class HomePageState extends State<HomePage>
         // barColor: Colors.black.computeLuminance() > 0.5
         //     ? Colors.black
         //     : const Color.fromARGB(255, 14, 3, 31),
-        barColor: Color(0xFF020925),
+        barColor: Color(0xFF131321),
         start: 2,
         end: 0,
         offset: 10,
