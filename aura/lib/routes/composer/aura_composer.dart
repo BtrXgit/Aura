@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:aura/data/composer_data.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+// ignore: unused_import
 import 'package:iconly/iconly.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
@@ -651,9 +652,10 @@ class AuraComposerTestState extends State<AuraComposerTest> {
         ];
 
         return AlertDialog(
+          backgroundColor: Color(0xFF131321),
           title: Text(
             'Select Timer Duration',
-            style: GoogleFonts.inter(fontSize: 18),
+            style: GoogleFonts.kanit(fontSize: 18, color: Colors.white),
           ),
           content: SizedBox(
             height: 150,
@@ -667,10 +669,13 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                         },
                         style: ButtonStyle(
                           backgroundColor: (selectedTime == option['duration'])
-                              ? MaterialStateProperty.all(Colors.red)
-                              : null,
+                              ? MaterialStateProperty.all(Color(0xFF131321))
+                              : MaterialStateProperty.all(Colors.grey[800]),
                         ),
-                        child: Text(option['label']),
+                        child: Text(
+                          option['label'],
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ))
                   .toList(),
             ),

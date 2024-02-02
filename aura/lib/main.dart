@@ -1,5 +1,4 @@
 import 'package:aura/firebase_options.dart';
-import 'package:aura/home.dart';
 import 'package:aura/util/splash/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,7 +10,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // Check if it's the first launch
   bool isFirstLaunch = await isFirstLaunchCheck();
 
   SystemChrome.setPreferredOrientations([
@@ -29,6 +27,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       home: isFirstLaunch ? SplashScreen() : SplashScreen(),
     );
   }

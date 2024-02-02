@@ -48,7 +48,6 @@ class _GlowingBallsState extends State<GlowingBalls> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
 
     return Material(
       child: GestureDetector(
