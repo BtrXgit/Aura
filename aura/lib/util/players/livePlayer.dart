@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:aura/authentication/services/admob_service.dart';
 import 'package:aura/data/live_songs.dart';
 import 'package:aura/util/visualizer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_cache/just_audio_cache.dart';
@@ -35,12 +37,23 @@ class _AuraLivePlayerState extends State<AuraLivePlayer> {
   @override
   void initState() {
     super.initState();
+    _createBannerAd();
     _currentIndex = widget.currentIndex;
     if (widget.songs.isNotEmpty) {
       _initializePlayer();
       _audioPlayer.play();
     }
     _loadDominantColor();
+  }
+
+  BannerAd? _banner;
+  void _createBannerAd() {
+    _banner = BannerAd(
+      size: AdSize.banner,
+      adUnitId: AdMobService.bannerAdUnitId!,
+      listener: AdMobService.bannerListener,
+      request: const AdRequest(),
+    )..load();
   }
 
   Future<void> _loadDominantColor() async {
@@ -389,7 +402,7 @@ class _AuraLivePlayerState extends State<AuraLivePlayer> {
                 ],
               ),
               Positioned(
-                bottom: screenHeight * 0.04,
+                bottom: screenHeight * 0.02,
                 // right: screenWidth * 0.04,
                 left: 0,
                 right: 0,
@@ -447,6 +460,14 @@ class _AuraLivePlayerState extends State<AuraLivePlayer> {
           ),
         ),
       ),
+      bottomNavigationBar: _banner == null
+          ? const SizedBox(
+              height: 0,
+            )
+          : SizedBox(
+              height: 52,
+              child: AdWidget(ad: _banner!),
+            ),
     );
   }
 }

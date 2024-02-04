@@ -5,25 +5,27 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 class AdMobService {
   static String? get bannerAdUnitId {
     if (Platform.isAndroid) {
-      return 'ca-app-pub-3940256099942544/6300978111';
+      // return 'ca-app-pub-3940256099942544/6300978111';
+      return 'ca-app-pub-2502922311219626/5489027568';
     } else if (Platform.isIOS) {
       return 'ca-app-pub-2502922311219626/1931007304';
     }
     return null;
   }
 
-  static String? get interstitialAdUnitId {
-    if (Platform.isAndroid) {
-      return 'ca-app-pub-3940256099942544/1033173712';
-    } else if (Platform.isIOS) {
-      return 'ca-app-pub-2502922311219626/7644985525';
-    }
-    return null;
-  }
+  // static String? get interstitialAdUnitId {
+  //   if (Platform.isAndroid) {
+  //     return 'ca-app-pub-3940256099942544/1033173712';
+  //   } else if (Platform.isIOS) {
+  //     return 'ca-app-pub-2502922311219626/7644985525';
+  //   }
+  //   return null;
+  // }
 
   static String? get nativeAdsUnit {
     if (Platform.isAndroid) {
-      return 'ca-app-pub-3940256099942544/2247696110';
+      // return 'ca-app-pub-3940256099942544/2247696110';
+      return 'ca-app-pub-2502922311219626/3123590816';
     } else if (Platform.isIOS) {
       return 'ca-app-pub-3940256099942544/2247696110';
     }

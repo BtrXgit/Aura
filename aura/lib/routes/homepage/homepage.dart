@@ -53,7 +53,7 @@ class _AuraHomePageState extends State<AuraHomePage>
   // Set<String> favoriteSongs = Set<String>();
 
   BannerAd? _banner;
-  InterstitialAd? _interstitialAd;
+  // InterstitialAd? _interstitialAd;
   void _createBannerAd() {
     _banner = BannerAd(
       size: AdSize.banner,
@@ -63,32 +63,32 @@ class _AuraHomePageState extends State<AuraHomePage>
     )..load();
   }
 
-  void _createInterstitialAd() {
-    InterstitialAd.load(
-      adUnitId: AdMobService.interstitialAdUnitId!,
-      request: const AdRequest(),
-      adLoadCallback: InterstitialAdLoadCallback(
-          onAdLoaded: (ad) => _interstitialAd = ad,
-          onAdFailedToLoad: (LoadAdError error) => _interstitialAd = null),
-    );
-  }
+  // void _createInterstitialAd() {
+  //   InterstitialAd.load(
+  //     adUnitId: AdMobService.interstitialAdUnitId!,
+  //     request: const AdRequest(),
+  //     adLoadCallback: InterstitialAdLoadCallback(
+  //         onAdLoaded: (ad) => _interstitialAd = ad,
+  //         onAdFailedToLoad: (LoadAdError error) => _interstitialAd = null),
+  //   );
+  // }
 
-  void _showInterstitialAd() {
-    if (_interstitialAd != null) {
-      _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
-        onAdDismissedFullScreenContent: (ad) {
-          ad.dispose();
-          _createInterstitialAd();
-        },
-        onAdFailedToShowFullScreenContent: (ad, error) {
-          ad.dispose();
-          _createInterstitialAd();
-        },
-      );
-      _interstitialAd!.show();
-      _interstitialAd = null;
-    }
-  }
+  // void _showInterstitialAd() {
+  //   if (_interstitialAd != null) {
+  //     _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
+  //       onAdDismissedFullScreenContent: (ad) {
+  //         ad.dispose();
+  //         _createInterstitialAd();
+  //       },
+  //       onAdFailedToShowFullScreenContent: (ad, error) {
+  //         ad.dispose();
+  //         _createInterstitialAd();
+  //       },
+  //     );
+  //     _interstitialAd!.show();
+  //     _interstitialAd = null;
+  //   }
+  // }
 
   NativeAd? _nativeAd;
   bool _nativeAdIsLoaded = false;
@@ -133,7 +133,7 @@ class _AuraHomePageState extends State<AuraHomePage>
   void initState() {
     super.initState();
     _createBannerAd();
-    _createInterstitialAd();
+    // _createInterstitialAd();
     loadNativeAd();
     fetchUserProfileData();
     // _loadFavoriteSongs();
@@ -350,7 +350,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                               bottomRight: Radius.circular(10),
                             ),
                             child: BackdropFilter(
-                              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                              filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
                               child: Container(
                                 // width: MediaQuery.of(context).size.width,
                                 // height:
@@ -372,7 +372,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.only(
-                                      left: 20.0, right: 10, bottom: 4),
+                                      left: 20.0, right: 10, bottom: 8),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,

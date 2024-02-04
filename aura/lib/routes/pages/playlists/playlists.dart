@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:aura/authentication/services/admob_service.dart';
+import 'package:aura/component/native_ad.dart';
 import 'package:aura/data/songs.dart';
 import 'package:aura/routes/pages/playlists/playlists_songs.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PlaylistsPage extends StatefulWidget {
@@ -24,9 +27,61 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
   @override
   void initState() {
     super.initState();
+    _createBannerAd();
+    loadNativeAd();
     _initPreferences();
     _playlistsController = StreamController<List<Song>>();
     _fetchPlaylists();
+  }
+
+  BannerAd? _banner;
+  void _createBannerAd() {
+    _banner = BannerAd(
+      size: AdSize.banner,
+      adUnitId: AdMobService.bannerAdUnitId!,
+      listener: AdMobService.bannerListener,
+      request: const AdRequest(),
+    )..load();
+  }
+
+
+  NativeAd? _nativeAd;
+  bool _nativeAdIsLoaded = false;
+
+  void loadNativeAd() {
+    _nativeAd = NativeAd(
+        adUnitId: AdMobService.nativeAdsUnit!,
+        listener: NativeAdListener(
+          onAdLoaded: (ad) {
+            setState(() {
+              _nativeAdIsLoaded = true;
+            });
+          },
+          onAdFailedToLoad: (ad, error) {
+            ad.dispose();
+          },
+          onAdClicked: (ad) {},
+          onAdImpression: (ad) {},
+          onAdClosed: (ad) {},
+          onAdOpened: (ad) {},
+          onAdWillDismissScreen: (ad) {},
+          onPaidEvent: (ad, valueMicros, precision, currencyCode) {},
+        ),
+        request: const AdRequest(),
+        nativeTemplateStyle:
+            NativeTemplateStyle(templateType: TemplateType.medium),
+        customOptions: {});
+    _nativeAd?.load();
+  }
+
+  Widget _buildNativeAdWidget() {
+    if (_nativeAdIsLoaded) {
+      return NativeAdSmall(_nativeAd!);
+    } else {
+      return SizedBox(
+        height: 0,
+      );
+    }
   }
 
   void _initPreferences() async {
@@ -46,6 +101,14 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
       ),
       backgroundColor: const Color(0xFF131321),
       body: _buildPlaylistBody(),
+      bottomNavigationBar: _banner == null
+          ? const SizedBox(
+              height: 0,
+            )
+          : SizedBox(
+              height: 52,
+              child: AdWidget(ad: _banner!),
+            ),
     );
   }
 
@@ -56,7 +119,10 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
         if (snapshot.hasData) {
           return _buildPlaylistListView(snapshot.data!);
         } else {
-          return Center(child: CircularProgressIndicator(color: Colors.white,));
+          return Center(
+              child: CircularProgressIndicator(
+            color: Colors.white,
+          ));
         }
       },
     );
@@ -75,59 +141,63 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
           childAspectRatio: 1.8,
         ),
         itemBuilder: (context, index) {
-          Song playlist = playlists[index];
-          return GestureDetector(
-            onTap: () => Get.to(
-              () => SongsScreen(playlist, '${widget.category}'),
-            ),
-            child: Container(
-              decoration: BoxDecoration(
-                  // color: const Color(0xFF1F1F36),
-                  image: DecorationImage(
-                      image: AssetImage('assets/style3.png'),
-                      fit: BoxFit.cover),
-                  borderRadius: BorderRadius.circular(14)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            playlist.playlistName,
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          Text(
-                            playlist.artist,
-                            style: const TextStyle(
-                                color: Colors.white70, fontSize: 14),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image:
-                                CachedNetworkImageProvider(playlist.imageUrl),
-                            fit: BoxFit.cover),
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                    ),
-                  ),
-                ],
+          if (index == 1 && index > 0) {
+            return _buildNativeAdWidget();
+          } else {
+            Song playlist = playlists[index];
+            return GestureDetector(
+              onTap: () => Get.to(
+                () => SongsScreen(playlist, '${widget.category}'),
               ),
-            ),
-          );
+              child: Container(
+                decoration: BoxDecoration(
+                    // color: const Color(0xFF1F1F36),
+                    image: DecorationImage(
+                        image: AssetImage('assets/style3.png'),
+                        fit: BoxFit.cover),
+                    borderRadius: BorderRadius.circular(14)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              playlist.playlistName,
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            Text(
+                              playlist.artist,
+                              style: const TextStyle(
+                                  color: Colors.white70, fontSize: 14),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image:
+                                  CachedNetworkImageProvider(playlist.imageUrl),
+                              fit: BoxFit.cover),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
         },
       ),
     );

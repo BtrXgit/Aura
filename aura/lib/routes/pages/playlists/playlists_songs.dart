@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:aura/authentication/services/admob_service.dart';
+import 'package:aura/component/native_ad.dart';
 import 'package:aura/util/players/mainAuraPlayer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:aura/data/songs.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:iconly/iconly.dart';
 import 'package:palette_generator/palette_generator.dart';
 
@@ -23,9 +26,21 @@ class SongsScreen extends StatefulWidget {
 class _SongsScreenState extends State<SongsScreen> {
   Color? dominantColor;
 
+  BannerAd? _banner;
+  InterstitialAd? _interstitialAd;
+  void _createBannerAd() {
+    _banner = BannerAd(
+      size: AdSize.banner,
+      adUnitId: AdMobService.bannerAdUnitId!,
+      listener: AdMobService.bannerListener,
+      request: const AdRequest(),
+    )..load();
+  }
+
   @override
   void initState() {
     super.initState();
+    _createBannerAd();
     _loadDominantColor();
   }
 
@@ -196,6 +211,14 @@ class _SongsScreenState extends State<SongsScreen> {
           body: _buildSongsBody(),
         ),
       ),
+      bottomNavigationBar: _banner == null
+          ? const SizedBox(
+              height: 0,
+            )
+          : SizedBox(
+              height: 52,
+              child: AdWidget(ad: _banner!),
+            ),
     );
   }
 

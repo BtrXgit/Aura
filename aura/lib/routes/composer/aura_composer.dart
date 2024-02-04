@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:aura/authentication/services/admob_service.dart';
+import 'package:aura/component/native_ad.dart';
 import 'package:aura/data/composer_data.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 // ignore: unused_import
 import 'package:iconly/iconly.dart';
 import 'package:iconsax/iconsax.dart';
@@ -38,8 +41,48 @@ class AuraComposerTestState extends State<AuraComposerTest> {
   @override
   void initState() {
     super.initState();
+    loadNativeAd();
     _loadAllAudios();
     _timer = null;
+  }
+
+  NativeAd? _nativeAd;
+  bool _nativeAdIsLoaded = false;
+
+  void loadNativeAd() {
+    _nativeAd = NativeAd(
+        adUnitId: AdMobService.nativeAdsUnit!,
+        listener: NativeAdListener(
+          onAdLoaded: (ad) {
+            setState(() {
+              _nativeAdIsLoaded = true;
+            });
+          },
+          onAdFailedToLoad: (ad, error) {
+            ad.dispose();
+          },
+          onAdClicked: (ad) {},
+          onAdImpression: (ad) {},
+          onAdClosed: (ad) {},
+          onAdOpened: (ad) {},
+          onAdWillDismissScreen: (ad) {},
+          onPaidEvent: (ad, valueMicros, precision, currencyCode) {},
+        ),
+        request: const AdRequest(),
+        nativeTemplateStyle:
+            NativeTemplateStyle(templateType: TemplateType.medium),
+        customOptions: {});
+    _nativeAd?.load();
+  }
+
+  Widget _buildNativeAdWidget() {
+    if (_nativeAdIsLoaded) {
+      return NativeAdSmall(_nativeAd!);
+    } else {
+      return SizedBox(
+        height: 0,
+      );
+    }
   }
 
   Future<void> _loadAllAudios() async {
@@ -275,7 +318,11 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                   ),
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 10,
+                ),
+                _buildNativeAdWidget(),
+                const SizedBox(
+                  height: 10,
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width - 40,

@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:aura/authentication/services/admob_service.dart';
 import 'package:aura/data/songs.dart';
 import 'package:aura/util/visualizer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_cache/just_audio_cache.dart';
@@ -38,12 +40,23 @@ class _AuraPlayerState extends State<AuraPlayer> {
   @override
   void initState() {
     super.initState();
+    _createBannerAd();
     _currentIndex = widget.currentIndex;
     if (widget.songs.isNotEmpty) {
       _initializePlayer();
       _audioPlayer.play();
     }
     _loadDominantColor();
+  }
+
+  BannerAd? _banner;
+  void _createBannerAd() {
+    _banner = BannerAd(
+      size: AdSize.banner,
+      adUnitId: AdMobService.bannerAdUnitId!,
+      listener: AdMobService.bannerListener,
+      request: const AdRequest(),
+    )..load();
   }
 
   void _initializePlayer() {
@@ -254,7 +267,8 @@ class _AuraPlayerState extends State<AuraPlayer> {
                             imageUrl: widget.songs[_currentIndex].imageUrl,
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.02),
                         Padding(
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           child: Align(
@@ -273,7 +287,8 @@ class _AuraPlayerState extends State<AuraPlayer> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.018),
                         // Slider will come here
                         Padding(
                           padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -340,7 +355,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
                             },
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
                         // Next/Previous button will come here
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -397,8 +412,8 @@ class _AuraPlayerState extends State<AuraPlayer> {
                           ],
                         ),
 
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                        Positioned(
+                          bottom: MediaQuery.of(context).size.height * 0.02,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -492,6 +507,14 @@ class _AuraPlayerState extends State<AuraPlayer> {
                 ),
         ),
       ),
+      bottomNavigationBar: _banner == null
+          ? const SizedBox(
+              height: 0,
+            )
+          : SizedBox(
+              height: 52,
+              child: AdWidget(ad: _banner!),
+            ),
     );
   }
 

@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:aura/authentication/services/admob_service.dart';
 import 'package:aura/util/visualizer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_cache/just_audio_cache.dart';
@@ -34,26 +36,26 @@ class _SoundsPlayerState extends State<SoundsPlayer> {
   final AudioPlayer _audioPlayer = AudioPlayer();
   int _currentIndex = 0;
   bool _isRepeatOn = true;
-  Color? dominantColor;
 
   @override
   void initState() {
     super.initState();
+    _createBannerAd();
     _currentIndex = widget.currentIndex;
     if (widget.songs.isNotEmpty) {
       _initializePlayer();
       _audioPlayer.play();
     }
-    _loadDominantColor();
   }
 
-  Future<void> _loadDominantColor() async {
-    final PaletteGenerator paletteGenerator =
-        await PaletteGenerator.fromImageProvider(
-            AssetImage(widget.imageUrl[_currentIndex]));
-    setState(() {
-      dominantColor = paletteGenerator.dominantColor?.color;
-    });
+  BannerAd? _banner;
+  void _createBannerAd() {
+    _banner = BannerAd(
+      size: AdSize.banner,
+      adUnitId: AdMobService.bannerAdUnitId!,
+      listener: AdMobService.bannerListener,
+      request: const AdRequest(),
+    )..load();
   }
 
   void _initializePlayer() {
@@ -86,7 +88,6 @@ class _SoundsPlayerState extends State<SoundsPlayer> {
       _audioPlayer.dynamicSet(
           pushIfNotExisted: true, url: widget.songs[_currentIndex]);
       _audioPlayer.play();
-      _loadDominantColor();
     }
   }
 
@@ -96,7 +97,6 @@ class _SoundsPlayerState extends State<SoundsPlayer> {
       _audioPlayer.dynamicSet(
           pushIfNotExisted: true, url: widget.songs[_currentIndex]);
       _audioPlayer.play();
-      _loadDominantColor();
     }
   }
 
@@ -264,7 +264,6 @@ class _SoundsPlayerState extends State<SoundsPlayer> {
       url: widget.songs[_currentIndex],
     );
     _audioPlayer.play();
-    _loadDominantColor();
   }
 
   @override
@@ -417,7 +416,7 @@ class _SoundsPlayerState extends State<SoundsPlayer> {
                 ],
               ),
               Positioned(
-                bottom: screenHeight * 0.04,
+                bottom: screenHeight * 0.02,
                 // right: screenWidth * 0.04,
                 left: 0,
                 right: 0,
@@ -477,6 +476,14 @@ class _SoundsPlayerState extends State<SoundsPlayer> {
           ),
         ),
       ),
+      bottomNavigationBar: _banner == null
+          ? const SizedBox(
+              height: 0,
+            )
+          : SizedBox(
+              height: 52,
+              child: AdWidget(ad: _banner!),
+            ),
     );
   }
 }
