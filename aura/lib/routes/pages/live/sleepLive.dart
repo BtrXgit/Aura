@@ -9,6 +9,7 @@ import 'package:aura/util/players/livePlayer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -64,6 +65,35 @@ class _SleepLiveState extends State<SleepLive> {
 
   @override
   Widget build(BuildContext context) {
+    Widget live = Image.asset(
+      'assets/live.png',
+      height: 84,
+      width: 84,
+    );
+    live = live.animate(adapter: ValueAdapter(0.5)).shimmer(
+      colors: [
+        // const Color(0xFFFFFF00),
+        // const Color(0xFF00FF00),
+        // const Color(0xFF00FFFF),
+        // const Color(0xFF0033FF),
+        // const Color(0xFFFF00FF),
+        const Color(0xFFFF0000),
+        Colors.transparent,
+      ],
+    );
+
+    live = live
+        .animate(onPlay: (controller) => controller.repeat(reverse: true))
+        .saturate(
+            delay: NumDurationExtensions(1).seconds,
+            duration: NumDurationExtensions(1).seconds)
+        .then()
+        .tint(
+          color: Colors.transparent,
+        )
+        .then()
+        .blurXY(end: 24)
+        .fadeOut();
     return Scaffold(
       backgroundColor: Color(0xFF131321),
       body: Stack(
@@ -79,6 +109,10 @@ class _SleepLiveState extends State<SleepLive> {
                 color: Colors.black.withOpacity(0.2),
               ),
             ),
+          ),Positioned(
+            top: 24,
+            right: 10,
+            child: live,
           ),
           Center(child: _buildRelaxingCategory()),
         ],

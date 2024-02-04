@@ -1,7 +1,7 @@
 name: aura
 description: A new Flutter project.
 publish_to: 'none' 
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: '>=3.1.2 <4.0.0'
@@ -21,6 +21,7 @@ dependencies:
   bootstrap_icons: ^1.11.1
   get: ^4.6.6
   firebase_auth: ^4.10.1
+  google_mobile_ads: ^4.0.0
   flutter_floating_bottom_bar: ^1.2.0
   firebase_core: ^2.16.0
   firebase_storage: ^11.2.7

@@ -1,6 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 <uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
 
     <application
         android:label="Aura"
@@ -32,7 +31,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-        <!-- <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"/> -->
+        <meta-data
+        android:name="com.google.android.gms.ads.APPLICATION_ID"
+        android:value="ca-app-pub-2502922311219626~7925325500"/>
     </application>
 </manifest>

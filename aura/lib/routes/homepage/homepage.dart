@@ -1,4 +1,6 @@
 import 'dart:ui';
+import 'package:aura/authentication/services/admob_service.dart';
+import 'package:aura/component/native_ad.dart';
 import 'package:aura/routes/pages/bookmarkedPage.dart';
 import 'package:aura/routes/pages/live/focusLive.dart';
 import 'package:aura/util/players/soundsPlayer.dart';
@@ -12,10 +14,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:iconly/iconly.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:text_scroll/text_scroll.dart';
 import '../pages/live/sleepLive.dart';
 
@@ -46,25 +48,105 @@ class _AuraHomePageState extends State<AuraHomePage>
     'Sleep',
   ];
 
-  bool isPlaying = false;
+  // bool isPlaying = false;
 
-  Set<String> favoriteSongs = Set<String>();
+  // Set<String> favoriteSongs = Set<String>();
+
+  BannerAd? _banner;
+  InterstitialAd? _interstitialAd;
+  void _createBannerAd() {
+    _banner = BannerAd(
+      size: AdSize.banner,
+      adUnitId: AdMobService.bannerAdUnitId!,
+      listener: AdMobService.bannerListener,
+      request: const AdRequest(),
+    )..load();
+  }
+
+  void _createInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: AdMobService.interstitialAdUnitId!,
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (ad) => _interstitialAd = ad,
+          onAdFailedToLoad: (LoadAdError error) => _interstitialAd = null),
+    );
+  }
+
+  void _showInterstitialAd() {
+    if (_interstitialAd != null) {
+      _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
+        onAdDismissedFullScreenContent: (ad) {
+          ad.dispose();
+          _createInterstitialAd();
+        },
+        onAdFailedToShowFullScreenContent: (ad, error) {
+          ad.dispose();
+          _createInterstitialAd();
+        },
+      );
+      _interstitialAd!.show();
+      _interstitialAd = null;
+    }
+  }
+
+  NativeAd? _nativeAd;
+  bool _nativeAdIsLoaded = false;
+
+  void loadNativeAd() {
+    _nativeAd = NativeAd(
+        adUnitId: AdMobService.nativeAdsUnit!,
+        listener: NativeAdListener(
+          onAdLoaded: (ad) {
+            setState(() {
+              _nativeAdIsLoaded = true;
+            });
+          },
+          onAdFailedToLoad: (ad, error) {
+            ad.dispose();
+          },
+          onAdClicked: (ad) {},
+          onAdImpression: (ad) {},
+          onAdClosed: (ad) {},
+          onAdOpened: (ad) {},
+          onAdWillDismissScreen: (ad) {},
+          onPaidEvent: (ad, valueMicros, precision, currencyCode) {},
+        ),
+        request: const AdRequest(),
+        nativeTemplateStyle:
+            NativeTemplateStyle(templateType: TemplateType.medium),
+        customOptions: {});
+    _nativeAd?.load();
+  }
+
+  Widget _buildNativeAdWidget() {
+    if (_nativeAdIsLoaded) {
+      return NativeAdSmall(_nativeAd!);
+    } else {
+      return SizedBox(
+        height: 0,
+      );
+    }
+  }
 
   @override
   void initState() {
     super.initState();
+    _createBannerAd();
+    _createInterstitialAd();
+    loadNativeAd();
     fetchUserProfileData();
-    _loadFavoriteSongs();
+    // _loadFavoriteSongs();
   }
 
-  Future<void> _loadFavoriteSongs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    Set<String> favorites =
-        prefs.getStringList('favorites')?.toSet() ?? Set<String>();
-    setState(() {
-      favoriteSongs = favorites;
-    });
-  }
+  // Future<void> _loadFavoriteSongs() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   Set<String> favorites =
+  //       prefs.getStringList('favorites')?.toSet() ?? Set<String>();
+  //   setState(() {
+  //     favoriteSongs = favorites;
+  //   });
+  // }
 
   String? userName;
   String? userPhotoUrl;
@@ -608,6 +690,7 @@ class _AuraHomePageState extends State<AuraHomePage>
               //title: - Ambient Sounds
               //subtitle: - Immersive Nature Sounds
               //data: - Summer Seashore, morning sunshine, nighttime camping, mystic cosmos, zen temple, placid jungle, home comforts, stormy nights, city strolling
+              _buildNativeAdWidget(),
 
               _ScrollText(
                   title: 'Coloured noise',

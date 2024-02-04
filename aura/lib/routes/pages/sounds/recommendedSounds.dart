@@ -1,7 +1,10 @@
+import 'package:aura/authentication/services/admob_service.dart';
+import 'package:aura/component/native_ad.dart';
 import 'package:aura/util/players/soundsPlayer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:iconly/iconly.dart';
 
 class RecommendedSoundsPage extends StatefulWidget {
@@ -57,6 +60,62 @@ class _RecommendedSoundsPageState extends State<RecommendedSoundsPage> {
     'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FRecommended%2FCity%20Rain.mp3?alt=media&token=84af8900-faa1-4ca4-931b-81499127a47c',
   ];
 
+  BannerAd? _banner;
+  void _createBannerAd() {
+    _banner = BannerAd(
+      size: AdSize.banner,
+      adUnitId: AdMobService.bannerAdUnitId!,
+      listener: AdMobService.bannerListener,
+      request: const AdRequest(),
+    )..load();
+  }
+
+  NativeAd? _nativeAd;
+  bool _nativeAdIsLoaded = false;
+
+  void loadNativeAd() {
+    _nativeAd = NativeAd(
+        adUnitId: AdMobService.nativeAdsUnit!,
+        listener: NativeAdListener(
+          onAdLoaded: (ad) {
+            setState(() {
+              _nativeAdIsLoaded = true;
+            });
+          },
+          onAdFailedToLoad: (ad, error) {
+            ad.dispose();
+          },
+          onAdClicked: (ad) {},
+          onAdImpression: (ad) {},
+          onAdClosed: (ad) {},
+          onAdOpened: (ad) {},
+          onAdWillDismissScreen: (ad) {},
+          onPaidEvent: (ad, valueMicros, precision, currencyCode) {},
+        ),
+        request: const AdRequest(),
+        nativeTemplateStyle:
+            NativeTemplateStyle(templateType: TemplateType.medium),
+        customOptions: {});
+    _nativeAd?.load();
+  }
+
+  Widget _buildNativeAdWidget() {
+    if (_nativeAdIsLoaded) {
+      return NativeAdSmall(_nativeAd!);
+    } else {
+      return SizedBox(
+        height: 0,
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _createBannerAd();
+    loadNativeAd();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,6 +129,14 @@ class _RecommendedSoundsPageState extends State<RecommendedSoundsPage> {
       ),
       backgroundColor: const Color(0xFF131321),
       body: _buildPlaylistListView(),
+      bottomNavigationBar: _banner == null
+          ? const SizedBox(
+              height: 0,
+            )
+          : SizedBox(
+              height: 52,
+              child: AdWidget(ad: _banner!),
+            ),
     );
   }
 
@@ -86,62 +153,66 @@ class _RecommendedSoundsPageState extends State<RecommendedSoundsPage> {
           childAspectRatio: 1.8,
         ),
         itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () => Get.to(SoundsPlayer(
-              currentIndex: index,
-              songs: songs,
-              title: 'Recommended Sounds',
-              imageUrl: recommendedImageUrl,
-              soundNames: recommendedSoundes,
-            )),
-            child: Container(
-              decoration: BoxDecoration(
-                  // color: const Color(0xFF1F1F36),
-                  image: DecorationImage(
-                      image: AssetImage('assets/style2.png'),
-                      fit: BoxFit.cover),
-                  borderRadius: BorderRadius.circular(14)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: CachedNetworkImageProvider(
-                                recommendedImageUrl[index]),
-                            fit: BoxFit.cover),
-                        borderRadius: BorderRadius.circular(14),
+          if (index == 2 && index > 0) {
+            return _buildNativeAdWidget();
+          } else {
+            return GestureDetector(
+              onTap: () => Get.to(SoundsPlayer(
+                currentIndex: index,
+                songs: songs,
+                title: 'Recommended Sounds',
+                imageUrl: recommendedImageUrl,
+                soundNames: recommendedSoundes,
+              )),
+              child: Container(
+                decoration: BoxDecoration(
+                    // color: const Color(0xFF1F1F36),
+                    image: DecorationImage(
+                        image: AssetImage('assets/style2.png'),
+                        fit: BoxFit.cover),
+                    borderRadius: BorderRadius.circular(14)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: CachedNetworkImageProvider(
+                                  recommendedImageUrl[index]),
+                              fit: BoxFit.cover),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(0, 20, 10, 10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            recommendedSoundes[index],
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          Icon(
-                            IconlyBold.play,
-                            size: 54,
-                            color: Colors.white,
-                          ),
-                        ],
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(0, 20, 10, 10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              recommendedSoundes[index],
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            Icon(
+                              IconlyBold.play,
+                              size: 54,
+                              color: Colors.white,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          );
+            );
+          }
         },
       ),
     );
