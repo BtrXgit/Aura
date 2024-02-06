@@ -411,66 +411,68 @@ class _AuraPlayerState extends State<AuraPlayer> {
                             ),
                           ],
                         ),
-
-                        Positioned(
-                          bottom: MediaQuery.of(context).size.height * 0.02,
-                          child: Row(
+                      ],
+                    ),
+                    Positioned(
+                      bottom: MediaQuery.of(context).size.height * 0.02,
+                      left: 10,
+                      right: 10,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Row(
-                                children: [
-                                  IconButton(
-                                    icon: Icon(
-                                      Iconsax.shuffle,
-                                      color: _isShuffleOn
-                                          ? dominantColor ?? Colors.blue
-                                          : Colors.white,
-                                    ),
-                                    onPressed: () {
-                                      setState(() {
-                                        _isShuffleOn = !_isShuffleOn;
-                                      });
-                                    },
-                                  ),
-                                  IconButton(
-                                    icon: Icon(
-                                      Iconsax.repeat,
-                                      color: _isRepeatOn
-                                          ? dominantColor ?? Colors.blue
-                                          : Colors.white,
-                                    ),
-                                    onPressed: () {
-                                      setState(() {
-                                        _isRepeatOn = !_isRepeatOn;
-                                      });
-                                    },
-                                  ),
-                                ],
+                              IconButton(
+                                icon: Icon(
+                                  Iconsax.shuffle,
+                                  color: _isShuffleOn
+                                      ? dominantColor ?? Colors.blue
+                                      : Colors.white,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _isShuffleOn = !_isShuffleOn;
+                                  });
+                                },
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  IconButton(
-                                    onPressed: _showTimerDialog,
-                                    icon: const Icon(
-                                      Iconsax.timer_1,
-                                      color: Colors.white,
-                                      // size: 30,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Iconsax.share,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
+                              IconButton(
+                                icon: Icon(
+                                  Iconsax.repeat,
+                                  color: _isRepeatOn
+                                      ? dominantColor ?? Colors.blue
+                                      : Colors.white,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _isRepeatOn = !_isRepeatOn;
+                                  });
+                                },
                               ),
                             ],
                           ),
-                        ),
-                      ],
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              IconButton(
+                                onPressed: _showTimerDialog,
+                                icon: const Icon(
+                                  Iconsax.timer_1,
+                                  color: Colors.white,
+                                  // size: 30,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(
+                                  Iconsax.share,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                     Positioned(
                       top: 50,

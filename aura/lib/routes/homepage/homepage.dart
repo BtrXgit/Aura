@@ -52,16 +52,8 @@ class _AuraHomePageState extends State<AuraHomePage>
 
   // Set<String> favoriteSongs = Set<String>();
 
-  BannerAd? _banner;
   // InterstitialAd? _interstitialAd;
-  void _createBannerAd() {
-    _banner = BannerAd(
-      size: AdSize.banner,
-      adUnitId: AdMobService.bannerAdUnitId!,
-      listener: AdMobService.bannerListener,
-      request: const AdRequest(),
-    )..load();
-  }
+  void _createBannerAd() {}
 
   // void _createInterstitialAd() {
   //   InterstitialAd.load(
@@ -484,6 +476,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                         onTap: () {
                           Get.to(RecommendedSoundsPage());
                         },
+                        // onTap: () => Get.to(AdTest()),
                         child: Container(
                           margin: EdgeInsets.only(left: 18),
                           height: 200,

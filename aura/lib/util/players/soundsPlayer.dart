@@ -10,7 +10,6 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_cache/just_audio_cache.dart';
-import 'package:palette_generator/palette_generator.dart';
 
 class SoundsPlayer extends StatefulWidget {
   final int currentIndex;

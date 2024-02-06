@@ -73,67 +73,12 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const SizedBox(height: 20),
-                // SizedBox(
-                //   height: 150,
-                //   child: ClipRRect(
-                //     borderRadius: BorderRadius.circular(6),
-                //     child: Image.asset('assets/luca.png'),
-                //   ),
-                // ),
-
-                Center(
-                  child: title,
-                ),
-                SizedBox(height: 20),
-                const SizedBox(height: 2),
-
-                Container(
-                  width: MediaQuery.of(context).size.width - 50,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width - 50,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.4),
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              spreadRadius: 5,
-                              blurRadius: 7,
-                              offset: Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "The app that calms your restless mind and improves sleep quality.",
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.kanit(
-                                color: Colors.white, fontSize: 18),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              ],
+          Positioned(
+            top: 170,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: title,
             ),
           ),
           Positioned(
@@ -142,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
             right: 0,
             child: Container(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.2,
+              height: MediaQuery.of(context).size.height * 0.4,
               decoration: BoxDecoration(
                 color: Colors.transparent,
                 borderRadius: BorderRadius.only(
@@ -156,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                   topLeft: Radius.circular(20),
                 ),
                 child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height * 0.2,
@@ -179,7 +124,26 @@ class _LoginPageState extends State<LoginPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(
-                          height: 10,
+                          height: 6,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20.0),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width / 2 + 50,
+                              child: Text(
+                                "The app that calms your restless mind and improves sleep quality",
+                                textAlign: TextAlign.left,
+                                style: GoogleFonts.kanit(
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.4,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,

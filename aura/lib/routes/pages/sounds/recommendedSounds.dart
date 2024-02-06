@@ -142,77 +142,80 @@ class _RecommendedSoundsPageState extends State<RecommendedSoundsPage> {
 
   Widget _buildPlaylistListView() {
     return Padding(
-      padding: EdgeInsets.fromLTRB(8, 10, 8, 0),
-      child: GridView.builder(
+      padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+      child: ListView.separated(
         physics: BouncingScrollPhysics(),
         itemCount: recommendedSoundes.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 1,
-          crossAxisSpacing: 8.0,
-          mainAxisSpacing: 8.0,
-          childAspectRatio: 1.8,
-        ),
-        itemBuilder: (context, index) {
-          if (index == 2 && index > 0) {
+        separatorBuilder: (context, index) {
+          if (index == 1 && index > 0) {
             return _buildNativeAdWidget();
           } else {
-            return GestureDetector(
-              onTap: () => Get.to(SoundsPlayer(
-                currentIndex: index,
-                songs: songs,
-                title: 'Recommended Sounds',
-                imageUrl: recommendedImageUrl,
-                soundNames: recommendedSoundes,
-              )),
-              child: Container(
-                decoration: BoxDecoration(
-                    // color: const Color(0xFF1F1F36),
-                    image: DecorationImage(
-                        image: AssetImage('assets/style2.png'),
-                        fit: BoxFit.cover),
-                    borderRadius: BorderRadius.circular(14)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: CachedNetworkImageProvider(
-                                  recommendedImageUrl[index]),
-                              fit: BoxFit.cover),
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(0, 20, 10, 10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              recommendedSoundes[index],
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Icon(
-                              IconlyBold.play,
-                              size: 54,
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
+            return Container();
           }
+        },
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () => Get.to(SoundsPlayer(
+              currentIndex: index,
+              songs: songs,
+              title: 'Recommended Sounds',
+              imageUrl: recommendedImageUrl,
+              soundNames: recommendedSoundes,
+            )),
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.24,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/style2.png'),
+                  fit: BoxFit.cover,
+                ),
+                borderRadius: BorderRadius.circular(14),
+              ),
+              margin: EdgeInsets.symmetric(vertical: 6.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: CachedNetworkImageProvider(
+                            recommendedImageUrl[index],
+                          ),
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            recommendedSoundes[index],
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Icon(
+                            IconlyBold.play,
+                            size: 54,
+                            color: Colors.white,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
         },
       ),
     );

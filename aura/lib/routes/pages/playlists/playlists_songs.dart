@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:aura/authentication/services/admob_service.dart';
-import 'package:aura/component/native_ad.dart';
 import 'package:aura/util/players/mainAuraPlayer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -27,7 +26,6 @@ class _SongsScreenState extends State<SongsScreen> {
   Color? dominantColor;
 
   BannerAd? _banner;
-  InterstitialAd? _interstitialAd;
   void _createBannerAd() {
     _banner = BannerAd(
       size: AdSize.banner,

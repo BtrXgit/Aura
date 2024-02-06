@@ -44,7 +44,6 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
     )..load();
   }
 
-
   NativeAd? _nativeAd;
   bool _nativeAdIsLoaded = false;
 
@@ -90,12 +89,16 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
 
   @override
   Widget build(BuildContext context) {
+    String capitalize(String s) {
+      return s[0].toUpperCase() + s.substring(1);
+    }
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: const Color(0xFF131321),
         title: Text(
-          '${widget.category} Playlists',
+          '${capitalize(widget.category)} Playlists',
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -131,73 +134,72 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
   Widget _buildPlaylistListView(List<Song> playlists) {
     return Padding(
       padding: EdgeInsets.fromLTRB(8, 10, 8, 0),
-      child: GridView.builder(
+      child: ListView.separated(
         physics: BouncingScrollPhysics(),
         itemCount: playlists.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 1,
-          crossAxisSpacing: 8.0,
-          mainAxisSpacing: 8.0,
-          childAspectRatio: 1.8,
-        ),
-        itemBuilder: (context, index) {
+        separatorBuilder: (context, index) {
           if (index == 1 && index > 0) {
             return _buildNativeAdWidget();
           } else {
-            Song playlist = playlists[index];
-            return GestureDetector(
-              onTap: () => Get.to(
-                () => SongsScreen(playlist, '${widget.category}'),
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                    // color: const Color(0xFF1F1F36),
-                    image: DecorationImage(
-                        image: AssetImage('assets/style3.png'),
-                        fit: BoxFit.cover),
-                    borderRadius: BorderRadius.circular(14)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              playlist.playlistName,
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Text(
-                              playlist.artist,
-                              style: const TextStyle(
-                                  color: Colors.white70, fontSize: 14),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image:
-                                  CachedNetworkImageProvider(playlist.imageUrl),
-                              fit: BoxFit.cover),
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
+            return Container();
           }
+        },
+        itemBuilder: (context, index) {
+          Song playlist = playlists[index];
+          return GestureDetector(
+            onTap: () => Get.to(
+              () => SongsScreen(playlist, '${widget.category}'),
+            ),
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.24,
+              decoration: BoxDecoration(
+                  // color: const Color(0xFF1F1F36),
+                  image: DecorationImage(
+                      image: AssetImage('assets/style3.png'),
+                      fit: BoxFit.cover),
+                  borderRadius: BorderRadius.circular(14)),
+              margin: EdgeInsets.symmetric(vertical: 6.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            playlist.playlistName,
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          Text(
+                            playlist.artist,
+                            style: const TextStyle(
+                                color: Colors.white70, fontSize: 14),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image:
+                                CachedNetworkImageProvider(playlist.imageUrl),
+                            fit: BoxFit.cover),
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
         },
       ),
     );

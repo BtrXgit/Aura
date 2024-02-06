@@ -1,6 +1,6 @@
 import 'package:aura/routes/composer/aura_composer.dart';
 import 'package:aura/routes/homepage/homepage.dart';
-import 'package:aura/routes/pages/exploreWorld.dart';
+import 'package:aura/routes/explore/exploreWorld.dart';
 import 'package:aura/routes/settings/settings.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';

@@ -41,6 +41,7 @@ dependencies:
   animated_text_kit: ^4.2.2
   text_scroll: ^0.2.0
   rename: ^3.0.1
+  firebase_app_check: ^0.2.1+12
 
 dev_dependencies:
   flutter_test:
