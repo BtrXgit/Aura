@@ -1,4 +1,5 @@
-import 'package:aura/routes/composer/aura_composer.dart';
+import 'package:aura/routes/composers/aura_composer.dart';
+import 'package:aura/routes/composers/composers.dart';
 import 'package:aura/routes/homepage/homepage.dart';
 import 'package:aura/routes/explore/exploreWorld.dart';
 import 'package:aura/routes/settings/settings.dart';
@@ -113,7 +114,10 @@ class HomePageState extends State<HomePage>
             AuraHomePage(
               controller: controller,
             ),
-            AuraComposerTest(
+            // AuraComposerTest(
+            //   controller: controller,
+            // ),
+            AuraComposers(
               controller: controller,
             ),
             const ExploreWorldPage(
