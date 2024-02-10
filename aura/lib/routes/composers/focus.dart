@@ -11,14 +11,14 @@ import 'package:iconly/iconly.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
 
-class AuraComposerTest extends StatefulWidget {
-  const AuraComposerTest({Key? key}) : super(key: key);
+class FocusComposer extends StatefulWidget {
+  const FocusComposer({Key? key}) : super(key: key);
 
   @override
-  State<AuraComposerTest> createState() => AuraComposerTestState();
+  State<FocusComposer> createState() => FocusComposerState();
 }
 
-class AuraComposerTestState extends State<AuraComposerTest> {
+class FocusComposerState extends State<FocusComposer> {
   int playingAudioCount = 0;
   final List<AudioPlayer> natureaudioPlayer =
       List.generate(6, (index) => AudioPlayer());

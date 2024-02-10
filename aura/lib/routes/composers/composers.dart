@@ -1,7 +1,10 @@
 import 'dart:ui';
 
+import 'package:aura/routes/composers/aura_composer.dart';
+import 'package:aura/routes/composers/focus.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AuraComposers extends StatefulWidget {
@@ -125,31 +128,37 @@ class _AuraComposersState extends State<AuraComposers> {
                 const SizedBox(
                   height: 10,
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width - 40,
-                  height: 200,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: CachedNetworkImageProvider(
-                          'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRelaxing%2F10.jpg?alt=media&token=c5f0a5f8-45f0-4a46-8837-04d46a4ecf7b'),
-                      fit: BoxFit.cover,
+                InkWell(
+                  onTap: () => Get.to(AuraComposerTest()),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width - 40,
+                    height: 200,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: CachedNetworkImageProvider(
+                            'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRelaxing%2F10.jpg?alt=media&token=c5f0a5f8-45f0-4a46-8837-04d46a4ecf7b'),
+                        fit: BoxFit.cover,
+                      ),
+                      borderRadius: BorderRadius.circular(15),
                     ),
-                    borderRadius: BorderRadius.circular(15),
                   ),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width - 40,
-                  height: 200,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: CachedNetworkImageProvider(
-                          'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FFocus%20Study%2FfocusMorning.jpg?alt=media&token=db0b3aa1-f38e-40f7-a29d-0fcadd17e3a7'),
-                      fit: BoxFit.cover,
+                InkWell(
+                  onTap: () => Get.to(FocusComposer()),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width - 40,
+                    height: 200,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: CachedNetworkImageProvider(
+                            'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FFocus%20Study%2FfocusMorning.jpg?alt=media&token=db0b3aa1-f38e-40f7-a29d-0fcadd17e3a7'),
+                        fit: BoxFit.cover,
+                      ),
+                      borderRadius: BorderRadius.circular(15),
                     ),
-                    borderRadius: BorderRadius.circular(15),
                   ),
                 ),
                 const SizedBox(
