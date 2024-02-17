@@ -1,0 +1,488 @@
+import 'dart:async';
+import 'dart:ui';
+import 'package:aura/authentication/services/admob_service.dart';
+import 'package:aura/util/visualizer.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_cache/just_audio_cache.dart';
+
+class SoundsPlayer extends StatefulWidget {
+  final int currentIndex;
+  final String title;
+  final List<String> songs;
+  final List<String> imageUrl;
+  final List<String> soundNames;
+
+  const SoundsPlayer({
+    required this.currentIndex,
+    required this.songs,
+    required this.title,
+    required this.imageUrl,
+    required this.soundNames,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<SoundsPlayer> createState() => _SoundsPlayerState();
+}
+
+class _SoundsPlayerState extends State<SoundsPlayer> {
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  int _currentIndex = 0;
+  bool _isRepeatOn = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _createBannerAd();
+    _currentIndex = widget.currentIndex;
+    if (widget.songs.isNotEmpty) {
+      _initializePlayer();
+      _audioPlayer.play();
+    }
+  }
+
+  BannerAd? _banner;
+  void _createBannerAd() {
+    _banner = BannerAd(
+      size: AdSize.banner,
+      adUnitId: AdMobService.bannerAdUnitId!,
+      listener: AdMobService.bannerListener,
+      request: const AdRequest(),
+    )..load();
+  }
+
+  void _initializePlayer() {
+    if (_currentIndex >= 0 && _currentIndex < widget.songs.length) {
+      _audioPlayer.dynamicSet(
+          pushIfNotExisted: true, url: widget.songs[_currentIndex]);
+
+      _audioPlayer.processingStateStream.listen((processingState) {
+        setState(() {});
+
+        if (processingState == ProcessingState.completed) {
+          if (_isRepeatOn) {
+            _audioPlayer.seek(Duration.zero);
+          } else {
+            _playNext();
+          }
+        }
+      });
+    }
+  }
+
+  void _playNext() {
+    if (widget.songs.isNotEmpty) {
+      if (_currentIndex < widget.songs.length - 1) {
+        _currentIndex++;
+      } else {
+        _currentIndex = 0;
+      }
+
+      _audioPlayer.dynamicSet(
+          pushIfNotExisted: true, url: widget.songs[_currentIndex]);
+      _audioPlayer.play();
+    }
+  }
+
+  void _playPrevious() {
+    if (widget.songs.isNotEmpty && _currentIndex > 0) {
+      _currentIndex--;
+      _audioPlayer.dynamicSet(
+          pushIfNotExisted: true, url: widget.songs[_currentIndex]);
+      _audioPlayer.play();
+    }
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
+
+  Timer? _timer;
+
+  Future<void> _showTimerDialog() async {
+    int? selectedTime;
+
+    selectedTime = await showDialog<int>(
+      context: context,
+      builder: (BuildContext context) {
+        List<Map<String, dynamic>> timerOptions = [
+          {'duration': 60, 'label': '1M'},
+          {'duration': 120, 'label': '2M'},
+          {'duration': 300, 'label': '5M'},
+          {'duration': 600, 'label': '10M'},
+          {'duration': 1800, 'label': '30M'},
+          {'duration': 3600, 'label': '1H'},
+          {'duration': 7200, 'label': '2H'},
+          {'duration': 18000, 'label': '5H'},
+        ];
+
+        return AlertDialog(
+          backgroundColor: Color(0xFF131321),
+          title: Text(
+            'Select Timer Duration',
+            style: GoogleFonts.inter(fontSize: 18, color: Colors.white),
+          ),
+          content: SizedBox(
+            height: 150,
+            width: MediaQuery.of(context).size.width - 100,
+            child: Wrap(
+              spacing: 5,
+              runSpacing: 5,
+              children: timerOptions
+                  .map((option) => ElevatedButton(
+                        onPressed: () {
+                          selectedTime = option['duration'];
+                          Navigator.of(context).pop(selectedTime);
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: (selectedTime == option['duration'])
+                              ? MaterialStateProperty.all(Color(0xFF131321))
+                              : MaterialStateProperty.all(Colors.grey[800]),
+                        ),
+                        child: Text(
+                          option['label'],
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ))
+                  .toList(),
+            ),
+          ),
+        );
+      },
+    );
+
+    if (selectedTime != null) {
+      _stopTimer();
+      _startTimer(selectedTime!);
+    }
+  }
+
+  void _startTimer(int durationInSeconds) {
+    _timer = Timer(Duration(seconds: durationInSeconds), () {
+      _audioPlayer.stop();
+      setState(() {});
+    });
+
+    setState(() {});
+  }
+
+  void _stopTimer() {
+    if (_timer != null && _timer!.isActive) {
+      _timer!.cancel();
+    }
+  }
+
+  void _showQueue(BuildContext context) {
+    showModalBottomSheet(
+      backgroundColor: Color(0xFF131321),
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Column(
+              children: [
+                Container(
+                  color: Colors.transparent,
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    'Now Playing',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: widget.songs.length,
+                    itemBuilder: (context, index) {
+                      bool isCurrentSong = _currentIndex == index;
+
+                      return ListTile(
+                        tileColor: isCurrentSong ? Colors.grey[200] : null,
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: CachedNetworkImage(
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.cover,
+                            imageUrl: widget.imageUrl[index],
+                          ),
+                        ),
+                        title: Text(
+                          widget.soundNames[index],
+                          style: TextStyle(
+                            color: isCurrentSong
+                                ? Color(0xFF131321)
+                                : Colors.white,
+                            fontWeight: isCurrentSong
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                          ),
+                        ),
+                        trailing: IconButton(
+                          icon: Icon(Iconsax.close_circle),
+                          onPressed: () {
+                            setState(() {
+                              widget.songs.removeAt(index);
+                              if (_currentIndex == index) {
+                                _audioPlayer.stop();
+                              }
+                            });
+                          },
+                        ),
+                        onTap: () {
+                          _playSong(index);
+                          Navigator.pop(context);
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _playSong(int index) {
+    _currentIndex = index;
+    _audioPlayer.dynamicSet(
+      pushIfNotExisted: true,
+      url: widget.songs[_currentIndex],
+    );
+    _audioPlayer.play();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Scaffold(
+      appBar: null,
+      backgroundColor: Colors.black,
+      body: GestureDetector(
+        onHorizontalDragEnd: (DragEndDetails details) {
+          if (details.primaryVelocity! > 0) {
+            _playPrevious();
+          } else if (details.primaryVelocity! < 0) {
+            _playNext();
+          }
+        },
+        child: Center(
+          child: Stack(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: CachedNetworkImageProvider(
+                      widget.imageUrl[_currentIndex],
+                    ),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
+                  child: Container(
+                    color: Colors.black.withOpacity(0.2),
+                  ),
+                ),
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: screenHeight * 0.08,
+                  ),
+                  Text(
+                    'Playing From',
+                    style: GoogleFonts.openSans(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    widget.title,
+                    style: GoogleFonts.openSans(
+                      color: Colors.white,
+                      fontSize: 14,
+                    ),
+                  ),
+                  SizedBox(
+                    height: screenHeight * 0.06,
+                  ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(14),
+                    child: CachedNetworkImage(
+                      height: screenHeight * 0.38,
+                      width: screenWidth - 74,
+                      fit: BoxFit.cover,
+                      imageUrl: widget.imageUrl[_currentIndex],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: ListTile(
+                            title: Text(
+                              widget.soundNames[_currentIndex],
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 24),
+                            ),
+                            subtitle: Text(
+                              'Aura',
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 18),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.06),
+
+                  // Next/Previous button will come here
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      IconButton(
+                        icon: const Icon(
+                          Iconsax.previous,
+                          size: 38,
+                          color: Colors.white,
+                        ),
+                        onPressed: _playPrevious,
+                      ),
+                      Container(
+                        width: 70,
+                        height: 70,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: IconButton(
+                          icon: Icon(
+                            _audioPlayer.playing ? Iconsax.pause : Iconsax.play,
+                            size: 40,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            if (_audioPlayer.playing) {
+                              _audioPlayer.pause();
+                            } else {
+                              _audioPlayer.play();
+                            }
+                            setState(() {});
+                          },
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Iconsax.next,
+                          size: 38,
+                          color: Colors.white,
+                        ),
+                        onPressed: _playNext,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Positioned(
+                bottom: screenHeight * 0.02,
+                // right: screenWidth * 0.04,
+                left: 0,
+                right: 0,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        onPressed: _showTimerDialog,
+                        icon: const Icon(
+                          Iconsax.timer_1,
+                          color: Colors.white,
+                          size: 28,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Iconsax.share,
+                          color: Colors.white,
+                          size: 28,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                top: screenHeight * 0.08,
+                right: screenWidth * 0.04,
+                child: IconButton(
+                  icon: Icon(
+                    Iconsax.music_playlist,
+                    color: Colors.white,
+                    size: 28,
+                  ),
+                  onPressed: () {
+                    _showQueue(context);
+                  },
+                ),
+              ),
+              Positioned(
+                top: screenHeight * 0.08,
+                left: screenWidth * 0.04,
+                child: IconButton(
+                  icon: Icon(
+                    Iconsax.setting_5,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                  onPressed: (() =>
+                      Get.to(GlowingBalls(), transition: Transition.fadeIn)),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: _banner == null
+          ? const SizedBox(
+              height: 0,
+            )
+          : SizedBox(
+              height: 52,
+              child: AdWidget(ad: _banner!),
+            ),
+    );
+  }
+}

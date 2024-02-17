@@ -1,0 +1,78 @@
+name: aura
+description: A new Flutter project.
+publish_to: 'none' 
+version: 1.0.0+4
+
+environment:
+  sdk: '>=3.1.2 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  cupertino_icons: ^1.0.2
+  just_audio: ^0.9.35
+  google_fonts: ^6.1.0
+  url_launcher: ^6.1.14
+  iconsax: ^0.0.8
+  flutter_cache_manager: ^3.3.1
+  flutter_staggered_animations: ^1.1.1
+  bootstrap_icons: ^1.11.1
+  get: ^4.6.6
+  firebase_auth: ^4.10.1
+  google_mobile_ads: ^4.0.0
+  flutter_floating_bottom_bar: ^1.2.0
+  firebase_core: ^2.16.0
+  firebase_storage: ^11.2.7
+  http: ^1.1.2
+  iconly: ^1.0.1
+  cloud_firestore: ^4.13.6
+  cached_network_image: ^3.3.0
+  carousel_slider: ^4.2.1
+  just_audio_cache: ^0.1.2
+  audioplayers: ^5.2.1
+  google_sign_in: ^6.2.1
+  flutter_launcher_icons: ^0.13.1
+  palette_generator: ^0.3.3+3
+  provider: ^6.1.1
+  flutter_animate: ^4.4.1
+  metaballs: ^1.5.0
+  animated_text_kit: ^4.2.2
+  text_scroll: ^0.2.0
+  rename: ^3.0.1
+  firebase_app_check: ^0.2.1+12
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/aura.png"
+
+  flutter_lints: ^2.0.0
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/animals/
+    - assets/asmr/
+    - assets/icons/
+    - assets/music/
+    - assets/nature/
+    - assets/rain/
+    - assets/transport/
+    - assets/icons/nature/
+    - assets/icons/music/
+    - assets/icons/animals/
+    - assets/icons/rain/
+    - assets/icons/asmr/
+    - assets/icons/transport/
+    - assets/
+    - assets/noise/
+    - assets/splash/
+    
