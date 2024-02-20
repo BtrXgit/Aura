@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:aura/component/user_component.dart';
 import 'package:aura/routes/settings/privacyPolicy.dart';
 import 'package:aura/routes/settings/settingsCard.dart';
 import 'package:bootstrap_icons/bootstrap_icons.dart';
@@ -163,40 +164,10 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
-  String _getGreeting() {
-    final now = DateTime.now();
-    final hour = now.hour;
-    if (hour >= 5 && hour < 12) {
-      return 'Good Morning';
-    } else if (hour >= 12 && hour < 17) {
-      return 'Good Afternoon';
-    } else if (hour >= 17 && hour < 20) {
-      return 'Good Evening';
-    } else {
-      return 'Good Night';
-    }
-  }
-
-  String _getImageAsset(String greeting) {
-    switch (greeting) {
-      case 'Good Morning':
-        return 'assets/morning.jpg';
-      case 'Good Afternoon':
-        // return 'assets/morning.jpg';
-        return 'assets/afternoon.jpg';
-      case 'Good Evening':
-        return 'assets/evening.jpg';
-      case 'Good Night':
-        return 'assets/night.jpg';
-      default:
-        return 'assets/morning.jpg';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final greeting = _getGreeting();
-    final backgroundImage = _getImageAsset(greeting);
+    final greeting = Components.getGreeting();
+    final backgroundImage = Components.getImageAsset(greeting);
     Color primaryColor = Colors.white;
     return Scaffold(
       appBar: AppBar(

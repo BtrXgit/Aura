@@ -25,7 +25,7 @@ dependencies:
   flutter_floating_bottom_bar: ^1.2.0
   firebase_core: ^2.16.0
   firebase_storage: ^11.2.7
-  http: ^1.1.2
+  http: 1.2.0
   iconly: ^1.0.1
   cloud_firestore: ^4.13.6
   cached_network_image: ^3.3.0
@@ -40,8 +40,8 @@ dependencies:
   metaballs: ^1.5.0
   animated_text_kit: ^4.2.2
   text_scroll: ^0.2.0
+  firebase_app_check: 0.2.1+8
   rename: ^3.0.1
-  firebase_app_check: ^0.2.1+12
 
 dev_dependencies:
   flutter_test:
