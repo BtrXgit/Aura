@@ -2,21 +2,53 @@ import 'package:flutter/material.dart';
 
 final List<String> natureaudioPaths = [
   //nature
+  'assets/nature/cave.ogg',
+  'assets/nature/creek.ogg',
+  'assets/nature/desert.ogg',
+  'assets/nature/fire.ogg',
+  'assets/nature/lake.ogg',
 ];
 final List<String> rainaudioPaths = [
   //rain
+  'assets/animals/birds.ogg',
+  'assets/animals/rainforest_birds.ogg',
+  'assets/animals/crickets.ogg',
+  'assets/animals/frogs.ogg',
+  'assets/animals/owls.ogg',
 ];
 final List<String> musicaudioPaths = [
   //music
+  'assets/rain/rain.ogg',
+  'assets/rain/thunders.ogg',
+  'assets/rain/thunderstorm.ogg',
+  'assets/rain/rain_in_forest.ogg',
+  'assets/rain/rain_on_leaves.ogg',
+  'assets/rain/rain_on_roof.mp3',
+  'assets/rain/rain_on_tent.mp3',
+  'assets/rain/rain_on_window.mp3',
+  'assets/rain/rain_under_umbrella.ogg',
 ];
 final List<String> asmraudioPaths = [
   //ASMR
+  'assets/music/rhodes.mp3',
+  'assets/music/ambience.mp3',
+  'assets/music/ambient.mp3',
+  'assets/music/chill.mp3',
+  'assets/music/cinematic.mp3',
 ];
 final List<String> ambientaudioPaths = [
   //ambient
+  'assets/asmr/car_engine.ogg',
+  'assets/asmr/cat_purring.ogg',
+  'assets/asmr/chewing.ogg',
+  'assets/asmr/crackling.ogg',
 ];
 final List<String> productivityaudioPaths = [
   //transport
+  'assets/transport/car.ogg',
+  'assets/transport/train.ogg',
+  'assets/transport/airplane.ogg',
+  'assets/transport/boat.ogg',
 ];
 
 // final List<String> natureaudioNames = [

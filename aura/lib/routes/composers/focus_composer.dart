@@ -270,53 +270,6 @@ class FocusComposerState extends State<FocusComposer> {
                   ),
                 ),
                 const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width - 40,
-                  decoration: BoxDecoration(
-                    // color: const Color(0xFF1F1F36),
-                    image: DecorationImage(
-                        image: AssetImage('assets/style3.png'),
-                        fit: BoxFit.cover),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 10, 0, 20),
-                            child: Text(
-                              'Animals Category',
-                              style: GoogleFonts.openSans(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Wrap(
-                          spacing: 8.0,
-                          runSpacing: 4.0,
-                          children: <Widget>[
-                            for (int i = 0; i < animalsaudioPaths.length; i++)
-                              _buildAudioControl(
-                                icon: animalsIcons[i],
-                                label: animalsaudioNames[i],
-                                audioPlayer: animalsaudioPlayer[i],
-                                colour: const Color.fromARGB(255, 97, 33, 10),
-                              ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(
                   height: 10,
                 ),
                 _buildNativeAdWidget(),
@@ -482,7 +435,7 @@ class FocusComposerState extends State<FocusComposer> {
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(10, 10, 0, 20),
                             child: Text(
-                              'Transport Category',
+                              'Ambient Category',
                               style: GoogleFonts.openSans(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -495,11 +448,60 @@ class FocusComposerState extends State<FocusComposer> {
                           spacing: 8.0,
                           runSpacing: 4.0,
                           children: <Widget>[
-                            for (int i = 0; i < transportaudioPaths.length; i++)
+                            for (int i = 0; i < ambientaudioPaths.length; i++)
                               _buildAudioControl(
-                                icon: transportIcons[i],
-                                label: transportaudioNames[i],
-                                audioPlayer: transportaudioPlayer[i],
+                                icon: ambientIcons[i],
+                                label: ambientaudioNames[i],
+                                audioPlayer: ambientaudioPlayer[i],
+                                colour: const Color.fromARGB(255, 24, 147, 98),
+                              ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width - 40,
+                  decoration: BoxDecoration(
+                    // color: const Color(0xFF1F1F36),
+                    image: DecorationImage(
+                        image: AssetImage('assets/style3.png'),
+                        fit: BoxFit.cover),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 10, 0, 20),
+                            child: Text(
+                              'Productivity Category',
+                              style: GoogleFonts.openSans(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Wrap(
+                          spacing: 8.0,
+                          runSpacing: 4.0,
+                          children: <Widget>[
+                            for (int i = 0;
+                                i < productivityaudioPaths.length;
+                                i++)
+                              _buildAudioControl(
+                                icon: productivityIcons[i],
+                                label: productivityaudioNames[i],
+                                audioPlayer: productivityaudioPlayer[i],
                                 colour: const Color.fromARGB(255, 24, 147, 98),
                               ),
                           ],
@@ -526,11 +528,7 @@ class FocusComposerState extends State<FocusComposer> {
         isAudioPlaying = true;
       }
     }
-    for (var player in animalsaudioPlayer) {
-      if (player.playing) {
-        isAudioPlaying = true;
-      }
-    }
+
     for (var player in rainaudioPlayer) {
       if (player.playing) {
         isAudioPlaying = true;
@@ -546,7 +544,12 @@ class FocusComposerState extends State<FocusComposer> {
         isAudioPlaying = true;
       }
     }
-    for (var player in transportaudioPlayer) {
+    for (var player in ambientaudioPlayer) {
+      if (player.playing) {
+        isAudioPlaying = true;
+      }
+    }
+    for (var player in productivityaudioPlayer) {
       if (player.playing) {
         isAudioPlaying = true;
       }
@@ -749,7 +752,7 @@ class FocusComposerState extends State<FocusComposer> {
     for (var player in natureaudioPlayer) {
       player.stop();
     }
-    for (var player in animalsaudioPlayer) {
+    for (var player in ambientaudioPlayer) {
       player.stop();
     }
     for (var player in rainaudioPlayer) {
@@ -761,7 +764,7 @@ class FocusComposerState extends State<FocusComposer> {
     for (var player in asmraudioPlayer) {
       player.stop();
     }
-    for (var player in transportaudioPlayer) {
+    for (var player in productivityaudioPlayer) {
       player.stop();
     }
     setState(() {
@@ -777,7 +780,7 @@ class FocusComposerState extends State<FocusComposer> {
     for (var player in natureaudioPlayer) {
       player.dispose();
     }
-    for (var player in animalsaudioPlayer) {
+    for (var player in ambientaudioPlayer) {
       player.dispose();
     }
     for (var player in rainaudioPlayer) {
@@ -789,7 +792,7 @@ class FocusComposerState extends State<FocusComposer> {
     for (var player in asmraudioPlayer) {
       player.dispose();
     }
-    for (var player in transportaudioPlayer) {
+    for (var player in productivityaudioPlayer) {
       player.dispose();
     }
     super.dispose();

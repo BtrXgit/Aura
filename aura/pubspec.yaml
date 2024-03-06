@@ -62,6 +62,12 @@ flutter:
     - assets/animals/
     - assets/asmr/
     - assets/icons/
+    - assets/focusIcons/ambient/
+    - assets/focusIcons/asmr/
+    - assets/focusIcons/music/
+    - assets/focusIcons/nature/
+    - assets/focusIcons/productivity/
+    - assets/focusIcons/rain/
     - assets/music/
     - assets/nature/
     - assets/rain/

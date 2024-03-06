@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:aura/routes/composers/aura_composer.dart';
-import 'package:aura/routes/composers/focus.dart';
+import 'package:aura/routes/composers/focus_composer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
