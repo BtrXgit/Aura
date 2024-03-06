@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:aura/component/user_component.dart';
 import 'package:aura/routes/settings/privacyPolicy.dart';
 import 'package:aura/routes/settings/settingsCard.dart';
@@ -171,7 +170,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Color primaryColor = Colors.white;
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
+        iconTheme: IconThemeData(color: primaryColor),
         title: Text(
           'Settings',
           style: GoogleFonts.kanit(

@@ -174,8 +174,6 @@ class _AuraHomePageState extends State<AuraHomePage>
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
                     child: Container(
-                      // width: MediaQuery.of(context).size.width,
-                      // height: MediaQuery.of(context).size.height * 0.075,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         borderRadius: BorderRadius.only(
@@ -191,9 +189,6 @@ class _AuraHomePageState extends State<AuraHomePage>
                         child: BackdropFilter(
                           filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
                           child: Container(
-                            // width: MediaQuery.of(context).size.width,
-                            // height:
-                            //     MediaQuery.of(context).size.height * 0.075,
                             decoration: BoxDecoration(
                               color: Colors.black.withOpacity(0.4),
                               borderRadius: BorderRadius.only(

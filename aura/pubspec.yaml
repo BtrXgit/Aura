@@ -35,7 +35,7 @@ dependencies:
   google_sign_in: ^6.2.1
   flutter_launcher_icons: ^0.13.1
   palette_generator: ^0.3.3+3
-  provider: ^6.1.1
+  provider: ^6.1.2
   flutter_animate: ^4.4.1
   metaballs: ^1.5.0
   animated_text_kit: ^4.2.2

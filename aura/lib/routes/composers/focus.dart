@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:aura/authentication/services/admob_service.dart';
 import 'package:aura/component/native_ad.dart';
-import 'package:aura/data/composer_data/relaxing_composer.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -10,6 +9,8 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:iconly/iconly.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
+
+import '../../data/composer_data/focus_composer.dart';
 
 class FocusComposer extends StatefulWidget {
   const FocusComposer({Key? key}) : super(key: key);
@@ -21,16 +22,16 @@ class FocusComposer extends StatefulWidget {
 class FocusComposerState extends State<FocusComposer> {
   int playingAudioCount = 0;
   final List<AudioPlayer> natureaudioPlayer =
-      List.generate(6, (index) => AudioPlayer());
-  final List<AudioPlayer> animalsaudioPlayer =
       List.generate(5, (index) => AudioPlayer());
   final List<AudioPlayer> rainaudioPlayer =
-      List.generate(6, (index) => AudioPlayer());
+      List.generate(5, (index) => AudioPlayer());
   final List<AudioPlayer> musicaudioPlayer =
-      List.generate(8, (index) => AudioPlayer());
+      List.generate(9, (index) => AudioPlayer());
   final List<AudioPlayer> asmraudioPlayer =
-      List.generate(6, (index) => AudioPlayer());
-  final List<AudioPlayer> transportaudioPlayer =
+      List.generate(5, (index) => AudioPlayer());
+  final List<AudioPlayer> ambientaudioPlayer =
+      List.generate(4, (index) => AudioPlayer());
+  final List<AudioPlayer> productivityaudioPlayer =
       List.generate(4, (index) => AudioPlayer());
   final Map<String, AudioPlayer> audioCache = {};
 
@@ -85,11 +86,11 @@ class FocusComposerState extends State<FocusComposer> {
 
   Future<void> _loadAllAudios() async {
     await _loadCategoryAudios(natureaudioPaths, natureaudioPlayer);
-    await _loadCategoryAudios(animalsaudioPaths, animalsaudioPlayer);
     await _loadCategoryAudios(rainaudioPaths, rainaudioPlayer);
     await _loadCategoryAudios(musicaudioPaths, musicaudioPlayer);
     await _loadCategoryAudios(asmraudioPaths, asmraudioPlayer);
-    await _loadCategoryAudios(transportaudioPaths, transportaudioPlayer);
+    await _loadCategoryAudios(ambientaudioPaths, ambientaudioPlayer);
+    await _loadCategoryAudios(productivityaudioPaths, productivityaudioPlayer);
   }
 
   Future<void> _loadCategoryAudios(

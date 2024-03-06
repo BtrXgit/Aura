@@ -1,7 +1,7 @@
 import 'package:aura/routes/composers/aura_composer.dart';
 import 'package:aura/routes/composers/composers.dart';
 import 'package:aura/routes/homepage/homepage.dart';
-import 'package:aura/routes/explore/exploreWorld.dart';
+import 'package:aura/routes/pages/meditation/meditate.dart';
 import 'package:aura/routes/settings/settings.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -120,15 +120,15 @@ class HomePageState extends State<HomePage>
             AuraComposers(
               controller: controller,
             ),
-            const ExploreWorldPage(
-                // controller: controller,
-                ),
+            // const ExploreWorldPage(
+            //     // controller: controller,
+            //     ),
+            MeditaionScreen(
+              controller: controller,
+            ),
             SettingsPage(
               controller: controller,
             ),
-            // SongsScreen(),
-            // const ComposerAudio(),
-            // AuraPlayer(),
           ],
         ),
         child: TabBar(

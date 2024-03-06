@@ -3,10 +3,6 @@ import 'package:flutter/material.dart';
 final List<String> natureaudioPaths = [
   //nature
 ];
-
-final List<String> animalsaudioPaths = [
-  //Animals
-];
 final List<String> rainaudioPaths = [
   //rain
 ];
@@ -16,7 +12,10 @@ final List<String> musicaudioPaths = [
 final List<String> asmraudioPaths = [
   //ASMR
 ];
-final List<String> transportaudioPaths = [
+final List<String> ambientaudioPaths = [
+  //ambient
+];
+final List<String> productivityaudioPaths = [
   //transport
 ];
 
@@ -79,7 +78,8 @@ final List<String> natureaudioNames = [
   'Zen',
   'Bamboo',
   'Volcano',
-  'Rapids',
+  'River',
+  'Forest',
 ];
 
 final List<String> rainaudioNames = [
@@ -109,7 +109,8 @@ final List<String> asmraudioNames = [
   'Wind',
   'Tap',
   'Brush',
-  'Crinkle',
+  'Paper',
+  'Gossip',
 ];
 
 final List<String> ambientaudioNames = [
@@ -129,54 +130,47 @@ final List<String> productivityaudioNames = [
 ];
 
 final List<Widget> natureIcons = [
-  Image.asset('assets/icons/nature/cave.png'),
-  Image.asset('assets/icons/nature/fire.png'),
-  Image.asset('assets/icons/nature/lake.png'),
-  Image.asset('assets/icons/nature/night.png'),
-  Image.asset('assets/icons/nature/ocean.png'),
-  Image.asset('assets/icons/nature/wind.png'),
+  Image.asset('assets/focusIcons/nature/zen.png'),
+  Image.asset('assets/focusIcons/nature/bamboo.png'),
+  Image.asset('assets/focusIcons/nature/volcano.png'),
+  Image.asset('assets/focusIcons/nature/river.png'),
+  Image.asset('assets/focusIcons/nature/forest.png'),
 ];
-final List<Widget> animalsIcons = [
-  //animals
-  Image.asset('assets/icons/animals/birds.png'),
-  Image.asset('assets/icons/animals/crickets.png'),
-  Image.asset('assets/icons/animals/frogs.png'),
-  Image.asset('assets/icons/animals/owls.png'),
-  Image.asset('assets/icons/animals/wolves.png'),
-];
+
 final List<Widget> rainIcons = [
-  //rain
-  Image.asset('assets/icons/rain/rain.png'),
-  Image.asset('assets/icons/rain/storm.png'),
-  Image.asset('assets/icons/rain/rain_in_forest.png'),
-  Image.asset('assets/icons/rain/rain_on_leaves.png'),
-  Image.asset('assets/icons/rain/rain_on_roof.png'),
-  Image.asset('assets/icons/rain/rain_on_window.png'),
+  Image.asset('assets/focusIcons/rain/thunder.png'),
+  Image.asset('assets/focusIcons/rain/mist.png'),
+  Image.asset('assets/focusIcons/rain/frozen.png'),
+  Image.asset('assets/focusIcons/rain/tropical.png'),
+  Image.asset('assets/focusIcons/rain/city.png'),
 ];
 final List<Widget> musicIcons = [
-  //music
-  Image.asset('assets/icons/music/harp.png'),
-  Image.asset('assets/icons/music/piano.png'),
-  Image.asset('assets/icons/music/guitar.png'),
-  Image.asset('assets/icons/music/violin.png'),
-  Image.asset('assets/icons/music/flute.png'),
-  Image.asset('assets/icons/music/koto.png'),
-  Image.asset('assets/icons/music/sitar.png'),
-  Image.asset('assets/icons/music/bowl.png'),
+  Image.asset('assets/focusIcons/music/library.png'),
+  Image.asset('assets/focusIcons/music/coffee.png'),
+  Image.asset('assets/focusIcons/music/focus.png'),
+  Image.asset('assets/focusIcons/music/white.png'),
+  Image.asset('assets/focusIcons/music/classical.png'),
+  Image.asset('assets/focusIcons/music/beats.png'),
+  Image.asset('assets/focusIcons/music/piano.png'),
+  Image.asset('assets/focusIcons/music/chillhop.png'),
+  Image.asset('assets/focusIcons/music/guitar.png'),
 ];
 final List<Widget> asmrIcons = [
-  //ASMR
-  Image.asset('assets/icons/asmr/breathing.png'),
-  Image.asset('assets/icons/asmr/cat_purring.png'),
-  Image.asset('assets/icons/asmr/crackling.png'),
-  Image.asset('assets/icons/asmr/hair_clippers.png'),
-  Image.asset('assets/icons/asmr/page_turning.png'),
-  Image.asset('assets/icons/asmr/scratching.png'),
+  Image.asset('assets/focusIcons/asmr/wind.png'),
+  Image.asset('assets/focusIcons/asmr/tap.png'),
+  Image.asset('assets/focusIcons/asmr/brush.png'),
+  Image.asset('assets/focusIcons/asmr/paper.png'),
+  Image.asset('assets/focusIcons/asmr/gossip.png'),
 ];
-final List<Widget> transportIcons = [
-  //transport
-  Image.asset('assets/icons/transport/car.png'),
-  Image.asset('assets/icons/transport/train.png'),
-  Image.asset('assets/icons/transport/plane.png'),
-  Image.asset('assets/icons/transport/boat.png'),
+final List<Widget> ambientIcons = [
+  Image.asset('assets/focusIcons/ambient/waves.png'),
+  Image.asset('assets/focusIcons/ambient/breeze.png'),
+  Image.asset('assets/focusIcons/ambient/rainforest.png'),
+  Image.asset('assets/focusIcons/ambient/fireplace.png'),
+];
+final List<Widget> productivityIcons = [
+  Image.asset('assets/focusIcons/productivity/pomodoro.png'),
+  Image.asset('assets/focusIcons/productivity/typing.png'),
+  Image.asset('assets/focusIcons/productivity/clicking.png'),
+  Image.asset('assets/focusIcons/productivity/boost.png'),
 ];
