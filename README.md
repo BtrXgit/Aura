@@ -38,10 +38,9 @@ Feel free to contact us for any issues, yogeshbateshar@gmail.com
 |   :-------------: | :-------------:  | :-------------:  | :-------------:  | :-------------:  |
 |        Splash     |                 Home           |    Home     |     Explore       |     Playlists     |
 
-| ![](screenshots/6.jpg) | ![](screenshots/7.jpg) | ![](screenshots/8.jpg)  | ![](screenshots/8.jpg) | ![](screenshots/9.jpg) | ![](screenshots/1-.jpg)
-| :-------------:  | :-------------:  | :-------------:  | :-------------:  | :-------------: |
-|    Recommended    |    Playlist Sounds     |     Player       |    Composer   |  Settings |  
-
+| ![](screenshots/6.jpg) | ![](screenshots/7.jpg) | ![](screenshots/8.jpg) | ![](screenshots/9.jpg) | ![](screenshots/10.jpg) |
+|   :-------------: | :-------------:  | :-------------:  | :-------------:  | :-------------:  |
+|     Recommended   |  Playlists Sounds  |    Player     |     Composer       |     Settings     |
 
 ## Support
 
