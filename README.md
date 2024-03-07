@@ -50,6 +50,6 @@ Aura app is now available on Google Play, so you can support us by giving a rati
 
 ## Usage
 
-The application files for Android devices can be found on [Google Play Store](https://play.google.com/store/apps/details?id=com.xd.aura).
+The application files for Android devices can be found on [Google Play Store]([https://play.google.com/store/apps/details?id=com.xd.aura](https://play.google.com/store/apps/details?id=com.xd.aura)).
 
 More information about the releases can be found in the [Release](https://github.com/BatesharXgit/Aura/aura) tab.
