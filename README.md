@@ -1,4 +1,4 @@
-# <div align="center"><img src="android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" alt="icon" width=30> Aura</div>
+# <div align="center"><img src="aura/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" alt="icon" width=30> Aura</div>
 
 <div align="center">Aura is a beautiful Lofi, relaxing, meditation sounds player app for Android. It is built with Dart on top of Google's Flutter Framework.
 
