@@ -1,7 +1,6 @@
-import 'package:aura/routes/composers/aura_composer.dart';
+import 'package:aura/meditate/screens/homescreen.dart';
 import 'package:aura/routes/composers/composers.dart';
 import 'package:aura/routes/homepage/homepage.dart';
-import 'package:aura/routes/pages/meditation/meditate.dart';
 import 'package:aura/routes/settings/settings.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -123,9 +122,7 @@ class HomePageState extends State<HomePage>
             // const ExploreWorldPage(
             //     // controller: controller,
             //     ),
-            MeditaionScreen(
-              controller: controller,
-            ),
+            MeditationScreen(),
             SettingsPage(
               controller: controller,
             ),
