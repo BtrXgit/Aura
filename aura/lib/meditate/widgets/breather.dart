@@ -1,11 +1,18 @@
 import 'package:aura/meditate/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Breather extends StatelessWidget {
   final AnimationController breathingController;
   final String action;
+  final String time;
 
-  const Breather({Key? key, required this.breathingController, required this.action}) : super(key: key);
+  const Breather(
+      {Key? key,
+      required this.breathingController,
+      required this.action,
+      required this.time})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -19,7 +26,7 @@ class Breather extends StatelessWidget {
               greenAccent,
               greenAccent,
               greenAccent,
-              Colors.black,
+              Color(0xff131321),
             ]),
             shape: BoxShape.circle,
           ),
@@ -30,7 +37,26 @@ class Breather extends StatelessWidget {
             color: greenAccent,
             shape: BoxShape.circle,
           ),
-          child: Center(child: Text(action)),
+          child: Center(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                action,
+                style: GoogleFonts.dancingScript(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              Text(
+                time,
+                style: GoogleFonts.dancingScript(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ],
+          )),
         ),
       ],
     );

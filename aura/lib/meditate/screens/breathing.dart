@@ -1,14 +1,11 @@
-import 'package:aura/meditate/utils/constants.dart';
 import 'package:aura/meditate/widgets/breather_error.dart';
-import 'package:aura/meditate/widgets/three_stage.dart';
 import 'package:aura/meditate/widgets/two_stage.dart';
 import 'package:flutter/material.dart';
 
 class Breathing extends StatelessWidget {
   final String pattern;
 
-  Breathing({Key? key, required this.pattern})
-      : super(key: key);
+  Breathing({Key? key, required this.pattern}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +16,7 @@ class Breathing extends StatelessWidget {
         breather = TwoStage();
         break;
       case '4-7-8 Breathing':
-        breather = ThreeStage();
+        breather = TwoStage();
         break;
       default:
         breather = TwoStage();
@@ -27,14 +24,7 @@ class Breathing extends StatelessWidget {
     }
 
     return Scaffold(
-        backgroundColor: black,
-        appBar: AppBar(
-          iconTheme: IconThemeData(color: black),
-          title: Text(
-            pattern,
-            style: TextStyle(color: black),
-          ),
-        ),
+        backgroundColor: Color(0xff131321),
         body: Column(
           children: [
             Expanded(

@@ -9,17 +9,18 @@ class TwoStage extends StatefulWidget {
 class _TwoStageState extends State<TwoStage> with TickerProviderStateMixin {
   late AnimationController _breathingController;
   late String _action;
+
   @override
   void initState() {
     super.initState();
     _action = 'Breathe In';
     _breathingController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1750),
+      duration: const Duration(seconds: 7),
     )
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
-          _breathingController.duration = const Duration(milliseconds: 2750);
+          _breathingController.duration = const Duration(seconds: 11);
           _action = 'Breathe Out';
           _breathingController.reverse();
         } else if (status == AnimationStatus.dismissed) {
@@ -41,6 +42,28 @@ class _TwoStageState extends State<TwoStage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Breather(breathingController: _breathingController, action: _action);
+    double progress = _breathingController.value;
+    int inhaleTime = (progress * 7).floor();
+    int exhaleTime = (progress * 11).floor();
+
+    int currentTime;
+
+    if (_action == 'Breathe In') {
+      currentTime = inhaleTime;
+    } else {
+      currentTime = exhaleTime;
+    }
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(height: 20.0),
+        Breather(
+          breathingController: _breathingController,
+          action: _action,
+          time: '$currentTime / ${_action == 'Breathe In' ? 7 : 11} Sec',
+        ),
+      ],
+    );
   }
 }

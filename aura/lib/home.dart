@@ -1,4 +1,3 @@
-import 'package:aura/meditate/meditation_timer.dart';
 import 'package:aura/meditate/screens/meditation_home.dart';
 import 'package:aura/routes/composers/composers.dart';
 import 'package:aura/routes/homepage/homepage.dart';
@@ -124,7 +123,7 @@ class HomePageState extends State<HomePage>
             //     // controller: controller,
             //     ),
             MeditationScreen(),
-            // SliderHomePage(),
+
             SettingsPage(
               controller: controller,
             ),
