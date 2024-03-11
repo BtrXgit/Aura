@@ -11,14 +11,14 @@ import 'package:iconly/iconly.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
 
-class AuraComposerTest extends StatefulWidget {
-  const AuraComposerTest({Key? key}) : super(key: key);
+class RelaxingComposer extends StatefulWidget {
+  const RelaxingComposer({Key? key}) : super(key: key);
 
   @override
-  State<AuraComposerTest> createState() => AuraComposerTestState();
+  State<RelaxingComposer> createState() => RelaxingComposerState();
 }
 
-class AuraComposerTestState extends State<AuraComposerTest> {
+class RelaxingComposerState extends State<RelaxingComposer> {
   int playingAudioCount = 0;
   final List<AudioPlayer> natureaudioPlayer =
       List.generate(6, (index) => AudioPlayer());
@@ -202,7 +202,7 @@ class AuraComposerTestState extends State<AuraComposerTest> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        'Sounds',
+                                        'Relaxing',
                                         style: GoogleFonts.dancingScript(
                                           color: Colors.white,
                                           fontSize: 38,

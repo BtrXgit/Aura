@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:aura/routes/composers/aura_composer.dart';
+import 'package:aura/routes/composers/relaxing_composer.dart';
 import 'package:aura/routes/composers/focus_composer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -129,7 +129,7 @@ class _AuraComposersState extends State<AuraComposers> {
                   height: 10,
                 ),
                 InkWell(
-                  onTap: () => Get.to(AuraComposerTest()),
+                  onTap: () => Get.to(RelaxingComposer()),
                   child: Container(
                     width: MediaQuery.of(context).size.width - 40,
                     height: 200,

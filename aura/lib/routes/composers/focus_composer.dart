@@ -203,7 +203,7 @@ class FocusComposerState extends State<FocusComposer> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        'Sounds',
+                                        'Focus',
                                         style: GoogleFonts.dancingScript(
                                           color: Colors.white,
                                           fontSize: 38,

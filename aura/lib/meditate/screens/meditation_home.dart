@@ -1,17 +1,12 @@
 import 'package:aura/meditate/utils/constants.dart';
-import 'package:aura/meditate/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'breathing.dart';
 
 class MeditationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: black,
-      appBar: MyAppBar(
-        home: true,
-        info: null,
-      ),
       body: Column(
         children: [
           Expanded(
