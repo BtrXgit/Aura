@@ -1,3 +1,4 @@
+import 'package:aura/lib/ui/four_seven_eight.dart';
 import 'package:aura/meditate/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -38,7 +39,7 @@ class MeditationScreen extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (_) {
-                        return Breathing(pattern: '4-7-8 Breathing');
+                        return FourSevenEight();
                       }));
                     },
                     child: Container(

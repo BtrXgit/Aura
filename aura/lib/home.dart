@@ -1,5 +1,8 @@
 import 'package:aura/core/broken_icons.dart';
-import 'package:aura/lib/ui/home_page.dart';
+import 'package:aura/lib/ui/breath_in.dart';
+import 'package:aura/lib/ui/breathe_out.dart';
+import 'package:aura/lib/ui/four_seven_eight.dart';
+import 'package:aura/lib/ui/hold.dart';
 import 'package:aura/meditate/screens/meditation_home.dart';
 import 'package:aura/routes/composers/composers.dart';
 import 'package:aura/routes/homepage/homepage.dart';
@@ -124,8 +127,9 @@ class HomePageState extends State<HomePage>
                 // const ExploreWorldPage(
                 //     // controller: controller,
                 //     ),
-                // MeditationScreen(),
-                SliderHomePage(),
+
+                MeditationScreen(),
+                // FourSevenEight(),
 
                 SettingsPage(
                   controller: controller,
