@@ -1,11 +1,11 @@
 import 'package:aura/core/broken_icons.dart';
+import 'package:aura/lib/ui/home_page.dart';
 import 'package:aura/meditate/screens/meditation_home.dart';
 import 'package:aura/routes/composers/composers.dart';
 import 'package:aura/routes/homepage/homepage.dart';
 import 'package:aura/routes/settings/settings.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 
 class HomePage extends StatefulWidget {
@@ -124,7 +124,8 @@ class HomePageState extends State<HomePage>
                 // const ExploreWorldPage(
                 //     // controller: controller,
                 //     ),
-                MeditationScreen(),
+                // MeditationScreen(),
+                SliderHomePage(),
 
                 SettingsPage(
                   controller: controller,
