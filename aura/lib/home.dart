@@ -1,12 +1,12 @@
+import 'package:aura/core/broken_icons.dart';
 import 'package:aura/meditate/screens/meditation_home.dart';
 import 'package:aura/routes/composers/composers.dart';
 import 'package:aura/routes/homepage/homepage.dart';
 import 'package:aura/routes/settings/settings.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
-import 'package:iconly/iconly.dart';
-import 'package:iconsax/iconsax.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);
@@ -72,116 +72,130 @@ class HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: null,
-      body: BottomBar(
-        fit: StackFit.expand,
-        icon: (width, height) => Center(
-          child: IconButton(
-            padding: EdgeInsets.zero,
-            onPressed: null,
-            icon: Icon(
-              Icons.arrow_upward_rounded,
-              color: Colors.grey,
-              size: width,
+      body: Stack(
+        children: [
+          BottomBar(
+            fit: StackFit.expand,
+            icon: (width, height) => Center(
+              child: IconButton(
+                padding: EdgeInsets.zero,
+                onPressed: null,
+                icon: Icon(
+                  Icons.arrow_upward_rounded,
+                  color: Colors.grey,
+                  size: width,
+                ),
+              ),
+            ),
+            borderRadius: BorderRadius.circular(500),
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.decelerate,
+            showIcon: true,
+            width: MediaQuery.of(context).size.width * 0.75,
+            // barColor: Colors.black.computeLuminance() > 0.5
+            //     ? Colors.black
+            //     : const Color.fromARGB(255, 14, 3, 31),
+            barColor: Color(0xFF131321),
+            start: 2,
+            end: 0,
+            offset: 10,
+            barAlignment: Alignment.bottomCenter,
+            iconHeight: 50,
+            iconWidth: 50,
+            reverse: false,
+            hideOnScroll: true,
+            scrollOpposite: false,
+            onBottomBarHidden: () {},
+            onBottomBarShown: () {},
+            body: (context, controller) => TabBarView(
+              controller: tabController,
+              dragStartBehavior: DragStartBehavior.down,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                AuraHomePage(
+                  controller: controller,
+                ),
+                // AuraComposerTest(
+                //   controller: controller,
+                // ),
+                AuraComposers(
+                  controller: controller,
+                ),
+                // const ExploreWorldPage(
+                //     // controller: controller,
+                //     ),
+                MeditationScreen(),
+
+                SettingsPage(
+                  controller: controller,
+                ),
+              ],
+            ),
+            child: TabBar(
+              dividerColor: Colors.transparent,
+              indicatorPadding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
+              controller: tabController,
+              indicator: UnderlineTabIndicator(
+                  borderRadius: BorderRadius.circular(20),
+                  borderSide: BorderSide(
+                      color: _getIndicatorColor(currentPage), width: 6),
+                  insets: const EdgeInsets.fromLTRB(16, 0, 16, 8)),
+              tabs: [
+                SizedBox(
+                  height: 58,
+                  width: 40,
+                  child: Center(
+                    child: Icon(
+                      Broken.home_2,
+                      color: currentPage == 0 ? homeColor : unselectedColor,
+                      size: currentPage == 0 ? 32 : 28,
+                      // color: Colors.black,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 58,
+                  width: 40,
+                  child: Center(
+                      child: Icon(
+                    Broken.music,
+                    color: currentPage == 1 ? customColor : unselectedColor,
+                    size: currentPage == 1 ? 32 : 28,
+                  )),
+                ),
+                SizedBox(
+                  height: 58,
+                  width: 40,
+                  child: Center(
+                      child: Icon(
+                    Broken.profile_2user,
+                    color: currentPage == 2 ? locationColor : unselectedColor,
+                    size: currentPage == 2 ? 32 : 28,
+                  )),
+                ),
+                SizedBox(
+                  height: 58,
+                  width: 40,
+                  child: Center(
+                      child: Icon(
+                    Broken.setting_2,
+                    color: currentPage == 3 ? settingsColor : unselectedColor,
+                    size: currentPage == 3 ? 32 : 28,
+                  )),
+                ),
+              ],
             ),
           ),
-        ),
-        borderRadius: BorderRadius.circular(500),
-        duration: const Duration(milliseconds: 500),
-        curve: Curves.decelerate,
-        showIcon: true,
-        width: MediaQuery.of(context).size.width * 0.75,
-        // barColor: Colors.black.computeLuminance() > 0.5
-        //     ? Colors.black
-        //     : const Color.fromARGB(255, 14, 3, 31),
-        barColor: Color(0xFF131321),
-        start: 2,
-        end: 0,
-        offset: 10,
-        barAlignment: Alignment.bottomCenter,
-        iconHeight: 50,
-        iconWidth: 50,
-        reverse: false,
-        hideOnScroll: true,
-        scrollOpposite: false,
-        onBottomBarHidden: () {},
-        onBottomBarShown: () {},
-        body: (context, controller) => TabBarView(
-          controller: tabController,
-          dragStartBehavior: DragStartBehavior.down,
-          physics: const NeverScrollableScrollPhysics(),
-          children: [
-            AuraHomePage(
-              controller: controller,
-            ),
-            // AuraComposerTest(
-            //   controller: controller,
-            // ),
-            AuraComposers(
-              controller: controller,
-            ),
-            // const ExploreWorldPage(
-            //     // controller: controller,
-            //     ),
-            MeditationScreen(),
-
-            SettingsPage(
-              controller: controller,
-            ),
-          ],
-        ),
-        child: TabBar(
-          dividerColor: Colors.transparent,
-          indicatorPadding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
-          controller: tabController,
-          indicator: UnderlineTabIndicator(
-              borderRadius: BorderRadius.circular(20),
-              borderSide:
-                  BorderSide(color: _getIndicatorColor(currentPage), width: 6),
-              insets: const EdgeInsets.fromLTRB(16, 0, 16, 8)),
-          tabs: [
-            SizedBox(
-              height: 58,
-              width: 40,
-              child: Center(
-                  child: Icon(
-                IconlyLight.home,
-                color: currentPage == 0 ? homeColor : unselectedColor,
-                size: currentPage == 0 ? 32 : 28,
-                // color: Colors.black,
-              )),
-            ),
-            SizedBox(
-              height: 58,
-              width: 40,
-              child: Center(
-                  child: Icon(
-                Iconsax.music,
-                color: currentPage == 1 ? customColor : unselectedColor,
-                size: currentPage == 1 ? 32 : 28,
-              )),
-            ),
-            SizedBox(
-              height: 58,
-              width: 40,
-              child: Center(
-                  child: Icon(
-                Iconsax.location,
-                color: currentPage == 2 ? locationColor : unselectedColor,
-                size: currentPage == 2 ? 32 : 28,
-              )),
-            ),
-            SizedBox(
-              height: 58,
-              width: 40,
-              child: Center(
-                  child: Icon(
-                IconlyLight.profile,
-                color: currentPage == 3 ? settingsColor : unselectedColor,
-                size: currentPage == 3 ? 32 : 28,
-              )),
-            ),
-          ],
-        ),
+          // Positioned(
+          //     bottom: 100,
+          //     right: 10,
+          //     left: 10,
+          //     child: Container(
+          //       width: 200,
+          //       height: 50,
+          //       color: Colors.red,
+          //     ))
+        ],
       ),
     );
   }

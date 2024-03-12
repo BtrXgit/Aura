@@ -81,6 +81,12 @@ flutter:
     - assets/icons/asmr/
     - assets/icons/transport/
     - assets/
+    - assets/fonts/
+    - assets/appicons/
     - assets/noise/
     - assets/splash/
-    
+  fonts:
+    - family: broken
+      fonts:
+        - asset: assets/fonts/broken.ttf
+
