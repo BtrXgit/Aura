@@ -1,4 +1,5 @@
 import 'package:aura/lib/ui/four_seven_eight.dart';
+import 'package:aura/meditate/screens/box_breathing.dart';
 import 'package:aura/meditate/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -25,6 +26,27 @@ class MeditationScreen extends StatelessWidget {
                       padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                       child: const Text(
                         "7/11 Pattern",
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                          color: black,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (_) {
+                        return BoxBreathing(pattern: 'Box Breathing');
+                      }));
+                    },
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                      child: const Text(
+                        "Box Breathing",
                         style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold,
