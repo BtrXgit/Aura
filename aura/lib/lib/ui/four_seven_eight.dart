@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:aura/core/broken_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:aura/lib/ui/breath_in.dart';
 import 'package:aura/lib/ui/breathe_out.dart';
@@ -60,21 +61,43 @@ class _FourSevenEightState extends State<FourSevenEight> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        forceMaterialTransparency: true,
-        centerTitle: true,
-        title: Text("4-7-8 Breathing"),
-      ),
-      body: PageView(
-        controller: _pageController,
-        children: _pages,
-        onPageChanged: (index) {
-          setState(() {
-            _currentPageIndex = index;
-          });
-          _timer.cancel();
-          _startTimer();
-        },
+      body: Stack(
+        children: [
+          PageView(
+            controller: _pageController,
+            children: _pages,
+            onPageChanged: (index) {
+              setState(() {
+                _currentPageIndex = index;
+              });
+              _timer.cancel();
+              _startTimer();
+            },
+          ),
+          Positioned(
+            top: 50,
+            left: 0,
+            right: 0,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(Broken.close_circle),
+                  Text(
+                    "4-7-8 Breathing",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                    ),
+                  ),
+                  Icon(Broken.info_circle),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
