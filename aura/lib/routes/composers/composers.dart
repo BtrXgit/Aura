@@ -8,8 +8,10 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AuraComposers extends StatefulWidget {
-  final ScrollController controller;
-  const AuraComposers({super.key, required this.controller});
+  // final ScrollController controller;
+  const AuraComposers({
+    super.key,
+  });
 
   @override
   State<AuraComposers> createState() => _AuraComposersState();
@@ -36,7 +38,7 @@ class _AuraComposersState extends State<AuraComposers> {
             ),
           ),
           SingleChildScrollView(
-            controller: widget.controller,
+            // controller: widget.controller,
             physics: const ClampingScrollPhysics(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

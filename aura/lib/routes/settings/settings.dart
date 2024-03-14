@@ -14,8 +14,8 @@ import 'package:iconsax/iconsax.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
-  final ScrollController controller;
-  const SettingsPage({required this.controller, Key? key}) : super(key: key);
+  // final ScrollController controller;
+  const SettingsPage({Key? key}) : super(key: key);
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -185,7 +185,7 @@ class _SettingsPageState extends State<SettingsPage> {
       backgroundColor: Color(0xFF131321),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        controller: widget.controller,
+        // controller: widget.controller,
         child: AnimationLimiter(
           child: Center(
             child: Column(

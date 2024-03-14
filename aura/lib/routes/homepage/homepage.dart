@@ -23,9 +23,9 @@ import '../pages/live/sleepLive.dart';
 import '/data/homepage_data.dart';
 
 class AuraHomePage extends StatefulWidget {
-  final ScrollController controller;
+  // final ScrollController controller;
 
-  const AuraHomePage({required this.controller, Key? key}) : super(key: key);
+  const AuraHomePage({Key? key}) : super(key: key);
 
   @override
   State<AuraHomePage> createState() => _AuraHomePageState();
@@ -142,7 +142,7 @@ class _AuraHomePageState extends State<AuraHomePage>
     final relaxingImage = randomRelaxingImage(greeting);
     final focusImage = randomFocusImage(greeting);
     return SingleChildScrollView(
-      controller: widget.controller,
+      // controller: widget.controller,
       physics: ClampingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
