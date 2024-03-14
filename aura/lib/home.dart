@@ -234,6 +234,7 @@ class _HomePageState extends State<HomePage> {
         }).toList(),
       ),
       bottomNavigationBar: NavigationBar(
+        elevation: 0,
         height: 60,
         backgroundColor: Color(0xff131321),
         indicatorColor: Color(0xFFE6EDFF),

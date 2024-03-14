@@ -1,5 +1,4 @@
-import 'dart:ui';
-import 'package:aura/component/user_component.dart';
+import 'package:aura/core/broken_icons.dart';
 import 'package:aura/routes/settings/privacyPolicy.dart';
 import 'package:aura/routes/settings/settingsCard.dart';
 import 'package:bootstrap_icons/bootstrap_icons.dart';
@@ -10,7 +9,6 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -165,11 +163,10 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final greeting = Components.getGreeting();
-    final backgroundImage = Components.getImageAsset(greeting);
     Color primaryColor = Colors.white;
     return Scaffold(
       appBar: AppBar(
+        forceMaterialTransparency: true,
         iconTheme: IconThemeData(color: primaryColor),
         title: Text(
           'Settings',
@@ -204,89 +201,46 @@ class _SettingsPageState extends State<SettingsPage> {
                       children: [
                         Container(
                           width: MediaQuery.of(context).size.width - 50,
-                          height: MediaQuery.of(context).size.height * 0.3,
+                          height: MediaQuery.of(context).size.height * 0.32,
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
                             image: DecorationImage(
-                              image: AssetImage(backgroundImage),
-                              fit: BoxFit.cover,
-                              filterQuality: FilterQuality.high,
-                            ),
+                                image: AssetImage('assets/style3.png'),
+                                fit: BoxFit.cover),
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                        ),
-                        Positioned(
-                          bottom: -1,
-                          left: -1,
-                          right: -1,
-                          top: -1,
-                          child: Container(
-                            // width: MediaQuery.of(context).size.width,
-                            // height: MediaQuery.of(context).size.height * 0.075,
-                            decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: BackdropFilter(
-                                filter: ImageFilter.blur(
-                                  sigmaX: 20,
-                                  sigmaY: 20,
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 20,
                                 ),
-                                child: Container(
-                                  // width: MediaQuery.of(context).size.width,
-                                  // height: MediaQuery.of(context).size.height *
-                                  //     0.075,
-                                  decoration: BoxDecoration(
-                                    color: Colors.black.withOpacity(0.4),
-                                    borderRadius: BorderRadius.circular(20),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.1),
-                                        spreadRadius: 5,
-                                        blurRadius: 7,
-                                        offset: Offset(0, 3),
-                                      ),
-                                    ],
+                                if (userPhotoUrl != null)
+                                  CircleAvatar(
+                                    radius: 64,
+                                    backgroundImage: CachedNetworkImageProvider(
+                                        userPhotoUrl!),
                                   ),
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Column(
-                                      children: [
-                                        SizedBox(
-                                          height: 20,
-                                        ),
-                                        if (userPhotoUrl != null)
-                                          CircleAvatar(
-                                            radius: 64,
-                                            backgroundImage:
-                                                CachedNetworkImageProvider(
-                                                    userPhotoUrl!),
-                                          ),
-                                        const SizedBox(
-                                          height: 8,
-                                        ),
-                                        Text(
-                                          '$userName',
-                                          style: GoogleFonts.kanit(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white),
-                                        ),
-                                        const SizedBox(
-                                          height: 8.0,
-                                        ),
-                                        Text(
-                                          '$userEmail',
-                                          style: TextStyle(
-                                              fontSize: 16, color: Colors.grey),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                const SizedBox(
+                                  height: 8,
                                 ),
-                              ),
+                                Text(
+                                  '$userName',
+                                  style: GoogleFonts.kanit(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                                const SizedBox(
+                                  height: 8.0,
+                                ),
+                                Text(
+                                  '$userEmail',
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.grey),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -348,58 +302,54 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                    child: Wrap(
-                      alignment: WrapAlignment.spaceBetween,
-                      spacing: 10,
-                      runSpacing: 10,
-                      children: [
-                        CustomStackCard(
-                          icon: Iconsax.info_circle,
-                          onTap: () => _showAboutAppBottomSheet(context),
-                          title: 'About',
-                          subtitle: 'Find out more about Aura',
-                        ),
-                        CustomStackCard(
-                          icon: Iconsax.activity,
-                          onTap: () => _showChangelogBottomSheet(context),
-                          title: 'Changelog',
-                          subtitle: 'Recent improvements and fixes',
-                        ),
-                        CustomStackCard(
-                          icon: Iconsax.trash,
-                          onTap: () => _clearCache(context),
-                          title: 'Clear Cache',
-                          subtitle: 'Clear all Cached data',
-                        ),
-                        CustomStackCard(
-                          icon: Iconsax.bookmark,
-                          onTap: () => showLicensePage(context: context),
-                          title: 'Licenses',
-                          subtitle: 'View open source licenses',
-                        ),
-                        CustomStackCard(
-                          icon: Iconsax.security_safe,
-                          onTap: () => Get.to(PrivacyPage(),
-                              transition: Transition.rightToLeftWithFade),
-                          title: 'Privacy Policy',
-                          subtitle: 'Aura privacy policy',
-                        ),
-                        CustomStackCard(
-                          icon: Iconsax.logout,
-                          onTap: () => signUserOut(),
-                          title: 'Logout',
-                          subtitle: 'Logout of your account',
-                        ),
-                        CustomStackCard(
-                          icon: Iconsax.logout,
-                          onTap: () => deleteAccount(context),
-                          title: 'Delete Account',
-                          subtitle: 'Warning! This cannot be undone',
-                        ),
-                      ],
-                    ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomStackCard(
+                        icon: Broken.info_circle,
+                        onTap: () => _showAboutAppBottomSheet(context),
+                        title: 'About',
+                        subtitle: 'Find out more about Aura',
+                      ),
+                      CustomStackCard(
+                        icon: Broken.activity,
+                        onTap: () => _showChangelogBottomSheet(context),
+                        title: 'Changelog',
+                        subtitle: 'Recent improvements and fixes',
+                      ),
+                      CustomStackCard(
+                        icon: Broken.trash,
+                        onTap: () => _clearCache(context),
+                        title: 'Clear Cache',
+                        subtitle: 'Clear all Cached data',
+                      ),
+                      CustomStackCard(
+                        icon: Broken.bookmark,
+                        onTap: () => showLicensePage(context: context),
+                        title: 'Licenses',
+                        subtitle: 'View open source licenses',
+                      ),
+                      CustomStackCard(
+                        icon: Broken.security_safe,
+                        onTap: () => Get.to(PrivacyPage(),
+                            transition: Transition.rightToLeftWithFade),
+                        title: 'Privacy Policy',
+                        subtitle: 'Aura privacy policy',
+                      ),
+                      CustomStackCard(
+                        icon: Broken.logout,
+                        onTap: () => signUserOut(),
+                        title: 'Logout',
+                        subtitle: 'Logout of your account',
+                      ),
+                      CustomStackCard(
+                        icon: Broken.trash,
+                        color: Colors.red,
+                        onTap: () => deleteAccount(context),
+                        title: 'Delete Account',
+                        subtitle: 'Warning! This cannot be undone',
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 20),
                   Align(
@@ -418,7 +368,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           GoogleFonts.kanit(color: primaryColor, fontSize: 12),
                     ),
                   ),
-                  const SizedBox(height: 74),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
