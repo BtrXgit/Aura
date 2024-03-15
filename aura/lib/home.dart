@@ -2,6 +2,7 @@ import 'package:aura/core/broken_icons.dart';
 import 'package:aura/meditate/screens/meditation_home.dart';
 import 'package:aura/routes/composers/composers.dart';
 import 'package:aura/routes/homepage/homepage.dart';
+import 'package:aura/routes/pages/explorePage.dart';
 import 'package:aura/routes/settings/settings.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
@@ -216,7 +217,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _pages = List.generate(4, (_) => null);
+    _pages = List.generate(5, (_) => null);
     _initializePage(0);
   }
 
@@ -264,6 +265,19 @@ class _HomePageState extends State<HomePage> {
           ),
           NavigationDestination(
             selectedIcon: Icon(
+              Broken.category,
+              size: 28,
+              color: Color(0xff131321),
+            ),
+            icon: Icon(
+              Broken.category,
+              size: 28,
+              color: Color(0xFFE6EDFF).withOpacity(0.6),
+            ),
+            label: 'Explore',
+          ),
+          NavigationDestination(
+            selectedIcon: Icon(
               Broken.music,
               color: Color(0xff131321),
               size: 28,
@@ -306,12 +320,15 @@ class _HomePageState extends State<HomePage> {
         _pages[index] = AuraHomePage();
         break;
       case 1:
-        _pages[index] = AuraComposers();
+        _pages[index] = ExplorePage();
         break;
       case 2:
-        _pages[index] = MeditationScreen();
+        _pages[index] = AuraComposers();
         break;
       case 3:
+        _pages[index] = MeditationScreen();
+        break;
+      case 4:
         _pages[index] = SettingsPage();
         break;
       default:

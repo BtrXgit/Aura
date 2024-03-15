@@ -143,7 +143,7 @@ class _AuraHomePageState extends State<AuraHomePage>
     final focusImage = randomFocusImage(greeting);
     return SingleChildScrollView(
       // controller: widget.controller,
-      physics: ClampingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -432,7 +432,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                                       ),
                                       child: BackdropFilter(
                                         filter: ImageFilter.blur(
-                                            sigmaX: 5, sigmaY: 5),
+                                            sigmaX: 30, sigmaY: 30),
                                         child: Container(
                                             width: MediaQuery.of(context)
                                                 .size
@@ -685,7 +685,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                   bottomRight: Radius.circular(20),
                 ),
                 child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                  filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height * 0.06,
@@ -782,7 +782,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                   bottomRight: Radius.circular(20),
                 ),
                 child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                  filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height * 0.06,
