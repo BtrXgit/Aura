@@ -130,9 +130,12 @@ class _AuraHomePageState extends State<AuraHomePage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xff131321),
-      body: AnimationLimiter(child: _buildContentColumn()),
+    return Material(
+      clipBehavior: Clip.antiAlias,
+      child: Scaffold(
+        backgroundColor: Color(0xff131321),
+        body: AnimationLimiter(child: _buildContentColumn()),
+      ),
     );
   }
 
@@ -143,7 +146,7 @@ class _AuraHomePageState extends State<AuraHomePage>
     final focusImage = randomFocusImage(greeting);
     return SingleChildScrollView(
       // controller: widget.controller,
-      physics: const BouncingScrollPhysics(),
+      physics: const ClampingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

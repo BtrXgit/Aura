@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
 
     Timer(
-      Duration(seconds: 3),
+      Duration(seconds: 2),
       () {
         Get.off(AuthPage(), transition: Transition.rightToLeftWithFade);
       },

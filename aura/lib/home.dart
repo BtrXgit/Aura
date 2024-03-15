@@ -217,7 +217,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _pages = List.generate(5, (_) => null);
+    _pages = List.generate(4, (_) => null);
     _initializePage(0);
   }
 
@@ -263,19 +263,19 @@ class _HomePageState extends State<HomePage> {
             ),
             label: 'Home',
           ),
-          NavigationDestination(
-            selectedIcon: Icon(
-              Broken.category,
-              size: 28,
-              color: Color(0xff131321),
-            ),
-            icon: Icon(
-              Broken.category,
-              size: 28,
-              color: Color(0xFFE6EDFF).withOpacity(0.6),
-            ),
-            label: 'Explore',
-          ),
+          // NavigationDestination(
+          //   selectedIcon: Icon(
+          //     Broken.category,
+          //     size: 28,
+          //     color: Color(0xff131321),
+          //   ),
+          //   icon: Icon(
+          //     Broken.category,
+          //     size: 28,
+          //     color: Color(0xFFE6EDFF).withOpacity(0.6),
+          //   ),
+          //   label: 'Explore',
+          // ),
           NavigationDestination(
             selectedIcon: Icon(
               Broken.music,
@@ -319,16 +319,16 @@ class _HomePageState extends State<HomePage> {
       case 0:
         _pages[index] = AuraHomePage();
         break;
+      // case 1:
+      //   _pages[index] = ExplorePage();
+      //   break;
       case 1:
-        _pages[index] = ExplorePage();
-        break;
-      case 2:
         _pages[index] = AuraComposers();
         break;
-      case 3:
-        _pages[index] = MeditationScreen();
+      case 2:
+        _pages[index] = MeditationHome();
         break;
-      case 4:
+      case 3:
         _pages[index] = SettingsPage();
         break;
       default:
