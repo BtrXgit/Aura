@@ -170,7 +170,7 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            playlist.playlistName,
+                            playlist.playlistName!,
                             style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,

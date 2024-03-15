@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:aura/data/live_songs.dart';
+import 'package:aura/data/songs.dart';
 import 'package:aura/util/players/livePlayer.dart';
+import 'package:aura/util/players/mainAuraPlayer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -22,7 +24,7 @@ class RelaxingLive extends StatefulWidget {
 class _RelaxingLiveState extends State<RelaxingLive> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  List<LiveSongs> relaxingLive = [];
+  List<Song> relaxingLive = [];
   int index = 0;
 
   @override
@@ -31,7 +33,7 @@ class _RelaxingLiveState extends State<RelaxingLive> {
     _getRelaxingLiveData().listen((snapshot) {
       setState(() {
         relaxingLive =
-            snapshot.docs.map((doc) => LiveSongs.fromFirestore(doc)).toList();
+            snapshot.docs.map((doc) => Song.fromFirestore(doc)).toList();
       });
 
       if (relaxingLive.isNotEmpty) {
@@ -41,7 +43,7 @@ class _RelaxingLiveState extends State<RelaxingLive> {
           Duration(seconds: 5),
           () {
             Get.off(
-              AuraLivePlayer(
+              AuraPlayer(
                 title: widget.title,
                 currentIndex: 0,
                 songs: relaxingLive,

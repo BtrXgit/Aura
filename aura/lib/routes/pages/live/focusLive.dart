@@ -4,7 +4,9 @@ import 'dart:ui';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:aura/data/live_songs.dart';
+import 'package:aura/data/songs.dart';
 import 'package:aura/util/players/livePlayer.dart';
+import 'package:aura/util/players/mainAuraPlayer.dart';
 // ignore: unused_import
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -26,7 +28,7 @@ class FocusLive extends StatefulWidget {
 class _FocusLiveState extends State<FocusLive> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  List<LiveSongs> relaxingLive = [];
+  List<Song> relaxingLive = [];
   int index = 0;
 
   @override
@@ -35,7 +37,7 @@ class _FocusLiveState extends State<FocusLive> {
     _getRelaxingLiveData().listen((snapshot) {
       setState(() {
         relaxingLive =
-            snapshot.docs.map((doc) => LiveSongs.fromFirestore(doc)).toList();
+            snapshot.docs.map((doc) => Song.fromFirestore(doc)).toList();
       });
 
       if (relaxingLive.isNotEmpty) {
@@ -46,7 +48,7 @@ class _FocusLiveState extends State<FocusLive> {
           Duration(seconds: 5),
           () {
             Get.off(
-              AuraLivePlayer(
+              AuraPlayer(
                 title: widget.title,
                 currentIndex: index,
                 songs: relaxingLive,

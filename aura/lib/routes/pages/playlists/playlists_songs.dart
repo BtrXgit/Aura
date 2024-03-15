@@ -225,7 +225,7 @@ class _SongsScreenState extends State<SongsScreen> {
       () => AuraPlayer(
         currentIndex: 0,
         songs: songs,
-        title: widget.playlist.playlistName,
+        title: widget.playlist.playlistName!,
       ),
     );
   }
@@ -269,7 +269,7 @@ class _SongsScreenState extends State<SongsScreen> {
                 () => AuraPlayer(
                   currentIndex: index,
                   songs: songs,
-                  title: widget.playlist.playlistName,
+                  title: widget.playlist.playlistName!,
                 ),
               ),
               child: ListTile(

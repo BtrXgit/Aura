@@ -1,20 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Song {
-  final String id;
+  final String? id;
   final String songName;
   final String artist;
   final String imageUrl;
   final String songUrl;
-  final String playlistName;
+  final String? playlistName;
 
   Song({
-    required this.id,
+     this.id,
     required this.songName,
     required this.artist,
     required this.imageUrl,
     required this.songUrl,
-    required this.playlistName,
+    this.playlistName,
   });
 
   factory Song.fromFirestore(DocumentSnapshot doc) {
