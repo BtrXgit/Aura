@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:aura/authentication/services/admob_service.dart';
+import 'package:aura/core/broken_icons.dart';
 import 'package:aura/data/songs.dart';
 import 'package:aura/util/visualizer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -8,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_cache/just_audio_cache.dart';
 import 'dart:math';
@@ -124,6 +124,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
   @override
   void dispose() {
     _audioPlayer.dispose();
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -362,7 +363,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
                           children: [
                             IconButton(
                               icon: const Icon(
-                                Iconsax.previous,
+                                Broken.previous,
                                 size: 34,
                                 color: Colors.white,
                               ),
@@ -386,8 +387,8 @@ class _AuraPlayerState extends State<AuraPlayer> {
                               child: IconButton(
                                 icon: Icon(
                                   _audioPlayer.playing
-                                      ? Iconsax.pause
-                                      : Iconsax.play,
+                                      ? Broken.pause
+                                      : Broken.play,
                                   size: 34,
                                   color: Colors.white,
                                 ),
@@ -403,7 +404,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
                             ),
                             IconButton(
                               icon: const Icon(
-                                Iconsax.next,
+                                Broken.next,
                                 size: 34,
                                 color: Colors.white,
                               ),
@@ -425,7 +426,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
                             children: [
                               IconButton(
                                 icon: Icon(
-                                  Iconsax.shuffle,
+                                  Broken.shuffle,
                                   color: _isShuffleOn
                                       ? dominantColor ?? Colors.blue
                                       : Colors.white,
@@ -438,7 +439,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
                               ),
                               IconButton(
                                 icon: Icon(
-                                  Iconsax.repeat,
+                                  Broken.repeat,
                                   color: _isRepeatOn
                                       ? dominantColor ?? Colors.blue
                                       : Colors.white,
@@ -457,7 +458,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
                               IconButton(
                                 onPressed: _showTimerDialog,
                                 icon: const Icon(
-                                  Iconsax.timer_1,
+                                  Broken.timer_1,
                                   color: Colors.white,
                                   // size: 30,
                                 ),
@@ -465,7 +466,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
                               IconButton(
                                 onPressed: () {},
                                 icon: Icon(
-                                  Iconsax.share,
+                                  Broken.share,
                                   color: Colors.white,
                                 ),
                               ),
@@ -479,7 +480,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
                       left: 10,
                       child: IconButton(
                         icon: Icon(
-                          Iconsax.setting_5,
+                          Broken.setting_5,
                           color: Colors.white,
                           size: 30,
                         ),
@@ -492,7 +493,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
                       right: 10,
                       child: IconButton(
                         icon: const Icon(
-                          Iconsax.music_playlist,
+                          Broken.music_playlist,
                           color: Colors.white,
                           size: 28,
                         ),
@@ -569,7 +570,7 @@ class _AuraPlayerState extends State<AuraPlayer> {
                         ),
                         subtitle: Text(widget.songs[index].artist),
                         trailing: IconButton(
-                          icon: Icon(Iconsax.close_circle),
+                          icon: Icon(Broken.close_circle),
                           onPressed: () {
                             setState(() {
                               widget.songs.removeAt(index);

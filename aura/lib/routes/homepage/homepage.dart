@@ -630,7 +630,7 @@ class _AuraHomePageState extends State<AuraHomePage>
             child: _buildHomepageCategory(imageLink: homepageCategory[3]),
           ),
           const SizedBox(
-            height: 50,
+            height: 20,
           ),
         ],
       ),

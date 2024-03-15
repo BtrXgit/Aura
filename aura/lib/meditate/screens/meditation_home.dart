@@ -2,7 +2,6 @@ import 'package:aura/lib/ui/four_seven_eight.dart';
 import 'package:aura/meditate/screens/box_breathing.dart';
 import 'package:aura/meditate/utils/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'breathing.dart';
 
 class MeditationScreen extends StatelessWidget {
