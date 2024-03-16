@@ -1,10 +1,23 @@
 import 'package:aura/core/broken_icons.dart';
+import 'package:aura/data/meditation_sounds_data.dart';
 import 'package:aura/lib/utils.dart';
 import 'package:aura/meditate/widgets/two_stage.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_cache/just_audio_cache.dart';
 
-class Breathing extends StatelessWidget {
+class Breathing extends StatefulWidget {
   Breathing({Key? key}) : super(key: key);
+
+  @override
+  State<Breathing> createState() => _BreathingState();
+}
+
+class _BreathingState extends State<Breathing> {
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  int _currentSoundIndex = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +81,121 @@ class Breathing extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: GestureDetector(
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Container(
+                      height: 200,
+                      decoration: BoxDecoration(
+                        color: Color(0xff131321),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
+                      ),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(height: 20),
+                            Text(
+                              'Choose Background Sound',
+                              style: GoogleFonts.kanit(
+                                color: Colors.white,
+                                fontSize: 20,
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            Wrap(
+                              spacing: 6,
+                              runSpacing: 10,
+                              children: List.generate(
+                                meditationSounds.length,
+                                (index) => GestureDetector(
+                                  onTap: () {
+                                    _audioPlayer.dynamicSet(
+                                      url: meditationSounds[index],
+                                      pushIfNotExisted: true,
+                                      preload: true,
+                                    );
+                                    _audioPlayer.processingStateStream
+                                        .listen((processingState) {
+                                      setState(() {});
+
+                                      if (processingState ==
+                                          ProcessingState.completed) {
+                                        _audioPlayer.seek(Duration.zero);
+                                      }
+                                    });
+                                    _audioPlayer.play();
+                                    setState(() {
+                                      _currentSoundIndex = index;
+                                    });
+                                    Navigator.pop(context);
+                                  },
+                                  child: _currentSoundIndex == index
+                                      ? SizedBox(
+                                          height: 54,
+                                          width: 54,
+                                          child: CircleAvatar(
+                                            backgroundColor:
+                                                Color.fromARGB(255, 33, 33, 59),
+                                            radius: 20,
+                                            child: Icon(
+                                              Icons.check,
+                                              color: Colors.green,
+                                              size: 40,
+                                            ),
+                                          ),
+                                        )
+                                      : ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          child: CachedNetworkImage(
+                                            width: 54,
+                                            height: 54,
+                                            imageUrl: playerImages[index],
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+              child: Container(
+                height: 58,
+                decoration: BoxDecoration(
+                  color: Color(0xff131321),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    'Choose Background Sound',
+                    style: GoogleFonts.kanit(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
