@@ -1,15 +1,16 @@
 import 'dart:async';
+import 'package:aura/lib/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
-class BreatheOut extends StatefulWidget {
-  BreatheOut({Key? key}) : super(key: key);
+class HoldBreathe extends StatefulWidget {
+  HoldBreathe({Key? key}) : super(key: key);
 
   @override
-  _BreatheOutState createState() => _BreatheOutState();
+  _HoldBreatheState createState() => _HoldBreatheState();
 }
 
-class _BreatheOutState extends State<BreatheOut> {
+class _HoldBreatheState extends State<HoldBreathe> {
   late Timer _timer;
   int _currentPageIndex = 0;
 
@@ -36,38 +37,43 @@ class _BreatheOutState extends State<BreatheOut> {
     return Scaffold(
       body: SliderPage(
         viewModel: SliderViewModel(
-          pageColors: [Colors.red, Colors.pink],
-          appearance: _buildAppearance(2, 'Breathe Out', 8),
-          max: 8,
-          initialValue: _currentPageIndex == 0 ? 8 : 0,
+          pageColors: [HexColor('#FFFFFF'),
+            HexColor('#D7F2FD'),
+            HexColor('#FFFFFF'),
+            HexColor('#FFFFFF')],
+          appearance: _buildAppearance(1, 'Hold', 7),
+          max: 7,
+          initialValue: _currentPageIndex == 0 ? 7 : 0,
         ),
       ),
     );
   }
 
-  CircularSliderAppearance _buildAppearance(
+   CircularSliderAppearance _buildAppearance(
       int index, String labelText, double max) {
     final customWidth = CustomSliderWidths(
         trackWidth: 1, progressBarWidth: 28, shadowWidth: 60);
     final customColors = CustomSliderColors(
       dotColor: Colors.white.withOpacity(0.5),
-      trackColor: Colors.black.withOpacity(0.1),
+      trackColor: HexColor('#000000').withOpacity(0.1),
       progressBarColors: [
-        Colors.blue.withOpacity(0.5),
-        Colors.blue.withOpacity(0.5),
-        Colors.blue.withOpacity(0.3),
+        HexColor('#76E2FF').withOpacity(0.5),
+        HexColor('#4E09ED').withOpacity(0.5),
+        HexColor('#F7E4FF').withOpacity(0.3)
       ],
       dynamicGradient: true,
-      shadowColor: Colors.blue.shade300,
+      shadowColor: HexColor('#55B3E4'),
       shadowMaxOpacity: 0.02,
     );
 
     final info = InfoProperties(
       bottomLabelStyle: TextStyle(
-          color: Colors.white, fontSize: 24, fontWeight: FontWeight.w200),
+          color: Color(0xff131321), fontSize: 24, fontWeight: FontWeight.w400),
       bottomLabelText: labelText,
       mainLabelStyle: TextStyle(
-          color: Colors.white, fontSize: 60.0, fontWeight: FontWeight.w100),
+          color: Color(0xff131321),
+          fontSize: 60.0,
+          fontWeight: FontWeight.w500),
       modifier: (double value) {
         final seconds = value.toInt();
         return '$seconds Sec';
@@ -82,7 +88,7 @@ class _BreatheOutState extends State<BreatheOut> {
       infoProperties: info,
       size: 280.0,
       counterClockwise: true,
-      animDurationMultiplier: 5.5,
+      animDurationMultiplier: 7,
     );
   }
 }

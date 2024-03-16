@@ -1,4 +1,4 @@
-import 'package:aura/lib/ui/breath_in.dart';
+import 'package:aura/meditate/screens/techniques/fourseven/breath_in.dart';
 import 'package:aura/lib/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';

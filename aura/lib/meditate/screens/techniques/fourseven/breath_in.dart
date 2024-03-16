@@ -1,21 +1,24 @@
 import 'dart:async';
+import 'package:aura/lib/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
-class HoldBreathe extends StatefulWidget {
-  HoldBreathe({Key? key}) : super(key: key);
+class BreatheIn extends StatefulWidget {
+  BreatheIn({Key? key}) : super(key: key);
 
   @override
-  _HoldBreatheState createState() => _HoldBreatheState();
+  _BreatheInState createState() => _BreatheInState();
 }
 
-class _HoldBreatheState extends State<HoldBreathe> {
+class _BreatheInState extends State<BreatheIn> {
+  late PageController _controller;
   late Timer _timer;
   int _currentPageIndex = 0;
 
   @override
   void initState() {
     super.initState();
+    _controller = PageController(initialPage: 0);
     _startAutomaticSlide();
   }
 
@@ -34,13 +37,28 @@ class _HoldBreatheState extends State<HoldBreathe> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SliderPage(
-        viewModel: SliderViewModel(
-          pageColors: [Colors.green, Colors.lightGreen],
-          appearance: _buildAppearance(1, 'Hold', 7),
-          max: 7,
-          initialValue: _currentPageIndex == 0 ? 7 : 0,
-        ),
+      body: PageView(
+        controller: _controller,
+        onPageChanged: (index) {
+          setState(() {
+            _currentPageIndex = index;
+          });
+        },
+        children: [
+          SliderPage(
+            viewModel: SliderViewModel(
+              pageColors: [
+                HexColor('#FFFFFF'),
+                HexColor('#D7F2FD'),
+                HexColor('#FFFFFF'),
+                HexColor('#FFFFFF')
+              ],
+              appearance: _buildAppearance(0, 'Breathe In', 4),
+              max: 4,
+              initialValue: _currentPageIndex == 0 ? 4 : 0,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -51,23 +69,25 @@ class _HoldBreatheState extends State<HoldBreathe> {
         trackWidth: 1, progressBarWidth: 28, shadowWidth: 60);
     final customColors = CustomSliderColors(
       dotColor: Colors.white.withOpacity(0.5),
-      trackColor: Colors.black.withOpacity(0.1),
+      trackColor: HexColor('#000000').withOpacity(0.1),
       progressBarColors: [
-        Colors.blue.withOpacity(0.5),
-        Colors.blue.withOpacity(0.5),
-        Colors.blue.withOpacity(0.3),
+        HexColor('#76E2FF').withOpacity(0.5),
+        HexColor('#4E09ED').withOpacity(0.5),
+        HexColor('#F7E4FF').withOpacity(0.3)
       ],
       dynamicGradient: true,
-      shadowColor: Colors.blue.shade300,
+      shadowColor: HexColor('#55B3E4'),
       shadowMaxOpacity: 0.02,
     );
 
     final info = InfoProperties(
       bottomLabelStyle: TextStyle(
-          color: Colors.white, fontSize: 24, fontWeight: FontWeight.w200),
+          color: Color(0xff131321), fontSize: 24, fontWeight: FontWeight.w400),
       bottomLabelText: labelText,
       mainLabelStyle: TextStyle(
-          color: Colors.white, fontSize: 60.0, fontWeight: FontWeight.w100),
+          color: Color(0xff131321),
+          fontSize: 60.0,
+          fontWeight: FontWeight.w500),
       modifier: (double value) {
         final seconds = value.toInt();
         return '$seconds Sec';
@@ -82,7 +102,7 @@ class _HoldBreatheState extends State<HoldBreathe> {
       infoProperties: info,
       size: 280.0,
       counterClockwise: true,
-      animDurationMultiplier: 7,
+      animDurationMultiplier: 3.5,
     );
   }
 }

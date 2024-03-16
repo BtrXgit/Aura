@@ -210,30 +210,43 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late final List<Widget?> _pages;
+  // late final List<Widget?> _pages;
 
   int selectedPageIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    _pages = List.generate(4, (_) => null);
-    _initializePage(0);
+    // _initializePage(0);
+  }
+
+  List<Widget> _pages = [
+    AuraHomePage(),
+    AuraComposers(),
+    MeditationHome(),
+    SettingsPage(),
+  ];
+
+  _changeTab(int index) {
+    setState(() {
+      selectedPageIndex = index;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: selectedPageIndex,
-        children: _pages.map((page) {
-          if (page == null) {
-            return Container();
-          } else {
-            return page;
-          }
-        }).toList(),
-      ),
+      // body: IndexedStack(
+      //   index: selectedPageIndex,
+      //   children: _pages.map((page) {
+      //     if (page == null) {
+      //       return Container();
+      //     } else {
+      //       return page;
+      //     }
+      //   }).toList(),
+      // ),
+      body: _pages[selectedPageIndex],
       bottomNavigationBar: NavigationBar(
         elevation: 0,
         height: 60,
@@ -241,14 +254,7 @@ class _HomePageState extends State<HomePage> {
         indicatorColor: Color(0xFFE6EDFF),
         selectedIndex: selectedPageIndex,
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-        onDestinationSelected: (int index) {
-          setState(() {
-            selectedPageIndex = index;
-            if (_pages[index] == null) {
-              _initializePage(index);
-            }
-          });
-        },
+        onDestinationSelected: (index) => _changeTab(index),
         destinations: <NavigationDestination>[
           NavigationDestination(
             selectedIcon: Icon(
@@ -314,25 +320,25 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _initializePage(int index) {
-    switch (index) {
-      case 0:
-        _pages[index] = AuraHomePage();
-        break;
-      // case 1:
-      //   _pages[index] = ExplorePage();
-      //   break;
-      case 1:
-        _pages[index] = AuraComposers();
-        break;
-      case 2:
-        _pages[index] = MeditationHome();
-        break;
-      case 3:
-        _pages[index] = SettingsPage();
-        break;
-      default:
-        throw Exception('Invalid index');
-    }
-  }
+  // void _initializePage(int index) {
+  //   switch (index) {
+  //     case 0:
+  //       _pages[index] = AuraHomePage();
+  //       break;
+  //     // case 1:
+  //     //   _pages[index] = ExplorePage();
+  //     //   break;
+  //     case 1:
+  //       _pages[index] = AuraComposers();
+  //       break;
+  //     case 2:
+  //       _pages[index] = MeditationHome();
+  //       break;
+  //     case 3:
+  //       _pages[index] = SettingsPage();
+  //       break;
+  //     default:
+  //       throw Exception('Invalid index');
+  //   }
+  // }
 }

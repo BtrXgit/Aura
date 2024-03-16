@@ -1,3 +1,4 @@
+import 'package:aura/core/broken_icons.dart';
 import 'package:aura/meditate/widgets/breather.dart';
 import 'package:flutter/material.dart';
 
@@ -57,7 +58,7 @@ class _TwoStageState extends State<TwoStage> with TickerProviderStateMixin {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(height: 20.0),
+        // SizedBox(height: 20.0),
         Breather(
           breathingController: _breathingController,
           action: _action,
