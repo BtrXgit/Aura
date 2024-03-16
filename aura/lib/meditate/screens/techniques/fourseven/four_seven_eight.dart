@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:aura/meditate/screens/techniques/fourseven/breath_in.dart';
 import 'package:aura/meditate/screens/techniques/fourseven/breathe_out.dart';
 import 'package:aura/meditate/screens/techniques/fourseven/hold.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_cache/just_audio_cache.dart';
 
 class FourSevenEight extends StatefulWidget {
   FourSevenEight({Key? key}) : super(key: key);
@@ -18,6 +20,7 @@ class _FourSevenEightState extends State<FourSevenEight> {
   late PageController _pageController;
   int _currentPageIndex = 0;
   final AudioPlayer _audioPlayer = AudioPlayer();
+  int _currentSoundIndex = -1;
 
   List<Widget> _pages = [
     BreatheIn(),
@@ -39,6 +42,7 @@ class _FourSevenEightState extends State<FourSevenEight> {
   void dispose() {
     _timer.cancel();
     _pageController.dispose();
+    _audioPlayer.dispose();
     super.dispose();
   }
 
@@ -146,7 +150,7 @@ class _FourSevenEightState extends State<FourSevenEight> {
                   context: context,
                   builder: (BuildContext context) {
                     return Container(
-                      height: 200,
+                      height: 300,
                       decoration: BoxDecoration(
                         color: Color(0xff131321),
                         borderRadius: BorderRadius.only(
@@ -163,6 +167,58 @@ class _FourSevenEightState extends State<FourSevenEight> {
                               style: GoogleFonts.kanit(
                                 color: Colors.white,
                                 fontSize: 20,
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            // List of circles to choose sounds
+                            Wrap(
+                              children: List.generate(
+                                _meditationSounds.length,
+                                (index) => GestureDetector(
+                                  onTap: () {
+                                    _audioPlayer.dynamicSet(
+                                      url: _meditationSounds[index],
+                                      pushIfNotExisted: true,
+                                      preload: true,
+                                    );
+                                    _audioPlayer.processingStateStream
+                                        .listen((processingState) {
+                                      setState(() {});
+
+                                      if (processingState ==
+                                          ProcessingState.completed) {
+                                        _audioPlayer.seek(Duration.zero);
+                                      }
+                                    });
+                                    _audioPlayer.play();
+                                    setState(() {
+                                      _currentSoundIndex = index;
+                                    });
+                                    Navigator.pop(context);
+                                  },
+                                  child: _currentSoundIndex == index
+                                      ? CircleAvatar(
+                                          backgroundColor: Colors.white,
+                                          radius: 20,
+                                          child: Icon(
+                                            Icons.check,
+                                            color: Colors.green,
+                                            size: 20,
+                                          ),
+                                        )
+                                      : CircleAvatar(
+                                          backgroundColor: Colors.white,
+                                          radius: 20,
+                                          child: Text(
+                                            '${index + 1}',
+                                            style: TextStyle(
+                                              color: Color(0xff131321),
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                ),
                               ),
                             ),
                           ],
