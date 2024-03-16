@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:aura/meditate/screens/techniques/fourseven/breath_in.dart';
 import 'package:aura/meditate/screens/techniques/fourseven/breathe_out.dart';
 import 'package:aura/meditate/screens/techniques/fourseven/hold.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:just_audio/just_audio.dart';
 
 class FourSevenEight extends StatefulWidget {
   FourSevenEight({Key? key}) : super(key: key);
@@ -15,11 +17,14 @@ class FourSevenEight extends StatefulWidget {
 class _FourSevenEightState extends State<FourSevenEight> {
   late PageController _pageController;
   int _currentPageIndex = 0;
+  final AudioPlayer _audioPlayer = AudioPlayer();
+
   List<Widget> _pages = [
     BreatheIn(),
     HoldBreathe(),
     BreatheOut(),
   ];
+
   List<int> _pageDurations = [4, 7, 8];
   late Timer _timer;
 
@@ -36,6 +41,21 @@ class _FourSevenEightState extends State<FourSevenEight> {
     _pageController.dispose();
     super.dispose();
   }
+
+  List<String> _meditationSounds = [
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Meditation%2FSounds%2F1.mp3?alt=media&token=1229f0af-0450-4874-b872-988c77233883',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Meditation%2FSounds%2F2.mp3?alt=media&token=a4afc1c4-5492-44d1-bc67-4ad6cab2299d',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Meditation%2FSounds%2F3.mp3?alt=media&token=d6294330-5c89-4ce4-aca1-973f273c036f',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Meditation%2FSounds%2F4.mp3?alt=media&token=5dee093f-5c51-46c7-a068-fdbaf431a344',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Meditation%2FSounds%2F5.mp3?alt=media&token=4214ee40-a490-4f6d-abfd-1faf6be36b5f',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Meditation%2FSounds%2F6.mp3?alt=media&token=6fd85f2b-17c5-4d4b-adfe-12bbd91bd661',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Meditation%2FSounds%2F7.mp3?alt=media&token=06cad8b5-f57c-4c60-86b6-6946df9637a3',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Meditation%2FSounds%2F8.mp3?alt=media&token=44450311-6be9-4086-90ee-3d96f7c0a285',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Meditation%2FSounds%2F9.mp3?alt=media&token=18066748-afc5-4f15-a28f-ec3feffab75a',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Meditation%2FSounds%2F10.mp3?alt=media&token=a211e561-b24a-420f-82ab-355114e1c1f9',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Meditation%2FSounds%2F11.mp3?alt=media&token=bd6a284d-9dcf-4320-9c15-42ea8505c707',
+    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Meditation%2FSounds%2F12.mp3?alt=media&token=5fd1d285-88f7-4357-b2ad-7dc5686da7cf',
+  ];
 
   void _startTimer() {
     _timer = Timer.periodic(
@@ -85,11 +105,12 @@ class _FourSevenEightState extends State<FourSevenEight> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   IconButton(
-                      onPressed: () => Navigator.pop(context),
-                      icon: Icon(
-                        Broken.close_circle,
-                        size: 28,
-                      )),
+                    onPressed: () => Navigator.pop(context),
+                    icon: Icon(
+                      Broken.close_circle,
+                      size: 28,
+                    ),
+                  ),
                   Text(
                     "4-7-8 Breathing",
                     style: TextStyle(
@@ -112,6 +133,63 @@ class _FourSevenEightState extends State<FourSevenEight> {
                     ),
                   ),
                 ],
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: GestureDetector(
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Container(
+                      height: 200,
+                      decoration: BoxDecoration(
+                        color: Color(0xff131321),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
+                      ),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Choose Background Sound',
+                              style: GoogleFonts.kanit(
+                                color: Colors.white,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+              child: Container(
+                height: 58,
+                decoration: BoxDecoration(
+                  color: Color(0xff131321),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    'Choose Background Sound',
+                    style: GoogleFonts.kanit(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
               ),
             ),
           ),

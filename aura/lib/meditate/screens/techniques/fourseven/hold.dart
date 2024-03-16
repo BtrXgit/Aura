@@ -37,10 +37,12 @@ class _HoldBreatheState extends State<HoldBreathe> {
     return Scaffold(
       body: SliderPage(
         viewModel: SliderViewModel(
-          pageColors: [HexColor('#FFFFFF'),
+          pageColors: [
+            HexColor('#FFFFFF'),
             HexColor('#D7F2FD'),
             HexColor('#FFFFFF'),
-            HexColor('#FFFFFF')],
+            HexColor('#FFFFFF')
+          ],
           appearance: _buildAppearance(1, 'Hold', 7),
           max: 7,
           initialValue: _currentPageIndex == 0 ? 7 : 0,
@@ -49,7 +51,7 @@ class _HoldBreatheState extends State<HoldBreathe> {
     );
   }
 
-   CircularSliderAppearance _buildAppearance(
+  CircularSliderAppearance _buildAppearance(
       int index, String labelText, double max) {
     final customWidth = CustomSliderWidths(
         trackWidth: 1, progressBarWidth: 28, shadowWidth: 60);
@@ -88,7 +90,7 @@ class _HoldBreatheState extends State<HoldBreathe> {
       infoProperties: info,
       size: 280.0,
       counterClockwise: true,
-      animDurationMultiplier: 7,
+      animDurationMultiplier: 6,
     );
   }
 }
