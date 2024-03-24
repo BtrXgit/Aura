@@ -1,11 +1,10 @@
 import 'package:aura/core/broken_icons.dart';
-import 'package:aura/meditate/screens/meditation_home.dart';
 import 'package:aura/routes/composers/composers.dart';
+import 'package:aura/routes/explore/exploreWorld.dart';
 import 'package:aura/routes/homepage/homepage.dart';
-import 'package:aura/routes/pages/explorePage.dart';
+import 'package:aura/routes/meditate/screens/meditation_home.dart';
 import 'package:aura/routes/settings/settings.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 
 // class HomePage extends StatefulWidget {
 //   const HomePage({Key? key, required this.title}) : super(key: key);
@@ -109,7 +108,7 @@ import 'package:flutter/material.dart';
 //             body: (context, controller) => TabBarView(
 //               controller: tabController,
 //               dragStartBehavior: DragStartBehavior.down,
-//               physics: const NeverScrollableScrollPhysics(),
+//               physics: const BouncingScrollPhysics(),
 //               children: [
 //                 AuraHomePage(
 //                   controller: controller,
@@ -120,11 +119,10 @@ import 'package:flutter/material.dart';
 //                 AuraComposers(
 //                   controller: controller,
 //                 ),
-//                 // const ExploreWorldPage(
-//                 //     // controller: controller,
-//                 //     ),
+//                 const ExploreWorldPage(
+//                     //     // controller: controller,
+//                     ),
 
-//                 MeditationScreen(),
 //                 // FourSevenEight(),
 
 //                 SettingsPage(
@@ -210,20 +208,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // late final List<Widget?> _pages;
-
   int selectedPageIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    // _initializePage(0);
   }
 
   List<Widget> _pages = [
     AuraHomePage(),
     AuraComposers(),
     MeditationHome(),
+    ExploreWorldPage(),
     SettingsPage(),
   ];
 
@@ -249,7 +245,7 @@ class _HomePageState extends State<HomePage> {
       body: _pages[selectedPageIndex],
       bottomNavigationBar: NavigationBar(
         elevation: 0,
-        height: 60,
+        height: 64,
         backgroundColor: Color(0xff131321),
         indicatorColor: Color(0xFFE6EDFF),
         selectedIndex: selectedPageIndex,
@@ -293,7 +289,7 @@ class _HomePageState extends State<HomePage> {
               size: 28,
               color: Color(0xFFE6EDFF).withOpacity(0.6),
             ),
-            label: 'Composers',
+            label: 'Composer',
           ),
           NavigationDestination(
             selectedIcon:
@@ -304,6 +300,16 @@ class _HomePageState extends State<HomePage> {
               size: 28,
             ),
             label: 'Meditate',
+          ),
+          NavigationDestination(
+            selectedIcon:
+                Icon(Broken.location, color: Color(0xff131321), size: 28),
+            icon: Icon(
+              Broken.location,
+              color: Color(0xFFE6EDFF).withOpacity(0.6),
+              size: 28,
+            ),
+            label: 'Explore',
           ),
           NavigationDestination(
             selectedIcon:

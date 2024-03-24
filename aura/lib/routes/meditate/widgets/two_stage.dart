@@ -1,5 +1,4 @@
-import 'package:aura/core/broken_icons.dart';
-import 'package:aura/meditate/widgets/breather.dart';
+import 'package:aura/routes/meditate/widgets/breather.dart';
 import 'package:flutter/material.dart';
 
 class TwoStage extends StatefulWidget {

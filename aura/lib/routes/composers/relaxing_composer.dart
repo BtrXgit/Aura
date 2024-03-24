@@ -2,13 +2,13 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:aura/authentication/services/admob_service.dart';
 import 'package:aura/component/native_ad.dart';
+import 'package:aura/core/broken_icons.dart';
 import 'package:aura/data/composer_data/relaxing_composer.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 // ignore: unused_import
 import 'package:iconly/iconly.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
 
 class RelaxingComposer extends StatefulWidget {
@@ -202,7 +202,7 @@ class RelaxingComposerState extends State<RelaxingComposer> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        'Relaxing',
+                                        'Sounds',
                                         style: GoogleFonts.dancingScript(
                                           color: Colors.white,
                                           fontSize: 38,
@@ -562,7 +562,7 @@ class RelaxingComposerState extends State<RelaxingComposer> {
                 _showTimerDialog();
               },
               child: const Icon(
-                Iconsax.timer_1,
+                Broken.timer_1,
                 size: 32,
                 color: Colors.white,
               ),
@@ -576,7 +576,7 @@ class RelaxingComposerState extends State<RelaxingComposer> {
                 _stopAllAudioPlayers();
               },
               child: const Icon(
-                Iconsax.stop_circle,
+                Broken.stop_circle,
                 size: 32,
                 color: Colors.white,
               ),

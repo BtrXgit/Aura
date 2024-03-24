@@ -1,7 +1,7 @@
 import 'package:aura/core/broken_icons.dart';
 import 'package:aura/data/meditation_sounds_data.dart';
 import 'package:aura/lib/utils.dart';
-import 'package:aura/meditate/widgets/two_stage.dart';
+import 'package:aura/routes/meditate/widgets/two_stage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,6 +18,12 @@ class Breathing extends StatefulWidget {
 class _BreathingState extends State<Breathing> {
   final AudioPlayer _audioPlayer = AudioPlayer();
   int _currentSoundIndex = -1;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _audioPlayer.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

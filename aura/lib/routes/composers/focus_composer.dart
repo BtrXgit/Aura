@@ -2,12 +2,12 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:aura/authentication/services/admob_service.dart';
 import 'package:aura/component/native_ad.dart';
+import 'package:aura/core/broken_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 // ignore: unused_import
 import 'package:iconly/iconly.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
 
 import '../../data/composer_data/focus_composer.dart';
@@ -566,7 +566,7 @@ class FocusComposerState extends State<FocusComposer> {
                 _showTimerDialog();
               },
               child: const Icon(
-                Iconsax.timer_1,
+                Broken.timer_1,
                 size: 32,
                 color: Colors.white,
               ),
@@ -580,7 +580,7 @@ class FocusComposerState extends State<FocusComposer> {
                 _stopAllAudioPlayers();
               },
               child: const Icon(
-                Iconsax.stop_circle,
+                Broken.stop_circle,
                 size: 32,
                 color: Colors.white,
               ),

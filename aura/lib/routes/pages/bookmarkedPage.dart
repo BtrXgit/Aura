@@ -1,6 +1,6 @@
+import 'package:aura/core/broken_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:iconsax/iconsax.dart';
 
 class BookmarkedPage extends StatelessWidget {
   const BookmarkedPage({super.key});
@@ -14,7 +14,7 @@ class BookmarkedPage extends StatelessWidget {
           IconButton(
             onPressed: () {},
             icon: const Icon(
-              Iconsax.trash,
+              Broken.trash,
               color: Colors.white,
             ),
           )

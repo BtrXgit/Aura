@@ -1,8 +1,8 @@
+import 'package:aura/core/broken_icons.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
-import 'package:iconsax/iconsax.dart';
 
 class ExploreWorldPage extends StatefulWidget {
   const ExploreWorldPage({super.key});
@@ -43,7 +43,7 @@ class _ExploreWorldPageState extends State<ExploreWorldPage> {
                       alignment: Alignment.centerLeft,
                       child: IconButton(
                         icon: Icon(
-                          Iconsax.setting,
+                          Broken.setting,
                           color: Colors.white,
                           size: 30,
                         ),

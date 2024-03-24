@@ -544,7 +544,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                   return _noisesContainer(
                       soundsName: noises[int],
                       imageLink: noisesImage[int],
-                      index: index,
+                      index: int,
                       height: 200);
                 }
               },
@@ -746,8 +746,8 @@ class _AuraHomePageState extends State<AuraHomePage>
     return GestureDetector(
       onTap: () => Get.to(SoundsPlayer(
         currentIndex: index,
-        songs: songs,
-        title: 'Coloured Noise',
+        songs: noisesSounds,
+        title: 'Coloured noise',
         imageUrl: noisesImage,
         soundNames: noises,
       )),

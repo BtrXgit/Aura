@@ -1,5 +1,5 @@
-import 'package:aura/meditate/screens/techniques/fourseven/four_seven_eight.dart';
-import 'package:aura/meditate/screens/techniques/box_breathing.dart';
+
+import 'package:aura/routes/meditate/screens/techniques/fourseven/four_seven_eight.dart';
 import 'package:flutter/material.dart';
 import 'techniques/seven_eleven.dart';
 import 'dart:ui';

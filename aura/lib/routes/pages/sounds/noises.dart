@@ -145,10 +145,10 @@ class _NoisesPageState extends State<NoisesPage> {
           return GestureDetector(
             onTap: () => Get.to(SoundsPlayer(
               currentIndex: index,
-              songs: noises,
+              songs: noisesSounds,
               title: 'Coloured noise',
               imageUrl: noisesImage,
-              soundNames: noisesSounds,
+              soundNames: noises,
             )),
             child: Container(
               height: MediaQuery.of(context).size.height * 0.24,

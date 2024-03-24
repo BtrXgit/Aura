@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:aura/authentication/services/admob_service.dart';
+import 'package:aura/core/broken_icons.dart';
 import 'package:aura/util/visualizer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_cache/just_audio_cache.dart';
 
@@ -230,7 +230,7 @@ class _SoundsPlayerState extends State<SoundsPlayer> {
                           ),
                         ),
                         trailing: IconButton(
-                          icon: Icon(Iconsax.close_circle),
+                          icon: Icon(Broken.close_circle),
                           onPressed: () {
                             setState(() {
                               widget.songs.removeAt(index);
@@ -365,7 +365,7 @@ class _SoundsPlayerState extends State<SoundsPlayer> {
                     children: [
                       IconButton(
                         icon: const Icon(
-                          Iconsax.previous,
+                          Broken.previous,
                           size: 38,
                           color: Colors.white,
                         ),
@@ -388,7 +388,7 @@ class _SoundsPlayerState extends State<SoundsPlayer> {
                         ),
                         child: IconButton(
                           icon: Icon(
-                            _audioPlayer.playing ? Iconsax.pause : Iconsax.play,
+                            _audioPlayer.playing ? Broken.pause : Broken.play,
                             size: 40,
                             color: Colors.white,
                           ),
@@ -404,7 +404,7 @@ class _SoundsPlayerState extends State<SoundsPlayer> {
                       ),
                       IconButton(
                         icon: const Icon(
-                          Iconsax.next,
+                          Broken.next,
                           size: 38,
                           color: Colors.white,
                         ),
@@ -427,7 +427,7 @@ class _SoundsPlayerState extends State<SoundsPlayer> {
                       IconButton(
                         onPressed: _showTimerDialog,
                         icon: const Icon(
-                          Iconsax.timer_1,
+                          Broken.timer_1,
                           color: Colors.white,
                           size: 28,
                         ),
@@ -435,7 +435,7 @@ class _SoundsPlayerState extends State<SoundsPlayer> {
                       IconButton(
                         onPressed: () {},
                         icon: Icon(
-                          Iconsax.share,
+                          Broken.share,
                           color: Colors.white,
                           size: 28,
                         ),
@@ -449,7 +449,7 @@ class _SoundsPlayerState extends State<SoundsPlayer> {
                 right: screenWidth * 0.04,
                 child: IconButton(
                   icon: Icon(
-                    Iconsax.music_playlist,
+                    Broken.music_playlist,
                     color: Colors.white,
                     size: 28,
                   ),
@@ -463,7 +463,7 @@ class _SoundsPlayerState extends State<SoundsPlayer> {
                 left: screenWidth * 0.04,
                 child: IconButton(
                   icon: Icon(
-                    Iconsax.setting_5,
+                    Broken.setting_5,
                     color: Colors.white,
                     size: 30,
                   ),

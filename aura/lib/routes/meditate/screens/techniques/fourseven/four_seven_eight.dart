@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:aura/core/broken_icons.dart';
 import 'package:aura/data/meditation_sounds_data.dart';
+import 'package:aura/routes/meditate/screens/techniques/fourseven/breath_in.dart';
+import 'package:aura/routes/meditate/screens/techniques/fourseven/breathe_out.dart';
+import 'package:aura/routes/meditate/screens/techniques/fourseven/hold.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:aura/meditate/screens/techniques/fourseven/breath_in.dart';
-import 'package:aura/meditate/screens/techniques/fourseven/breathe_out.dart';
-import 'package:aura/meditate/screens/techniques/fourseven/hold.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';

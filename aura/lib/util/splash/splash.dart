@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:aura/authentication/auth%20pages/auth_page.dart';
+import 'package:aura/core/broken_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:iconsax/iconsax.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -88,7 +88,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Icon(
-                    Iconsax.headphone,
+                    Broken.headphone,
                     color: Colors.white,
                     size: 16,
                   ),

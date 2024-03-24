@@ -24,7 +24,7 @@ class _AuraComposersState extends State<AuraComposers> {
       backgroundColor: Color(0xff131321),
       body: SingleChildScrollView(
         // controller: widget.controller,
-        physics: const ClampingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,

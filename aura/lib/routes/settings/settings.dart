@@ -204,9 +204,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           height: MediaQuery.of(context).size.height * 0.32,
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage('assets/style3.png'),
-                                fit: BoxFit.cover),
+                            color: Color(0xff1e1e2a),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Align(
@@ -381,12 +379,14 @@ class _SettingsPageState extends State<SettingsPage> {
   void _showAboutAppBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
       builder: (BuildContext context) {
         return Container(
-          color: const Color(0xFF1E1E2A),
+          decoration: BoxDecoration(
+              color: const Color(0xFF131321),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              )),
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -452,13 +452,15 @@ class _SettingsPageState extends State<SettingsPage> {
 void _showChangelogBottomSheet(BuildContext context) {
   showModalBottomSheet(
     context: context,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-    ),
     builder: (BuildContext context) {
       return Container(
-        color: const Color(0xFF1E1E2A),
         padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+            color: const Color(0xFF131321),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            )),
         child: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
