@@ -35,8 +35,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       // debugShowCheckedModeBanner: false,
-      // home: isFirstLaunch ? SplashScreen() : SplashScreen(),
-      home: isFirstLaunch ? HomePage() : HomePage(),
+      home: isFirstLaunch ? SplashScreen() : SplashScreen(),
+      // home: isFirstLaunch ? HomePage() : HomePage(),
     );
   }
 }

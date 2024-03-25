@@ -28,7 +28,7 @@ class FocusComposerState extends State<FocusComposer> {
   final List<AudioPlayer> musicaudioPlayer =
       List.generate(9, (index) => AudioPlayer());
   final List<AudioPlayer> asmraudioPlayer =
-      List.generate(5, (index) => AudioPlayer());
+      List.generate(4, (index) => AudioPlayer());
   final List<AudioPlayer> ambientaudioPlayer =
       List.generate(4, (index) => AudioPlayer());
   final List<AudioPlayer> productivityaudioPlayer =
@@ -106,7 +106,7 @@ class FocusComposerState extends State<FocusComposer> {
 
   Future<void> _loadAudio(String path, AudioPlayer audioPlayer) async {
     if (!audioCache.containsKey(path)) {
-      await audioPlayer.setAsset(path);
+      await audioPlayer.setUrl(path);
       audioCache[path] = audioPlayer;
     }
   }
