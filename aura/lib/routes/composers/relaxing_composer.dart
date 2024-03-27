@@ -202,7 +202,7 @@ class RelaxingComposerState extends State<RelaxingComposer> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        'Sounds',
+                                        'Relaxing',
                                         style: GoogleFonts.dancingScript(
                                           color: Colors.white,
                                           fontSize: 38,
@@ -679,51 +679,63 @@ class RelaxingComposerState extends State<RelaxingComposer> {
     print('Audio Player State: ${audioPlayer.playing ? 'Playing' : 'Paused'}');
   }
 
-  int? selectedTime;
-
   Future<void> _showTimerDialog() async {
-    selectedTime = await showDialog<int>(
+    int? selectedTime;
+
+    selectedTime = await showModalBottomSheet<int>(
       context: context,
       builder: (BuildContext context) {
         List<Map<String, dynamic>> timerOptions = [
-          {'duration': 60, 'label': '1M'},
-          {'duration': 120, 'label': '2M'},
-          {'duration': 300, 'label': '5M'},
-          {'duration': 600, 'label': '10M'},
-          {'duration': 1800, 'label': '30M'},
-          {'duration': 3600, 'label': '1H'},
-          {'duration': 7200, 'label': '2H'},
-          {'duration': 18000, 'label': '5H'},
+          {'duration': 300, 'label': '5 Minutes'},
+          {'duration': 600, 'label': '10 Minutes'},
+          {'duration': 1800, 'label': '30 Minutes'},
+          {'duration': 3600, 'label': '1 Hour'},
+          {'duration': 7200, 'label': '2 Hours'},
+          {'duration': 18000, 'label': '5 Hours'},
         ];
 
-        return AlertDialog(
-          backgroundColor: Color(0xFF131321),
-          title: Text(
-            'Select Timer Duration',
-            style: GoogleFonts.kanit(fontSize: 18, color: Colors.white),
-          ),
-          content: SizedBox(
-            height: 150,
-            width: MediaQuery.of(context).size.width - 100,
-            child: Wrap(
-              children: timerOptions
-                  .map((option) => ElevatedButton(
-                        onPressed: () {
-                          selectedTime = option['duration'];
-                          Navigator.of(context).pop(selectedTime);
-                        },
-                        style: ButtonStyle(
-                          backgroundColor: (selectedTime == option['duration'])
-                              ? MaterialStateProperty.all(Color(0xFF131321))
-                              : MaterialStateProperty.all(Colors.grey[800]),
-                        ),
-                        child: Text(
-                          option['label'],
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ))
-                  .toList(),
+        return Container(
+          decoration: BoxDecoration(
+            color: Color(0xFF131321),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
             ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Select Timer Duration',
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                ),
+              ),
+              Expanded(
+                child: ListView(
+                  children: timerOptions
+                      .map(
+                        (option) => ListTile(
+                          onTap: () {
+                            selectedTime = option['duration'];
+                            Navigator.of(context).pop(selectedTime);
+                          },
+                          tileColor: (selectedTime == option['duration'])
+                              ? Color(0xFF131321)
+                              : Colors.grey[800],
+                          title: Center(
+                            child: Text(
+                              option['label'],
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+            ],
           ),
         );
       },
