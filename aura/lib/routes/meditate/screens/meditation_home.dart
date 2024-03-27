@@ -1,6 +1,8 @@
-
+import 'package:aura/authentication/services/admob_service.dart';
+import 'package:aura/component/native_ad.dart';
 import 'package:aura/routes/meditate/screens/techniques/fourseven/four_seven_eight.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'techniques/seven_eleven.dart';
 import 'dart:ui';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,6 +18,51 @@ class MeditationHome extends StatefulWidget {
 }
 
 class _MeditationHomeState extends State<MeditationHome> {
+  @override
+  void initState() {
+    super.initState();
+    loadNativeAd();
+  }
+
+  NativeAd? _nativeAd;
+  bool _nativeAdIsLoaded = false;
+
+  void loadNativeAd() {
+    _nativeAd = NativeAd(
+        adUnitId: AdMobService.nativeAdsUnit!,
+        listener: NativeAdListener(
+          onAdLoaded: (ad) {
+            setState(() {
+              _nativeAdIsLoaded = true;
+            });
+          },
+          onAdFailedToLoad: (ad, error) {
+            ad.dispose();
+          },
+          onAdClicked: (ad) {},
+          onAdImpression: (ad) {},
+          onAdClosed: (ad) {},
+          onAdOpened: (ad) {},
+          onAdWillDismissScreen: (ad) {},
+          onPaidEvent: (ad, valueMicros, precision, currencyCode) {},
+        ),
+        request: const AdRequest(),
+        nativeTemplateStyle:
+            NativeTemplateStyle(templateType: TemplateType.medium),
+        customOptions: {});
+    _nativeAd?.load();
+  }
+
+  Widget _buildNativeAdWidget() {
+    if (_nativeAdIsLoaded) {
+      return NativeAdSmall(_nativeAd!);
+    } else {
+      return SizedBox(
+        height: 0,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -190,7 +237,11 @@ class _MeditationHomeState extends State<MeditationHome> {
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 10,
+            ),
+            _buildNativeAdWidget(),
+            const SizedBox(
+              height: 10,
             ),
             // GestureDetector(
             //   onTap: () {

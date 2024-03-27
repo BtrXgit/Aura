@@ -330,6 +330,9 @@ class RelaxingComposerState extends State<RelaxingComposer> {
                     ),
                   ),
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
                 Container(
                   width: MediaQuery.of(context).size.width - 40,
                   decoration: BoxDecoration(
@@ -791,6 +794,7 @@ class RelaxingComposerState extends State<RelaxingComposer> {
   @override
   void dispose() {
     _timer?.cancel();
+    _nativeAd?.dispose();
     _timer = null;
     _stopAllAudioPlayers();
     for (var player in natureaudioPlayer) {

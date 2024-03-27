@@ -52,7 +52,7 @@ class _SoundsPlayerState extends State<SoundsPlayer> {
     _banner = BannerAd(
       size: AdSize.banner,
       adUnitId: AdMobService.playersAdUnitId!,
-      listener: AdMobService.bannerListener,
+      listener: AdMobService.playersbannerListener,
       request: const AdRequest(),
     )..load();
   }

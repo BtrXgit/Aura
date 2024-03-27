@@ -16,21 +16,12 @@ class AdMobService {
   static String? get playersAdUnitId {
     if (Platform.isAndroid) {
       // return 'ca-app-pub-3940256099942544/6300978111';
-      return 'ca-app-pub-2502922311219626/4945306892';
+      return 'ca-app-pub-2502922311219626/8618427209';
     } else if (Platform.isIOS) {
-      return 'ca-app-pub-2502922311219626/4945306892';
+      return 'ca-app-pub-2502922311219626/8618427209';
     }
     return null;
   }
-
-  // static String? get interstitialAdUnitId {
-  //   if (Platform.isAndroid) {
-  //     return 'ca-app-pub-3940256099942544/1033173712';
-  //   } else if (Platform.isIOS) {
-  //     return 'ca-app-pub-2502922311219626/7644985525';
-  //   }
-  //   return null;
-  // }
 
   static String? get nativeAdsUnit {
     if (Platform.isAndroid) {
@@ -47,12 +38,20 @@ class AdMobService {
       // return 'ca-app-pub-3940256099942544/2247696110';
       return 'ca-app-pub-2502922311219626/2127372174';
     } else if (Platform.isIOS) {
-      return 'ca-app-pub-3940256099942544/2247696110';
+      return 'ca-app-pub-2502922311219626/2127372174';
     }
     return null;
   }
 
   static final BannerAdListener bannerListener = BannerAdListener(
+      onAdLoaded: (ad) => debugPrint('Banner Ad Loaded'),
+      onAdFailedToLoad: ((ad, error) {
+        ad.dispose();
+        debugPrint('Banner Ad failed to load: $error');
+      }),
+      onAdOpened: ((ad) => debugPrint("Banner ad opened")));
+
+  static final BannerAdListener playersbannerListener = BannerAdListener(
       onAdLoaded: (ad) => debugPrint('Banner Ad Loaded'),
       onAdFailedToLoad: ((ad, error) {
         ad.dispose();

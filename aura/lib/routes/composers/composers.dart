@@ -27,6 +27,12 @@ class _AuraComposersState extends State<AuraComposers> {
     loadNativeAd();
   }
 
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   _nativeAd?.dispose();
+  // }
+
   NativeAd? _nativeAd;
   bool _nativeAdIsLoaded = false;
 

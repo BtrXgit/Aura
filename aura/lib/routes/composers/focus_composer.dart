@@ -787,6 +787,7 @@ class FocusComposerState extends State<FocusComposer> {
 
   @override
   void dispose() {
+    _nativeAd?.dispose();
     _timer?.cancel();
     _timer = null;
     _stopAllAudioPlayers();

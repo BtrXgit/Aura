@@ -1,5 +1,4 @@
 import 'package:aura/firebase_options.dart';
-import 'package:aura/home.dart';
 import 'package:aura/util/splash/splash.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:flutter/material.dart';
