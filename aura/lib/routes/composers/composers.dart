@@ -84,13 +84,22 @@ class _AuraComposersState extends State<AuraComposers> {
                   height: MediaQuery.of(context).size.height * 0.4,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/composer.gif'),
-                      fit: BoxFit.cover,
-                    ),
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(20),
                       bottomRight: Radius.circular(20),
+                    ),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    ),
+                    child: FadeInImage(
+                      placeholder: AssetImage(
+                          'assets/composer.gif'), // Placeholder image
+                      image: CachedNetworkImageProvider(
+                          'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Composers%2Fcomposer.gif?alt=media&token=2cb8458c-7a01-4854-9ec6-61ced86995ae'),
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),

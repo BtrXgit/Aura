@@ -4,6 +4,7 @@ import 'package:aura/authentication/services/admob_service.dart';
 import 'package:aura/component/native_ad.dart';
 import 'package:aura/core/broken_icons.dart';
 import 'package:aura/data/composer_data/relaxing_composer.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -49,7 +50,7 @@ class RelaxingComposerState extends State<RelaxingComposer> {
 
   void loadNativeAd() {
     _nativeAd = NativeAd(
-        adUnitId: AdMobService.nativeAdsUnit!,
+        adUnitId: AdMobService.composerAdsUnit!,
         listener: NativeAdListener(
           onAdLoaded: (ad) {
             setState(() {
@@ -118,7 +119,8 @@ class RelaxingComposerState extends State<RelaxingComposer> {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/composer.gif'),
+                image: CachedNetworkImageProvider(
+                    'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Composers%2Frelaxing.gif?alt=media&token=766d5a4b-f114-45c7-b7c0-2e0076c77386'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -143,13 +145,22 @@ class RelaxingComposerState extends State<RelaxingComposer> {
                       height: MediaQuery.of(context).size.height * 0.4,
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/composer.gif'),
-                          fit: BoxFit.cover,
-                        ),
                         borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(20),
                           bottomRight: Radius.circular(20),
+                        ),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
+                        child: FadeInImage(
+                          placeholder: AssetImage(
+                              'assets/composer.gif'), // Placeholder image
+                          image: CachedNetworkImageProvider(
+                              'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Composers%2Frelaxing.gif?alt=media&token=766d5a4b-f114-45c7-b7c0-2e0076c77386'),
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
@@ -269,7 +280,11 @@ class RelaxingComposerState extends State<RelaxingComposer> {
                   ),
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 10,
+                ),
+                _buildNativeAdWidget(),
+                const SizedBox(
+                  height: 10,
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width - 40,
@@ -314,13 +329,6 @@ class RelaxingComposerState extends State<RelaxingComposer> {
                       ],
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                _buildNativeAdWidget(),
-                const SizedBox(
-                  height: 10,
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width - 40,

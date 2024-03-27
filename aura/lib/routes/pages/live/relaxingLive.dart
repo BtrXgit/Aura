@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:aura/data/live_songs.dart';
 import 'package:aura/data/songs.dart';
-import 'package:aura/util/players/livePlayer.dart';
 import 'package:aura/util/players/mainAuraPlayer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';

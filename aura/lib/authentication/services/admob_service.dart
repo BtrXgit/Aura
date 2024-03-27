@@ -13,6 +13,16 @@ class AdMobService {
     return null;
   }
 
+  static String? get playersAdUnitId {
+    if (Platform.isAndroid) {
+      // return 'ca-app-pub-3940256099942544/6300978111';
+      return 'ca-app-pub-2502922311219626/4945306892';
+    } else if (Platform.isIOS) {
+      return 'ca-app-pub-2502922311219626/4945306892';
+    }
+    return null;
+  }
+
   // static String? get interstitialAdUnitId {
   //   if (Platform.isAndroid) {
   //     return 'ca-app-pub-3940256099942544/1033173712';
@@ -32,6 +42,16 @@ class AdMobService {
     return null;
   }
 
+  static String? get composerAdsUnit {
+    if (Platform.isAndroid) {
+      // return 'ca-app-pub-3940256099942544/2247696110';
+      return 'ca-app-pub-2502922311219626/2127372174';
+    } else if (Platform.isIOS) {
+      return 'ca-app-pub-3940256099942544/2247696110';
+    }
+    return null;
+  }
+
   static final BannerAdListener bannerListener = BannerAdListener(
       onAdLoaded: (ad) => debugPrint('Banner Ad Loaded'),
       onAdFailedToLoad: ((ad, error) {
@@ -40,7 +60,6 @@ class AdMobService {
       }),
       onAdOpened: ((ad) => debugPrint("Banner ad opened")));
 }
-
 
 
   // static String? get rewardedAdUnitId {

@@ -1,11 +1,8 @@
 import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
-
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:aura/data/live_songs.dart';
 import 'package:aura/data/songs.dart';
-import 'package:aura/util/players/livePlayer.dart';
 import 'package:aura/util/players/mainAuraPlayer.dart';
 // ignore: unused_import
 import 'package:cached_network_image/cached_network_image.dart';

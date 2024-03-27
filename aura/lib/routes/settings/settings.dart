@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:aura/core/broken_icons.dart';
 import 'package:aura/routes/settings/privacyPolicy.dart';
 import 'package:aura/routes/settings/settingsCard.dart';
@@ -161,8 +163,39 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
+  String _getGreeting() {
+    final now = DateTime.now();
+    final hour = now.hour;
+    if (hour >= 5 && hour < 12) {
+      return 'Good Morning';
+    } else if (hour >= 12 && hour < 17) {
+      return 'Good Afternoon';
+    } else if (hour >= 17 && hour < 20) {
+      return 'Good Evening';
+    } else {
+      return 'Good Night';
+    }
+  }
+
+  String _getImageAsset(String greeting) {
+    switch (greeting) {
+      case 'Good Morning':
+        return "https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Composers%2Frelaxingc.jpg?alt=media&token=7f93d245-4a6e-472e-b5c8-9a31d64bce98";
+      case 'Good Afternoon':
+        return "https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Composers%2Ffocusc.jpg?alt=media&token=8a20a461-2314-4d3a-83cb-edfedffc3707";
+      case 'Good Evening':
+        return "https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FFocus%20Study%2FfocusEvening.jpg?alt=media&token=abcbf1d0-39be-4c53-9f37-31c4fab1b702";
+      case 'Good Night':
+        return "https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2Fsynthwave.jpg?alt=media&token=d2c50d2c-c6eb-40e4-b05b-7f88bf81af31";
+      default:
+        return "https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Composers%2Frelaxingc.jpg?alt=media&token=7f93d245-4a6e-472e-b5c8-9a31d64bce98";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final greeting = _getGreeting();
+    final backgroundImage = _getImageAsset(greeting);
     Color primaryColor = Colors.white;
     return Scaffold(
       appBar: AppBar(
@@ -201,44 +234,90 @@ class _SettingsPageState extends State<SettingsPage> {
                       children: [
                         Container(
                           width: MediaQuery.of(context).size.width - 50,
-                          height: MediaQuery.of(context).size.height * 0.32,
+                          height: MediaQuery.of(context).size.height * 0.3,
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: Color(0xff1e1e2a),
                             borderRadius: BorderRadius.circular(20),
+                            image: DecorationImage(
+                              image:
+                                  CachedNetworkImageProvider(backgroundImage),
+                              fit: BoxFit.cover,
+                              filterQuality: FilterQuality.high,
+                            ),
                           ),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 20,
+                        ),
+                        Positioned(
+                          bottom: -1,
+                          left: -1,
+                          right: -1,
+                          top: -1,
+                          child: Container(
+                            // width: MediaQuery.of(context).size.width,
+                            // height: MediaQuery.of(context).size.height * 0.075,
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: BackdropFilter(
+                                filter: ImageFilter.blur(
+                                  sigmaX: 20,
+                                  sigmaY: 20,
                                 ),
-                                if (userPhotoUrl != null)
-                                  CircleAvatar(
-                                    radius: 64,
-                                    backgroundImage: CachedNetworkImageProvider(
-                                        userPhotoUrl!),
+                                child: Container(
+                                  // width: MediaQuery.of(context).size.width,
+                                  // height: MediaQuery.of(context).size.height *
+                                  //     0.075,
+                                  decoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0.4),
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        spreadRadius: 5,
+                                        blurRadius: 7,
+                                        offset: Offset(0, 3),
+                                      ),
+                                    ],
                                   ),
-                                const SizedBox(
-                                  height: 8,
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        if (userPhotoUrl != null)
+                                          CircleAvatar(
+                                            radius: 64,
+                                            backgroundImage:
+                                                CachedNetworkImageProvider(
+                                                    userPhotoUrl!),
+                                          ),
+                                        const SizedBox(
+                                          height: 8,
+                                        ),
+                                        Text(
+                                          '$userName',
+                                          style: GoogleFonts.kanit(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white),
+                                        ),
+                                        const SizedBox(
+                                          height: 8.0,
+                                        ),
+                                        Text(
+                                          '$userEmail',
+                                          style: TextStyle(
+                                              fontSize: 16, color: Colors.grey),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                                Text(
-                                  '$userName',
-                                  style: GoogleFonts.kanit(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                ),
-                                const SizedBox(
-                                  height: 8.0,
-                                ),
-                                Text(
-                                  '$userEmail',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey),
-                                ),
-                              ],
+                              ),
                             ),
                           ),
                         ),

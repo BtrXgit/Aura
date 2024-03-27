@@ -51,7 +51,7 @@ class FocusComposerState extends State<FocusComposer> {
 
   void loadNativeAd() {
     _nativeAd = NativeAd(
-        adUnitId: AdMobService.nativeAdsUnit!,
+        adUnitId: AdMobService.composerAdsUnit!,
         listener: NativeAdListener(
           onAdLoaded: (ad) {
             setState(() {

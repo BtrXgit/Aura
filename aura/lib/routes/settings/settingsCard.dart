@@ -23,7 +23,7 @@ class CustomStackCard extends StatelessWidget {
   Widget build(BuildContext context) {
     double containerWidth = MediaQuery.of(context).size.width;
     // double containerHeight = MediaQuery.of(context).size.height * 0.2;
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.all(20),
@@ -31,7 +31,12 @@ class CustomStackCard extends StatelessWidget {
         width: containerWidth,
         // height: containerHeight,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20), color: Color(0xff1e1e2a)),
+          borderRadius: BorderRadius.circular(20),
+          image: DecorationImage(
+            image: AssetImage('assets/style3.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: Align(
