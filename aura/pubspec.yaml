@@ -1,7 +1,7 @@
 name: aura
 description: A new Flutter project.
 publish_to: 'none' 
-version: 1.0.0+7
+version: 1.0.0+6
 
 environment:
   sdk: '>=3.1.2 <4.0.0'
@@ -21,17 +21,17 @@ dependencies:
   bootstrap_icons: ^1.11.1
   get: ^4.6.6
   firebase_auth: ^4.10.1
-  google_mobile_ads: ^5.0.0
+  google_mobile_ads: ^4.0.0
   flutter_floating_bottom_bar: ^1.2.0
   firebase_core: ^2.16.0
   firebase_storage: ^11.2.7
-  http: ^1.2.1
+  http: 1.2.0
   iconly: ^1.0.1
   cloud_firestore: ^4.13.6
   cached_network_image: ^3.3.0
   carousel_slider: ^4.2.1
   just_audio_cache: ^0.1.2
-  audioplayers: ^6.0.0
+  audioplayers: ^5.2.1
   google_sign_in: ^6.2.1
   flutter_launcher_icons: ^0.13.1
   palette_generator: ^0.3.3+3
@@ -40,7 +40,7 @@ dependencies:
   metaballs: ^1.5.0
   animated_text_kit: ^4.2.2
   text_scroll: ^0.2.0
-  firebase_app_check: ^0.2.1+19
+  firebase_app_check: 0.2.1+8
   sleek_circular_slider: ^2.0.1
   rename: ^3.0.1
 
