@@ -8,8 +8,9 @@ import 'dart:ui';
 import 'package:google_fonts/google_fonts.dart';
 
 class MeditationHome extends StatefulWidget {
-  // final ScrollController controller;
+  final ScrollController controller;
   const MeditationHome({
+    required this.controller,
     super.key,
   });
 
@@ -68,7 +69,7 @@ class _MeditationHomeState extends State<MeditationHome> {
     return Scaffold(
       backgroundColor: Color(0xff131321),
       body: SingleChildScrollView(
-        // controller: widget.controller,
+        controller: widget.controller,
         physics: const BouncingScrollPhysics(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -401,7 +402,7 @@ class _MeditationHomeState extends State<MeditationHome> {
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 100,
             ),
           ],
         ),

@@ -14,7 +14,7 @@ class AuthPage extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return const HomePage(
-                // title: 'Aura: Lofi, Relaxing, and Sleep Music',
+                title: 'Aura: Lofi, Relaxing, and Sleep Music',
               );
             } else {
               return const LoginPage();

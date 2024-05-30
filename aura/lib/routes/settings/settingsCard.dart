@@ -21,6 +21,7 @@ class CustomStackCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color secondaryColor = Theme.of(context).colorScheme.secondary;
     double containerWidth = MediaQuery.of(context).size.width;
     // double containerHeight = MediaQuery.of(context).size.height * 0.2;
     return GestureDetector(
@@ -31,11 +32,12 @@ class CustomStackCard extends StatelessWidget {
         width: containerWidth,
         // height: containerHeight,
         decoration: BoxDecoration(
+          color: secondaryColor,
           borderRadius: BorderRadius.circular(20),
-          image: DecorationImage(
-            image: AssetImage('assets/style3.png'),
-            fit: BoxFit.cover,
-          ),
+          // image: DecorationImage(
+          //   image: AssetImage('assets/style3.png'),
+          //   fit: BoxFit.cover,
+          // ),
         ),
         child: Padding(
           padding: const EdgeInsets.only(left: 8.0),

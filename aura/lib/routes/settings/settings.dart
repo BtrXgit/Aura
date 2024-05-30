@@ -14,8 +14,8 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
-  // final ScrollController controller;
-  const SettingsPage({Key? key}) : super(key: key);
+  final ScrollController controller;
+  const SettingsPage({required this.controller, Key? key}) : super(key: key);
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -194,6 +194,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    Color backgroundColor = Theme.of(context).colorScheme.background;
     final greeting = _getGreeting();
     final backgroundImage = _getImageAsset(greeting);
     Color primaryColor = Colors.white;
@@ -210,12 +211,12 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
         ),
         elevation: 0,
-        backgroundColor: Color(0xFF131321),
+        backgroundColor: backgroundColor,
       ),
-      backgroundColor: Color(0xFF131321),
+      backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        // controller: widget.controller,
+        controller: widget.controller,
         child: AnimationLimiter(
           child: Center(
             child: Column(
@@ -262,24 +263,16 @@ class _SettingsPageState extends State<SettingsPage> {
                               borderRadius: BorderRadius.circular(20),
                               child: BackdropFilter(
                                 filter: ImageFilter.blur(
-                                  sigmaX: 20,
-                                  sigmaY: 20,
+                                  sigmaX: 50,
+                                  sigmaY: 50,
                                 ),
                                 child: Container(
                                   // width: MediaQuery.of(context).size.width,
                                   // height: MediaQuery.of(context).size.height *
                                   //     0.075,
                                   decoration: BoxDecoration(
-                                    color: Colors.black.withOpacity(0.4),
+                                    color: Colors.transparent,
                                     borderRadius: BorderRadius.circular(20),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.1),
-                                        spreadRadius: 5,
-                                        blurRadius: 7,
-                                        offset: Offset(0, 3),
-                                      ),
-                                    ],
                                   ),
                                   child: Align(
                                     alignment: Alignment.center,
@@ -445,7 +438,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           GoogleFonts.kanit(color: primaryColor, fontSize: 12),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 100),
                 ],
               ),
             ),

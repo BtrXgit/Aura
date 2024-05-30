@@ -51,11 +51,11 @@ List<String> noisesSounds = [
 ];
 
 List<String> noises = [
-  'White Noise',
-  'Pink Noise',
-  'Brown Noise',
-  'Blue Noise',
-  'Violet Noise',
+  'White',
+  'Pink',
+  'Brown',
+  'Blue',
+  'Violet',
 ];
 
 List<String> homepageCategory = [
@@ -63,5 +63,4 @@ List<String> homepageCategory = [
   'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2Fsynthwave.jpg?alt=media&token=d2c50d2c-c6eb-40e4-b05b-7f88bf81af31',
   'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2Fsad.jpg?alt=media&token=37f31103-0868-402e-8bf2-2401b5ca50bb',
   'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2Fhiphop.jpg?alt=media&token=88e8441e-3ef7-4b06-b628-c37de276be6e',
-  
 ];

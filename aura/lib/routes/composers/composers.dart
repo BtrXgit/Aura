@@ -11,8 +11,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class AuraComposers extends StatefulWidget {
-  // final ScrollController controller;
+  final ScrollController controller;
   const AuraComposers({
+    required this.controller,
     super.key,
   });
 
@@ -77,7 +78,7 @@ class _AuraComposersState extends State<AuraComposers> {
     return Scaffold(
       backgroundColor: Color(0xff131321),
       body: SingleChildScrollView(
-        // controller: widget.controller,
+        controller: widget.controller,
         physics: const BouncingScrollPhysics(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -333,7 +334,7 @@ class _AuraComposersState extends State<AuraComposers> {
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 100,
             ),
           ],
         ),

@@ -12,6 +12,7 @@ import 'package:aura/routes/pages/playlists/playlists.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,9 +24,9 @@ import '../pages/live/sleepLive.dart';
 import '/data/homepage_data.dart';
 
 class AuraHomePage extends StatefulWidget {
-  // final ScrollController controller;
+  final ScrollController controller;
 
-  const AuraHomePage({Key? key}) : super(key: key);
+  const AuraHomePage({required this.controller, Key? key}) : super(key: key);
 
   @override
   State<AuraHomePage> createState() => _AuraHomePageState();
@@ -130,10 +131,11 @@ class _AuraHomePageState extends State<AuraHomePage>
 
   @override
   Widget build(BuildContext context) {
+    Color backgroundColor = Theme.of(context).colorScheme.background;
     return Material(
       clipBehavior: Clip.antiAlias,
       child: Scaffold(
-        backgroundColor: Color(0xff131321),
+        backgroundColor: backgroundColor,
         body: AnimationLimiter(child: _buildContentColumn()),
       ),
     );
@@ -145,8 +147,8 @@ class _AuraHomePageState extends State<AuraHomePage>
     final relaxingImage = randomRelaxingImage(greeting);
     final focusImage = randomFocusImage(greeting);
     return SingleChildScrollView(
-      // controller: widget.controller,
-      physics: const ClampingScrollPhysics(),
+      controller: widget.controller,
+      physics: const BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -193,19 +195,11 @@ class _AuraHomePageState extends State<AuraHomePage>
                           filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
                           child: Container(
                             decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.4),
+                              color: Colors.transparent,
                               borderRadius: BorderRadius.only(
                                 topRight: Radius.circular(10),
                                 bottomRight: Radius.circular(10),
                               ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  spreadRadius: 5,
-                                  blurRadius: 7,
-                                  offset: Offset(0, 3),
-                                ),
-                              ],
                             ),
                             child: Padding(
                               padding: const EdgeInsets.only(
@@ -282,17 +276,18 @@ class _AuraHomePageState extends State<AuraHomePage>
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 8.0),
+            padding: const EdgeInsets.only(left: 20.0, top: 20, bottom: 8.0),
             child: Text(
               'Recommended',
-              style: GoogleFonts.kanit(
+              style: GoogleFonts.montserrat(
                 color: Colors.white,
-                fontSize: 24,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ),
           SizedBox(
-            height: 200,
+            height: 160,
             child: ListView.builder(
               physics: BouncingScrollPhysics(),
               itemCount: recommendedSoundes.length + 1,
@@ -307,8 +302,8 @@ class _AuraHomePageState extends State<AuraHomePage>
                     },
                     child: Container(
                       margin: EdgeInsets.only(left: 18),
-                      height: 200,
-                      width: 200,
+                      height: 160,
+                      width: 160,
                       decoration: BoxDecoration(
                         color: const Color(0xFF1F1F36),
                         borderRadius: BorderRadius.circular(20),
@@ -336,7 +331,6 @@ class _AuraHomePageState extends State<AuraHomePage>
                           soundsName: recommendedSoundes[currentIndex],
                           imageLink: recommendedImageUrl[currentIndex],
                           index: currentIndex,
-                          height: 200,
                         ),
                       ),
                     ),
@@ -435,7 +429,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                                       ),
                                       child: BackdropFilter(
                                         filter: ImageFilter.blur(
-                                            sigmaX: 30, sigmaY: 30),
+                                            sigmaX: 10, sigmaY: 10),
                                         child: Container(
                                             width: MediaQuery.of(context)
                                                 .size
@@ -445,22 +439,12 @@ class _AuraHomePageState extends State<AuraHomePage>
                                                     .height *
                                                 0.075,
                                             decoration: BoxDecoration(
-                                              color:
-                                                  Colors.black.withOpacity(0.4),
+                                              color: Colors.transparent,
                                               borderRadius: BorderRadius.only(
                                                 bottomLeft: Radius.circular(20),
                                                 bottomRight:
                                                     Radius.circular(20),
                                               ),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.black
-                                                      .withOpacity(0.1),
-                                                  spreadRadius: 5,
-                                                  blurRadius: 7,
-                                                  offset: Offset(0, 3),
-                                                ),
-                                              ],
                                             ),
                                             child: Align(
                                               alignment: Alignment.centerLeft,
@@ -509,7 +493,7 @@ class _AuraHomePageState extends State<AuraHomePage>
               title: 'Coloured noise',
               scrollText: 'Dive into digital world of sounds.'),
           SizedBox(
-            height: 200,
+            height: 120,
             child: ListView.builder(
               physics: BouncingScrollPhysics(),
               itemCount: noises.length + 1,
@@ -522,11 +506,11 @@ class _AuraHomePageState extends State<AuraHomePage>
                     },
                     child: Container(
                       margin: EdgeInsets.only(left: 18),
-                      height: 200,
-                      width: 200,
+                      height: 120,
+                      width: 120,
                       decoration: BoxDecoration(
                         color: const Color(0xFF1F1F36),
-                        borderRadius: BorderRadius.circular(20),
+                        shape: BoxShape.circle,
                       ),
                       child: Center(
                         child: Text(
@@ -542,10 +526,10 @@ class _AuraHomePageState extends State<AuraHomePage>
                   );
                 } else {
                   return _noisesContainer(
-                      soundsName: noises[int],
-                      imageLink: noisesImage[int],
-                      index: int,
-                      height: 200);
+                    soundsName: noises[int],
+                    imageLink: noisesImage[int],
+                    index: int,
+                  );
                 }
               },
             ),
@@ -644,7 +628,6 @@ class _AuraHomePageState extends State<AuraHomePage>
     required String soundsName,
     required String imageLink,
     required int index,
-    required double height,
   }) {
     return GestureDetector(
       onTap: () => Get.to(SoundsPlayer(
@@ -658,8 +641,8 @@ class _AuraHomePageState extends State<AuraHomePage>
         children: [
           Container(
             margin: EdgeInsets.only(left: 18),
-            height: height,
-            width: 200,
+            height: 160,
+            width: 160,
             decoration: BoxDecoration(
                 image: DecorationImage(
                     image: CachedNetworkImageProvider(imageLink),
@@ -688,24 +671,16 @@ class _AuraHomePageState extends State<AuraHomePage>
                   bottomRight: Radius.circular(20),
                 ),
                 child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height * 0.06,
                     decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.4),
+                      color: Colors.transparent,
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(20),
                         bottomRight: Radius.circular(20),
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
                     ),
                     child: Align(
                       alignment: Alignment.centerLeft,
@@ -714,7 +689,7 @@ class _AuraHomePageState extends State<AuraHomePage>
                         child: Text(
                           soundsName,
                           style: GoogleFonts.kanit(
-                              color: Colors.white, fontSize: 20),
+                              color: Colors.white, fontSize: 16),
                         ),
                       ),
                     ),
@@ -724,8 +699,8 @@ class _AuraHomePageState extends State<AuraHomePage>
             ),
           ),
           Positioned(
-            bottom: 15,
-            right: 10,
+            bottom: 18,
+            right: 6,
             child: Icon(
               IconlyBold.play,
               size: 42,
@@ -741,7 +716,6 @@ class _AuraHomePageState extends State<AuraHomePage>
     required String soundsName,
     required String imageLink,
     required int index,
-    required double height,
   }) {
     return GestureDetector(
       onTap: () => Get.to(SoundsPlayer(
@@ -751,82 +725,30 @@ class _AuraHomePageState extends State<AuraHomePage>
         imageUrl: noisesImage,
         soundNames: noises,
       )),
-      child: Stack(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            margin: EdgeInsets.only(left: 18),
-            height: height,
-            width: 200,
+            margin: EdgeInsets.only(left: 14),
+            height: 84,
+            width: 84,
             decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: CachedNetworkImageProvider(imageLink),
-                    fit: BoxFit.cover,
-                    filterQuality: FilterQuality.high),
-                borderRadius: BorderRadius.circular(20)),
-          ),
-          Positioned(
-            bottom: -1,
-            left: 0,
-            right: 0,
-            child: Container(
-              margin: EdgeInsets.only(left: 18),
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.06,
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
-                ),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
-                ),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.06,
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.4),
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(20),
-                        bottomRight: Radius.circular(20),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Text(
-                          soundsName,
-                          style: GoogleFonts.kanit(
-                              color: Colors.white, fontSize: 20),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                  image: CachedNetworkImageProvider(imageLink),
+                  fit: BoxFit.cover,
+                  filterQuality: FilterQuality.high),
             ),
           ),
-          Positioned(
-            bottom: 15,
-            right: 10,
-            child: Icon(
-              IconlyBold.play,
-              size: 42,
-              color: Colors.white,
+          // SizedBox(
+          //   height: 8.0,
+          // ),
+          Padding(
+            padding: EdgeInsets.only(left: 14),
+            child: Text(
+              soundsName,
+              style: GoogleFonts.kanit(color: Colors.white, fontSize: 14),
             ),
           ),
         ],
@@ -876,7 +798,7 @@ class _AuraHomePageState extends State<AuraHomePage>
     return Padding(
       padding: const EdgeInsets.only(
         left: 20.0,
-        top: 10,
+        top: 20,
         bottom: 8.0,
       ),
       child: Row(
@@ -885,9 +807,10 @@ class _AuraHomePageState extends State<AuraHomePage>
         children: [
           Text(
             title,
-            style: GoogleFonts.kanit(
+            style: GoogleFonts.montserrat(
               color: Colors.white,
-              fontSize: 24,
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
             ),
           ),
           const SizedBox(

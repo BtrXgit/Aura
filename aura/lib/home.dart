@@ -1,350 +1,677 @@
+import 'dart:ui';
+
 import 'package:aura/core/broken_icons.dart';
 import 'package:aura/routes/composers/composers.dart';
 import 'package:aura/routes/explore/exploreWorld.dart';
 import 'package:aura/routes/homepage/homepage.dart';
 import 'package:aura/routes/meditate/screens/meditation_home.dart';
 import 'package:aura/routes/settings/settings.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
-// class HomePage extends StatefulWidget {
-//   const HomePage({Key? key, required this.title}) : super(key: key);
-//   final String title;
-
-//   @override
-//   HomePageState createState() => HomePageState();
-// }
-
-// class HomePageState extends State<HomePage>
-//     with SingleTickerProviderStateMixin {
-//   late int currentPage;
-//   late TabController tabController;
-
-//   @override
-//   void initState() {
-//     currentPage = 0;
-//     tabController = TabController(length: 4, vsync: this);
-//     tabController.animation!.addListener(
-//       () {
-//         final value = tabController.animation!.value.round();
-//         if (value != currentPage && mounted) {
-//           changePage(value);
-//         }
-//       },
-//     );
-//     super.initState();
-//   }
-
-//   void changePage(int newPage) {
-//     setState(() {
-//       currentPage = newPage;
-//     });
-//   }
-
-//   Color homeColor = const Color.fromARGB(255, 175, 202, 0);
-//   Color customColor = Color(0xFF7B4294);
-//   Color locationColor = const Color.fromARGB(255, 59, 255, 226);
-//   Color settingsColor = Colors.blue;
-//   Color unselectedColor = Colors.grey;
-//   Color _getIndicatorColor(int page) {
-//     switch (page) {
-//       case 0:
-//         return homeColor;
-//       case 1:
-//         return customColor;
-//       case 2:
-//         return locationColor;
-//       case 3:
-//         return settingsColor;
-//       default:
-//         return unselectedColor;
-//     }
-//   }
-
-//   @override
-//   void dispose() {
-//     tabController.dispose();
-//     super.dispose();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: null,
-//       body: Stack(
-//         children: [
-//           BottomBar(
-//             fit: StackFit.expand,
-//             icon: (width, height) => Center(
-//               child: IconButton(
-//                 padding: EdgeInsets.zero,
-//                 onPressed: null,
-//                 icon: Icon(
-//                   Icons.arrow_upward_rounded,
-//                   color: Colors.grey,
-//                   size: width,
-//                 ),
-//               ),
-//             ),
-//             borderRadius: BorderRadius.circular(500),
-//             duration: const Duration(milliseconds: 500),
-//             curve: Curves.decelerate,
-//             showIcon: true,
-//             width: MediaQuery.of(context).size.width * 0.75,
-//             // barColor: Colors.black.computeLuminance() > 0.5
-//             //     ? Colors.black
-//             //     : const Color.fromARGB(255, 14, 3, 31),
-//             barColor: Color(0xFF131321),
-//             start: 2,
-//             end: 0,
-//             offset: 10,
-//             barAlignment: Alignment.bottomCenter,
-//             iconHeight: 50,
-//             iconWidth: 50,
-//             reverse: false,
-//             hideOnScroll: true,
-//             scrollOpposite: false,
-//             onBottomBarHidden: () {},
-//             onBottomBarShown: () {},
-//             body: (context, controller) => TabBarView(
-//               controller: tabController,
-//               dragStartBehavior: DragStartBehavior.down,
-//               physics: const BouncingScrollPhysics(),
-//               children: [
-//                 AuraHomePage(
-//                   controller: controller,
-//                 ),
-//                 // AuraComposerTest(
-//                 //   controller: controller,
-//                 // ),
-//                 AuraComposers(
-//                   controller: controller,
-//                 ),
-//                 const ExploreWorldPage(
-//                     //     // controller: controller,
-//                     ),
-
-//                 // FourSevenEight(),
-
-//                 SettingsPage(
-//                   controller: controller,
-//                 ),
-//               ],
-//             ),
-//             child: TabBar(
-//               dividerColor: Colors.transparent,
-//               indicatorPadding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
-//               controller: tabController,
-//               indicator: UnderlineTabIndicator(
-//                   borderRadius: BorderRadius.circular(20),
-//                   borderSide: BorderSide(
-//                       color: _getIndicatorColor(currentPage), width: 6),
-//                   insets: const EdgeInsets.fromLTRB(16, 0, 16, 8)),
-//               tabs: [
-//                 SizedBox(
-//                   height: 58,
-//                   width: 40,
-//                   child: Center(
-//                     child: Icon(
-//                       Broken.home_2,
-//                       color: currentPage == 0 ? homeColor : unselectedColor,
-//                       size: currentPage == 0 ? 32 : 28,
-//                       // color: Colors.black,
-//                     ),
-//                   ),
-//                 ),
-//                 SizedBox(
-//                   height: 58,
-//                   width: 40,
-//                   child: Center(
-//                       child: Icon(
-//                     Broken.music,
-//                     color: currentPage == 1 ? customColor : unselectedColor,
-//                     size: currentPage == 1 ? 32 : 28,
-//                   )),
-//                 ),
-//                 SizedBox(
-//                   height: 58,
-//                   width: 40,
-//                   child: Center(
-//                       child: Icon(
-//                     Broken.profile_2user,
-//                     color: currentPage == 2 ? locationColor : unselectedColor,
-//                     size: currentPage == 2 ? 32 : 28,
-//                   )),
-//                 ),
-//                 SizedBox(
-//                   height: 58,
-//                   width: 40,
-//                   child: Center(
-//                       child: Icon(
-//                     Broken.setting_2,
-//                     color: currentPage == 3 ? settingsColor : unselectedColor,
-//                     size: currentPage == 3 ? 32 : 28,
-//                   )),
-//                 ),
-//               ],
-//             ),
-//           ),
-//           // Positioned(
-//           //     bottom: 100,
-//           //     right: 10,
-//           //     left: 10,
-//           //     child: Container(
-//           //       width: 200,
-//           //       height: 50,
-//           //       color: Colors.red,
-//           //     ))
-//         ],
-//       ),
-//     );
-//   }
-// }
+import 'package:flutter/rendering.dart';
+import 'package:iconly/iconly.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key, required this.title}) : super(key: key);
+  final String title;
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  int selectedPageIndex = 0;
+class HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
+  late int currentPage;
+  late TabController tabController;
 
   @override
   void initState() {
+    currentPage = 0;
+    tabController = TabController(length: 4, vsync: this);
+    tabController.animation!.addListener(
+      () {
+        final value = tabController.animation!.value.round();
+        if (value != currentPage && mounted) {
+          changePage(value);
+        }
+      },
+    );
     super.initState();
   }
 
-  List<Widget> _pages = [
-    AuraHomePage(),
-    AuraComposers(),
-    MeditationHome(),
-    ExploreWorldPage(),
-    SettingsPage(),
-  ];
-
-  _changeTab(int index) {
+  void changePage(int newPage) {
     setState(() {
-      selectedPageIndex = index;
+      currentPage = newPage;
     });
+  }
+
+  Color homeColor = const Color.fromARGB(255, 175, 202, 0);
+  Color customColor = Color(0xFF7B4294);
+  Color locationColor = const Color.fromARGB(255, 59, 255, 226);
+  Color settingsColor = Colors.blue;
+  Color unselectedColor = Colors.grey;
+  Color _getIndicatorColor(int page) {
+    switch (page) {
+      case 0:
+        return homeColor;
+      case 1:
+        return customColor;
+      case 2:
+        return locationColor;
+      case 3:
+        return settingsColor;
+      default:
+        return unselectedColor;
+    }
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // body: IndexedStack(
-      //   index: selectedPageIndex,
-      //   children: _pages.map((page) {
-      //     if (page == null) {
-      //       return Container();
-      //     } else {
-      //       return page;
-      //     }
-      //   }).toList(),
-      // ),
-      body: _pages[selectedPageIndex],
-      bottomNavigationBar: NavigationBar(
-        elevation: 0,
-        height: 64,
-        backgroundColor: Color(0xff131321),
-        indicatorColor: Color(0xFFE6EDFF),
-        selectedIndex: selectedPageIndex,
-        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-        onDestinationSelected: (index) => _changeTab(index),
-        destinations: <NavigationDestination>[
-          NavigationDestination(
-            selectedIcon: Icon(
-              Broken.home_2,
-              size: 28,
-              color: Color(0xff131321),
+      appBar: null,
+      body: Stack(
+        children: [
+          BottomBar(
+            fit: StackFit.expand,
+            icon: (width, height) => Center(
+              child: IconButton(
+                padding: EdgeInsets.zero,
+                onPressed: null,
+                icon: Icon(
+                  Icons.arrow_upward_rounded,
+                  color: Colors.grey,
+                  size: width,
+                ),
+              ),
             ),
-            icon: Icon(
-              Broken.home_2,
-              size: 28,
-              color: Color(0xFFE6EDFF).withOpacity(0.6),
+            borderRadius: BorderRadius.circular(500),
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.decelerate,
+            showIcon: true,
+            width: MediaQuery.of(context).size.width * 0.75,
+            // barColor: Colors.black.computeLuminance() > 0.5
+            //     ? Colors.black
+            //     : const Color.fromARGB(255, 14, 3, 31),
+            barColor: Color(0xFF131321),
+            start: 2,
+            end: 0,
+            offset: 10,
+            barAlignment: Alignment.bottomCenter,
+            iconHeight: 50,
+            iconWidth: 50,
+            reverse: false,
+            hideOnScroll: true,
+            scrollOpposite: false,
+            onBottomBarHidden: () {},
+            onBottomBarShown: () {},
+            body: (context, controller) => TabBarView(
+              controller: tabController,
+              dragStartBehavior: DragStartBehavior.down,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                AuraHomePage(
+                  controller: controller,
+                ),
+                // AuraComposerTest(
+                //   controller: controller,
+                // ),
+                AuraComposers(
+                  controller: controller,
+                ),
+                MeditationHome(
+                  controller: controller,
+                ),
+
+                // FourSevenEight(),
+
+                SettingsPage(
+                  controller: controller,
+                ),
+              ],
             ),
-            label: 'Home',
+            child: TabBar(
+              dividerColor: Colors.transparent,
+              indicatorPadding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
+              controller: tabController,
+              indicator: UnderlineTabIndicator(
+                  borderRadius: BorderRadius.circular(20),
+                  borderSide: BorderSide(
+                      color: _getIndicatorColor(currentPage), width: 6),
+                  insets: const EdgeInsets.fromLTRB(16, 0, 16, 8)),
+              tabs: [
+                SizedBox(
+                  height: 58,
+                  width: 40,
+                  child: Center(
+                    child: Icon(
+                      IconlyBold.home,
+                      color: currentPage == 0 ? homeColor : unselectedColor,
+                      size: currentPage == 0 ? 34 : 30,
+                      // color: Colors.black,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 58,
+                  width: 40,
+                  child: Center(
+                      child: Icon(
+                    Icons.music_note_rounded,
+                    color: currentPage == 1 ? customColor : unselectedColor,
+                    size: currentPage == 1 ? 34 : 30,
+                  )),
+                ),
+                SizedBox(
+                  height: 58,
+                  width: 40,
+                  child: Center(
+                      child: Icon(
+                    IconlyBold.profile,
+                    color: currentPage == 2 ? locationColor : unselectedColor,
+                    size: currentPage == 2 ? 34 : 30,
+                  )),
+                ),
+                SizedBox(
+                  height: 58,
+                  width: 40,
+                  child: Center(
+                      child: Icon(
+                    IconlyBold.setting,
+                    color: currentPage == 3 ? settingsColor : unselectedColor,
+                    size: currentPage == 3 ? 34 : 30,
+                  )),
+                ),
+              ],
+            ),
           ),
-          // NavigationDestination(
-          //   selectedIcon: Icon(
-          //     Broken.category,
-          //     size: 28,
-          //     color: Color(0xff131321),
-          //   ),
-          //   icon: Icon(
-          //     Broken.category,
-          //     size: 28,
-          //     color: Color(0xFFE6EDFF).withOpacity(0.6),
-          //   ),
-          //   label: 'Explore',
-          // ),
-          NavigationDestination(
-            selectedIcon: Icon(
-              Broken.music,
-              color: Color(0xff131321),
-              size: 28,
-            ),
-            icon: Icon(
-              Broken.music,
-              size: 28,
-              color: Color(0xFFE6EDFF).withOpacity(0.6),
-            ),
-            label: 'Composer',
-          ),
-          NavigationDestination(
-            selectedIcon:
-                Icon(Broken.profile_2user, color: Color(0xff131321), size: 28),
-            icon: Icon(
-              Broken.profile_2user,
-              color: Color(0xFFE6EDFF).withOpacity(0.6),
-              size: 28,
-            ),
-            label: 'Meditate',
-          ),
-          NavigationDestination(
-            selectedIcon:
-                Icon(Broken.location, color: Color(0xff131321), size: 28),
-            icon: Icon(
-              Broken.location,
-              color: Color(0xFFE6EDFF).withOpacity(0.6),
-              size: 28,
-            ),
-            label: 'Explore',
-          ),
-          NavigationDestination(
-            selectedIcon:
-                Icon(Broken.setting_2, color: Color(0xff131321), size: 28),
-            icon: Icon(
-              Broken.setting_2,
-              color: Color(0xFFE6EDFF).withOpacity(0.6),
-              size: 28,
-            ),
-            label: 'Settings',
-          ),
+          // Positioned(
+          //     bottom: 100,
+          //     right: 10,
+          //     left: 10,
+          //     child: Container(
+          //       width: 200,
+          //       height: 50,
+          //       color: Colors.red,
+          //     ))
         ],
       ),
     );
   }
+}
 
-  // void _initializePage(int index) {
-  //   switch (index) {
-  //     case 0:
-  //       _pages[index] = AuraHomePage();
-  //       break;
-  //     // case 1:
-  //     //   _pages[index] = ExplorePage();
-  //     //   break;
-  //     case 1:
-  //       _pages[index] = AuraComposers();
-  //       break;
-  //     case 2:
-  //       _pages[index] = MeditationHome();
-  //       break;
-  //     case 3:
-  //       _pages[index] = SettingsPage();
-  //       break;
-  //     default:
-  //       throw Exception('Invalid index');
-  //   }
-  // }
+// class HomePage extends StatefulWidget {
+//   const HomePage({super.key});
+
+//   @override
+//   State<HomePage> createState() => _HomePageState();
+// }
+
+// class _HomePageState extends State<HomePage> {
+//   int selectedPageIndex = 0;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//   }
+
+//   List<Widget> _pages = [
+//     AuraHomePage(),
+//     AuraComposers(),
+//     MeditationHome(),
+//     ExploreWorldPage(),
+//     SettingsPage(),
+//   ];
+
+//   _changeTab(int index) {
+//     setState(() {
+//       selectedPageIndex = index;
+//     });
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       // body: IndexedStack(
+//       //   index: selectedPageIndex,
+//       //   children: _pages.map((page) {
+//       //     if (page == null) {
+//       //       return Container();
+//       //     } else {
+//       //       return page;
+//       //     }
+//       //   }).toList(),
+//       // ),
+//       body: _pages[selectedPageIndex],
+//       bottomNavigationBar: NavigationBar(
+//         elevation: 0,
+//         height: 64,
+//         backgroundColor: Color(0xff131321),
+//         indicatorColor: Color(0xFFE6EDFF),
+//         selectedIndex: selectedPageIndex,
+//         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+//         onDestinationSelected: (index) => _changeTab(index),
+//         destinations: <NavigationDestination>[
+//           NavigationDestination(
+//             selectedIcon: Icon(
+//               Broken.home_2,
+//               size: 28,
+//               color: Color(0xff131321),
+//             ),
+//             icon: Icon(
+//               Broken.home_2,
+//               size: 28,
+//               color: Color(0xFFE6EDFF).withOpacity(0.6),
+//             ),
+//             label: 'Home',
+//           ),
+//           // NavigationDestination(
+//           //   selectedIcon: Icon(
+//           //     Broken.category,
+//           //     size: 28,
+//           //     color: Color(0xff131321),
+//           //   ),
+//           //   icon: Icon(
+//           //     Broken.category,
+//           //     size: 28,
+//           //     color: Color(0xFFE6EDFF).withOpacity(0.6),
+//           //   ),
+//           //   label: 'Explore',
+//           // ),
+//           NavigationDestination(
+//             selectedIcon: Icon(
+//               Broken.music,
+//               color: Color(0xff131321),
+//               size: 28,
+//             ),
+//             icon: Icon(
+//               Broken.music,
+//               size: 28,
+//               color: Color(0xFFE6EDFF).withOpacity(0.6),
+//             ),
+//             label: 'Composer',
+//           ),
+//           NavigationDestination(
+//             selectedIcon:
+//                 Icon(Broken.profile_2user, color: Color(0xff131321), size: 28),
+//             icon: Icon(
+//               Broken.profile_2user,
+//               color: Color(0xFFE6EDFF).withOpacity(0.6),
+//               size: 28,
+//             ),
+//             label: 'Meditate',
+//           ),
+//           NavigationDestination(
+//             selectedIcon:
+//                 Icon(Broken.location, color: Color(0xff131321), size: 28),
+//             icon: Icon(
+//               Broken.location,
+//               color: Color(0xFFE6EDFF).withOpacity(0.6),
+//               size: 28,
+//             ),
+//             label: 'Explore',
+//           ),
+//           NavigationDestination(
+//             selectedIcon:
+//                 Icon(Broken.setting_2, color: Color(0xff131321), size: 28),
+//             icon: Icon(
+//               Broken.setting_2,
+//               color: Color(0xFFE6EDFF).withOpacity(0.6),
+//               size: 28,
+//             ),
+//             label: 'Settings',
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+
+//   // void _initializePage(int index) {
+//   //   switch (index) {
+//   //     case 0:
+//   //       _pages[index] = AuraHomePage();
+//   //       break;
+//   //     // case 1:
+//   //     //   _pages[index] = ExplorePage();
+//   //     //   break;
+//   //     case 1:
+//   //       _pages[index] = AuraComposers();
+//   //       break;
+//   //     case 2:
+//   //       _pages[index] = MeditationHome();
+//   //       break;
+//   //     case 3:
+//   //       _pages[index] = SettingsPage();
+//   //       break;
+//   //     default:
+//   //       throw Exception('Invalid index');
+//   //   }
+//   // }
+// }
+
+typedef BackToTopIconBuilder = Widget Function(double width, double height);
+
+class BottomBar extends StatefulWidget {
+  final Widget Function(BuildContext context, ScrollController controller) body;
+  final Widget child;
+  final BackToTopIconBuilder? icon;
+  final double iconWidth;
+  final double iconHeight;
+  final Color barColor;
+  final BoxDecoration? barDecoration;
+  final BoxDecoration? iconDecoration;
+  final double end;
+  final double start;
+  final double offset;
+  final Duration duration;
+  final Curve curve;
+  final double width;
+  final BorderRadius borderRadius;
+  final bool showIcon;
+  final Alignment alignment;
+  final Alignment barAlignment;
+  final Function()? onBottomBarShown;
+  final Function()? onBottomBarHidden;
+  final bool reverse;
+  final bool scrollOpposite;
+  final bool hideOnScroll;
+  final StackFit fit;
+  final Clip clip;
+
+  const BottomBar({
+    required this.body,
+    required this.child,
+    this.icon,
+    this.iconWidth = 30,
+    this.iconHeight = 30,
+    this.barColor = Colors.black,
+    this.barDecoration,
+    this.iconDecoration,
+    this.end = 0,
+    this.start = 2,
+    this.offset = 10,
+    this.duration = const Duration(milliseconds: 120),
+    this.curve = Curves.linear,
+    this.width = 300,
+    this.borderRadius = BorderRadius.zero,
+    this.showIcon = true,
+    @Deprecated(
+        'Use barAlignment instead, this will be removed in a future release')
+    this.alignment = Alignment.bottomCenter,
+    this.barAlignment = Alignment.bottomCenter,
+    this.onBottomBarShown,
+    this.onBottomBarHidden,
+    this.reverse = false,
+    this.scrollOpposite = false,
+    this.hideOnScroll = true,
+    this.fit = StackFit.loose,
+    this.clip = Clip.hardEdge,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  _BottomBarState createState() => _BottomBarState();
+}
+
+class _BottomBarState extends State<BottomBar>
+    with SingleTickerProviderStateMixin {
+  ScrollController scrollBottomBarController = ScrollController();
+  late AnimationController _controller;
+  late Animation<Offset> _offsetAnimation;
+  late bool isScrollingDown;
+  late bool isOnTop;
+
+  @override
+  void initState() {
+    isScrollingDown = widget.reverse;
+    isOnTop = !widget.reverse;
+    myScroll();
+    super.initState();
+    _controller = AnimationController(
+      duration: widget.duration,
+      vsync: this,
+    );
+    _offsetAnimation = Tween<Offset>(
+      begin: Offset(0, widget.start),
+      end: Offset(0, widget.end),
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: widget.curve,
+    ))
+      ..addListener(() {
+        if (mounted) {
+          setState(() {});
+        }
+      });
+    _controller.forward();
+  }
+
+  void showBottomBar() {
+    if (mounted) {
+      setState(() {
+        _controller.forward();
+      });
+    }
+    if (widget.onBottomBarShown != null) widget.onBottomBarShown!();
+  }
+
+  void hideBottomBar() {
+    if (mounted && widget.hideOnScroll) {
+      setState(() {
+        _controller.reverse();
+      });
+    }
+    if (widget.onBottomBarHidden != null) widget.onBottomBarHidden!();
+  }
+
+  Future<void> myScroll() async {
+    scrollBottomBarController.addListener(() {
+      if (!widget.reverse) {
+        if (scrollBottomBarController.position.userScrollDirection ==
+            ScrollDirection.reverse) {
+          if (!isScrollingDown) {
+            isScrollingDown = true;
+            isOnTop = false;
+            hideBottomBar();
+          }
+        }
+        if (scrollBottomBarController.position.userScrollDirection ==
+            ScrollDirection.forward) {
+          if (isScrollingDown) {
+            isScrollingDown = false;
+            isOnTop = true;
+            showBottomBar();
+          }
+        }
+      } else {
+        if (scrollBottomBarController.position.userScrollDirection ==
+            ScrollDirection.forward) {
+          if (!isScrollingDown) {
+            isScrollingDown = true;
+            isOnTop = false;
+            hideBottomBar();
+          }
+        }
+        if (scrollBottomBarController.position.userScrollDirection ==
+            ScrollDirection.reverse) {
+          if (isScrollingDown) {
+            isScrollingDown = false;
+            isOnTop = true;
+            showBottomBar();
+          }
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    scrollBottomBarController.removeListener(() {});
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      fit: widget.fit,
+      alignment: widget.alignment,
+      clipBehavior: widget.clip,
+      children: [
+        BottomBarScrollControllerProvider(
+          scrollController: scrollBottomBarController,
+          child: widget.body(context, scrollBottomBarController),
+        ),
+        if (widget.showIcon)
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0, bottom: 10),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: EdgeInsets.all(widget.offset),
+                child: AnimatedOpacity(
+                  duration: widget.duration,
+                  curve: widget.curve,
+                  opacity: isOnTop == true ? 0 : 1,
+                  child: AnimatedContainer(
+                    duration: widget.duration,
+                    curve: widget.curve,
+                    width: isOnTop == true ? 0 : widget.iconWidth,
+                    height: isOnTop == true ? 0 : widget.iconHeight,
+                    decoration: widget.iconDecoration ??
+                        BoxDecoration(
+                          color: widget.barColor,
+                          shape: BoxShape.circle,
+                        ),
+                    padding: EdgeInsets.zero,
+                    margin: EdgeInsets.zero,
+                    child: ClipRRect(
+                      borderRadius: widget.borderRadius,
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                        child: ClipOval(
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                scrollBottomBarController
+                                    .animateTo(
+                                  (!widget.scrollOpposite)
+                                      ? scrollBottomBarController
+                                          .position.minScrollExtent
+                                      : scrollBottomBarController
+                                          .position.maxScrollExtent,
+                                  duration: widget.duration,
+                                  curve: widget.curve,
+                                )
+                                    .then((value) {
+                                  if (mounted) {
+                                    setState(() {
+                                      isOnTop = true;
+                                      isScrollingDown = false;
+                                    });
+                                  }
+                                  showBottomBar();
+                                });
+                              },
+                              child: () {
+                                if (widget.icon != null) {
+                                  return widget.icon!(
+                                      isOnTop == true
+                                          ? 0
+                                          : widget.iconWidth / 2,
+                                      isOnTop == true
+                                          ? 0
+                                          : widget.iconHeight / 2);
+                                } else {
+                                  return Center(
+                                    child: IconButton(
+                                      padding: EdgeInsets.zero,
+                                      onPressed: null,
+                                      icon: Icon(
+                                        Icons.arrow_upward_rounded,
+                                        color: Color(0xff131321),
+                                        size: isOnTop == true
+                                            ? 0
+                                            : widget.iconWidth / 2,
+                                      ),
+                                    ),
+                                  );
+                                }
+                              }(),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        Align(
+          alignment: widget.barAlignment,
+          child: Padding(
+            padding: EdgeInsets.all(widget.offset),
+            child: SlideTransition(
+              position: _offsetAnimation,
+              child: Container(
+                width: widget.width,
+                decoration: widget.barDecoration ??
+                    BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: widget.borderRadius,
+                        border: Border.all(color: Colors.grey, width: 0.5)),
+                child: ClipRRect(
+                  borderRadius: widget.borderRadius,
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: Container(
+                        width: widget.width,
+                        decoration: widget.barDecoration ??
+                            BoxDecoration(
+                              color: Colors.black.withOpacity(0.2),
+                              borderRadius: widget.borderRadius,
+                            ),
+                        child: Container(
+                          width: widget.width,
+                          decoration: widget.barDecoration ??
+                              BoxDecoration(
+                                color: Colors.transparent,
+                                borderRadius: widget.borderRadius,
+                              ),
+                          child: widget.child,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+//bottom bar contrller
+class BottomBarScrollControllerProvider extends InheritedWidget {
+  final ScrollController scrollController;
+  const BottomBarScrollControllerProvider({
+    required Widget child,
+    required this.scrollController,
+  }) : super(child: child);
+  @override
+  bool updateShouldNotify(BottomBarScrollControllerProvider oldWidget) =>
+      scrollController != oldWidget.scrollController;
+  static BottomBarScrollControllerProvider of(BuildContext context) => context
+      .dependOnInheritedWidgetOfExactType<BottomBarScrollControllerProvider>()!;
 }
