@@ -1,21 +1,18 @@
-import 'dart:async';
+import 'dart:math';
 import 'dart:ui';
-import 'package:aura/authentication/services/admob_service.dart';
+
+import 'package:aura/controllers/player_controller.dart';
 import 'package:aura/core/broken_icons.dart';
 import 'package:aura/data/songs.dart';
-import 'package:aura/util/visualizer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:iconly/iconly.dart';
 import 'package:just_audio_cache/just_audio_cache.dart';
-import 'dart:math';
-import 'package:palette_generator/palette_generator.dart';
 
-class AuraPlayer extends StatefulWidget {
+class AuraPlayer extends StatelessWidget {
   final int currentIndex;
   final List<Song> songs;
   final String title;
@@ -28,587 +25,416 @@ class AuraPlayer extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<AuraPlayer> createState() => _AuraPlayerState();
-}
-
-class _AuraPlayerState extends State<AuraPlayer> {
-  final AudioPlayer _audioPlayer = AudioPlayer();
-  int _currentIndex = 0;
-  bool _isShuffleOn = false;
-  bool _isRepeatOn = false;
-  Color? dominantColor;
-
-  @override
-  void initState() {
-    super.initState();
-    _createBannerAd();
-    _currentIndex = widget.currentIndex;
-    if (widget.songs.isNotEmpty) {
-      _initializePlayer();
-      _audioPlayer.play();
-    }
-    _loadDominantColor();
-  }
-
-  BannerAd? _banner;
-  void _createBannerAd() {
-    _banner = BannerAd(
-      size: AdSize.banner,
-      adUnitId: AdMobService.playersAdUnitId!,
-      listener: AdMobService.playersbannerListener,
-      request: const AdRequest(),
-    )..load();
-  }
-
-  void _initializePlayer() {
-    if (_currentIndex >= 0 && _currentIndex < widget.songs.length) {
-      _audioPlayer.dynamicSet(
-          pushIfNotExisted: true, url: widget.songs[_currentIndex].songUrl);
-
-      _audioPlayer.processingStateStream.listen((processingState) {
-        setState(() {});
-
-        if (processingState == ProcessingState.completed) {
-          if (_isRepeatOn) {
-            _audioPlayer.seek(Duration.zero);
-          } else {
-            _playNext();
-          }
-        }
-      });
-    }
-  }
-
-  void _playNext() {
-    if (widget.songs.isNotEmpty) {
-      if (_isShuffleOn) {
-        _currentIndex = Random().nextInt(widget.songs.length);
-      } else {
-        if (_currentIndex < widget.songs.length - 1) {
-          _currentIndex++;
-        } else {
-          if (_isRepeatOn) {
-            _currentIndex = 0;
-          } else {
-            _currentIndex = 0;
-            _audioPlayer.stop();
-          }
-        }
-      }
-
-      _audioPlayer.dynamicSet(
-          pushIfNotExisted: true, url: widget.songs[_currentIndex].songUrl);
-      _audioPlayer.play();
-      _loadDominantColor();
-    }
-  }
-
-  void _playPrevious() {
-    if (widget.songs.isNotEmpty && _currentIndex > 0) {
-      _currentIndex--;
-      _audioPlayer.dynamicSet(
-          pushIfNotExisted: true, url: widget.songs[_currentIndex].songUrl);
-      _audioPlayer.play();
-      _loadDominantColor();
-    }
-  }
-
-  Future<void> _loadDominantColor() async {
-    final PaletteGenerator paletteGenerator =
-        await PaletteGenerator.fromImageProvider(
-            CachedNetworkImageProvider(widget.songs[_currentIndex].imageUrl));
-    setState(() {
-      dominantColor = paletteGenerator.dominantColor?.color;
-    });
-  }
-
-  @override
-  void dispose() {
-    _audioPlayer.dispose();
-    _timer?.cancel();
-    super.dispose();
-  }
-
-  Timer? _timer;
-  Future<void> _showTimerDialog() async {
-    int? selectedTime;
-
-    selectedTime = await showModalBottomSheet<int>(
-      context: context,
-      builder: (BuildContext context) {
-        List<Map<String, dynamic>> timerOptions = [
-          {'duration': 300, 'label': '5 Minutes'},
-          {'duration': 600, 'label': '10 Minutes'},
-          {'duration': 1800, 'label': '30 Minutes'},
-          {'duration': 3600, 'label': '1 Hour'},
-          {'duration': 7200, 'label': '2 Hours'},
-          {'duration': 18000, 'label': '5 Hours'},
-        ];
-
-        return Container(
-          decoration: BoxDecoration(
-            color: Color(0xFF131321),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  'Select Timer Duration',
-                  style: TextStyle(fontSize: 18, color: Colors.white),
-                ),
-              ),
-              Expanded(
-                child: ListView(
-                  children: timerOptions
-                      .map(
-                        (option) => ListTile(
-                          onTap: () {
-                            selectedTime = option['duration'];
-                            Navigator.of(context).pop(selectedTime);
-                          },
-                          tileColor: (selectedTime == option['duration'])
-                              ? Color(0xFF131321)
-                              : Colors.grey[800],
-                          title: Center(
-                            child: Text(
-                              option['label'],
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-
-    if (selectedTime != null) {
-      _stopTimer();
-      _startTimer(selectedTime!);
-    }
-  }
-
-  void _startTimer(int durationInSeconds) {
-    _timer = Timer(Duration(seconds: durationInSeconds), () {
-      _audioPlayer.stop();
-      setState(() {});
-    });
-
-    setState(() {});
-  }
-
-  void _stopTimer() {
-    if (_timer != null && _timer!.isActive) {
-      _timer!.cancel();
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final controller = Get.put(AuraPlayerController());
+    controller.currentIndex.value = currentIndex;
+    controller.songs.addAll(songs);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.initializePlayer();
+    });
+
     return Scaffold(
       appBar: null,
       backgroundColor: Colors.black,
       body: GestureDetector(
         onHorizontalDragEnd: (DragEndDetails details) {
           if (details.primaryVelocity! > 0) {
-            _playPrevious();
+            controller.playPrevious();
           } else if (details.primaryVelocity! < 0) {
-            _playNext();
+            controller.playNext();
           }
         },
         child: Center(
-          child: widget.songs.isNotEmpty &&
-                  _currentIndex >= 0 &&
-                  _currentIndex < widget.songs.length
-              ? Stack(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: CachedNetworkImageProvider(
-                            widget.songs[_currentIndex].imageUrl,
-                          ),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
-                        child: Container(
-                          color: Colors.black.withOpacity(0.2),
-                        ),
-                      ),
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.08,
-                        ),
-                        Text(
-                          'Playing From Playlist',
-                          style: GoogleFonts.openSans(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          widget.title,
-                          style: GoogleFonts.openSans(
-                              color: Colors.white, fontSize: 14),
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.04,
-                        ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: CachedNetworkImage(
-                            height: MediaQuery.of(context).size.height * 0.38,
-                            width: MediaQuery.of(context).size.width - 74,
+          child: Obx(() {
+            return controller.songs.isNotEmpty &&
+                    controller.currentIndex.value >= 0 &&
+                    controller.currentIndex.value < controller.songs.length
+                ? Stack(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: CachedNetworkImageProvider(
+                              controller.songs[controller.currentIndex.value]
+                                  .imageUrl,
+                            ),
                             fit: BoxFit.cover,
-                            imageUrl: widget.songs[_currentIndex].imageUrl,
                           ),
                         ),
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.02),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
+                          child: Container(
+                            color: Colors.black.withOpacity(0.2),
+                          ),
+                        ),
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.08,
+                          ),
+                          Text(
+                            'Playing From Playlist',
+                            style: GoogleFonts.openSans(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            title,
+                            style: GoogleFonts.openSans(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 35, right: 30, left: 30),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: CachedNetworkImage(
+                                imageUrl: controller
+                                    .songs[controller.currentIndex.value]
+                                    .imageUrl,
+                                placeholder: (context, url) =>
+                                    const CircularProgressIndicator(),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15.0, vertical: 20),
                             child: ListTile(
+                              leading: IconButton(
+                                onPressed: () {
+                                  final userId =
+                                      FirebaseAuth.instance.currentUser?.uid;
+                                  if (userId != null) {
+                                    final imageUrl = controller
+                                        .songs[controller.currentIndex.value]
+                                        .imageUrl;
+                                    controller.checkIfSongIsLiked(
+                                        userId, imageUrl);
+                                    if (controller.isSongLiked.value) {
+                                      controller.toggleLikeSong(
+                                          userId: userId,
+                                          imageUrl: imageUrl,
+                                          songName: controller
+                                              .songs[
+                                                  controller.currentIndex.value]
+                                              .songName,
+                                          artist: controller
+                                              .songs[
+                                                  controller.currentIndex.value]
+                                              .artist,
+                                          songUrl: controller
+                                              .songs[
+                                                  controller.currentIndex.value]
+                                              .songUrl);
+                                    } else {
+                                      final songName = controller
+                                          .songs[controller.currentIndex.value]
+                                          .songName;
+                                      final artist = controller
+                                          .songs[controller.currentIndex.value]
+                                          .artist;
+                                      final songUrl = controller
+                                          .songs[controller.currentIndex.value]
+                                          .songName;
+                                      controller.toggleLikeSong(
+                                          userId: userId,
+                                          imageUrl: imageUrl,
+                                          songName: songName,
+                                          artist: artist,
+                                          songUrl: songUrl);
+                                    }
+                                  }
+                                },
+                                icon: Icon(
+                                  controller.isSongLiked.value
+                                      ? IconlyBold.heart
+                                      : IconlyLight.heart,
+                                  color: Colors.white,
+                                ),
+                              ),
                               title: Text(
-                                widget.songs[_currentIndex].songName,
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 24),
+                                controller.songs[controller.currentIndex.value]
+                                    .songName,
+                                style: GoogleFonts.openSans(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 22,
+                                ),
                               ),
                               subtitle: Text(
-                                widget.songs[_currentIndex].artist,
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 18),
+                                controller.songs[controller.currentIndex.value]
+                                    .artist,
+                                style: GoogleFonts.openSans(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 18,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.018),
-                        // Slider will come here
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                          child: StreamBuilder<Duration>(
-                            stream: _audioPlayer.positionStream,
-                            builder: (context, snapshot) {
-                              final position = snapshot.data ?? Duration.zero;
-                              final duration =
-                                  _audioPlayer.duration ?? Duration.zero;
-                              return Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  SliderTheme(
-                                    data: SliderTheme.of(context).copyWith(
-                                      activeTrackColor:
-                                          dominantColor ?? Colors.blue,
-                                      inactiveTrackColor: Colors.grey,
-                                      thumbColor: Colors.white,
-                                      overlayColor:
-                                          Colors.blue.withOpacity(0.3),
-                                      valueIndicatorColor: Colors.blue,
-                                      thumbShape: const RoundSliderThumbShape(
-                                          enabledThumbRadius: 8.0),
-                                      overlayShape:
-                                          const RoundSliderOverlayShape(
-                                              overlayRadius: 16.0),
-                                      valueIndicatorShape:
-                                          const PaddleSliderValueIndicatorShape(),
-                                      valueIndicatorTextStyle: const TextStyle(
-                                        color: Colors.white,
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                            child: StreamBuilder<Duration>(
+                              stream: controller.audioPlayer.positionStream,
+                              builder: (context, snapshot) {
+                                final position = snapshot.data ?? Duration.zero;
+                                final duration =
+                                    controller.audioPlayer.duration ??
+                                        Duration.zero;
+                                return Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SliderTheme(
+                                      data: SliderTheme.of(context).copyWith(
+                                        activeTrackColor:
+                                            controller.dominantColor,
+                                        inactiveTrackColor: Colors.grey,
+                                        thumbColor: Colors.white,
+                                        overlayColor:
+                                            Colors.blue.withOpacity(0.3),
+                                        valueIndicatorColor: Colors.blue,
+                                        thumbShape: const RoundSliderThumbShape(
+                                            enabledThumbRadius: 8.0),
+                                        overlayShape:
+                                            const RoundSliderOverlayShape(
+                                                overlayRadius: 16.0),
+                                        valueIndicatorShape:
+                                            const PaddleSliderValueIndicatorShape(),
+                                        valueIndicatorTextStyle:
+                                            const TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      child: Slider(
+                                        value: position.inSeconds.toDouble(),
+                                        max: duration.inSeconds.toDouble(),
+                                        onChanged: (value) {
+                                          controller.audioPlayer.seek(
+                                              Duration(seconds: value.toInt()));
+                                        },
                                       ),
                                     ),
-                                    child: Slider(
-                                      value: position.inSeconds.toDouble(),
-                                      max: duration.inSeconds.toDouble(),
-                                      onChanged: (value) {
-                                        _audioPlayer.seek(
-                                            Duration(seconds: value.toInt()));
-                                      },
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          20, 0, 20, 0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            '${position.inMinutes}:${(position.inSeconds % 60).toString().padLeft(2, '0')}',
+                                            style: const TextStyle(
+                                                color: Colors.white),
+                                          ),
+                                          Text(
+                                            '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}',
+                                            style: const TextStyle(
+                                                color: Colors.white),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          '${position.inMinutes}:${(position.inSeconds % 60).toString().padLeft(2, '0')}',
-                                          style: const TextStyle(
-                                              color: Colors.white),
-                                        ),
-                                        Text(
-                                          '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}',
-                                          style: const TextStyle(
-                                              color: Colors.white),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
+                                  ],
+                                );
+                              },
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 10),
-                        // Next/Previous button will come here
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            IconButton(
-                              icon: const Icon(
-                                Broken.previous,
-                                size: 34,
-                                color: Colors.white,
-                              ),
-                              onPressed: _playPrevious,
-                            ),
-                            Container(
-                              width: 64,
-                              height: 64,
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.2),
-                                shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    spreadRadius: 5,
-                                    blurRadius: 7,
-                                    offset: Offset(0, 3),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    controller.isShuffleOn.value =
+                                        !controller.isShuffleOn.value;
+                                  },
+                                  icon: Icon(
+                                    Broken.shuffle,
+                                    size: 30,
+                                    color: controller.isShuffleOn.value
+                                        ? Colors.white
+                                        : Colors.white.withOpacity(0.5),
                                   ),
-                                ],
-                              ),
-                              child: IconButton(
-                                icon: Icon(
-                                  _audioPlayer.playing
-                                      ? Broken.pause
-                                      : Broken.play,
-                                  size: 34,
-                                  color: Colors.white,
                                 ),
-                                onPressed: () {
-                                  if (_audioPlayer.playing) {
-                                    _audioPlayer.pause();
-                                  } else {
-                                    _audioPlayer.play();
-                                  }
-                                  setState(() {});
-                                },
-                              ),
+                                IconButton(
+                                  onPressed: () => controller.playPrevious(),
+                                  icon: Icon(
+                                    Broken.previous,
+                                    size: 30,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    if (controller.audioPlayer.playing) {
+                                      controller.audioPlayer.pause();
+                                    } else {
+                                      controller.audioPlayer.play();
+                                    }
+                                  },
+                                  icon: Icon(
+                                    controller.audioPlayer.playing
+                                        ? Broken.pause
+                                        : Broken.play,
+                                    size: 50,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () => controller.playNext(),
+                                  icon: Icon(
+                                    Broken.next,
+                                    size: 30,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    controller.isRepeatOn.value =
+                                        !controller.isRepeatOn.value;
+                                  },
+                                  icon: Icon(
+                                    Broken.repeat,
+                                    size: 30,
+                                    color: controller.isRepeatOn.value
+                                        ? Colors.white
+                                        : Colors.white.withOpacity(0.5),
+                                  ),
+                                ),
+                              ],
                             ),
-                            IconButton(
-                              icon: const Icon(
-                                Broken.next,
-                                size: 34,
-                                color: Colors.white,
-                              ),
-                              onPressed: _playNext,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Positioned(
-                      bottom: MediaQuery.of(context).size.height * 0.02,
-                      left: 10,
-                      right: 10,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IconButton(
-                                icon: Icon(
-                                  Broken.shuffle,
-                                  color: _isShuffleOn
-                                      ? dominantColor ?? Colors.blue
-                                      : Colors.white,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _isShuffleOn = !_isShuffleOn;
-                                  });
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(
-                                  Broken.repeat,
-                                  color: _isRepeatOn
-                                      ? dominantColor ?? Colors.blue
-                                      : Colors.white,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _isRepeatOn = !_isRepeatOn;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              IconButton(
-                                onPressed: _showTimerDialog,
-                                icon: const Icon(
-                                  Broken.timer_1,
-                                  color: Colors.white,
-                                  // size: 30,
-                                ),
-                              ),
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Broken.share,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
                           ),
                         ],
                       ),
-                    ),
-                    Positioned(
-                      top: 50,
-                      left: 10,
-                      child: IconButton(
-                        icon: Icon(
-                          Broken.setting_5,
-                          color: Colors.white,
-                          size: 30,
-                        ),
-                        onPressed: (() => Get.to(GlowingBalls(),
-                            transition: Transition.fadeIn)),
-                      ),
-                    ),
-                    Positioned(
-                      top: 50,
-                      right: 10,
-                      child: IconButton(
-                        icon: const Icon(
-                          Broken.music_playlist,
-                          color: Colors.white,
-                          size: 28,
-                        ),
-                        onPressed: () {
-                          _showQueue(context);
-                        },
-                      ),
-                    ),
-                  ],
-                )
-              : const Text(
-                  'No song available',
-                  style: TextStyle(color: Colors.white),
-                ),
-        ),
-      ),
-      bottomNavigationBar: _banner == null
-          ? null
-          : SizedBox(
-              height: 52,
-              child: AdWidget(ad: _banner!),
-            ),
-    );
-  }
-
-  void _showQueue(BuildContext context) {
-    showModalBottomSheet(
-      backgroundColor: Color(0xFF131321),
-      context: context,
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return Column(
-              children: [
-                Container(
-                  color: Colors.transparent,
-                  padding: EdgeInsets.all(16.0),
-                  child: Text(
-                    'Now Playing',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: widget.songs.length,
-                    itemBuilder: (context, index) {
-                      bool isCurrentSong = _currentIndex == index;
-
-                      return ListTile(
-                        tileColor: isCurrentSong ? Colors.grey[200] : null,
-                        leading: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: CachedNetworkImage(
-                            width: 50,
-                            height: 50,
-                            fit: BoxFit.cover,
-                            imageUrl: widget.songs[index].imageUrl,
+                      Positioned(
+                        top: 50,
+                        right: 10,
+                        child: IconButton(
+                          icon: const Icon(
+                            Broken.music_playlist,
+                            color: Colors.white,
+                            size: 28,
                           ),
-                        ),
-                        title: Text(
-                          widget.songs[index].songName,
-                          style: TextStyle(
-                            color: isCurrentSong
-                                ? Color(0xFF131321)
-                                : Colors.white,
-                            fontWeight: isCurrentSong
-                                ? FontWeight.bold
-                                : FontWeight.normal,
-                          ),
-                        ),
-                        subtitle: Text(widget.songs[index].artist),
-                        trailing: IconButton(
-                          icon: Icon(Broken.close_circle),
                           onPressed: () {
-                            setState(() {
-                              widget.songs.removeAt(index);
-                              if (_currentIndex == index) {
-                                _audioPlayer.stop();
-                              }
-                            });
+                            showModalBottomSheet(
+                              backgroundColor: Color(0xFF131321),
+                              context: context,
+                              builder: (context) {
+                                return StatefulBuilder(
+                                  builder: (BuildContext context,
+                                      StateSetter setState) {
+                                    return Column(
+                                      children: [
+                                        Container(
+                                          color: Colors.transparent,
+                                          padding: EdgeInsets.all(16.0),
+                                          child: Text(
+                                            'Now Playing',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: ListView.builder(
+                                            itemCount: controller.songs.length,
+                                            itemBuilder: (context, index) {
+                                              bool isCurrentSong = controller
+                                                      .currentIndex.value ==
+                                                  index;
+
+                                              return ListTile(
+                                                tileColor: isCurrentSong
+                                                    ? Colors.grey[200]
+                                                    : null,
+                                                leading: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.0),
+                                                  child: CachedNetworkImage(
+                                                    width: 50,
+                                                    height: 50,
+                                                    fit: BoxFit.cover,
+                                                    imageUrl: controller
+                                                        .songs[index].imageUrl,
+                                                  ),
+                                                ),
+                                                title: Text(
+                                                  controller
+                                                      .songs[index].songName,
+                                                  style: TextStyle(
+                                                    color: isCurrentSong
+                                                        ? Color(0xFF131321)
+                                                        : Colors.white,
+                                                    fontWeight: isCurrentSong
+                                                        ? FontWeight.bold
+                                                        : FontWeight.normal,
+                                                  ),
+                                                ),
+                                                subtitle: Text(controller
+                                                    .songs[index].artist),
+                                                trailing: IconButton(
+                                                  icon:
+                                                      Icon(Broken.close_circle),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      controller.songs
+                                                          .removeAt(index);
+                                                      if (controller
+                                                              .currentIndex
+                                                              .value ==
+                                                          index) {
+                                                        controller.audioPlayer
+                                                            .stop();
+                                                      }
+                                                    });
+                                                  },
+                                                ),
+                                                onTap: () {
+                                                  controller.currentIndex
+                                                      .value = index;
+                                                  controller.audioPlayer
+                                                      .dynamicSet(
+                                                    pushIfNotExisted: true,
+                                                    url: controller
+                                                        .songs[index].songUrl,
+                                                  );
+                                                  controller.audioPlayer.play();
+                                                  Navigator.pop(context);
+                                                },
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            );
                           },
                         ),
-                        onTap: () {
-                          _currentIndex = index;
-                          _audioPlayer.dynamicSet(
-                            pushIfNotExisted: true,
-                            url: widget.songs[_currentIndex].songUrl,
-                          );
-                          _audioPlayer.play();
-                          Navigator.pop(context);
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ],
-            );
-          },
-        );
-      },
+                      ),
+                    ],
+                  )
+                : Center(child: CircularProgressIndicator());
+          }),
+        ),
+      ),
     );
   }
 }

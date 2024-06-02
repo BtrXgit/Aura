@@ -1,14 +1,14 @@
 import 'dart:ui';
-
-import 'package:aura/core/broken_icons.dart';
 import 'package:aura/routes/composers/composers.dart';
-import 'package:aura/routes/explore/exploreWorld.dart';
 import 'package:aura/routes/homepage/homepage.dart';
 import 'package:aura/routes/meditate/screens/meditation_home.dart';
+import 'package:aura/routes/pages/favourites.dart';
 import 'package:aura/routes/settings/settings.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:iconly/iconly.dart';
 
 class HomePage extends StatefulWidget {
@@ -27,7 +27,7 @@ class HomePageState extends State<HomePage>
   @override
   void initState() {
     currentPage = 0;
-    tabController = TabController(length: 4, vsync: this);
+    tabController = TabController(length: 5, vsync: this);
     tabController.animation!.addListener(
       () {
         final value = tabController.animation!.value.round();
@@ -37,6 +37,11 @@ class HomePageState extends State<HomePage>
       },
     );
     super.initState();
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        systemNavigationBarColor: Color(0xFF0c0c16),
+      ),
+    );
   }
 
   void changePage(int newPage) {
@@ -48,6 +53,7 @@ class HomePageState extends State<HomePage>
   Color homeColor = const Color.fromARGB(255, 175, 202, 0);
   Color customColor = Color(0xFF7B4294);
   Color locationColor = const Color.fromARGB(255, 59, 255, 226);
+  Color favoritesColor = Colors.red;
   Color settingsColor = Colors.blue;
   Color unselectedColor = Colors.grey;
   Color _getIndicatorColor(int page) {
@@ -59,6 +65,8 @@ class HomePageState extends State<HomePage>
       case 2:
         return locationColor;
       case 3:
+        return favoritesColor;
+      case 4:
         return settingsColor;
       default:
         return unselectedColor;
@@ -78,6 +86,8 @@ class HomePageState extends State<HomePage>
       body: Stack(
         children: [
           BottomBar(
+            iconHeight: 50,
+            iconWidth: 50,
             fit: StackFit.expand,
             icon: (width, height) => Center(
               child: IconButton(
@@ -91,20 +101,18 @@ class HomePageState extends State<HomePage>
               ),
             ),
             borderRadius: BorderRadius.circular(500),
-            duration: const Duration(milliseconds: 500),
+            duration: const Duration(seconds: 1),
             curve: Curves.decelerate,
             showIcon: true,
-            width: MediaQuery.of(context).size.width * 0.75,
+            width: MediaQuery.of(context).size.width * 0.8,
             // barColor: Colors.black.computeLuminance() > 0.5
             //     ? Colors.black
             //     : const Color.fromARGB(255, 14, 3, 31),
-            barColor: Color(0xFF131321),
+            // barColor: Color(0xFF131321),
             start: 2,
             end: 0,
             offset: 10,
             barAlignment: Alignment.bottomCenter,
-            iconHeight: 50,
-            iconWidth: 50,
             reverse: false,
             hideOnScroll: true,
             scrollOpposite: false,
@@ -127,6 +135,7 @@ class HomePageState extends State<HomePage>
                 MeditationHome(
                   controller: controller,
                 ),
+                FavouriteSongsScreen(controller: controller),
 
                 // FourSevenEight(),
 
@@ -143,48 +152,58 @@ class HomePageState extends State<HomePage>
                   borderRadius: BorderRadius.circular(20),
                   borderSide: BorderSide(
                       color: _getIndicatorColor(currentPage), width: 6),
-                  insets: const EdgeInsets.fromLTRB(16, 0, 16, 8)),
+                  insets: EdgeInsets.fromLTRB(24, 0, 14, 6)),
               tabs: [
                 SizedBox(
-                  height: 58,
+                  height: 55,
                   width: 40,
                   child: Center(
                     child: Icon(
                       IconlyBold.home,
                       color: currentPage == 0 ? homeColor : unselectedColor,
-                      size: currentPage == 0 ? 34 : 30,
+                      size: currentPage == 0 ? 35 : 30,
                       // color: Colors.black,
                     ),
                   ),
                 ),
                 SizedBox(
-                  height: 58,
+                  height: 55,
                   width: 40,
                   child: Center(
                       child: Icon(
-                    Icons.music_note_rounded,
+                    IconlyBold.star,
                     color: currentPage == 1 ? customColor : unselectedColor,
-                    size: currentPage == 1 ? 34 : 30,
+                    size: currentPage == 1 ? 35 : 30,
                   )),
                 ),
                 SizedBox(
-                  height: 58,
+                  height: 55,
                   width: 40,
                   child: Center(
                       child: Icon(
                     IconlyBold.profile,
                     color: currentPage == 2 ? locationColor : unselectedColor,
-                    size: currentPage == 2 ? 34 : 30,
+                    size: currentPage == 2 ? 35 : 30,
                   )),
                 ),
                 SizedBox(
-                  height: 58,
+                  height: 55,
+                  width: 40,
+                  child: Center(
+                      child: Icon(
+                    IconlyBold.heart,
+                    color: currentPage == 3 ? favoritesColor : unselectedColor,
+                    size: currentPage == 3 ? 35 : 30,
+                  )),
+                ),
+                SizedBox(
+                  height: 55,
                   width: 40,
                   child: Center(
                       child: Icon(
                     IconlyBold.setting,
-                    color: currentPage == 3 ? settingsColor : unselectedColor,
-                    size: currentPage == 3 ? 34 : 30,
+                    color: currentPage == 4 ? settingsColor : unselectedColor,
+                    size: currentPage == 4 ? 35 : 30,
                   )),
                 ),
               ],
@@ -624,32 +643,26 @@ class _BottomBarState extends State<BottomBar>
                 width: widget.width,
                 decoration: widget.barDecoration ??
                     BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: widget.borderRadius,
-                        border: Border.all(color: Colors.grey, width: 0.5)),
+                      color: Theme.of(context).colorScheme.background,
+                      borderRadius: widget.borderRadius,
+                    ),
                 child: ClipRRect(
                   borderRadius: widget.borderRadius,
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: Container(
-                        width: widget.width,
-                        decoration: widget.barDecoration ??
-                            BoxDecoration(
-                              color: Colors.black.withOpacity(0.2),
-                              borderRadius: widget.borderRadius,
-                            ),
-                        child: Container(
-                          width: widget.width,
-                          decoration: widget.barDecoration ??
-                              BoxDecoration(
-                                color: Colors.transparent,
-                                borderRadius: widget.borderRadius,
-                              ),
-                          child: widget.child,
+                  child: Container(
+                    width: widget.width,
+                    decoration: widget.barDecoration ??
+                        BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: widget.borderRadius,
                         ),
-                      ),
+                    child: Container(
+                      width: widget.width,
+                      decoration: widget.barDecoration ??
+                          BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: widget.borderRadius,
+                          ),
+                      child: widget.child,
                     ),
                   ),
                 ),

@@ -1,0 +1,747 @@
+import 'dart:async';
+import 'dart:ui';
+import 'package:aura/core/broken_icons.dart';
+import 'package:aura/data/songs.dart';
+import 'package:aura/util/visualizer.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:iconly/iconly.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_cache/just_audio_cache.dart';
+import 'dart:math';
+import 'package:palette_generator/palette_generator.dart';
+
+class AuraPlayer extends StatefulWidget {
+  final int currentIndex;
+  final List<Song> songs;
+  final String title;
+
+  const AuraPlayer({
+    required this.currentIndex,
+    required this.songs,
+    required this.title,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<AuraPlayer> createState() => _AuraPlayerState();
+}
+
+class _AuraPlayerState extends State<AuraPlayer> {
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  int _currentIndex = 0;
+  bool _isShuffleOn = false;
+  bool _isRepeatOn = false;
+  bool _isSongLiked = false;
+  Color? dominantColor;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.currentIndex;
+    if (widget.songs.isNotEmpty) {
+      _initializePlayer();
+      _audioPlayer.play();
+    }
+    _loadDominantColor();
+  }
+
+  void _initializePlayer() {
+    if (_currentIndex >= 0 && _currentIndex < widget.songs.length) {
+      _audioPlayer.dynamicSet(
+          pushIfNotExisted: true, url: widget.songs[_currentIndex].songUrl);
+
+      _audioPlayer.processingStateStream.listen((processingState) {
+        setState(() {});
+
+        if (processingState == ProcessingState.completed) {
+          if (_isRepeatOn) {
+            _audioPlayer.seek(Duration.zero);
+          } else {
+            _playNext();
+          }
+        }
+      });
+    }
+  }
+
+  void _playNext() {
+    if (widget.songs.isNotEmpty) {
+      if (_isShuffleOn) {
+        _currentIndex = Random().nextInt(widget.songs.length);
+      } else {
+        if (_currentIndex < widget.songs.length - 1) {
+          _currentIndex++;
+        } else {
+          if (_isRepeatOn) {
+            _currentIndex = 0;
+          } else {
+            _currentIndex = 0;
+            _audioPlayer.stop();
+          }
+        }
+      }
+
+      _audioPlayer.dynamicSet(
+          pushIfNotExisted: true, url: widget.songs[_currentIndex].songUrl);
+      _audioPlayer.play();
+      _loadDominantColor();
+    }
+  }
+
+  void _playPrevious() {
+    if (widget.songs.isNotEmpty && _currentIndex > 0) {
+      _currentIndex--;
+      _audioPlayer.dynamicSet(
+          pushIfNotExisted: true, url: widget.songs[_currentIndex].songUrl);
+      _audioPlayer.play();
+      _loadDominantColor();
+    }
+  }
+
+  Future<void> _loadDominantColor() async {
+    final PaletteGenerator paletteGenerator =
+        await PaletteGenerator.fromImageProvider(
+            CachedNetworkImageProvider(widget.songs[_currentIndex].imageUrl));
+    setState(() {
+      dominantColor = paletteGenerator.dominantColor?.color;
+    });
+  }
+
+  void checkIfSongIsLiked(String userId, String songUrl) {
+    FirebaseFirestore.instance
+        .collection('Users')
+        .doc(userId)
+        .collection('Favourites')
+        .where('songUrl', isEqualTo: songUrl)
+        .get()
+        .then((querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        // Song is liked by the user
+        setState(() {
+          _isSongLiked = true;
+        });
+      } else {
+        // Song is not liked by the user
+        setState(() {
+          _isSongLiked = false;
+        });
+      }
+    }).catchError((error) {
+      if (kDebugMode) {
+        print('Error checking if image is already liked: $error');
+      }
+    });
+  }
+
+  void toggleLikeSong(
+      {required String userId,
+      required String imageUrl,
+      required String songName,
+      required String artist,
+      required String songUrl}) async {
+    final isLiked = !_isSongLiked;
+
+    FirebaseFirestore.instance
+        .collection('Users')
+        .doc(userId)
+        .collection('Favourites')
+        .where('songUrl', isEqualTo: songUrl)
+        .get()
+        .then((querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        // Image already liked, so remove it
+        querySnapshot.docs.first.reference.delete().then((_) {
+          if (kDebugMode) {
+            print('Song removed from Favourites!');
+          }
+          setState(() {
+            _isSongLiked = isLiked;
+          });
+        }).catchError((error) {
+          if (kDebugMode) {
+            print('Failed to remove song from favorites: $error');
+          }
+        });
+      } else {
+        // Image not liked, so add it
+        FirebaseFirestore.instance
+            .collection('Users')
+            .doc(userId)
+            .collection('Favourites')
+            .add({
+          'songName': songName,
+          'imageUrl': imageUrl,
+          'songUrl': songUrl,
+          'artist': artist,
+        }).then((value) {
+          if (kDebugMode) {
+            print('Image liked and stored successfully!');
+          }
+          setState(() {
+            _isSongLiked = isLiked;
+          });
+        }).catchError((error) {
+          if (kDebugMode) {
+            print('Failed to like image: $error');
+          }
+        });
+      }
+    }).catchError((error) {
+      if (kDebugMode) {
+        print('Error checking if image is already liked: $error');
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  Timer? _timer;
+  Future<void> _showTimerDialog() async {
+    int? selectedTime;
+
+    selectedTime = await showModalBottomSheet<int>(
+      context: context,
+      builder: (BuildContext context) {
+        List<Map<String, dynamic>> timerOptions = [
+          {'duration': 300, 'label': '5 Minutes'},
+          {'duration': 600, 'label': '10 Minutes'},
+          {'duration': 1800, 'label': '30 Minutes'},
+          {'duration': 3600, 'label': '1 Hour'},
+          {'duration': 7200, 'label': '2 Hours'},
+          {'duration': 18000, 'label': '5 Hours'},
+        ];
+
+        return Container(
+          decoration: BoxDecoration(
+            color: Color(0xFF131321),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Select Timer Duration',
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                ),
+              ),
+              Expanded(
+                child: ListView(
+                  children: timerOptions
+                      .map(
+                        (option) => ListTile(
+                          onTap: () {
+                            selectedTime = option['duration'];
+                            Navigator.of(context).pop(selectedTime);
+                          },
+                          tileColor: (selectedTime == option['duration'])
+                              ? Color(0xFF131321)
+                              : Colors.grey[800],
+                          title: Center(
+                            child: Text(
+                              option['label'],
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
+    if (selectedTime != null) {
+      _stopTimer();
+      _startTimer(selectedTime!);
+    }
+  }
+
+  void _startTimer(int durationInSeconds) {
+    _timer = Timer(Duration(seconds: durationInSeconds), () {
+      _audioPlayer.stop();
+      setState(() {});
+    });
+
+    setState(() {});
+  }
+
+  void _stopTimer() {
+    if (_timer != null && _timer!.isActive) {
+      _timer!.cancel();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: null,
+      backgroundColor: Colors.black,
+      body: GestureDetector(
+        onHorizontalDragEnd: (DragEndDetails details) {
+          if (details.primaryVelocity! > 0) {
+            _playPrevious();
+          } else if (details.primaryVelocity! < 0) {
+            _playNext();
+          }
+        },
+        child: Center(
+          child: widget.songs.isNotEmpty &&
+                  _currentIndex >= 0 &&
+                  _currentIndex < widget.songs.length
+              ? Stack(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: CachedNetworkImageProvider(
+                            widget.songs[_currentIndex].imageUrl,
+                          ),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
+                        child: Container(
+                          color: Colors.black.withOpacity(0.2),
+                        ),
+                      ),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.08,
+                        ),
+                        Text(
+                          'Playing From Playlist',
+                          style: GoogleFonts.openSans(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          widget.title,
+                          style: GoogleFonts.openSans(
+                              color: Colors.white, fontSize: 14),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.04,
+                        ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: CachedNetworkImage(
+                            height: MediaQuery.of(context).size.height * 0.38,
+                            width: MediaQuery.of(context).size.width - 74,
+                            fit: BoxFit.cover,
+                            imageUrl: widget.songs[_currentIndex].imageUrl,
+                          ),
+                        ),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.02),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20, right: 20),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: ListTile(
+                              trailing: IconButton(
+                                onPressed: () {
+                                  FirebaseAuth auth = FirebaseAuth.instance;
+                                  User? user = auth.currentUser;
+                                  if (user != null) {
+                                    String userId = user.uid;
+                                    String songUrl =
+                                        widget.songs[_currentIndex].songUrl;
+                                    String imageUrl =
+                                        widget.songs[_currentIndex].imageUrl;
+                                    String artist =
+                                        widget.songs[_currentIndex].artist;
+                                    String songName =
+                                        widget.songs[_currentIndex].songName;
+
+                                    // Check if the song is already liked by the user
+                                    FirebaseFirestore.instance
+                                        .collection('Users')
+                                        .doc(userId)
+                                        .collection('Favourites')
+                                        .where('songUrl', isEqualTo: songUrl)
+                                        .get()
+                                        .then((querySnapshot) {
+                                      if (querySnapshot.docs.isNotEmpty) {
+                                        // Image is liked, so remove it
+                                        toggleLikeSong(
+                                            userId: userId,
+                                            songUrl: songUrl,
+                                            imageUrl: imageUrl,
+                                            artist: artist,
+                                            songName: songName);
+                                      } else {
+                                        // Image is not liked, so add it
+                                        toggleLikeSong(
+                                            userId: userId,
+                                            songUrl: songUrl,
+                                            imageUrl: imageUrl,
+                                            artist: artist,
+                                            songName: songName);
+                                      }
+                                    }).catchError((error) {
+                                      if (kDebugMode) {
+                                        print(
+                                            'Error checking if image is already liked: $error');
+                                      }
+                                    });
+                                  } else {
+                                    if (kDebugMode) {
+                                      print("User is not authenticated.");
+                                    }
+                                  }
+                                },
+                                icon: Icon(
+                                  _isSongLiked
+                                      ? IconlyBold.heart
+                                      : IconlyLight.heart,
+                                  color:
+                                      _isSongLiked ? Colors.red : Colors.white,
+                                  size: 34,
+                                ),
+                              ),
+                              title: Text(
+                                widget.songs[_currentIndex].songName,
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 24),
+                              ),
+                              subtitle: Text(
+                                widget.songs[_currentIndex].artist,
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 18),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.018),
+                        // Slider will come here
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                          child: StreamBuilder<Duration>(
+                            stream: _audioPlayer.positionStream,
+                            builder: (context, snapshot) {
+                              final position = snapshot.data ?? Duration.zero;
+                              final duration =
+                                  _audioPlayer.duration ?? Duration.zero;
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SliderTheme(
+                                    data: SliderTheme.of(context).copyWith(
+                                      activeTrackColor:
+                                          dominantColor ?? Colors.blue,
+                                      inactiveTrackColor: Colors.grey,
+                                      thumbColor: Colors.white,
+                                      overlayColor:
+                                          Colors.blue.withOpacity(0.3),
+                                      valueIndicatorColor: Colors.blue,
+                                      thumbShape: const RoundSliderThumbShape(
+                                          enabledThumbRadius: 8.0),
+                                      overlayShape:
+                                          const RoundSliderOverlayShape(
+                                              overlayRadius: 16.0),
+                                      valueIndicatorShape:
+                                          const PaddleSliderValueIndicatorShape(),
+                                      valueIndicatorTextStyle: const TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    child: Slider(
+                                      value: position.inSeconds.toDouble(),
+                                      max: duration.inSeconds.toDouble(),
+                                      onChanged: (value) {
+                                        _audioPlayer.seek(
+                                            Duration(seconds: value.toInt()));
+                                      },
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          '${position.inMinutes}:${(position.inSeconds % 60).toString().padLeft(2, '0')}',
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                        ),
+                                        Text(
+                                          '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}',
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        // Next/Previous button will come here
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            IconButton(
+                              icon: const Icon(
+                                Broken.previous,
+                                size: 34,
+                                color: Colors.white,
+                              ),
+                              onPressed: _playPrevious,
+                            ),
+                            Container(
+                              width: 64,
+                              height: 64,
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.2),
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    spreadRadius: 5,
+                                    blurRadius: 7,
+                                    offset: Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: IconButton(
+                                icon: Icon(
+                                  _audioPlayer.playing
+                                      ? Broken.pause
+                                      : Broken.play,
+                                  size: 34,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  if (_audioPlayer.playing) {
+                                    _audioPlayer.pause();
+                                  } else {
+                                    _audioPlayer.play();
+                                  }
+                                  setState(() {});
+                                },
+                              ),
+                            ),
+                            IconButton(
+                              icon: const Icon(
+                                Broken.next,
+                                size: 34,
+                                color: Colors.white,
+                              ),
+                              onPressed: _playNext,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Positioned(
+                      bottom: MediaQuery.of(context).size.height * 0.02,
+                      left: 10,
+                      right: 10,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconButton(
+                                icon: Icon(
+                                  Broken.shuffle,
+                                  color: _isShuffleOn
+                                      ? dominantColor ?? Colors.blue
+                                      : Colors.white,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _isShuffleOn = !_isShuffleOn;
+                                  });
+                                },
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                  Broken.repeat,
+                                  color: _isRepeatOn
+                                      ? dominantColor ?? Colors.blue
+                                      : Colors.white,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _isRepeatOn = !_isRepeatOn;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              IconButton(
+                                onPressed: _showTimerDialog,
+                                icon: const Icon(
+                                  Broken.timer_1,
+                                  color: Colors.white,
+                                  // size: 30,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(
+                                  Broken.share,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      top: 50,
+                      left: 10,
+                      child: IconButton(
+                        icon: Icon(
+                          Broken.setting_5,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                        onPressed: (() => Get.to(GlowingBalls(),
+                            transition: Transition.fadeIn)),
+                      ),
+                    ),
+                    Positioned(
+                      top: 50,
+                      right: 10,
+                      child: IconButton(
+                        icon: const Icon(
+                          Broken.music_playlist,
+                          color: Colors.white,
+                          size: 28,
+                        ),
+                        onPressed: () {
+                          _showQueue(context);
+                        },
+                      ),
+                    ),
+                  ],
+                )
+              : const Text(
+                  'No song available',
+                  style: TextStyle(color: Colors.white),
+                ),
+        ),
+      ),
+    );
+  }
+
+  void _showQueue(BuildContext context) {
+    showModalBottomSheet(
+      backgroundColor: Color(0xFF131321),
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Column(
+              children: [
+                Container(
+                  color: Colors.transparent,
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    'Now Playing',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: widget.songs.length,
+                    itemBuilder: (context, index) {
+                      bool isCurrentSong = _currentIndex == index;
+
+                      return ListTile(
+                        tileColor: isCurrentSong ? Colors.grey[200] : null,
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: CachedNetworkImage(
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.cover,
+                            imageUrl: widget.songs[index].imageUrl,
+                          ),
+                        ),
+                        title: Text(
+                          widget.songs[index].songName,
+                          style: TextStyle(
+                            color: isCurrentSong
+                                ? Color(0xFF131321)
+                                : Colors.white,
+                            fontWeight: isCurrentSong
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                          ),
+                        ),
+                        subtitle: Text(widget.songs[index].artist),
+                        trailing: IconButton(
+                          icon: Icon(Broken.close_circle),
+                          onPressed: () {
+                            setState(() {
+                              widget.songs.removeAt(index);
+                              if (_currentIndex == index) {
+                                _audioPlayer.stop();
+                              }
+                            });
+                          },
+                        ),
+                        onTap: () {
+                          _currentIndex = index;
+                          _audioPlayer.dynamicSet(
+                            pushIfNotExisted: true,
+                            url: widget.songs[_currentIndex].songUrl,
+                          );
+                          _audioPlayer.play();
+                          Navigator.pop(context);
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+}

@@ -2,8 +2,9 @@ import 'package:aura/core/broken_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class BookmarkedPage extends StatelessWidget {
-  const BookmarkedPage({super.key});
+class NotificationPage extends StatelessWidget {
+  const NotificationPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     // final message = ModalRoute.of(context)!.settings.arguments as RemoteMessage;
@@ -23,7 +24,7 @@ class BookmarkedPage extends StatelessWidget {
         // centerTitle: true,
         backgroundColor: Color(0xFF131321),
         title: Text(
-          'Favorites',
+          'Notifications',
           style: GoogleFonts.kanit(
             color: Colors.white,
             fontSize: 22,
@@ -35,7 +36,7 @@ class BookmarkedPage extends StatelessWidget {
       body: SafeArea(
         child: Center(
           child: Text(
-            'Oops, Something went wrong! 😓',
+            'No Notifications Available 🔕',
             style: GoogleFonts.kanit(color: Colors.white, fontSize: 18),
           ),
 
