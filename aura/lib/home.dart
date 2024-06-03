@@ -5,6 +5,8 @@ import 'package:aura/routes/homepage/homepage.dart';
 import 'package:aura/routes/meditate/screens/meditation_home.dart';
 import 'package:aura/routes/pages/favourites.dart';
 import 'package:aura/routes/settings/settings.dart';
+import 'package:aura/util/players/mainAuraPlayer.dart';
+import 'package:aura/util/players/mini_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -233,6 +235,16 @@ class AuraMiniPlayer extends StatelessWidget {
       height: 64,
       child: Obx(
         () => GestureDetector(
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return EnlargedMiniPlayer(
+                  controller: playerController,
+                );
+              },
+            );
+          },
           onHorizontalDragEnd: (DragEndDetails details) {
             if (details.primaryVelocity! > 0) {
               playerController.playPrevious();

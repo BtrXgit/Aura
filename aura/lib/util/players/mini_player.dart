@@ -1,10 +1,7 @@
-import 'dart:math';
 import 'dart:ui';
 
 import 'package:aura/controllers/player_controller.dart';
 import 'package:aura/core/broken_icons.dart';
-import 'package:aura/data/songs.dart';
-import 'package:aura/liveChat/chat_test.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,30 +10,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
 import 'package:just_audio_cache/just_audio_cache.dart';
 
-class AuraPlayer extends StatelessWidget {
-  final int currentIndex;
-  final List<Song> songs;
-  final String title;
-
-  const AuraPlayer({
-    required this.currentIndex,
-    required this.songs,
-    required this.title,
-    Key? key,
-  }) : super(key: key);
+class EnlargedMiniPlayer extends StatelessWidget {
+  final AuraPlayerController controller;
+  const EnlargedMiniPlayer({required this.controller, super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(AuraPlayerController());
-    controller.stopAndClear();
-    controller.currentIndex.value = currentIndex;
-    controller.title.value = title;
-    controller.songs.addAll(songs);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.initializePlayer();
-    });
-
     return Scaffold(
       appBar: null,
       backgroundColor: Colors.black,
@@ -87,7 +66,7 @@ class AuraPlayer extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            title,
+                            controller.title.value,
                             style: GoogleFonts.openSans(
                                 color: Colors.white,
                                 fontSize: 15,
@@ -254,7 +233,6 @@ class AuraPlayer extends StatelessWidget {
                               },
                             ),
                           ),
-
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 10),
@@ -322,15 +300,6 @@ class AuraPlayer extends StatelessWidget {
                               ],
                             ),
                           ),
-                          // InkWell(
-                          //   onTap: () => Get.to(ChatScreen()),
-                          //   child: Container(
-                          //     height: 60,
-                          //     width: 200,
-                          //     color: controller.dominantColor,
-                          //     child: Text('Chat'),
-                          //   ),
-                          // ),
                         ],
                       ),
                       Positioned(

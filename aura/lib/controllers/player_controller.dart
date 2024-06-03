@@ -1,17 +1,12 @@
 import 'dart:async';
 import 'dart:ui';
-import 'package:aura/core/broken_icons.dart';
 import 'package:aura/data/songs.dart';
-import 'package:aura/util/visualizer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:iconly/iconly.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_cache/just_audio_cache.dart';
 import 'dart:math';
@@ -23,6 +18,7 @@ class AuraPlayerController extends GetxController {
   var isShuffleOn = false.obs;
   var isRepeatOn = false.obs;
   var isSongLiked = false.obs;
+  var title = ''.obs;
   Color? dominantColor;
   var isPlaying = false.obs;
   var songs = <Song>[].obs;
