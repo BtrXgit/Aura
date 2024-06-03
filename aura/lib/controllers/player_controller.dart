@@ -42,6 +42,13 @@ class AuraPlayerController extends GetxController {
     });
   }
 
+  void stopAndClear() {
+    if (audioPlayer.playing) {
+      audioPlayer.stop();
+    }
+    songs.clear();
+  }
+
   void initializePlayer() {
     if (currentIndex.value >= 0 && currentIndex.value < songs.length) {
       audioPlayer
@@ -69,14 +76,16 @@ class AuraPlayerController extends GetxController {
       if (isShuffleOn.value) {
         currentIndex.value = Random().nextInt(songs.length);
       } else {
+        // Check if current index is at the last song
         if (currentIndex.value < songs.length - 1) {
           currentIndex.value++;
         } else {
+          // If repeat is on, loop back to the first song
           if (isRepeatOn.value) {
             currentIndex.value = 0;
           } else {
+            // If repeat is off, loop back to the first song and continue playing
             currentIndex.value = 0;
-            audioPlayer.stop();
           }
         }
       }
@@ -189,8 +198,36 @@ class AuraPlayerController extends GetxController {
 
   @override
   void onClose() {
-    audioPlayer.dispose();
+    // audioPlayer.dispose();
     timer?.cancel();
     super.onClose();
   }
 }
+
+
+  // void playNext() {
+  //   if (songs.isNotEmpty) {
+  //     if (isShuffleOn.value) {
+  //       currentIndex.value = Random().nextInt(songs.length);
+  //     } else {
+  //       if (currentIndex.value < songs.length - 1) {
+  //         currentIndex.value++;
+  //       } else {
+  //         if (isRepeatOn.value) {
+  //           currentIndex.value = 0;
+  //         } else {
+  //           currentIndex.value = 0;
+  //           audioPlayer.stop();
+  //         }
+  //       }
+  //     }
+
+  //     audioPlayer
+  //         .dynamicSet(
+  //             pushIfNotExisted: true, url: songs[currentIndex.value].songUrl)
+  //         .then((_) {
+  //       audioPlayer.play();
+  //       loadDominantColor();
+  //     });
+  //   }
+  // }

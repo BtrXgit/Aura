@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:aura/controllers/player_controller.dart';
 import 'package:aura/core/broken_icons.dart';
 import 'package:aura/data/songs.dart';
+import 'package:aura/liveChat/chat_test.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ class AuraPlayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(AuraPlayerController());
+    controller.stopAndClear();
     controller.currentIndex.value = currentIndex;
     controller.songs.addAll(songs);
 
@@ -159,7 +161,9 @@ class AuraPlayer extends StatelessWidget {
                                   controller.isSongLiked.value
                                       ? IconlyBold.heart
                                       : IconlyLight.heart,
-                                  color: Colors.white,
+                                  color: controller.isSongLiked.value
+                                      ? Colors.red
+                                      : Colors.white,
                                 ),
                               ),
                               title: Text(
@@ -249,6 +253,7 @@ class AuraPlayer extends StatelessWidget {
                               },
                             ),
                           ),
+
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 10),
@@ -285,7 +290,7 @@ class AuraPlayer extends StatelessWidget {
                                     }
                                   },
                                   icon: Icon(
-                                    controller.audioPlayer.playing
+                                    controller.isPlaying.value
                                         ? Broken.pause
                                         : Broken.play,
                                     size: 50,
@@ -316,6 +321,15 @@ class AuraPlayer extends StatelessWidget {
                               ],
                             ),
                           ),
+                          // InkWell(
+                          //   onTap: () => Get.to(ChatScreen()),
+                          //   child: Container(
+                          //     height: 60,
+                          //     width: 200,
+                          //     color: controller.dominantColor,
+                          //     child: Text('Chat'),
+                          //   ),
+                          // ),
                         ],
                       ),
                       Positioned(

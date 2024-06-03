@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:aura/component/user_component.dart';
 import 'package:aura/controllers/home_controller.dart';
 import 'package:aura/lib/notifications.dart';
+import 'package:aura/liveChat/chat_test.dart';
 import 'package:aura/routes/pages/favourites.dart';
 import 'package:aura/routes/pages/live/focusLive.dart';
 import 'package:aura/util/players/soundsPlayer.dart';
@@ -148,6 +149,14 @@ class AuraHomePage extends StatelessWidget {
                         const SizedBox(
                           width: 14,
                         ),
+                        // IconButton(
+                        //     onPressed: () {
+                        //       Get.to(ChatScreen());
+                        //     },
+                        //     icon: Icon(Icons.chat)),
+                        // const SizedBox(
+                        //   width: 14,
+                        // ),
                         (auraHomeController.userPhotoUrl != null)
                             ? Obx(
                                 () => SizedBox(
@@ -690,7 +699,8 @@ class AuraHomePage extends StatelessWidget {
               scrollText,
               intervalSpaces: 10,
               velocity: Velocity(pixelsPerSecond: Offset(40, 0)),
-              style: GoogleFonts.kanit(color: Colors.grey, fontSize: 18),
+              style: GoogleFonts.kanit(
+                  color: Colors.grey.withOpacity(0.5), fontSize: 16),
             ),
           )
         ],

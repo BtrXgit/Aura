@@ -43,6 +43,8 @@ dependencies:
   firebase_app_check: 0.2.1+8
   sleek_circular_slider: ^2.0.1
   rename: ^3.0.1
+  # just_audio_background: ^0.0.1-beta.12
+  # waveform_extractor: ^1.0.3
 
 
 dev_dependencies:

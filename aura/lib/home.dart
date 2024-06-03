@@ -1,14 +1,17 @@
 import 'dart:ui';
+import 'package:aura/controllers/player_controller.dart';
 import 'package:aura/routes/composers/composers.dart';
 import 'package:aura/routes/homepage/homepage.dart';
 import 'package:aura/routes/meditate/screens/meditation_home.dart';
 import 'package:aura/routes/pages/favourites.dart';
 import 'package:aura/routes/settings/settings.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,6 +26,7 @@ class HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late int currentPage;
   late TabController tabController;
+  bool isMiniPlayerVisible = true;
 
   @override
   void initState() {
@@ -105,10 +109,6 @@ class HomePageState extends State<HomePage>
             curve: Curves.decelerate,
             showIcon: true,
             width: MediaQuery.of(context).size.width * 0.8,
-            // barColor: Colors.black.computeLuminance() > 0.5
-            //     ? Colors.black
-            //     : const Color.fromARGB(255, 14, 3, 31),
-            // barColor: Color(0xFF131321),
             start: 2,
             end: 0,
             offset: 10,
@@ -116,8 +116,16 @@ class HomePageState extends State<HomePage>
             reverse: false,
             hideOnScroll: true,
             scrollOpposite: false,
-            onBottomBarHidden: () {},
-            onBottomBarShown: () {},
+            onBottomBarHidden: () {
+              setState(() {
+                isMiniPlayerVisible = false;
+              });
+            },
+            onBottomBarShown: () {
+              setState(() {
+                isMiniPlayerVisible = true;
+              });
+            },
             body: (context, controller) => TabBarView(
               controller: tabController,
               dragStartBehavior: DragStartBehavior.down,
@@ -126,9 +134,6 @@ class HomePageState extends State<HomePage>
                 AuraHomePage(
                   controller: controller,
                 ),
-                // AuraComposerTest(
-                //   controller: controller,
-                // ),
                 AuraComposers(
                   controller: controller,
                 ),
@@ -136,9 +141,6 @@ class HomePageState extends State<HomePage>
                   controller: controller,
                 ),
                 FavouriteSongsScreen(controller: controller),
-
-                // FourSevenEight(),
-
                 SettingsPage(
                   controller: controller,
                 ),
@@ -209,16 +211,112 @@ class HomePageState extends State<HomePage>
               ],
             ),
           ),
-          // Positioned(
-          //     bottom: 100,
-          //     right: 10,
-          //     left: 10,
-          //     child: Container(
-          //       width: 200,
-          //       height: 50,
-          //       color: Colors.red,
-          //     ))
+          Positioned(
+            bottom: MediaQuery.of(context).size.height * 0.09,
+            right: 10,
+            left: 10,
+            child: isMiniPlayerVisible ? AuraMiniPlayer() : SizedBox(),
+          ),
         ],
+      ),
+    );
+  }
+}
+
+class AuraMiniPlayer extends StatelessWidget {
+  AuraPlayerController playerController = Get.put(AuraPlayerController());
+  AuraMiniPlayer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 64,
+      child: Obx(
+        () => GestureDetector(
+          onHorizontalDragEnd: (DragEndDetails details) {
+            if (details.primaryVelocity! > 0) {
+              playerController.playPrevious();
+            } else if (details.primaryVelocity! < 0) {
+              playerController.playNext();
+            }
+          },
+          child: playerController.isPlaying.value
+              ? Container(
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.black87,
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(
+                            width: 4,
+                          ),
+                          if (playerController.isPlaying.value)
+                            CachedNetworkImage(
+                              width: 50,
+                              height: 50,
+                              imageUrl: playerController
+                                  .songs[playerController.currentIndex.value]
+                                  .imageUrl,
+                            )
+                          else
+                            Container(),
+                          SizedBox(
+                            width: 4,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                playerController
+                                    .songs[playerController.currentIndex.value]
+                                    .songName,
+                                style: TextStyle(fontWeight: FontWeight.w700),
+                              ),
+                              Text(
+                                playerController
+                                    .songs[playerController.currentIndex.value]
+                                    .artist,
+                                style: TextStyle(
+                                    color: Colors.white.withOpacity(0.5)),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.favorite),
+                            onPressed: () {},
+                            color: Colors.red,
+                          ),
+                          IconButton(
+                            icon: Icon(playerController.isPlaying.value
+                                ? Icons.pause
+                                : Icons.play_arrow),
+                            onPressed: () {
+                              playerController.isPlaying.value
+                                  ? playerController.audioPlayer.pause()
+                                  : playerController.audioPlayer.play();
+                            },
+                            color: Colors.white,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              : null,
+        ),
       ),
     );
   }
