@@ -252,80 +252,121 @@ class AuraMiniPlayer extends StatelessWidget {
               playerController.playNext();
             }
           },
-          child: playerController.isPlaying.value
+          child: playerController.songs.isNotEmpty
               ? Container(
-                  padding: EdgeInsets.all(8),
+                  padding: EdgeInsets.all(4),
                   decoration: BoxDecoration(
                     color: Colors.black87,
                     borderRadius: BorderRadius.circular(14),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(
-                            width: 4,
-                          ),
-                          if (playerController.isPlaying.value)
-                            CachedNetworkImage(
-                              width: 50,
-                              height: 50,
-                              imageUrl: playerController
-                                  .songs[playerController.currentIndex.value]
-                                  .imageUrl,
-                            )
-                          else
-                            Container(),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                playerController
+                  child: Column(mainAxisSize: MainAxisSize.min, children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              width: 4,
+                            ),
+                            if (playerController.songs.isNotEmpty)
+                              CachedNetworkImage(
+                                width: 46,
+                                height: 46,
+                                imageUrl: playerController
                                     .songs[playerController.currentIndex.value]
-                                    .songName,
-                                style: TextStyle(fontWeight: FontWeight.w700),
+                                    .imageUrl,
+                              )
+                            else
+                              Container(),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  playerController
+                                      .songs[
+                                          playerController.currentIndex.value]
+                                      .songName,
+                                  style: TextStyle(fontWeight: FontWeight.w700),
+                                ),
+                                Text(
+                                  playerController
+                                      .songs[
+                                          playerController.currentIndex.value]
+                                      .artist,
+                                  style: TextStyle(
+                                      color: Colors.white.withOpacity(0.5)),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.favorite),
+                              onPressed: () {},
+                              color: Colors.red,
+                            ),
+                            IconButton(
+                              icon: Icon(playerController.isPlaying.value
+                                  ? Icons.pause
+                                  : Icons.play_arrow),
+                              onPressed: () {
+                                playerController.isPlaying.value
+                                    ? playerController.audioPlayer.pause()
+                                    : playerController.audioPlayer.play();
+                              },
+                              color: Colors.white,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Spacer(),
+                    StreamBuilder<Duration>(
+                        stream: playerController.audioPlayer.positionStream,
+                        builder: (context, snapshot) {
+                          final position = snapshot.data ?? Duration.zero;
+                          final duration =
+                              playerController.audioPlayer.duration ??
+                                  Duration.zero;
+                          return SliderTheme(
+                            data: SliderTheme.of(context).copyWith(
+                              activeTrackColor: playerController.dominantColor!
+                                  .withOpacity(0.4),
+                              inactiveTrackColor: Colors.white.withOpacity(0.4),
+                              thumbColor: playerController.dominantColor!
+                                  .withOpacity(0.4),
+                              overlayColor: Colors.blue.withOpacity(0.3),
+                              valueIndicatorColor: Colors.blue,
+                              thumbShape: const RoundSliderThumbShape(
+                                  enabledThumbRadius: 0.0),
+                              overlayShape: const RoundSliderOverlayShape(
+                                  overlayRadius: 0.0),
+                              valueIndicatorShape:
+                                  const PaddleSliderValueIndicatorShape(),
+                              valueIndicatorTextStyle: const TextStyle(
+                                color: Colors.white,
                               ),
-                              Text(
-                                playerController
-                                    .songs[playerController.currentIndex.value]
-                                    .artist,
-                                style: TextStyle(
-                                    color: Colors.white.withOpacity(0.5)),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.favorite),
-                            onPressed: () {},
-                            color: Colors.red,
-                          ),
-                          IconButton(
-                            icon: Icon(playerController.isPlaying.value
-                                ? Icons.pause
-                                : Icons.play_arrow),
-                            onPressed: () {
-                              playerController.isPlaying.value
-                                  ? playerController.audioPlayer.pause()
-                                  : playerController.audioPlayer.play();
-                            },
-                            color: Colors.white,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                            ),
+                            child: Slider(
+                              value: position.inSeconds.toDouble(),
+                              max: duration.inSeconds.toDouble(),
+                              onChanged: (value) {
+                                // playerController.audioPlayer.seek(
+                                //     Duration(seconds: value.toInt()));
+                              },
+                            ),
+                          );
+                        }),
+                  ]),
                 )
               : null,
         ),

@@ -317,7 +317,14 @@ class _SettingsPageState extends State<SettingsPage> {
                       ],
                     ),
                   const SizedBox(
-                    height: 10,
+                    height: 20,
+                  ),
+                  Text(
+                    'Join Us On:',
+                    style: GoogleFonts.kanit(
+                      color: primaryColor,
+                      fontSize: 16,
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(20, 10, 20, 10),

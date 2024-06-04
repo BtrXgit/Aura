@@ -114,58 +114,38 @@ class AuraPlayer extends StatelessWidget {
                                 horizontal: 15.0, vertical: 20),
                             child: ListTile(
                               leading: IconButton(
-                                onPressed: () {
+                                onPressed: () async {
                                   final userId =
                                       FirebaseAuth.instance.currentUser?.uid;
                                   if (userId != null) {
-                                    final imageUrl = controller
-                                        .songs[controller.currentIndex.value]
-                                        .imageUrl;
-                                    controller.checkIfSongIsLiked(
-                                        userId, imageUrl);
-                                    if (controller.isSongLiked.value) {
-                                      controller.toggleLikeSong(
-                                          userId: userId,
-                                          imageUrl: imageUrl,
-                                          songName: controller
-                                              .songs[
-                                                  controller.currentIndex.value]
-                                              .songName,
-                                          artist: controller
-                                              .songs[
-                                                  controller.currentIndex.value]
-                                              .artist,
-                                          songUrl: controller
-                                              .songs[
-                                                  controller.currentIndex.value]
-                                              .songUrl);
-                                    } else {
-                                      final songName = controller
-                                          .songs[controller.currentIndex.value]
-                                          .songName;
-                                      final artist = controller
-                                          .songs[controller.currentIndex.value]
-                                          .artist;
-                                      final songUrl = controller
-                                          .songs[controller.currentIndex.value]
-                                          .songName;
-                                      controller.toggleLikeSong(
-                                          userId: userId,
-                                          imageUrl: imageUrl,
-                                          songName: songName,
-                                          artist: artist,
-                                          songUrl: songUrl);
-                                    }
+                                    final song = controller
+                                        .songs[controller.currentIndex.value];
+                                    final imageUrl = song.imageUrl;
+                                    final songName = song.songName;
+                                    final artist = song.artist;
+                                    final songUrl = song.songUrl;
+
+                                    final isLiked = await controller
+                                        .checkIfSongIsLiked(userId, songUrl);
+                                    controller.isSongLiked.value = isLiked;
+
+                                    controller.toggleLikeSong(
+                                      userId: userId,
+                                      imageUrl: imageUrl,
+                                      songName: songName,
+                                      artist: artist,
+                                      songUrl: songUrl,
+                                    );
                                   }
                                 },
-                                icon: Icon(
-                                  controller.isSongLiked.value
-                                      ? IconlyBold.heart
-                                      : IconlyLight.heart,
-                                  color: controller.isSongLiked.value
-                                      ? Colors.red
-                                      : Colors.white,
-                                ),
+                                icon: Obx(() => Icon(
+                                      controller.isSongLiked.value
+                                          ? IconlyBold.heart
+                                          : IconlyLight.heart,
+                                      color: controller.isSongLiked.value
+                                          ? Colors.red
+                                          : Colors.white,
+                                    )),
                               ),
                               title: Text(
                                 controller.songs[controller.currentIndex.value]
