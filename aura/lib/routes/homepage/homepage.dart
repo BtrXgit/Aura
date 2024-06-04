@@ -45,7 +45,7 @@ class AuraHomePage extends StatelessWidget {
     final focusImage = auraHomeController.randomFocusImage(greeting);
     return SingleChildScrollView(
       controller: controller,
-      physics: const BouncingScrollPhysics(),
+      physics: const ClampingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

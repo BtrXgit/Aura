@@ -8,6 +8,7 @@ import 'package:aura/liveChat/chat_test.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
@@ -312,6 +313,18 @@ class AuraPlayer extends StatelessWidget {
                           //   ),
                           // ),
                         ],
+                      ),
+                      Positioned(
+                        top: 50,
+                        left: 10,
+                        child: IconButton(
+                          onPressed: () => controller.showTimerDialog(context),
+                          icon: const Icon(
+                            Broken.timer_1,
+                            color: Colors.white,
+                            // size: 30,
+                          ),
+                        ),
                       ),
                       Positioned(
                         top: 50,

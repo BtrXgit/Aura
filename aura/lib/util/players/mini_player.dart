@@ -18,7 +18,6 @@ class EnlargedMiniPlayer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: null,
-      backgroundColor: Colors.black,
       body: GestureDetector(
         onHorizontalDragEnd: (DragEndDetails details) {
           if (details.primaryVelocity! > 0) {
@@ -55,7 +54,7 @@ class EnlargedMiniPlayer extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.08,
+                            height: MediaQuery.of(context).size.height * 0.04,
                           ),
                           Text(
                             'Playing From Playlist',
@@ -303,7 +302,19 @@ class EnlargedMiniPlayer extends StatelessWidget {
                         ],
                       ),
                       Positioned(
-                        top: 50,
+                        top: 30,
+                        left: 10,
+                        child: IconButton(
+                          onPressed: () => controller.showTimerDialog(context),
+                          icon: const Icon(
+                            Broken.timer_1,
+                            color: Colors.white,
+                            // size: 30,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 30,
                         right: 10,
                         child: IconButton(
                           icon: const Icon(

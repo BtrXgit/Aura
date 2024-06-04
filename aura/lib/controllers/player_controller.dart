@@ -405,14 +405,88 @@ class AuraPlayerController extends GetxController {
     }
   }
 
+  Future<void> showTimerDialog(BuildContext context) async {
+    int? selectedTime;
+
+    selectedTime = await showModalBottomSheet<int>(
+      context: context,
+      builder: (BuildContext context) {
+        List<Map<String, dynamic>> timerOptions = [
+          {'duration': 300, 'label': '5 Minutes'},
+          {'duration': 600, 'label': '10 Minutes'},
+          {'duration': 1800, 'label': '30 Minutes'},
+          {'duration': 3600, 'label': '1 Hour'},
+          {'duration': 7200, 'label': '2 Hours'},
+          {'duration': 18000, 'label': '5 Hours'},
+        ];
+
+        return Container(
+          decoration: BoxDecoration(
+            color: Color(0xFF131321),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Select Timer Duration',
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                ),
+              ),
+              Expanded(
+                child: ListView(
+                  children: timerOptions
+                      .map(
+                        (option) => ListTile(
+                          onTap: () {
+                            selectedTime = option['duration'];
+                            Navigator.of(context).pop(selectedTime);
+                          },
+                          tileColor: (selectedTime == option['duration'])
+                              ? Color(0xFF131321)
+                              : Colors.grey[800],
+                          title: Center(
+                            child: Text(
+                              option['label'],
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
+    if (selectedTime != null) {
+      stopTimer();
+      startTimer(selectedTime!);
+    }
+  }
+
   void startTimer(int durationInSeconds) {
     timer = Timer(Duration(seconds: durationInSeconds), () {
       audioPlayer.stop();
+      isPlaying.value = false;
     });
+
+    isPlaying.refresh();
   }
 
   void stopTimer() {
-    timer?.cancel();
+    if (timer != null && timer!.isActive) {
+      timer!.cancel();
+    }
+    isPlaying.refresh();
   }
 
   @override

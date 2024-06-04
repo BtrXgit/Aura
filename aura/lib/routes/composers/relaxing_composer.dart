@@ -157,7 +157,7 @@ class RelaxingComposerState extends State<RelaxingComposer> {
                         ),
                         child: FadeInImage(
                           placeholder: AssetImage(
-                              'assets/composer.gif'), // Placeholder image
+                              'assets/composer.gif'),
                           image: CachedNetworkImageProvider(
                               'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Composers%2Frelaxing.gif?alt=media&token=766d5a4b-f114-45c7-b7c0-2e0076c77386'),
                           fit: BoxFit.cover,

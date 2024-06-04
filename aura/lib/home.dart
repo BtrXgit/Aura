@@ -8,6 +8,7 @@ import 'package:aura/routes/settings/settings.dart';
 import 'package:aura/util/players/mainAuraPlayer.dart';
 import 'package:aura/util/players/mini_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -268,7 +269,7 @@ class AuraMiniPlayer extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             SizedBox(
-                              width: 4,
+                              width: 8,
                             ),
                             if (playerController.songs.isNotEmpty)
                               CachedNetworkImage(
@@ -281,7 +282,7 @@ class AuraMiniPlayer extends StatelessWidget {
                             else
                               Container(),
                             SizedBox(
-                              width: 4,
+                              width: 6,
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -310,9 +311,38 @@ class AuraMiniPlayer extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
-                              icon: Icon(Icons.favorite),
-                              onPressed: () {},
-                              color: Colors.red,
+                              onPressed: () async {
+                                final userId =
+                                    FirebaseAuth.instance.currentUser?.uid;
+                                if (userId != null) {
+                                  final song = playerController.songs[
+                                      playerController.currentIndex.value];
+                                  final imageUrl = song.imageUrl;
+                                  final songName = song.songName;
+                                  final artist = song.artist;
+                                  final songUrl = song.songUrl;
+
+                                  final isLiked = await playerController
+                                      .checkIfSongIsLiked(userId, songUrl);
+                                  playerController.isSongLiked.value = isLiked;
+
+                                  playerController.toggleLikeSong(
+                                    userId: userId,
+                                    imageUrl: imageUrl,
+                                    songName: songName,
+                                    artist: artist,
+                                    songUrl: songUrl,
+                                  );
+                                }
+                              },
+                              icon: Obx(() => Icon(
+                                    playerController.isSongLiked.value
+                                        ? IconlyBold.heart
+                                        : IconlyLight.heart,
+                                    color: playerController.isSongLiked.value
+                                        ? Colors.red
+                                        : Colors.white,
+                                  )),
                             ),
                             IconButton(
                               icon: Icon(playerController.isPlaying.value
