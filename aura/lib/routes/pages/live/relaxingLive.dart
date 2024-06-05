@@ -1,8 +1,12 @@
 import 'dart:async';
+import 'dart:math';
 import 'dart:ui';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:aura/data/songs.dart';
 import 'package:aura/util/players/mainAuraPlayer.dart';
+// ignore: unused_import
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -35,7 +39,8 @@ class _RelaxingLiveState extends State<RelaxingLive> {
       });
 
       if (relaxingLive.isNotEmpty) {
-        relaxingLive.shuffle();
+        var random = Random();
+        index = random.nextInt(relaxingLive.length);
 
         Timer(
           Duration(seconds: 5),
@@ -43,7 +48,7 @@ class _RelaxingLiveState extends State<RelaxingLive> {
             Get.off(
               AuraPlayer(
                 title: widget.title,
-                currentIndex: 0,
+                currentIndex: index,
                 songs: relaxingLive,
               ),
               transition: Transition.fadeIn,
@@ -54,8 +59,31 @@ class _RelaxingLiveState extends State<RelaxingLive> {
     });
   }
 
+  // Stream<QuerySnapshot> _getRelaxingLiveData() {
+  //   int randomLimit = Random().nextInt(51) + 50;
+
+  //   return _firestore
+  //       .collection('Liveplaylist')
+  //       .doc('Sleep')
+  //       .collection('sounds')
+  //       .limit(randomLimit)
+  //       .snapshots();
+  // }
+
   Stream<QuerySnapshot> _getRelaxingLiveData() {
-    return _firestore.collection('relaxingLive').snapshots();
+    // Define the range for the random limit
+    int minLimit = 10;
+    int maxLimit = 50;
+
+    // Generate a random limit within the specified range
+    int randomLimit = Random().nextInt(maxLimit - minLimit + 1) + minLimit;
+
+    return _firestore
+        .collection('Liveplaylist')
+        .doc('Relaxing')
+        .collection('sounds')
+        .limit(randomLimit)
+        .snapshots();
   }
 
   @override
@@ -67,11 +95,6 @@ class _RelaxingLiveState extends State<RelaxingLive> {
     );
     live = live.animate(adapter: ValueAdapter(0.5)).shimmer(
       colors: [
-        // const Color(0xFFFFFF00),
-        // const Color(0xFF00FF00),
-        // const Color(0xFF00FFFF),
-        // const Color(0xFF0033FF),
-        // const Color(0xFFFF00FF),
         const Color(0xFFFF0000),
         Colors.transparent,
       ],

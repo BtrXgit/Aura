@@ -32,10 +32,10 @@ class CustomStackCard extends StatelessWidget {
         width: containerWidth,
         // height: containerHeight,
         decoration: BoxDecoration(
-          // color: secondaryColor,
+          color: Theme.of(context).colorScheme.background,
           borderRadius: BorderRadius.circular(20),
           image: DecorationImage(
-            image: AssetImage('assets/style3.png'),
+            image: AssetImage('assets/st1.png'),
             fit: BoxFit.cover,
           ),
         ),

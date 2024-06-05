@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
 import 'package:just_audio_cache/just_audio_cache.dart';
+import 'package:newton_particles/newton_particles.dart';
 
 class EnlargedMiniPlayer extends StatelessWidget {
   final AuraPlayerController controller;
@@ -33,21 +34,62 @@ class EnlargedMiniPlayer extends StatelessWidget {
                     controller.currentIndex.value < controller.songs.length
                 ? Stack(
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: CachedNetworkImageProvider(
-                              controller.songs[controller.currentIndex.value]
-                                  .imageUrl,
+                      Positioned(
+                        top: MediaQuery.of(context).size.height * 0.45,
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: CachedNetworkImageProvider(
+                                controller.songs[controller.currentIndex.value]
+                                    .imageUrl,
+                              ),
+                              fit: BoxFit.cover,
                             ),
-                            fit: BoxFit.cover,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20),
+                            ),
+                          ),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: controller.dominantColor
+                                      ?.withOpacity(0.01),
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20),
+                                  )),
+                            ),
                           ),
                         ),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
-                          child: Container(
-                            color: Colors.black.withOpacity(0.2),
-                          ),
+                      ),
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.4,
+                          child: controller.isPlaying.value
+                              ? Newton(
+                                  activeEffects: [
+                                    RainEffect(
+                                      particleConfiguration:
+                                          ParticleConfiguration(
+                                        shape: CircleShape(),
+                                        size: const Size(5, 5),
+                                        color: const SingleParticleColor(
+                                            color: Colors.white),
+                                      ),
+                                      effectConfiguration:
+                                          const EffectConfiguration(),
+                                    )
+                                  ],
+                                )
+                              : null,
                         ),
                       ),
                       Column(
@@ -259,20 +301,36 @@ class EnlargedMiniPlayer extends StatelessWidget {
                                     color: Colors.white,
                                   ),
                                 ),
-                                IconButton(
-                                  onPressed: () {
-                                    if (controller.audioPlayer.playing) {
-                                      controller.audioPlayer.pause();
-                                    } else {
-                                      controller.audioPlayer.play();
-                                    }
-                                  },
-                                  icon: Icon(
-                                    controller.isPlaying.value
-                                        ? Broken.pause
-                                        : Broken.play,
-                                    size: 50,
-                                    color: Colors.white,
+                                Container(
+                                  width: 64,
+                                  height: 64,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.2),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        spreadRadius: 5,
+                                        blurRadius: 7,
+                                        offset: Offset(0, 3),
+                                      ),
+                                    ],
+                                  ),
+                                  child: IconButton(
+                                    onPressed: () {
+                                      if (controller.audioPlayer.playing) {
+                                        controller.audioPlayer.pause();
+                                      } else {
+                                        controller.audioPlayer.play();
+                                      }
+                                    },
+                                    icon: Icon(
+                                      controller.isPlaying.value
+                                          ? Broken.pause
+                                          : Broken.play,
+                                      size: 50,
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
                                 IconButton(

@@ -271,7 +271,9 @@ class AuraPlayerController extends GetxController {
     if (audioPlayer.playing) {
       audioPlayer.stop();
     }
+    // if (songs.isNotEmpty) {
     songs.clear();
+    // }
   }
 
   Future<void> initializePlayer() async {
@@ -489,9 +491,9 @@ class AuraPlayerController extends GetxController {
     isPlaying.refresh();
   }
 
-  @override
-  void onClose() {
-    timer?.cancel();
-    super.onClose();
-  }
+  // @override
+  // void onClose() {
+  //   timer?.cancel();
+  //   super.onClose();
+  // }
 }

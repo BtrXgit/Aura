@@ -254,149 +254,119 @@ class AuraMiniPlayer extends StatelessWidget {
             }
           },
           child: playerController.songs.isNotEmpty
-              ? Container(
-                  padding: EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: Colors.black87,
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: Column(mainAxisSize: MainAxisSize.min, children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SizedBox(
-                              width: 8,
-                            ),
-                            if (playerController.songs.isNotEmpty)
-                              CachedNetworkImage(
-                                width: 46,
-                                height: 46,
-                                imageUrl: playerController
-                                    .songs[playerController.currentIndex.value]
-                                    .imageUrl,
-                              )
-                            else
-                              Container(),
-                            SizedBox(
-                              width: 6,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  playerController
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(14),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                    child: Container(
+                      padding: EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: Colors.black87,
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: 8,
+                              ),
+                              if (playerController.songs.isNotEmpty)
+                                CachedNetworkImage(
+                                  width: 46,
+                                  height: 46,
+                                  imageUrl: playerController
                                       .songs[
                                           playerController.currentIndex.value]
-                                      .songName,
-                                  style: TextStyle(fontWeight: FontWeight.w700),
-                                ),
-                                Text(
-                                  playerController
-                                      .songs[
-                                          playerController.currentIndex.value]
-                                      .artist,
-                                  style: TextStyle(
-                                      color: Colors.white.withOpacity(0.5)),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              onPressed: () async {
-                                final userId =
-                                    FirebaseAuth.instance.currentUser?.uid;
-                                if (userId != null) {
-                                  final song = playerController.songs[
-                                      playerController.currentIndex.value];
-                                  final imageUrl = song.imageUrl;
-                                  final songName = song.songName;
-                                  final artist = song.artist;
-                                  final songUrl = song.songUrl;
+                                      .imageUrl,
+                                )
+                              else
+                                Container(),
+                              SizedBox(
+                                width: 6,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    playerController
+                                        .songs[
+                                            playerController.currentIndex.value]
+                                        .songName,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w700),
+                                  ),
+                                  Text(
+                                    playerController
+                                        .songs[
+                                            playerController.currentIndex.value]
+                                        .artist,
+                                    style: TextStyle(
+                                        color: Colors.white.withOpacity(0.5)),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                onPressed: () async {
+                                  final userId =
+                                      FirebaseAuth.instance.currentUser?.uid;
+                                  if (userId != null) {
+                                    final song = playerController.songs[
+                                        playerController.currentIndex.value];
+                                    final imageUrl = song.imageUrl;
+                                    final songName = song.songName;
+                                    final artist = song.artist;
+                                    final songUrl = song.songUrl;
 
-                                  final isLiked = await playerController
-                                      .checkIfSongIsLiked(userId, songUrl);
-                                  playerController.isSongLiked.value = isLiked;
+                                    final isLiked = await playerController
+                                        .checkIfSongIsLiked(userId, songUrl);
+                                    playerController.isSongLiked.value =
+                                        isLiked;
 
-                                  playerController.toggleLikeSong(
-                                    userId: userId,
-                                    imageUrl: imageUrl,
-                                    songName: songName,
-                                    artist: artist,
-                                    songUrl: songUrl,
-                                  );
-                                }
-                              },
-                              icon: Obx(() => Icon(
-                                    playerController.isSongLiked.value
-                                        ? IconlyBold.heart
-                                        : IconlyLight.heart,
-                                    color: playerController.isSongLiked.value
-                                        ? Colors.red
-                                        : Colors.white,
-                                  )),
-                            ),
-                            IconButton(
-                              icon: Icon(playerController.isPlaying.value
-                                  ? Icons.pause
-                                  : Icons.play_arrow),
-                              onPressed: () {
-                                playerController.isPlaying.value
-                                    ? playerController.audioPlayer.pause()
-                                    : playerController.audioPlayer.play();
-                              },
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Spacer(),
-                    StreamBuilder<Duration>(
-                        stream: playerController.audioPlayer.positionStream,
-                        builder: (context, snapshot) {
-                          final position = snapshot.data ?? Duration.zero;
-                          final duration =
-                              playerController.audioPlayer.duration ??
-                                  Duration.zero;
-                          return SliderTheme(
-                            data: SliderTheme.of(context).copyWith(
-                              activeTrackColor: playerController.dominantColor!
-                                  .withOpacity(0.4),
-                              inactiveTrackColor: Colors.white.withOpacity(0.4),
-                              thumbColor: playerController.dominantColor!
-                                  .withOpacity(0.4),
-                              overlayColor: Colors.blue.withOpacity(0.3),
-                              valueIndicatorColor: Colors.blue,
-                              thumbShape: const RoundSliderThumbShape(
-                                  enabledThumbRadius: 0.0),
-                              overlayShape: const RoundSliderOverlayShape(
-                                  overlayRadius: 0.0),
-                              valueIndicatorShape:
-                                  const PaddleSliderValueIndicatorShape(),
-                              valueIndicatorTextStyle: const TextStyle(
+                                    playerController.toggleLikeSong(
+                                      userId: userId,
+                                      imageUrl: imageUrl,
+                                      songName: songName,
+                                      artist: artist,
+                                      songUrl: songUrl,
+                                    );
+                                  }
+                                },
+                                icon: Obx(() => Icon(
+                                      playerController.isSongLiked.value
+                                          ? IconlyBold.heart
+                                          : IconlyLight.heart,
+                                      color: playerController.isSongLiked.value
+                                          ? Colors.red
+                                          : Colors.white,
+                                    )),
+                              ),
+                              IconButton(
+                                icon: Icon(playerController.isPlaying.value
+                                    ? Icons.pause
+                                    : Icons.play_arrow),
+                                onPressed: () {
+                                  playerController.isPlaying.value
+                                      ? playerController.audioPlayer.pause()
+                                      : playerController.audioPlayer.play();
+                                },
                                 color: Colors.white,
                               ),
-                            ),
-                            child: Slider(
-                              value: position.inSeconds.toDouble(),
-                              max: duration.inSeconds.toDouble(),
-                              onChanged: (value) {
-                                // playerController.audioPlayer.seek(
-                                //     Duration(seconds: value.toInt()));
-                              },
-                            ),
-                          );
-                        }),
-                  ]),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 )
               : null,
         ),
@@ -750,62 +720,52 @@ class _BottomBarState extends State<BottomBar>
                         ),
                     padding: EdgeInsets.zero,
                     margin: EdgeInsets.zero,
-                    child: ClipRRect(
-                      borderRadius: widget.borderRadius,
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                        child: ClipOval(
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () {
-                                scrollBottomBarController
-                                    .animateTo(
-                                  (!widget.scrollOpposite)
-                                      ? scrollBottomBarController
-                                          .position.minScrollExtent
-                                      : scrollBottomBarController
-                                          .position.maxScrollExtent,
-                                  duration: widget.duration,
-                                  curve: widget.curve,
-                                )
-                                    .then((value) {
-                                  if (mounted) {
-                                    setState(() {
-                                      isOnTop = true;
-                                      isScrollingDown = false;
-                                    });
-                                  }
-                                  showBottomBar();
+                    child: ClipOval(
+                      child: Material(
+                        color: Theme.of(context).colorScheme.background,
+                        child: InkWell(
+                          onTap: () {
+                            scrollBottomBarController
+                                .animateTo(
+                              (!widget.scrollOpposite)
+                                  ? scrollBottomBarController
+                                      .position.minScrollExtent
+                                  : scrollBottomBarController
+                                      .position.maxScrollExtent,
+                              duration: widget.duration,
+                              curve: widget.curve,
+                            )
+                                .then((value) {
+                              if (mounted) {
+                                setState(() {
+                                  isOnTop = true;
+                                  isScrollingDown = false;
                                 });
-                              },
-                              child: () {
-                                if (widget.icon != null) {
-                                  return widget.icon!(
-                                      isOnTop == true
-                                          ? 0
-                                          : widget.iconWidth / 2,
-                                      isOnTop == true
-                                          ? 0
-                                          : widget.iconHeight / 2);
-                                } else {
-                                  return Center(
-                                    child: IconButton(
-                                      padding: EdgeInsets.zero,
-                                      onPressed: null,
-                                      icon: Icon(
-                                        Icons.arrow_upward_rounded,
-                                        color: Color(0xff131321),
-                                        size: isOnTop == true
-                                            ? 0
-                                            : widget.iconWidth / 2,
-                                      ),
-                                    ),
-                                  );
-                                }
-                              }(),
-                            ),
-                          ),
+                              }
+                              showBottomBar();
+                            });
+                          },
+                          child: () {
+                            if (widget.icon != null) {
+                              return widget.icon!(
+                                  isOnTop == true ? 0 : widget.iconWidth / 2,
+                                  isOnTop == true ? 0 : widget.iconHeight / 2);
+                            } else {
+                              return Center(
+                                child: IconButton(
+                                  padding: EdgeInsets.zero,
+                                  onPressed: null,
+                                  icon: Icon(
+                                    Icons.arrow_upward_rounded,
+                                    color: Color(0xff131321),
+                                    size: isOnTop == true
+                                        ? 0
+                                        : widget.iconWidth / 2,
+                                  ),
+                                ),
+                              );
+                            }
+                          }(),
                         ),
                       ),
                     ),

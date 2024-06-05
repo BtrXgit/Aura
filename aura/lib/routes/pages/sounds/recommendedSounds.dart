@@ -165,8 +165,9 @@ class _RecommendedSoundsPageState extends State<RecommendedSoundsPage> {
             child: Container(
               height: MediaQuery.of(context).size.height * 0.24,
               decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.background,
                 image: DecorationImage(
-                  image: AssetImage('assets/style2.png'),
+                  image: AssetImage('assets/st1.png'),
                   fit: BoxFit.cover,
                 ),
                 borderRadius: BorderRadius.circular(14),

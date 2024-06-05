@@ -187,9 +187,9 @@ class _MeditationHomeState extends State<MeditationHome> {
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height * 0.075,
                       decoration: BoxDecoration(
-                        // color: Colors.transparent,
+                        color: Theme.of(context).colorScheme.background,
                         image: DecorationImage(
-                          image: AssetImage('assets/style3.png'),
+                          image: AssetImage('assets/st1.png'),
                           fit: BoxFit.cover,
                         ),
                         borderRadius: BorderRadius.only(
@@ -327,9 +327,9 @@ class _MeditationHomeState extends State<MeditationHome> {
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height * 0.075,
                       decoration: BoxDecoration(
-                        // color: Colors.transparent,
+                        color: Theme.of(context).colorScheme.background,
                         image: DecorationImage(
-                          image: AssetImage('assets/style3.png'),
+                          image: AssetImage('assets/st1.png'),
                           fit: BoxFit.cover,
                         ),
                         borderRadius: BorderRadius.only(

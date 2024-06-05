@@ -1,4 +1,5 @@
 import 'package:aura/firebase_options.dart';
+import 'package:aura/get_upload.dart';
 import 'package:aura/themes/themes.dart';
 import 'package:aura/util/splash/splash.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
       theme: darkTheme,
       darkTheme: darkTheme,
       home: isFirstLaunch ? SplashScreen() : SplashScreen(),
+      // home: GetAndUpload(),
       // home: isFirstLaunch ? HomePage() : HomePage(),
     );
   }

@@ -213,7 +213,10 @@ class AuraHomePage extends StatelessWidget {
                       height: 180,
                       width: 150,
                       decoration: BoxDecoration(
-                        color: const Color(0xFF1F1F36),
+                        color: Theme.of(context).colorScheme.background,
+                        image: DecorationImage(
+                            image: AssetImage('assets/st2.png'),
+                            fit: BoxFit.cover),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Center(
@@ -327,9 +330,11 @@ class AuraHomePage extends StatelessWidget {
                                     height: MediaQuery.of(context).size.height *
                                         0.075,
                                     decoration: BoxDecoration(
-                                      // color: Colors.transparent,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .background,
                                       image: DecorationImage(
-                                        image: AssetImage('assets/style3.png'),
+                                        image: AssetImage('assets/st2.png'),
                                         fit: BoxFit.cover,
                                       ),
                                       borderRadius: BorderRadius.only(
@@ -394,10 +399,13 @@ class AuraHomePage extends StatelessWidget {
                     },
                     child: Container(
                       margin: EdgeInsets.only(left: 18),
-                      height: 120,
-                      width: 120,
+                      height: 100,
+                      width: 100,
                       decoration: BoxDecoration(
-                        color: const Color(0xFF1F1F36),
+                        color: Theme.of(context).colorScheme.background,
+                        image: DecorationImage(
+                            image: AssetImage('assets/st2.png'),
+                            fit: BoxFit.cover),
                         shape: BoxShape.circle,
                       ),
                       child: Center(
@@ -553,9 +561,9 @@ class AuraHomePage extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.06,
               decoration: BoxDecoration(
-                // color: Colors.transparent,
+                color: Theme.of(context).colorScheme.background,
                 image: DecorationImage(
-                  image: AssetImage('assets/style3.png'),
+                  image: AssetImage('assets/st2.png'),
                   fit: BoxFit.cover,
                 ),
                 borderRadius: BorderRadius.only(

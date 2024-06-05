@@ -153,10 +153,9 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
             child: Container(
               height: MediaQuery.of(context).size.height * 0.24,
               decoration: BoxDecoration(
-                  // color: const Color(0xFF1F1F36),
+                  color: Theme.of(context).colorScheme.background,
                   image: DecorationImage(
-                      image: AssetImage('assets/style3.png'),
-                      fit: BoxFit.cover),
+                      image: AssetImage('assets/st1.png'), fit: BoxFit.cover),
                   borderRadius: BorderRadius.circular(14)),
               margin: EdgeInsets.symmetric(vertical: 6.0),
               child: Row(

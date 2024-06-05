@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:aura/data/songs.dart';
 import 'package:aura/util/players/mainAuraPlayer.dart';
@@ -31,7 +32,7 @@ class _FocusLiveState extends State<FocusLive> {
   @override
   void initState() {
     super.initState();
-    _getRelaxingLiveData().listen((snapshot) {
+    _getFocusLiveData().listen((snapshot) {
       setState(() {
         relaxingLive =
             snapshot.docs.map((doc) => Song.fromFirestore(doc)).toList();
@@ -58,8 +59,31 @@ class _FocusLiveState extends State<FocusLive> {
     });
   }
 
-  Stream<QuerySnapshot> _getRelaxingLiveData() {
-    return _firestore.collection('focusLive').snapshots();
+  // Stream<QuerySnapshot> _getFocusLiveData() {
+  //   int randomLimit = Random().nextInt(51) + 50;
+
+  //   return _firestore
+  //       .collection('Liveplaylist')
+  //       .doc('Sleep')
+  //       .collection('sounds')
+  //       .limit(randomLimit)
+  //       .snapshots();
+  // }
+
+  Stream<QuerySnapshot> _getFocusLiveData() {
+    // Define the range for the random limit
+    int minLimit = 10;
+    int maxLimit = 50;
+
+    // Generate a random limit within the specified range
+    int randomLimit = Random().nextInt(maxLimit - minLimit + 1) + minLimit;
+
+    return _firestore
+        .collection('Liveplaylist')
+        .doc('Focus')
+        .collection('sounds')
+        .limit(randomLimit)
+        .snapshots();
   }
 
   @override
@@ -71,11 +95,6 @@ class _FocusLiveState extends State<FocusLive> {
     );
     live = live.animate(adapter: ValueAdapter(0.5)).shimmer(
       colors: [
-        // const Color(0xFFFFFF00),
-        // const Color(0xFF00FF00),
-        // const Color(0xFF00FFFF),
-        // const Color(0xFF0033FF),
-        // const Color(0xFFFF00FF),
         const Color(0xFFFF0000),
         Colors.transparent,
       ],
