@@ -2,6 +2,7 @@ import 'package:aura/authentication/services/admob_service.dart';
 import 'package:aura/component/native_ad.dart';
 import 'package:aura/controllers/ad_controller.dart';
 import 'package:aura/services/admob_service.dart';
+import 'package:aura/subscription/subscription.dart';
 import 'package:aura/util/players/soundsPlayer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,8 @@ class NoisesPage extends StatefulWidget {
 }
 
 class _NoisesPageState extends State<NoisesPage> {
+  final SubscriptionController subscriptionController =
+      Get.put(SubscriptionController());
   List<String> noisesImage = [
     'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FImages%2Fwhite.jpg?alt=media&token=9af3e878-629c-43b4-af8f-487c3b1f14d0',
     'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Homepage%2FNoises%2FImages%2Fpink.jpg?alt=media&token=34a50113-949c-4942-aadb-7c3236f4a55c',
@@ -92,7 +95,9 @@ class _NoisesPageState extends State<NoisesPage> {
   @override
   void initState() {
     super.initState();
-    loadNativeAd();
+    if (!subscriptionController.isSubscribed.value) {
+      loadNativeAd();
+    }
   }
 
   @override
@@ -109,14 +114,16 @@ class _NoisesPageState extends State<NoisesPage> {
       ),
       backgroundColor: const Color(0xFF131321),
       body: _buildPlaylistListView(),
-      bottomNavigationBar: adController.bannerAd != null
-          ? Container(
-              alignment: Alignment.center,
-              child: AdWidget(ad: adController.bannerAd!),
-              width: adController.bannerAd!.size.width.toDouble(),
-              height: adController.bannerAd!.size.height.toDouble(),
-            )
-          : null,
+      bottomNavigationBar: subscriptionController.isSubscribed.value
+          ? null
+          : adController.bannerAd != null
+              ? Container(
+                  alignment: Alignment.center,
+                  child: AdWidget(ad: adController.bannerAd!),
+                  width: adController.bannerAd!.size.width.toDouble(),
+                  height: adController.bannerAd!.size.height.toDouble(),
+                )
+              : null,
     );
   }
 

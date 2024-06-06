@@ -6,6 +6,7 @@ import 'package:aura/controllers/ad_controller.dart';
 import 'package:aura/data/songs.dart';
 import 'package:aura/routes/pages/playlists/playlists_songs.dart';
 import 'package:aura/services/admob_service.dart';
+import 'package:aura/subscription/subscription.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -26,11 +27,15 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
   SharedPreferences? _preferences;
   late StreamController<List<Song>> _playlistsController;
   final adController = Get.put(AdController());
+  final SubscriptionController subscriptionController =
+      Get.put(SubscriptionController());
 
   @override
   void initState() {
     super.initState();
-    loadNativeAd();
+    if (!subscriptionController.isSubscribed.value) {
+      loadNativeAd();
+    }
     _initPreferences();
     _playlistsController = StreamController<List<Song>>();
     _fetchPlaylists();
@@ -95,7 +100,7 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
         ),
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
-      bottomNavigationBar: adController.playersBannerAd != null
+      bottomNavigationBar: subscriptionController.isSubscribed.value ? null : adController.playersBannerAd != null
           ? Container(
               alignment: Alignment.center,
               child: AdWidget(ad: adController.playersBannerAd!),

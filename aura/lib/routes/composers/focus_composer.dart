@@ -4,7 +4,9 @@ import 'package:aura/authentication/services/admob_service.dart';
 import 'package:aura/component/native_ad.dart';
 import 'package:aura/core/broken_icons.dart';
 import 'package:aura/services/admob_service.dart';
+import 'package:aura/subscription/subscription.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 // ignore: unused_import
@@ -22,6 +24,9 @@ class FocusComposer extends StatefulWidget {
 }
 
 class FocusComposerState extends State<FocusComposer> {
+  final SubscriptionController subscriptionController =
+      Get.put(SubscriptionController());
+
   int playingAudioCount = 0;
   final List<AudioPlayer> natureaudioPlayer =
       List.generate(5, (index) => AudioPlayer());
@@ -42,7 +47,9 @@ class FocusComposerState extends State<FocusComposer> {
   @override
   void initState() {
     super.initState();
-    loadNativeAd();
+    if (!subscriptionController.isSubscribed.value) {
+      loadNativeAd();
+    }
     _loadAllAudios();
     _timer = null;
   }

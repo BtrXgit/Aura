@@ -6,6 +6,7 @@ import 'package:aura/controllers/player_controller.dart';
 import 'package:aura/core/broken_icons.dart';
 import 'package:aura/data/songs.dart';
 import 'package:aura/liveChat/chat_test.dart';
+import 'package:aura/subscription/subscription.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,6 +18,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:iconly/iconly.dart';
 import 'package:just_audio_cache/just_audio_cache.dart';
 import 'package:newton_particles/newton_particles.dart';
+import 'package:text_scroll/text_scroll.dart';
 
 class AuraPlayer extends StatelessWidget {
   final int currentIndex;
@@ -34,6 +36,7 @@ class AuraPlayer extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(AuraPlayerController());
     final adController = Get.put(AdController());
+    final subscriptionController = Get.put(SubscriptionController());
     if (controller.songs.isNotEmpty) {
       controller.stopAndClear();
     }
@@ -48,14 +51,16 @@ class AuraPlayer extends StatelessWidget {
     return Scaffold(
       appBar: null,
       backgroundColor: Colors.black,
-      bottomNavigationBar: adController.bannerAd != null
-          ? Container(
-              alignment: Alignment.center,
-              child: AdWidget(ad: adController.bannerAd!),
-              width: adController.bannerAd!.size.width.toDouble(),
-              height: adController.bannerAd!.size.height.toDouble(),
-            )
-          : null,
+      bottomNavigationBar: subscriptionController.isSubscribed.value
+          ? null
+          : adController.bannerAd != null
+              ? Container(
+                  alignment: Alignment.center,
+                  child: AdWidget(ad: adController.bannerAd!),
+                  width: adController.bannerAd!.size.width.toDouble(),
+                  height: adController.bannerAd!.size.height.toDouble(),
+                )
+              : null,
       body: GestureDetector(
         onHorizontalDragEnd: (DragEndDetails details) {
           if (details.primaryVelocity! > 0) {
@@ -211,24 +216,62 @@ class AuraPlayer extends StatelessWidget {
                               //           : Colors.white,
                               //     )),
                             ),
-                            title: Text(
-                              controller.songs[controller.currentIndex.value]
-                                  .songName,
-                              style: GoogleFonts.openSans(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 22,
-                              ),
-                            ),
-                            subtitle: Text(
-                              controller
-                                  .songs[controller.currentIndex.value].artist,
-                              style: GoogleFonts.openSans(
-                                color: Colors.white,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 18,
-                              ),
-                            ),
+                            title: controller
+                                        .songs[controller.currentIndex.value]
+                                        .songName
+                                        .length >
+                                    10
+                                ? TextScroll(
+                                    controller
+                                        .songs[controller.currentIndex.value]
+                                        .songName,
+                                    intervalSpaces: 10,
+                                    velocity: Velocity(
+                                        pixelsPerSecond: Offset(40, 0)),
+                                    style: GoogleFonts.openSans(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 22,
+                                    ),
+                                  )
+                                : Text(
+                                    controller
+                                        .songs[controller.currentIndex.value]
+                                        .songName,
+                                    style: GoogleFonts.openSans(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 22,
+                                    ),
+                                  ),
+                            subtitle: controller
+                                        .songs[controller.currentIndex.value]
+                                        .artist
+                                        .length >
+                                    10
+                                ? TextScroll(
+                                    controller
+                                        .songs[controller.currentIndex.value]
+                                        .artist,
+                                    intervalSpaces: 10,
+                                    velocity: Velocity(
+                                        pixelsPerSecond: Offset(40, 0)),
+                                    style: GoogleFonts.openSans(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 18,
+                                    ),
+                                  )
+                                : Text(
+                                    controller
+                                        .songs[controller.currentIndex.value]
+                                        .artist,
+                                    style: GoogleFonts.openSans(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 18,
+                                    ),
+                                  ),
                           ),
                         ),
                         Padding(

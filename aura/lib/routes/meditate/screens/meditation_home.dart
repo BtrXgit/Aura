@@ -2,7 +2,9 @@ import 'package:aura/authentication/services/admob_service.dart';
 import 'package:aura/component/native_ad.dart';
 import 'package:aura/routes/meditate/screens/techniques/fourseven/four_seven_eight.dart';
 import 'package:aura/services/admob_service.dart';
+import 'package:aura/subscription/subscription.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'techniques/seven_eleven.dart';
 import 'dart:ui';
@@ -20,10 +22,14 @@ class MeditationHome extends StatefulWidget {
 }
 
 class _MeditationHomeState extends State<MeditationHome> {
+  final SubscriptionController subscriptionController =
+      Get.put(SubscriptionController());
   @override
   void initState() {
     super.initState();
-    loadNativeAd();
+    if (!subscriptionController.isSubscribed.value) {
+      loadNativeAd();
+    }
   }
 
   NativeAd? _nativeAd;

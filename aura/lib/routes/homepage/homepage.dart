@@ -47,6 +47,8 @@ class AuraHomePage extends StatelessWidget {
     final backgroundImage = Components.getImageAsset(greeting);
     final relaxingImage = auraHomeController.randomRelaxingImage(greeting);
     final focusImage = auraHomeController.randomFocusImage(greeting);
+
+    final adController = Get.put(AdController());
     return SingleChildScrollView(
       controller: controller,
       physics: const ClampingScrollPhysics(),
@@ -209,8 +211,16 @@ class AuraHomePage extends StatelessWidget {
                 if (index == auraHomeController.recommendedSounds.length) {
                   return GestureDetector(
                     onTap: () {
-                      Get.to(RecommendedSoundsPage(),
-                          transition: Transition.rightToLeftWithFade);
+                      if (subscriptionController.isSubscribed.value) {
+                        Get.to(RecommendedSoundsPage(),
+                            transition: Transition.rightToLeftWithFade);
+                      } else {
+                        adController.showSubscriptionDialog(
+                          context,
+                          onComplete: () => Get.to(RecommendedSoundsPage(),
+                              transition: Transition.rightToLeftWithFade),
+                        );
+                      }
                     },
                     child: Container(
                       margin: EdgeInsets.only(left: 18),
@@ -290,26 +300,67 @@ class AuraHomePage extends StatelessWidget {
                           return GestureDetector(
                             onTap: () {
                               if (index == 0) {
-                                Get.to(
-                                    const RelaxingLive(
-                                      title: 'Relaxing Live',
-                                      imageUrl: 'assets/relaxingLive.jpg',
+                                if (subscriptionController.isSubscribed.value) {
+                                  Get.to(
+                                      const RelaxingLive(
+                                        title: 'Relaxing Live',
+                                        imageUrl: 'assets/relaxingLive.jpg',
+                                      ),
+                                      transition:
+                                          Transition.rightToLeftWithFade);
+                                } else {
+                                  adController.showSubscriptionDialog(
+                                    context,
+                                    onComplete: () => Get.to(
+                                      const RelaxingLive(
+                                        title: 'Relaxing Live',
+                                        imageUrl: 'assets/relaxingLive.jpg',
+                                      ),
                                     ),
-                                    transition: Transition.rightToLeftWithFade);
+                                  );
+                                }
                               } else if (index == 1) {
-                                Get.to(
-                                    const FocusLive(
-                                      title: 'Focus Live',
-                                      imageUrl: 'assets/studyLive.jpg',
-                                    ),
-                                    transition: Transition.rightToLeftWithFade);
+                                if (subscriptionController.isSubscribed.value) {
+                                  Get.to(
+                                      const FocusLive(
+                                        title: 'Focus Live',
+                                        imageUrl: 'assets/studyLive.jpg',
+                                      ),
+                                      transition:
+                                          Transition.rightToLeftWithFade);
+                                } else {
+                                  adController.showSubscriptionDialog(
+                                    context,
+                                    onComplete: () => Get.to(
+                                        const FocusLive(
+                                          title: 'Focus Live',
+                                          imageUrl: 'assets/studyLive.jpg',
+                                        ),
+                                        transition:
+                                            Transition.rightToLeftWithFade),
+                                  );
+                                }
                               } else if (index == 2) {
-                                Get.to(
-                                    const SleepLive(
-                                      title: 'Sleep Live',
-                                      imageUrl: 'assets/sleepingLive.jpg',
-                                    ),
-                                    transition: Transition.rightToLeftWithFade);
+                                if (subscriptionController.isSubscribed.value) {
+                                  Get.to(
+                                      const SleepLive(
+                                        title: 'Sleep Live',
+                                        imageUrl: 'assets/sleepingLive.jpg',
+                                      ),
+                                      transition:
+                                          Transition.rightToLeftWithFade);
+                                } else {
+                                  adController.showSubscriptionDialog(
+                                    context,
+                                    onComplete: () => Get.to(
+                                        const SleepLive(
+                                          title: 'Sleep Live',
+                                          imageUrl: 'assets/sleepingLive.jpg',
+                                        ),
+                                        transition:
+                                            Transition.rightToLeftWithFade),
+                                  );
+                                }
                               }
                             },
                             child: Stack(
@@ -398,8 +449,16 @@ class AuraHomePage extends StatelessWidget {
                 if (int == auraHomeController.noises.length) {
                   return GestureDetector(
                     onTap: () {
-                      Get.to(NoisesPage(),
-                          transition: Transition.rightToLeftWithFade);
+                      if (subscriptionController.isSubscribed.value) {
+                        Get.to(NoisesPage(),
+                            transition: Transition.rightToLeftWithFade);
+                      } else {
+                        adController.showSubscriptionDialog(
+                          context,
+                          onComplete: () => Get.to(NoisesPage(),
+                              transition: Transition.rightToLeftWithFade),
+                        );
+                      }
                     },
                     child: Container(
                       margin: EdgeInsets.only(left: 18),
@@ -434,6 +493,13 @@ class AuraHomePage extends StatelessWidget {
               },
             ),
           ),
+          SizedBox(
+            height: 10,
+          ),
+
+          (subscriptionController.isSubscribed.value)
+              ? Container()
+              : adController.buildNativeAdWidget(),
 
           //title: - Music
           //subtitle: - Melodies that touch the soul
@@ -443,9 +509,18 @@ class AuraHomePage extends StatelessWidget {
               title: 'Relaxing 🍃',
               scrollText: 'Relaxing Sound | Beats to Relax | Beats to chill.'),
           GestureDetector(
-              onTap: () => Get.to(PlaylistsPage(
+              onTap: () {
+                if (subscriptionController.isSubscribed.value) {
+                  Get.to(PlaylistsPage(
                     category: 'relaxing',
-                  )),
+                  ));
+                } else {
+                  adController.showInterstitialAd();
+                  Get.to(PlaylistsPage(
+                    category: 'relaxing',
+                  ));
+                }
+              },
               child: _buildHomepageCategory(
                 context,
                 imageLink: relaxingImage,
@@ -454,9 +529,18 @@ class AuraHomePage extends StatelessWidget {
               title: 'Focus 📚',
               scrollText: 'Lofi | Beats to Focus | Beats to study.'),
           GestureDetector(
-            onTap: () => Get.to(PlaylistsPage(
-              category: 'focus',
-            )),
+            onTap: () {
+              if (subscriptionController.isSubscribed.value) {
+                Get.to(PlaylistsPage(
+                  category: 'focus',
+                ));
+              } else {
+                adController.showInterstitialAd();
+                Get.to(PlaylistsPage(
+                  category: 'focus',
+                ));
+              }
+            },
             child: _buildHomepageCategory(context, imageLink: focusImage),
           ),
           _ScrollText(
@@ -464,9 +548,18 @@ class AuraHomePage extends StatelessWidget {
               scrollText:
                   'Ambient Sound | Beats to relax | Beats to work | Beats to sleep.'),
           GestureDetector(
-            onTap: () => Get.to(PlaylistsPage(
-              category: 'calm and cozy',
-            )),
+            onTap: () {
+              if (subscriptionController.isSubscribed.value) {
+                Get.to(PlaylistsPage(
+                  category: 'calm and cozy',
+                ));
+              } else {
+                adController.showInterstitialAd();
+                Get.to(PlaylistsPage(
+                  category: 'calm and cozy',
+                ));
+              }
+            },
             child: _buildHomepageCategory(context,
                 imageLink: auraHomeController.homepageCategory[0]),
           ),
@@ -481,9 +574,18 @@ class AuraHomePage extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            onTap: () => Get.to(PlaylistsPage(
-              category: 'chillwave',
-            )),
+            onTap: () {
+              if (subscriptionController.isSubscribed.value) {
+                Get.to(PlaylistsPage(
+                  category: 'chillwave',
+                ));
+              } else {
+                adController.showInterstitialAd();
+                Get.to(PlaylistsPage(
+                  category: 'chillwave',
+                ));
+              }
+            },
             child: _buildHomepageCategory(context,
                 imageLink: auraHomeController.homepageCategory[1]),
           ),
@@ -498,9 +600,17 @@ class AuraHomePage extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            onTap: () => Get.to(PlaylistsPage(
-              category: 'lofi sad',
-            )),
+            onTap: () {
+              if (subscriptionController.isSubscribed.value) {
+                Get.to(PlaylistsPage(
+                  category: 'lofi sad',
+                ));
+              } else {
+                Get.to(PlaylistsPage(
+                  category: 'lofi sad',
+                ));
+              }
+            },
             child: _buildHomepageCategory(context,
                 imageLink: auraHomeController.homepageCategory[2]),
           ),
@@ -515,9 +625,17 @@ class AuraHomePage extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            onTap: () => Get.to(PlaylistsPage(
-              category: 'lofi hiphop',
-            )),
+            onTap: () {
+              if (subscriptionController.isSubscribed.value) {
+                Get.to(PlaylistsPage(
+                  category: 'lofi hiphop',
+                ));
+              } else {
+                Get.to(PlaylistsPage(
+                  category: 'lofi hiphop',
+                ));
+              }
+            },
             child: _buildHomepageCategory(context,
                 imageLink: auraHomeController.homepageCategory[3]),
           ),

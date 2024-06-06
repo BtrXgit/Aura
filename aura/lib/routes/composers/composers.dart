@@ -1,9 +1,11 @@
 import 'dart:ui';
 import 'package:aura/authentication/services/admob_service.dart';
 import 'package:aura/component/native_ad.dart';
+import 'package:aura/controllers/ad_controller.dart';
 import 'package:aura/routes/composers/relaxing_composer.dart';
 import 'package:aura/routes/composers/focus_composer.dart';
 import 'package:aura/services/admob_service.dart';
+import 'package:aura/subscription/subscription.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,17 +24,22 @@ class AuraComposers extends StatefulWidget {
 }
 
 class _AuraComposersState extends State<AuraComposers> {
+  final SubscriptionController subscriptionController =
+      Get.put(SubscriptionController());
+
   @override
   void initState() {
     super.initState();
-    loadNativeAd();
+    if (!subscriptionController.isSubscribed.value) {
+      loadNativeAd();
+    }
   }
 
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   _nativeAd?.dispose();
-  // }
+  @override
+  void dispose() {
+    super.dispose();
+    _nativeAd?.dispose();
+  }
 
   NativeAd? _nativeAd;
   bool _nativeAdIsLoaded = false;
@@ -75,6 +82,7 @@ class _AuraComposersState extends State<AuraComposers> {
 
   @override
   Widget build(BuildContext context) {
+    final adController = Get.find<AdController>();
     return Scaffold(
       backgroundColor: Color(0xff131321),
       body: SingleChildScrollView(
@@ -179,7 +187,14 @@ class _AuraComposersState extends State<AuraComposers> {
               height: 10,
             ),
             InkWell(
-              onTap: () => Get.to(RelaxingComposer()),
+              onTap: () => subscriptionController.isSubscribed.value
+                  ? Get.to(RelaxingComposer())
+                  : adController.showSubscriptionDialog(
+                      context,
+                      onComplete: () => Get.to(
+                        RelaxingComposer(),
+                      ),
+                    ),
               child: Stack(
                 children: [
                   Container(
@@ -236,7 +251,14 @@ class _AuraComposersState extends State<AuraComposers> {
               height: 10,
             ),
             InkWell(
-              onTap: () => Get.to(FocusComposer()),
+              onTap: () => subscriptionController.isSubscribed.value
+                  ? Get.to(FocusComposer())
+                  : adController.showSubscriptionDialog(
+                      context,
+                      onComplete: () => Get.to(
+                        FocusComposer(),
+                      ),
+                    ),
               child: Stack(
                 children: [
                   Container(

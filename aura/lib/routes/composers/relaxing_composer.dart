@@ -5,8 +5,10 @@ import 'package:aura/component/native_ad.dart';
 import 'package:aura/core/broken_icons.dart';
 import 'package:aura/data/composer_data/relaxing_composer.dart';
 import 'package:aura/services/admob_service.dart';
+import 'package:aura/subscription/subscription.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 // ignore: unused_import
@@ -21,6 +23,9 @@ class RelaxingComposer extends StatefulWidget {
 }
 
 class RelaxingComposerState extends State<RelaxingComposer> {
+  final SubscriptionController subscriptionController =
+      Get.put(SubscriptionController());
+
   int playingAudioCount = 0;
   final List<AudioPlayer> natureaudioPlayer =
       List.generate(6, (index) => AudioPlayer());
@@ -41,7 +46,9 @@ class RelaxingComposerState extends State<RelaxingComposer> {
   @override
   void initState() {
     super.initState();
-    loadNativeAd();
+    if (!subscriptionController.isSubscribed.value) {
+      loadNativeAd();
+    }
     _loadAllAudios();
     _timer = null;
   }

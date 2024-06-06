@@ -2,6 +2,7 @@ import 'package:aura/authentication/services/admob_service.dart';
 import 'package:aura/component/native_ad.dart';
 import 'package:aura/controllers/ad_controller.dart';
 import 'package:aura/services/admob_service.dart';
+import 'package:aura/subscription/subscription.dart';
 import 'package:aura/util/players/soundsPlayer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -10,13 +11,15 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:iconly/iconly.dart';
 
 class RecommendedSoundsPage extends StatefulWidget {
-  const RecommendedSoundsPage({super.key});
+  RecommendedSoundsPage({super.key});
 
   @override
   State<RecommendedSoundsPage> createState() => _RecommendedSoundsPageState();
 }
 
 class _RecommendedSoundsPageState extends State<RecommendedSoundsPage> {
+  final SubscriptionController subscriptionController =
+      Get.put(SubscriptionController());
   List<String> recommendedImageUrl = [
     'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRecommended%20Sounds%2Focean.jpg?alt=media&token=687073b1-be9f-4bf0-9f9f-379b60a59969',
     'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRecommended%20Sounds%2Fbirdsong.jpg?alt=media&token=3273f108-27d8-4ad1-b96b-ddc845fe8407',
@@ -104,7 +107,9 @@ class _RecommendedSoundsPageState extends State<RecommendedSoundsPage> {
   @override
   void initState() {
     super.initState();
-    loadNativeAd();
+    if (!subscriptionController.isSubscribed.value) {
+      loadNativeAd();
+    }
   }
 
   @override
@@ -121,14 +126,16 @@ class _RecommendedSoundsPageState extends State<RecommendedSoundsPage> {
       ),
       backgroundColor: const Color(0xFF131321),
       body: _buildPlaylistListView(),
-      bottomNavigationBar: adController.bannerAd != null
-          ? Container(
-              alignment: Alignment.center,
-              child: AdWidget(ad: adController.bannerAd!),
-              width: adController.bannerAd!.size.width.toDouble(),
-              height: adController.bannerAd!.size.height.toDouble(),
-            )
-          : null,
+      bottomNavigationBar: subscriptionController.isSubscribed.value
+          ? null
+          : adController.bannerAd != null
+              ? Container(
+                  alignment: Alignment.center,
+                  child: AdWidget(ad: adController.bannerAd!),
+                  width: adController.bannerAd!.size.width.toDouble(),
+                  height: adController.bannerAd!.size.height.toDouble(),
+                )
+              : null,
     );
   }
 

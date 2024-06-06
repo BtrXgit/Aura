@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:aura/authentication/services/admob_service.dart';
 import 'package:aura/controllers/ad_controller.dart';
 import 'package:aura/core/broken_icons.dart';
+import 'package:aura/subscription/subscription.dart';
 import 'package:aura/util/players/mainAuraPlayer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -52,17 +53,20 @@ class _SongsScreenState extends State<SongsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final subscriptionController = Get.put(SubscriptionController());
     final adController = Get.put(AdController());
     return Scaffold(
       appBar: null,
-      bottomNavigationBar: adController.bannerAd != null
-          ? Container(
-              alignment: Alignment.center,
-              child: AdWidget(ad: adController.bannerAd!),
-              width: adController.bannerAd!.size.width.toDouble(),
-              height: adController.bannerAd!.size.height.toDouble(),
-            )
-          : null,
+      bottomNavigationBar: subscriptionController.isSubscribed.value
+          ? null
+          : adController.bannerAd != null
+              ? Container(
+                  alignment: Alignment.center,
+                  child: AdWidget(ad: adController.bannerAd!),
+                  width: adController.bannerAd!.size.width.toDouble(),
+                  height: adController.bannerAd!.size.height.toDouble(),
+                )
+              : null,
       body: SafeArea(
         child: NestedScrollView(
           controller: ScrollController(),
