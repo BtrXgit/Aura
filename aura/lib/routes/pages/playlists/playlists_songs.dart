@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:aura/authentication/services/admob_service.dart';
+import 'package:aura/controllers/ad_controller.dart';
+import 'package:aura/core/broken_icons.dart';
 import 'package:aura/util/players/mainAuraPlayer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -25,20 +27,9 @@ class SongsScreen extends StatefulWidget {
 class _SongsScreenState extends State<SongsScreen> {
   Color? dominantColor;
 
-  BannerAd? _banner;
-  void _createBannerAd() {
-    _banner = BannerAd(
-      size: AdSize.banner,
-      adUnitId: AdMobService.bannerAdUnitId!,
-      listener: AdMobService.bannerListener,
-      request: const AdRequest(),
-    )..load();
-  }
-
   @override
   void initState() {
     super.initState();
-    _createBannerAd();
     _loadDominantColor();
   }
 
@@ -61,9 +52,17 @@ class _SongsScreenState extends State<SongsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final adController = Get.put(AdController());
     return Scaffold(
       appBar: null,
-      backgroundColor: Color(0xFF131321),
+      bottomNavigationBar: adController.bannerAd != null
+          ? Container(
+              alignment: Alignment.center,
+              child: AdWidget(ad: adController.bannerAd!),
+              width: adController.bannerAd!.size.width.toDouble(),
+              height: adController.bannerAd!.size.height.toDouble(),
+            )
+          : null,
       body: SafeArea(
         child: NestedScrollView(
           controller: ScrollController(),
@@ -209,14 +208,6 @@ class _SongsScreenState extends State<SongsScreen> {
           body: _buildSongsBody(),
         ),
       ),
-      bottomNavigationBar: _banner == null
-          ? const SizedBox(
-              height: 0,
-            )
-          : SizedBox(
-              height: 52,
-              child: AdWidget(ad: _banner!),
-            ),
     );
   }
 
@@ -281,7 +272,15 @@ class _SongsScreenState extends State<SongsScreen> {
                   song.artist,
                   style: TextStyle(color: Colors.white.withOpacity(0.8)),
                 ),
-                trailing: IconButton(onPressed: () {}, icon: Icon(Icons.menu)),
+                trailing: IconButton(
+                    onPressed: () => Get.to(
+                          () => AuraPlayer(
+                            currentIndex: index,
+                            songs: songs,
+                            title: widget.playlist.playlistName!,
+                          ),
+                        ),
+                    icon: Icon(Broken.play_circle)),
               ),
             ),
           );

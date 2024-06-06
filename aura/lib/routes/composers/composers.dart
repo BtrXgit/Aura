@@ -1,9 +1,9 @@
 import 'dart:ui';
-
 import 'package:aura/authentication/services/admob_service.dart';
 import 'package:aura/component/native_ad.dart';
 import 'package:aura/routes/composers/relaxing_composer.dart';
 import 'package:aura/routes/composers/focus_composer.dart';
+import 'package:aura/services/admob_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -39,7 +39,7 @@ class _AuraComposersState extends State<AuraComposers> {
 
   void loadNativeAd() {
     _nativeAd = NativeAd(
-        adUnitId: AdMobService.nativeAdsUnit!,
+        adUnitId: AdMobService.nativeAdUnitId!,
         listener: NativeAdListener(
           onAdLoaded: (ad) {
             setState(() {

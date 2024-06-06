@@ -1,6 +1,7 @@
 import 'package:aura/authentication/services/admob_service.dart';
 import 'package:aura/component/native_ad.dart';
 import 'package:aura/routes/meditate/screens/techniques/fourseven/four_seven_eight.dart';
+import 'package:aura/services/admob_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'techniques/seven_eleven.dart';
@@ -30,7 +31,7 @@ class _MeditationHomeState extends State<MeditationHome> {
 
   void loadNativeAd() {
     _nativeAd = NativeAd(
-        adUnitId: AdMobService.nativeAdsUnit!,
+        adUnitId: AdMobService.nativeAdUnitId!,
         listener: NativeAdListener(
           onAdLoaded: (ad) {
             setState(() {

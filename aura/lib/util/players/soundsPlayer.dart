@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:aura/authentication/services/admob_service.dart';
+import 'package:aura/controllers/ad_controller.dart';
 import 'package:aura/core/broken_icons.dart';
 import 'package:aura/util/visualizer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -33,28 +34,18 @@ class SoundsPlayer extends StatefulWidget {
 
 class _SoundsPlayerState extends State<SoundsPlayer> {
   final AudioPlayer _audioPlayer = AudioPlayer();
+  final adController = Get.put(AdController());
   int _currentIndex = 0;
   bool _isRepeatOn = true;
 
   @override
   void initState() {
     super.initState();
-    _createBannerAd();
     _currentIndex = widget.currentIndex;
     if (widget.songs.isNotEmpty) {
       _initializePlayer();
       _audioPlayer.play();
     }
-  }
-
-  BannerAd? _banner;
-  void _createBannerAd() {
-    _banner = BannerAd(
-      size: AdSize.banner,
-      adUnitId: AdMobService.playersAdUnitId!,
-      listener: AdMobService.playersbannerListener,
-      request: const AdRequest(),
-    )..load();
   }
 
   void _initializePlayer() {
@@ -485,14 +476,14 @@ class _SoundsPlayerState extends State<SoundsPlayer> {
           ),
         ),
       ),
-      bottomNavigationBar: _banner == null
-          ? const SizedBox(
-              height: 0,
+      bottomNavigationBar: adController.bannerAd != null
+          ? Container(
+              alignment: Alignment.center,
+              child: AdWidget(ad: adController.bannerAd!),
+              width: adController.bannerAd!.size.width.toDouble(),
+              height: adController.bannerAd!.size.height.toDouble(),
             )
-          : SizedBox(
-              height: 52,
-              child: AdWidget(ad: _banner!),
-            ),
+          : null,
     );
   }
 }

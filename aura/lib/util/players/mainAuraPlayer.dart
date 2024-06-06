@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:aura/controllers/ad_controller.dart';
 import 'package:aura/controllers/player_controller.dart';
 import 'package:aura/core/broken_icons.dart';
 import 'package:aura/data/songs.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:iconly/iconly.dart';
 import 'package:just_audio_cache/just_audio_cache.dart';
 import 'package:newton_particles/newton_particles.dart';
@@ -31,7 +33,10 @@ class AuraPlayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(AuraPlayerController());
-    controller.stopAndClear();
+    final adController = Get.put(AdController());
+    if (controller.songs.isNotEmpty) {
+      controller.stopAndClear();
+    }
     controller.currentIndex.value = currentIndex;
     controller.title.value = title;
     controller.songs.addAll(songs);
@@ -43,6 +48,14 @@ class AuraPlayer extends StatelessWidget {
     return Scaffold(
       appBar: null,
       backgroundColor: Colors.black,
+      bottomNavigationBar: adController.bannerAd != null
+          ? Container(
+              alignment: Alignment.center,
+              child: AdWidget(ad: adController.bannerAd!),
+              width: adController.bannerAd!.size.width.toDouble(),
+              height: adController.bannerAd!.size.height.toDouble(),
+            )
+          : null,
       body: GestureDetector(
         onHorizontalDragEnd: (DragEndDetails details) {
           if (details.primaryVelocity! > 0) {
@@ -181,14 +194,22 @@ class AuraPlayer extends StatelessWidget {
                                   );
                                 }
                               },
-                              icon: Obx(() => Icon(
-                                    controller.isSongLiked.value
-                                        ? IconlyBold.heart
-                                        : IconlyLight.heart,
-                                    color: controller.isSongLiked.value
-                                        ? Colors.red
-                                        : Colors.white,
-                                  )),
+                              icon: Icon(
+                                controller.isSongLiked.value
+                                    ? IconlyBold.heart
+                                    : IconlyLight.heart,
+                                color: controller.isSongLiked.value
+                                    ? Colors.red
+                                    : Colors.white,
+                              ),
+                              // icon: Obx(() => Icon(
+                              //       controller.isSongLiked.value
+                              //           ? IconlyBold.heart
+                              //           : IconlyLight.heart,
+                              //       color: controller.isSongLiked.value
+                              //           ? Colors.red
+                              //           : Colors.white,
+                              //     )),
                             ),
                             title: Text(
                               controller.songs[controller.currentIndex.value]

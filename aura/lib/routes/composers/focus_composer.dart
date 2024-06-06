@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:aura/authentication/services/admob_service.dart';
 import 'package:aura/component/native_ad.dart';
 import 'package:aura/core/broken_icons.dart';
+import 'package:aura/services/admob_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -51,7 +52,7 @@ class FocusComposerState extends State<FocusComposer> {
 
   void loadNativeAd() {
     _nativeAd = NativeAd(
-        adUnitId: AdMobService.composerAdsUnit!,
+        adUnitId: AdMobService.composerAdUnitId!,
         listener: NativeAdListener(
           onAdLoaded: (ad) {
             setState(() {

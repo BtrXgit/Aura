@@ -4,6 +4,7 @@ import 'package:aura/authentication/services/admob_service.dart';
 import 'package:aura/component/native_ad.dart';
 import 'package:aura/core/broken_icons.dart';
 import 'package:aura/data/composer_data/relaxing_composer.dart';
+import 'package:aura/services/admob_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -50,7 +51,7 @@ class RelaxingComposerState extends State<RelaxingComposer> {
 
   void loadNativeAd() {
     _nativeAd = NativeAd(
-        adUnitId: AdMobService.composerAdsUnit!,
+        adUnitId: AdMobService.composerAdUnitId!,
         listener: NativeAdListener(
           onAdLoaded: (ad) {
             setState(() {

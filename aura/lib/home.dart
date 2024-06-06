@@ -16,6 +16,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);
@@ -151,64 +152,69 @@ class HomePageState extends State<HomePage>
             ),
             child: TabBar(
               dividerColor: Colors.transparent,
-              indicatorPadding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
+              indicatorPadding: const EdgeInsets.fromLTRB(0, 0, 6, 0),
               controller: tabController,
               indicator: UnderlineTabIndicator(
                   borderRadius: BorderRadius.circular(20),
                   borderSide: BorderSide(
                       color: _getIndicatorColor(currentPage), width: 6),
-                  insets: EdgeInsets.fromLTRB(24, 0, 14, 6)),
+                  insets: EdgeInsets.fromLTRB(20, 0, 14, 6)),
               tabs: [
                 SizedBox(
                   height: 55,
-                  width: 40,
+                  width: 55,
                   child: Center(
-                    child: Icon(
-                      IconlyBold.home,
+                    child: SvgPicture.asset(
+                      'assets/navIcons/home.svg',
                       color: currentPage == 0 ? homeColor : unselectedColor,
-                      size: currentPage == 0 ? 35 : 30,
+                      height: currentPage == 0 ? 40 : 35,
+                      width: currentPage == 0 ? 40 : 35,
                       // color: Colors.black,
                     ),
                   ),
                 ),
                 SizedBox(
                   height: 55,
-                  width: 40,
+                  width: 55,
                   child: Center(
-                      child: Icon(
-                    IconlyBold.star,
+                      child: SvgPicture.asset(
+                    'assets/navIcons/composer.svg',
                     color: currentPage == 1 ? customColor : unselectedColor,
-                    size: currentPage == 1 ? 35 : 30,
+                    height: currentPage == 1 ? 40 : 35,
+                    width: currentPage == 1 ? 40 : 35,
                   )),
                 ),
                 SizedBox(
                   height: 55,
-                  width: 40,
+                  width: 55,
                   child: Center(
-                      child: Icon(
-                    IconlyBold.profile,
+                      child: SvgPicture.asset(
+                    'assets/navIcons/meditation.svg',
                     color: currentPage == 2 ? locationColor : unselectedColor,
-                    size: currentPage == 2 ? 35 : 30,
+                    height: currentPage == 2 ? 40 : 35,
+                    width: currentPage == 2 ? 40 : 35,
                   )),
                 ),
                 SizedBox(
                   height: 55,
-                  width: 40,
+                  width: 55,
                   child: Center(
-                      child: Icon(
-                    IconlyBold.heart,
+                      child: SvgPicture.asset(
+                    'assets/navIcons/heart.svg',
                     color: currentPage == 3 ? favoritesColor : unselectedColor,
-                    size: currentPage == 3 ? 35 : 30,
+                    height: currentPage == 3 ? 40 : 35,
+                    width: currentPage == 3 ? 40 : 35,
                   )),
                 ),
                 SizedBox(
                   height: 55,
-                  width: 40,
+                  width: 55,
                   child: Center(
-                      child: Icon(
-                    IconlyBold.setting,
+                      child: SvgPicture.asset(
+                    'assets/navIcons/setting_2.svg',
                     color: currentPage == 4 ? settingsColor : unselectedColor,
-                    size: currentPage == 4 ? 35 : 30,
+                    height: currentPage == 4 ? 40 : 35,
+                    width: currentPage == 4 ? 40 : 35,
                   )),
                 ),
               ],

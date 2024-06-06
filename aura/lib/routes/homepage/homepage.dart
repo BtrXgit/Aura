@@ -1,10 +1,12 @@
 import 'dart:ui';
 import 'package:aura/component/user_component.dart';
+import 'package:aura/controllers/ad_controller.dart';
 import 'package:aura/controllers/home_controller.dart';
 import 'package:aura/lib/notifications.dart';
 import 'package:aura/liveChat/chat_test.dart';
 import 'package:aura/routes/pages/favourites.dart';
 import 'package:aura/routes/pages/live/focusLive.dart';
+import 'package:aura/subscription/subscription.dart';
 import 'package:aura/util/players/soundsPlayer.dart';
 import 'package:aura/routes/pages/live/relaxingLive.dart';
 import 'package:aura/routes/pages/sounds/noises.dart';
@@ -24,6 +26,8 @@ import '../pages/live/sleepLive.dart';
 class AuraHomePage extends StatelessWidget {
   final ScrollController controller;
   final AuraHomeController auraHomeController = Get.put(AuraHomeController());
+  final SubscriptionController subscriptionController =
+      Get.put(SubscriptionController());
   AuraHomePage({required this.controller, super.key});
 
   @override

@@ -1,6 +1,7 @@
 import 'package:aura/authentication/auth%20pages/login_page.dart';
 import 'package:aura/core/broken_icons.dart';
 import 'package:aura/data/songs.dart';
+import 'package:aura/util/players/mainAuraPlayer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -85,7 +86,7 @@ class _FavouriteSongsScreenState extends State<FavouriteSongsScreen> {
         ),
       ),
       backgroundColor: backgroundColor,
-      body: user == null ? _buildSignInPrompt(context) : _buildSongsList(),
+      body: user == null ? _buildSignInPrompt(context) : _buildSongsList(songs),
     );
   }
 
@@ -114,16 +115,56 @@ class _FavouriteSongsScreenState extends State<FavouriteSongsScreen> {
     );
   }
 
-  Widget _buildSongsList() {
+  Widget _buildSongsList(List<Song> songs) {
     return Padding(
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(8.0),
       child: ListView.builder(
+        controller: widget.controller,
         itemCount: songs.length,
         itemBuilder: (context, index) {
-          return SongCard(
-            // song: songs[index].songUrl,
-            imageUrl: songs[index].imageUrl, artist: songs[index].artist,
-            songName: songs[index].songName, songUrl: songs[index].songUrl,
+          Song song = songs[index];
+          return Card(
+            elevation: 2,
+            color: Color(0xFF1C1C1E),
+            child: InkWell(
+              onTap: () => Get.to(
+                () => AuraPlayer(
+                  currentIndex: index,
+                  songs: songs,
+                  title: 'Favourites',
+                ),
+              ),
+              child: ListTile(
+                leading: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: CachedNetworkImage(
+                    imageUrl: songs[index].imageUrl,
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  ),
+                ),
+                title: Text(
+                  song.songName,
+                  style: TextStyle(color: Colors.white),
+                ),
+                subtitle: Text(
+                  song.artist,
+                  style: TextStyle(color: Colors.white.withOpacity(0.8)),
+                ),
+                trailing: IconButton(
+                    onPressed: () => Get.to(
+                          () => AuraPlayer(
+                            currentIndex: index,
+                            songs: songs,
+                            title: 'Favourites',
+                          ),
+                        ),
+                    icon: Icon(Broken.play_circle)),
+              ),
+            ),
           );
         },
       ),

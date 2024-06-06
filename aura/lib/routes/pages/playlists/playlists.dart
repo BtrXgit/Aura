@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:aura/authentication/services/admob_service.dart';
 import 'package:aura/component/native_ad.dart';
+import 'package:aura/controllers/ad_controller.dart';
 import 'package:aura/data/songs.dart';
 import 'package:aura/routes/pages/playlists/playlists_songs.dart';
+import 'package:aura/services/admob_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -23,25 +25,15 @@ class PlaylistsPage extends StatefulWidget {
 class _PlaylistsPageState extends State<PlaylistsPage> {
   SharedPreferences? _preferences;
   late StreamController<List<Song>> _playlistsController;
+  final adController = Get.put(AdController());
 
   @override
   void initState() {
     super.initState();
-    _createBannerAd();
     loadNativeAd();
     _initPreferences();
     _playlistsController = StreamController<List<Song>>();
     _fetchPlaylists();
-  }
-
-  BannerAd? _banner;
-  void _createBannerAd() {
-    _banner = BannerAd(
-      size: AdSize.banner,
-      adUnitId: AdMobService.bannerAdUnitId!,
-      listener: AdMobService.bannerListener,
-      request: const AdRequest(),
-    )..load();
   }
 
   NativeAd? _nativeAd;
@@ -49,7 +41,7 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
 
   void loadNativeAd() {
     _nativeAd = NativeAd(
-        adUnitId: AdMobService.nativeAdsUnit!,
+        adUnitId: AdMobService.nativeAdUnitId!,
         listener: NativeAdListener(
           onAdLoaded: (ad) {
             setState(() {
@@ -102,16 +94,16 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
           style: TextStyle(color: Colors.white),
         ),
       ),
-      backgroundColor: const Color(0xFF131321),
-      body: _buildPlaylistBody(),
-      bottomNavigationBar: _banner == null
-          ? const SizedBox(
-              height: 0,
+      backgroundColor: Theme.of(context).colorScheme.background,
+      bottomNavigationBar: adController.playersBannerAd != null
+          ? Container(
+              alignment: Alignment.center,
+              child: AdWidget(ad: adController.playersBannerAd!),
+              width: adController.playersBannerAd!.size.width.toDouble(),
+              height: adController.playersBannerAd!.size.height.toDouble(),
             )
-          : SizedBox(
-              height: 52,
-              child: AdWidget(ad: _banner!),
-            ),
+          : null,
+      body: _buildPlaylistBody(),
     );
   }
 

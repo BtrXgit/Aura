@@ -1,7 +1,7 @@
 name: aura
 description: A new Flutter project.
 publish_to: 'none' 
-version: 1.0.0+6
+version: 1.0.0+10
 
 environment:
   sdk: '>=3.1.2 <4.0.0'
@@ -44,6 +44,8 @@ dependencies:
   sleek_circular_slider: ^2.0.1
   rename: ^3.0.1
   newton_particles: ^0.1.8
+  flutter_svg: ^2.0.10+1
+  purchases_flutter: ^6.29.2
   # just_audio_background: ^0.0.1-beta.12
   # waveform_extractor: ^1.0.3
 
@@ -65,6 +67,7 @@ flutter:
 
   assets:
     - assets/animals/
+    - assets/navIcons/
     - assets/asmr/
     - assets/icons/
     - assets/focusIcons/ambient/

@@ -1,5 +1,7 @@
 import 'package:aura/authentication/services/admob_service.dart';
 import 'package:aura/component/native_ad.dart';
+import 'package:aura/controllers/ad_controller.dart';
+import 'package:aura/services/admob_service.dart';
 import 'package:aura/util/players/soundsPlayer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -60,22 +62,12 @@ class _RecommendedSoundsPageState extends State<RecommendedSoundsPage> {
     'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Home%2FCity%20Rain.mp3?alt=media&token=bc7216ee-a962-440d-b57a-ecc731d3afab',
   ];
 
-  BannerAd? _banner;
-  void _createBannerAd() {
-    _banner = BannerAd(
-      size: AdSize.banner,
-      adUnitId: AdMobService.bannerAdUnitId!,
-      listener: AdMobService.bannerListener,
-      request: const AdRequest(),
-    )..load();
-  }
-
   NativeAd? _nativeAd;
   bool _nativeAdIsLoaded = false;
 
   void loadNativeAd() {
     _nativeAd = NativeAd(
-        adUnitId: AdMobService.nativeAdsUnit!,
+        adUnitId: AdMobService.nativeAdUnitId!,
         listener: NativeAdListener(
           onAdLoaded: (ad) {
             setState(() {
@@ -112,12 +104,12 @@ class _RecommendedSoundsPageState extends State<RecommendedSoundsPage> {
   @override
   void initState() {
     super.initState();
-    _createBannerAd();
     loadNativeAd();
   }
 
   @override
   Widget build(BuildContext context) {
+    final adController = Get.put(AdController());
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
@@ -129,14 +121,14 @@ class _RecommendedSoundsPageState extends State<RecommendedSoundsPage> {
       ),
       backgroundColor: const Color(0xFF131321),
       body: _buildPlaylistListView(),
-      bottomNavigationBar: _banner == null
-          ? const SizedBox(
-              height: 0,
+      bottomNavigationBar: adController.bannerAd != null
+          ? Container(
+              alignment: Alignment.center,
+              child: AdWidget(ad: adController.bannerAd!),
+              width: adController.bannerAd!.size.width.toDouble(),
+              height: adController.bannerAd!.size.height.toDouble(),
             )
-          : SizedBox(
-              height: 52,
-              child: AdWidget(ad: _banner!),
-            ),
+          : null,
     );
   }
 

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:aura/core/broken_icons.dart';
 import 'package:aura/routes/settings/privacyPolicy.dart';
 import 'package:aura/routes/settings/settingsCard.dart';
+import 'package:aura/subscription/subscription.dart';
 import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:iconly/iconly.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -382,6 +384,12 @@ class _SettingsPageState extends State<SettingsPage> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      CustomStackCard(
+                        icon: IconlyLight.buy,
+                        onTap: () => Get.to(SubscriptionPage()),
+                        title: 'Buy Aura Pro',
+                        subtitle: 'Access all features',
+                      ),
                       CustomStackCard(
                         icon: Broken.info_circle,
                         onTap: () => _showAboutAppBottomSheet(context),
