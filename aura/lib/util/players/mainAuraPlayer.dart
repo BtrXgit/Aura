@@ -9,15 +9,15 @@ import 'package:aura/liveChat/chat_test.dart';
 import 'package:aura/subscription/subscription.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart' hide Velocity;
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/widgets.dart' hide Velocity;
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:iconly/iconly.dart';
 import 'package:just_audio_cache/just_audio_cache.dart';
-import 'package:newton_particles/newton_particles.dart';
+import 'package:newton_particles/newton_particles.dart' hide Velocity;
 import 'package:text_scroll/text_scroll.dart';
 
 class AuraPlayer extends StatelessWidget {
@@ -35,8 +35,8 @@ class AuraPlayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(AuraPlayerController());
-    final adController = Get.put(AdController());
-    final subscriptionController = Get.put(SubscriptionController());
+    // final adController = Get.put(AdController());
+    // final subscriptionController = Get.put(SubscriptionController());
     if (controller.songs.isNotEmpty) {
       controller.stopAndClear();
     }
@@ -51,16 +51,16 @@ class AuraPlayer extends StatelessWidget {
     return Scaffold(
       appBar: null,
       backgroundColor: Colors.black,
-      bottomNavigationBar: subscriptionController.isSubscribed.value
-          ? null
-          : adController.bannerAd != null
-              ? Container(
-                  alignment: Alignment.center,
-                  child: AdWidget(ad: adController.bannerAd!),
-                  width: adController.bannerAd!.size.width.toDouble(),
-                  height: adController.bannerAd!.size.height.toDouble(),
-                )
-              : null,
+      // bottomNavigationBar: subscriptionController.isSubscribed.value
+      //     ? null
+      //     : adController.bannerAd != null
+      //         ? Container(
+      //             alignment: Alignment.center,
+      //             child: AdWidget(ad: adController.bannerAd!),
+      //             width: adController.bannerAd!.size.width.toDouble(),
+      //             height: adController.bannerAd!.size.height.toDouble(),
+      //           )
+      //         : null,
       body: GestureDetector(
         onHorizontalDragEnd: (DragEndDetails details) {
           if (details.primaryVelocity! > 0) {
@@ -116,20 +116,14 @@ class AuraPlayer extends StatelessWidget {
                         height: MediaQuery.of(context).size.height * 0.4,
                         child: controller.isPlaying.value
                             ? Newton(
-                                activeEffects: [
-                                  RainEffect(
-                                    particleConfiguration:
-                                        ParticleConfiguration(
-                                      shape: CircleShape(),
-                                      size: const Size(5, 5),
-                                      color: const SingleParticleColor(
-                                          color: Colors.white),
-                                    ),
-                                    effectConfiguration:
-                                        const EffectConfiguration(),
-                                  )
-                                ],
-                              )
+  effectConfigurations: [
+    RainPreset(
+      color: Colors.white,
+      particlesPerEmit: 10,
+      emitDuration: Duration(milliseconds: 50),
+    ).toConfiguration(),
+  ],
+)
                             : null,
                       ),
                     ),

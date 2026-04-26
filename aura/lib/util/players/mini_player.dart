@@ -75,18 +75,12 @@ class EnlargedMiniPlayer extends StatelessWidget {
                           height: MediaQuery.of(context).size.height * 0.4,
                           child: controller.isPlaying.value
                               ? Newton(
-                                  activeEffects: [
-                                    RainEffect(
-                                      particleConfiguration:
-                                          ParticleConfiguration(
-                                        shape: CircleShape(),
-                                        size: const Size(5, 5),
-                                        color: const SingleParticleColor(
-                                            color: Colors.white),
-                                      ),
-                                      effectConfiguration:
-                                          const EffectConfiguration(),
-                                    )
+                                  effectConfigurations: [
+                                    RainPreset(
+                                      color: Colors.white,
+                                      particlesPerEmit: 10,
+                                      emitDuration: Duration(milliseconds: 50),
+                                    ).toConfiguration(),
                                   ],
                                 )
                               : null,

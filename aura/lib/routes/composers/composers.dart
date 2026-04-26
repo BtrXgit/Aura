@@ -24,15 +24,15 @@ class AuraComposers extends StatefulWidget {
 }
 
 class _AuraComposersState extends State<AuraComposers> {
-  final SubscriptionController subscriptionController =
-      Get.put(SubscriptionController());
+  // final SubscriptionController subscriptionController =
+  //     Get.put(SubscriptionController());
 
   @override
   void initState() {
     super.initState();
-    if (!subscriptionController.isSubscribed.value) {
-      loadNativeAd();
-    }
+    // if (!subscriptionController.isSubscribed.value) {
+    //   loadNativeAd();
+    // }
   }
 
   @override
@@ -82,7 +82,7 @@ class _AuraComposersState extends State<AuraComposers> {
 
   @override
   Widget build(BuildContext context) {
-    final adController = Get.find<AdController>();
+    // final adController = Get.find<AdController>();
     return Scaffold(
       backgroundColor: Color(0xff131321),
       body: SingleChildScrollView(
@@ -187,14 +187,15 @@ class _AuraComposersState extends State<AuraComposers> {
               height: 10,
             ),
             InkWell(
-              onTap: () => subscriptionController.isSubscribed.value
-                  ? Get.to(RelaxingComposer())
-                  : adController.showSubscriptionDialog(
-                      context,
-                      onComplete: () => Get.to(
-                        RelaxingComposer(),
-                      ),
-                    ),
+              // onTap: () => subscriptionController.isSubscribed.value
+              //     ? Get.to(RelaxingComposer())
+              //     : adController.showSubscriptionDialog(
+              //         context,
+              //         onComplete: () => Get.to(
+              //           RelaxingComposer(),
+              //         ),
+              //       ),
+              onTap: () => Get.to(RelaxingComposer()),
               child: Stack(
                 children: [
                   Container(
@@ -251,14 +252,7 @@ class _AuraComposersState extends State<AuraComposers> {
               height: 10,
             ),
             InkWell(
-              onTap: () => subscriptionController.isSubscribed.value
-                  ? Get.to(FocusComposer())
-                  : adController.showSubscriptionDialog(
-                      context,
-                      onComplete: () => Get.to(
-                        FocusComposer(),
-                      ),
-                    ),
+             onTap: () => Get.to(FocusComposer()),
               child: Stack(
                 children: [
                   Container(

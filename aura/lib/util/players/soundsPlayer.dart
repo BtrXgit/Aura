@@ -34,7 +34,7 @@ class SoundsPlayer extends StatefulWidget {
 
 class _SoundsPlayerState extends State<SoundsPlayer> {
   final AudioPlayer _audioPlayer = AudioPlayer();
-  final adController = Get.put(AdController());
+  // final adController = Get.put(AdController());
   int _currentIndex = 0;
   bool _isRepeatOn = true;
 
@@ -476,14 +476,7 @@ class _SoundsPlayerState extends State<SoundsPlayer> {
           ),
         ),
       ),
-      bottomNavigationBar: adController.bannerAd != null
-          ? Container(
-              alignment: Alignment.center,
-              child: AdWidget(ad: adController.bannerAd!),
-              width: adController.bannerAd!.size.width.toDouble(),
-              height: adController.bannerAd!.size.height.toDouble(),
-            )
-          : null,
+     
     );
   }
 }

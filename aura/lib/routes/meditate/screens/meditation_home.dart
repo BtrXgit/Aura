@@ -22,14 +22,11 @@ class MeditationHome extends StatefulWidget {
 }
 
 class _MeditationHomeState extends State<MeditationHome> {
-  final SubscriptionController subscriptionController =
-      Get.put(SubscriptionController());
+ 
   @override
   void initState() {
     super.initState();
-    if (!subscriptionController.isSubscribed.value) {
-      loadNativeAd();
-    }
+  
   }
 
   NativeAd? _nativeAd;

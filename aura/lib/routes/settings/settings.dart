@@ -384,12 +384,12 @@ class _SettingsPageState extends State<SettingsPage> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CustomStackCard(
-                        icon: IconlyLight.buy,
-                        onTap: () => Get.to(SubscriptionPage()),
-                        title: 'Buy Aura Pro',
-                        subtitle: 'Access all features',
-                      ),
+                      // CustomStackCard(
+                      //   icon: IconlyLight.buy,
+                      //   onTap: () => Get.to(SubscriptionPage()),
+                      //   title: 'Buy Aura Pro',
+                      //   subtitle: 'Access all features',
+                      // ),
                       CustomStackCard(
                         icon: Broken.info_circle,
                         onTap: () => _showAboutAppBottomSheet(context),

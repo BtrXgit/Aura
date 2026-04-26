@@ -18,8 +18,7 @@ class RecommendedSoundsPage extends StatefulWidget {
 }
 
 class _RecommendedSoundsPageState extends State<RecommendedSoundsPage> {
-  final SubscriptionController subscriptionController =
-      Get.put(SubscriptionController());
+ 
   List<String> recommendedImageUrl = [
     'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRecommended%20Sounds%2Focean.jpg?alt=media&token=687073b1-be9f-4bf0-9f9f-379b60a59969',
     'https://firebasestorage.googleapis.com/v0/b/aura-xd.appspot.com/o/Images%2FHomepage%2FRecommended%20Sounds%2Fbirdsong.jpg?alt=media&token=3273f108-27d8-4ad1-b96b-ddc845fe8407',
@@ -107,14 +106,11 @@ class _RecommendedSoundsPageState extends State<RecommendedSoundsPage> {
   @override
   void initState() {
     super.initState();
-    if (!subscriptionController.isSubscribed.value) {
-      loadNativeAd();
-    }
+   
   }
 
   @override
   Widget build(BuildContext context) {
-    final adController = Get.put(AdController());
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
@@ -126,16 +122,7 @@ class _RecommendedSoundsPageState extends State<RecommendedSoundsPage> {
       ),
       backgroundColor: const Color(0xFF131321),
       body: _buildPlaylistListView(),
-      bottomNavigationBar: subscriptionController.isSubscribed.value
-          ? null
-          : adController.bannerAd != null
-              ? Container(
-                  alignment: Alignment.center,
-                  child: AdWidget(ad: adController.bannerAd!),
-                  width: adController.bannerAd!.size.width.toDouble(),
-                  height: adController.bannerAd!.size.height.toDouble(),
-                )
-              : null,
+     
     );
   }
 

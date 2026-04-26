@@ -14,38 +14,38 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   just_audio: ^0.9.35
-  google_fonts: ^6.1.0
+  google_fonts: ^8.0.2
   url_launcher: ^6.1.14
   flutter_cache_manager: ^3.3.1
   flutter_staggered_animations: ^1.1.1
   bootstrap_icons: ^1.11.1
   get: ^4.6.6
-  firebase_auth: ^4.10.1
-  google_mobile_ads: ^4.0.0
+  firebase_auth: ^6.4.0
+  google_mobile_ads: ^8.0.0
   flutter_floating_bottom_bar: ^1.2.0
-  firebase_core: ^2.16.0
-  firebase_storage: ^11.2.7
-  http: 1.2.0
+  firebase_core: ^4.7.0
+  firebase_storage: ^13.3.0
+  http: ^1.6.0
   iconly: ^1.0.1
-  cloud_firestore: ^4.13.6
+  cloud_firestore: ^6.3.0
   cached_network_image: ^3.3.0
-  carousel_slider: ^4.2.1
+  carousel_slider: ^5.1.2
   just_audio_cache: ^0.1.2
-  audioplayers: ^5.2.1
-  google_sign_in: ^6.2.1
-  flutter_launcher_icons: ^0.13.1
+  audioplayers: ^6.6.0
+  google_sign_in: ^7.2.0
+  flutter_launcher_icons: ^0.14.4
   palette_generator: ^0.3.3+3
   provider: ^6.1.2
   flutter_animate: ^4.4.1
   metaballs: ^1.5.0
   animated_text_kit: ^4.2.2
   text_scroll: ^0.2.0
-  firebase_app_check: 0.2.1+8
+  # firebase_app_check: ^0.4.3
   sleek_circular_slider: ^2.0.1
   rename: ^3.0.1
-  newton_particles: ^0.1.8
+  newton_particles: ^0.4.1
   flutter_svg: ^2.0.10+1
-  purchases_flutter: ^6.29.2
+  # purchases_flutter: ^10.0.1
   # just_audio_background: ^0.0.1-beta.12
   # waveform_extractor: ^1.0.3
 

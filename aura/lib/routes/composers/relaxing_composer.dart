@@ -23,8 +23,8 @@ class RelaxingComposer extends StatefulWidget {
 }
 
 class RelaxingComposerState extends State<RelaxingComposer> {
-  final SubscriptionController subscriptionController =
-      Get.put(SubscriptionController());
+  // final SubscriptionController subscriptionController =
+  //     Get.put(SubscriptionController());
 
   int playingAudioCount = 0;
   final List<AudioPlayer> natureaudioPlayer =
@@ -46,9 +46,9 @@ class RelaxingComposerState extends State<RelaxingComposer> {
   @override
   void initState() {
     super.initState();
-    if (!subscriptionController.isSubscribed.value) {
-      loadNativeAd();
-    }
+    // if (!subscriptionController.isSubscribed.value) {
+    //   loadNativeAd();
+    // }
     _loadAllAudios();
     _timer = null;
   }

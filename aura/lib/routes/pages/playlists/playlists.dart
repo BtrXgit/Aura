@@ -26,16 +26,14 @@ class PlaylistsPage extends StatefulWidget {
 class _PlaylistsPageState extends State<PlaylistsPage> {
   SharedPreferences? _preferences;
   late StreamController<List<Song>> _playlistsController;
-  final adController = Get.put(AdController());
-  final SubscriptionController subscriptionController =
-      Get.put(SubscriptionController());
+  // final adController = Get.put(AdController());
+  // final SubscriptionController subscriptionController =
+  //     Get.put(SubscriptionController());
 
   @override
   void initState() {
     super.initState();
-    if (!subscriptionController.isSubscribed.value) {
-      loadNativeAd();
-    }
+  
     _initPreferences();
     _playlistsController = StreamController<List<Song>>();
     _fetchPlaylists();
@@ -100,14 +98,7 @@ class _PlaylistsPageState extends State<PlaylistsPage> {
         ),
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
-      bottomNavigationBar: subscriptionController.isSubscribed.value ? null : adController.playersBannerAd != null
-          ? Container(
-              alignment: Alignment.center,
-              child: AdWidget(ad: adController.playersBannerAd!),
-              width: adController.playersBannerAd!.size.width.toDouble(),
-              height: adController.playersBannerAd!.size.height.toDouble(),
-            )
-          : null,
+     
       body: _buildPlaylistBody(),
     );
   }

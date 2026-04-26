@@ -24,8 +24,8 @@ class FocusComposer extends StatefulWidget {
 }
 
 class FocusComposerState extends State<FocusComposer> {
-  final SubscriptionController subscriptionController =
-      Get.put(SubscriptionController());
+  // final SubscriptionController subscriptionController =
+  //     Get.put(SubscriptionController());
 
   int playingAudioCount = 0;
   final List<AudioPlayer> natureaudioPlayer =
@@ -47,9 +47,9 @@ class FocusComposerState extends State<FocusComposer> {
   @override
   void initState() {
     super.initState();
-    if (!subscriptionController.isSubscribed.value) {
-      loadNativeAd();
-    }
+    // if (!subscriptionController.isSubscribed.value) {
+    //   loadNativeAd();
+    // }
     _loadAllAudios();
     _timer = null;
   }

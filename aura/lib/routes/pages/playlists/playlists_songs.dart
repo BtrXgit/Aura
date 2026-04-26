@@ -53,20 +53,11 @@ class _SongsScreenState extends State<SongsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final subscriptionController = Get.put(SubscriptionController());
-    final adController = Get.put(AdController());
+    // final subscriptionController = Get.put(SubscriptionController());
+    // final adController = Get.put(AdController());
     return Scaffold(
       appBar: null,
-      bottomNavigationBar: subscriptionController.isSubscribed.value
-          ? null
-          : adController.bannerAd != null
-              ? Container(
-                  alignment: Alignment.center,
-                  child: AdWidget(ad: adController.bannerAd!),
-                  width: adController.bannerAd!.size.width.toDouble(),
-                  height: adController.bannerAd!.size.height.toDouble(),
-                )
-              : null,
+    
       body: SafeArea(
         child: NestedScrollView(
           controller: ScrollController(),

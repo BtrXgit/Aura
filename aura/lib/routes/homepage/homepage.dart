@@ -26,8 +26,8 @@ import '../pages/live/sleepLive.dart';
 class AuraHomePage extends StatelessWidget {
   final ScrollController controller;
   final AuraHomeController auraHomeController = Get.put(AuraHomeController());
-  final SubscriptionController subscriptionController =
-      Get.put(SubscriptionController());
+  // final SubscriptionController subscriptionController =
+  //     Get.put(SubscriptionController());
   AuraHomePage({required this.controller, super.key});
 
   @override
@@ -48,7 +48,7 @@ class AuraHomePage extends StatelessWidget {
     final relaxingImage = auraHomeController.randomRelaxingImage(greeting);
     final focusImage = auraHomeController.randomFocusImage(greeting);
 
-    final adController = Get.put(AdController());
+    // final adController = Get.put(AdController());
     return SingleChildScrollView(
       controller: controller,
       physics: const ClampingScrollPhysics(),
@@ -211,16 +211,8 @@ class AuraHomePage extends StatelessWidget {
                 if (index == auraHomeController.recommendedSounds.length) {
                   return GestureDetector(
                     onTap: () {
-                      if (subscriptionController.isSubscribed.value) {
-                        Get.to(RecommendedSoundsPage(),
-                            transition: Transition.rightToLeftWithFade);
-                      } else {
-                        adController.showSubscriptionDialog(
-                          context,
-                          onComplete: () => Get.to(RecommendedSoundsPage(),
-                              transition: Transition.rightToLeftWithFade),
-                        );
-                      }
+                      Get.to(RecommendedSoundsPage(),
+                          transition: Transition.rightToLeftWithFade);
                     },
                     child: Container(
                       margin: EdgeInsets.only(left: 18),
@@ -300,67 +292,29 @@ class AuraHomePage extends StatelessWidget {
                           return GestureDetector(
                             onTap: () {
                               if (index == 0) {
-                                if (subscriptionController.isSubscribed.value) {
-                                  Get.to(
+                                Get.to(
                                       const RelaxingLive(
                                         title: 'Relaxing Live',
                                         imageUrl: 'assets/relaxingLive.jpg',
                                       ),
                                       transition:
                                           Transition.rightToLeftWithFade);
-                                } else {
-                                  adController.showSubscriptionDialog(
-                                    context,
-                                    onComplete: () => Get.to(
-                                      const RelaxingLive(
-                                        title: 'Relaxing Live',
-                                        imageUrl: 'assets/relaxingLive.jpg',
-                                      ),
-                                    ),
-                                  );
-                                }
                               } else if (index == 1) {
-                                if (subscriptionController.isSubscribed.value) {
-                                  Get.to(
+                               Get.to(
                                       const FocusLive(
                                         title: 'Focus Live',
                                         imageUrl: 'assets/studyLive.jpg',
                                       ),
                                       transition:
                                           Transition.rightToLeftWithFade);
-                                } else {
-                                  adController.showSubscriptionDialog(
-                                    context,
-                                    onComplete: () => Get.to(
-                                        const FocusLive(
-                                          title: 'Focus Live',
-                                          imageUrl: 'assets/studyLive.jpg',
-                                        ),
-                                        transition:
-                                            Transition.rightToLeftWithFade),
-                                  );
-                                }
                               } else if (index == 2) {
-                                if (subscriptionController.isSubscribed.value) {
-                                  Get.to(
+                                Get.to(
                                       const SleepLive(
                                         title: 'Sleep Live',
                                         imageUrl: 'assets/sleepingLive.jpg',
                                       ),
                                       transition:
                                           Transition.rightToLeftWithFade);
-                                } else {
-                                  adController.showSubscriptionDialog(
-                                    context,
-                                    onComplete: () => Get.to(
-                                        const SleepLive(
-                                          title: 'Sleep Live',
-                                          imageUrl: 'assets/sleepingLive.jpg',
-                                        ),
-                                        transition:
-                                            Transition.rightToLeftWithFade),
-                                  );
-                                }
                               }
                             },
                             child: Stack(
@@ -449,16 +403,8 @@ class AuraHomePage extends StatelessWidget {
                 if (int == auraHomeController.noises.length) {
                   return GestureDetector(
                     onTap: () {
-                      if (subscriptionController.isSubscribed.value) {
-                        Get.to(NoisesPage(),
+                       Get.to(NoisesPage(),
                             transition: Transition.rightToLeftWithFade);
-                      } else {
-                        adController.showSubscriptionDialog(
-                          context,
-                          onComplete: () => Get.to(NoisesPage(),
-                              transition: Transition.rightToLeftWithFade),
-                        );
-                      }
                     },
                     child: Container(
                       margin: EdgeInsets.only(left: 18),
@@ -497,9 +443,7 @@ class AuraHomePage extends StatelessWidget {
             height: 10,
           ),
 
-          (subscriptionController.isSubscribed.value)
-              ? Container()
-              : adController.buildNativeAdWidget(),
+       Container(),
 
           //title: - Music
           //subtitle: - Melodies that touch the soul
@@ -510,16 +454,9 @@ class AuraHomePage extends StatelessWidget {
               scrollText: 'Relaxing Sound | Beats to Relax | Beats to chill.'),
           GestureDetector(
               onTap: () {
-                if (subscriptionController.isSubscribed.value) {
-                  Get.to(PlaylistsPage(
+                 Get.to(PlaylistsPage(
                     category: 'relaxing',
                   ));
-                } else {
-                  adController.showInterstitialAd();
-                  Get.to(PlaylistsPage(
-                    category: 'relaxing',
-                  ));
-                }
               },
               child: _buildHomepageCategory(
                 context,
@@ -530,16 +467,9 @@ class AuraHomePage extends StatelessWidget {
               scrollText: 'Lofi | Beats to Focus | Beats to study.'),
           GestureDetector(
             onTap: () {
-              if (subscriptionController.isSubscribed.value) {
-                Get.to(PlaylistsPage(
+             Get.to(PlaylistsPage(
                   category: 'focus',
                 ));
-              } else {
-                adController.showInterstitialAd();
-                Get.to(PlaylistsPage(
-                  category: 'focus',
-                ));
-              }
             },
             child: _buildHomepageCategory(context, imageLink: focusImage),
           ),
@@ -549,16 +479,9 @@ class AuraHomePage extends StatelessWidget {
                   'Ambient Sound | Beats to relax | Beats to work | Beats to sleep.'),
           GestureDetector(
             onTap: () {
-              if (subscriptionController.isSubscribed.value) {
-                Get.to(PlaylistsPage(
+              Get.to(PlaylistsPage(
                   category: 'calm and cozy',
                 ));
-              } else {
-                adController.showInterstitialAd();
-                Get.to(PlaylistsPage(
-                  category: 'calm and cozy',
-                ));
-              }
             },
             child: _buildHomepageCategory(context,
                 imageLink: auraHomeController.homepageCategory[0]),
@@ -575,16 +498,9 @@ class AuraHomePage extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              if (subscriptionController.isSubscribed.value) {
-                Get.to(PlaylistsPage(
+               Get.to(PlaylistsPage(
                   category: 'chillwave',
                 ));
-              } else {
-                adController.showInterstitialAd();
-                Get.to(PlaylistsPage(
-                  category: 'chillwave',
-                ));
-              }
             },
             child: _buildHomepageCategory(context,
                 imageLink: auraHomeController.homepageCategory[1]),
@@ -601,15 +517,9 @@ class AuraHomePage extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              if (subscriptionController.isSubscribed.value) {
-                Get.to(PlaylistsPage(
+               Get.to(PlaylistsPage(
                   category: 'lofi sad',
                 ));
-              } else {
-                Get.to(PlaylistsPage(
-                  category: 'lofi sad',
-                ));
-              }
             },
             child: _buildHomepageCategory(context,
                 imageLink: auraHomeController.homepageCategory[2]),
@@ -626,15 +536,9 @@ class AuraHomePage extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              if (subscriptionController.isSubscribed.value) {
-                Get.to(PlaylistsPage(
+             Get.to(PlaylistsPage(
                   category: 'lofi hiphop',
                 ));
-              } else {
-                Get.to(PlaylistsPage(
-                  category: 'lofi hiphop',
-                ));
-              }
             },
             child: _buildHomepageCategory(context,
                 imageLink: auraHomeController.homepageCategory[3]),

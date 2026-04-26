@@ -3,14 +3,11 @@ import 'package:aura/get_upload.dart';
 import 'package:aura/subscription/subscription.dart';
 import 'package:aura/themes/themes.dart';
 import 'package:aura/util/splash/splash.dart';
-import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:purchases_flutter/models/purchases_configuration.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
@@ -20,12 +17,7 @@ Future<void> main() async {
   bool isFirstLaunch = await isFirstLaunchCheck();
   SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(systemNavigationBarColor: Color(0xff131321)));
-  await FirebaseAppCheck.instance.activate(
-    androidProvider: AndroidProvider.playIntegrity,
-  );
-  await Purchases.setDebugLogsEnabled(true);
-  await Purchases.configure(
-      PurchasesConfiguration("goog_figEPufEKXrTDHxxXTiACkhBlBw"));
+
   // await JustAudioBackground.init(
   //   androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
   //   androidNotificationChannelName: 'Audio playback',
